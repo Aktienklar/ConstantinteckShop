@@ -147,9 +147,9 @@ of that file as CSS variables – `--cream`, `--dough`, `--crust`, `--cocoa`,
 ./deploy.sh "Neues Rezept ergänzt"
 ```
 
-The script checks that no link points at a missing file, then commits and
-pushes. A GitHub Action copies the site to the `gh-pages` branch, which is what
-GitHub Pages serves.
+The script checks that no link points at a missing file, then commits and pushes
+to `main`. GitHub Pages serves `main` directly – what is in the repository is
+what visitors get, so there is no build and no second branch involved.
 
 One known limit: GitHub Pages serves `404.html` for any unknown address. At a
 deep address (e.g. `/shop/typo`) the relative paths in that file no longer find

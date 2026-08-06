@@ -1,1 +1,8 @@
 .DS_Store
+
+# Reste aus der Next.js-Zeit. Der Ordner taucht auf diesem Rechner gelegentlich
+# wieder auf (iCloud spielt gelöschte Dateien zurück) – er gehört nicht ins
+# Repository und erst recht nicht auf die Website.
+.next
+node_modules
+out
