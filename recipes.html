@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FDF8F1">
+  <title>All recipes | Constantinteck</title>
+  <meta name="description" content="Every recipe from the videos: sweet bakes and savoury everyday dishes. Search by ingredient, filter by time and difficulty.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <!-- Ankündigungsleiste: das Erste, was ein Besucher sieht. Sie trägt das
+       eine Produkt, für das der Kanal bekannt ist, und die zwei Bedingungen,
+       die über den ersten Kauf entscheiden: Versand und Rückgabe. -->
+  <div class="announcement">
+    <div class="container announcement__inner">
+      <a class="announcement__deal" href="shop/linen-apron.html">
+        <span class="announcement__dot" aria-hidden="true"></span>
+        <span class="only-narrow">The apron from the videos · €44.90</span>
+        <span class="only-wide">The linen apron from the videos – now in the shop, €44.90</span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <p class="announcement__terms">Free shipping from €60.00 · 14-day returns</p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container site-header__bar">
+      <a class="brand" href="index.html">
+        <span class="brand__mark" aria-hidden="true">C</span>
+        <span class="brand__name">Constantinteck</span>
+      </a>
+
+      <div class="site-header__right">
+        <nav class="nav" aria-label="Main">
+        <a class="nav__link" href="index.html">Home</a>
+        <a class="nav__link is-active" href="recipes.html">Recipes</a>
+        <a class="nav__link" href="shop.html">Shop</a>
+        <a class="nav__link" href="about.html">About</a>
+        </nav>
+
+        <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart, 0 items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-link__badge" data-cart-count hidden>0</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü -->
+    <nav class="nav-mobile no-scrollbar" aria-label="Main">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip is-active" href="recipes.html">Recipes</a>
+      <a class="chip" href="shop.html">Shop</a>
+      <a class="chip" href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <div class="container section--tight">
+      <h1 style="font-size:1.875rem">All recipes</h1>
+      <p class="muted" style="margin-top:.5rem;max-width:65ch">
+        Search for a title or an ingredient – the list filters as you type.
+        Recipes are written in German, the way they are in the videos.
+      </p>
+
+      <!-- Suche und Filter. Die Karten stehen alle fertig im HTML, das Skript
+           blendet nur aus, was nicht passt – ohne JavaScript bleibt die Liste
+           vollständig lesbar. -->
+      <div class="mt-6" data-explorer>
+        <div class="explorer__search">
+          <div class="search-field">
+            <label class="sr-only" for="recipe-search">Search recipes</label>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="recipe-search" type="search" autocomplete="off"
+                   placeholder="Search a recipe or ingredient …" data-search-input>
+          </div>
+
+          <div class="explorer__categories no-scrollbar">
+        <button type="button" class="chip is-active" data-category-filter="all" aria-pressed="true">All (10)</button>
+        <button type="button" class="chip chip--sweet" data-category-filter="backen" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Baking &amp; Sweets (5)</button>
+        <button type="button" class="chip chip--savory" data-category-filter="herzhaft" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury &amp; Everyday (5)</button>
+          </div>
+        </div>
+
+        <!-- Zeit und Schwierigkeit als Auswahlfelder – spart Platz auf dem Handy -->
+        <div class="explorer__selects">
+          <label class="select">
+            <span class="sr-only">Preparation time</span>
+            <select data-time-filter>
+            <option value="all">Any duration</option>
+            <option value="30">≤ 30 min</option>
+            <option value="60">≤ 60 min</option>
+            <option value="60plus">More than 1 h</option>
+            </select>
+          </label>
+          <label class="select">
+            <span class="sr-only">Difficulty</span>
+            <select data-difficulty-filter>
+            <option value="all">Any level</option>
+            <option value="einfach">Easy</option>
+            <option value="mittel">Medium</option>
+            <option value="anspruchsvoll">Advanced</option>
+            </select>
+          </label>
+          <button type="button" class="chip chip--plain" data-reset hidden>Reset ✕</button>
+        </div>
+
+        <p class="explorer__count" aria-live="polite" data-count>10 recipes found</p>
+
+        <div class="empty-state mt-6" data-empty hidden>
+          <p>Nothing found</p>
+          <p class="muted">
+            Try a single ingredient – the recipes are German, so “Schokolade” or
+            “Linsen” works better than “chocolate” or “lentils”.
+          </p>
+          <button type="button" class="btn btn--secondary mt-6" data-reset-inline>Reset filters</button>
+        </div>
+
+        <div class="grid grid--3 explorer__results" data-results>
+        <a class="card recipe-card lift-3d" href="recipes/cremige-tomaten-pasta.html" data-recipe-card data-category="herzhaft" data-minutes="20" data-difficulty="einfach" data-search="cremige tomaten-pasta in 20 minuten eine pfanne, zutaten aus dem vorrat, und die sauce bindet allein über das nudelwasser. feierabend vegetarisch pasta (rigatoni oder penne) olivenöl knoblauchzehen tomatenmark stückige tomaten sahne oder hafercuisine parmesan getrockneter oregano salz, pfeffer, 1 prise zucker frisches basilikum">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/4F7C4A/FFFFFF?text=Tomaten-Pasta" alt="" loading="lazy">
+            <span class="badge badge--savory recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--savory" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Cremige Tomaten-Pasta in 20 Minuten</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>20 min</span>
+              <span>Easy</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Feierabend</span>
+            <span class="tag">Vegetarisch</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/schoko-babka.html" data-recipe-card data-category="backen" data-minutes="150" data-difficulty="anspruchsvoll" data-search="schoko-babka mit doppelter füllung der klassiker aus dem video: weicher hefezopf mit einer schokofüllung, die beim schneiden schichten zeigt. hefeteig schokolade weizenmehl type 550 zucker trockenhefe (7 g) lauwarme milch eier (größe m) weiche butter salz zartbitterschokolade butter für die füllung kakaopulver puderzucker wasser + 100 g zucker für den sirup">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/D4517A/FFFFFF?text=Schoko-Babka" alt="" loading="lazy">
+            <span class="badge badge--sweet recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Sweet</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--sweet" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Schoko-Babka mit doppelter Füllung</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>2 h 30 min</span>
+              <span>Advanced</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Hefeteig</span>
+            <span class="tag">Schokolade</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/zimtschnecken-ueber-nacht.html" data-recipe-card data-category="backen" data-minutes="45" data-difficulty="mittel" data-search="über-nacht-zimtschnecken abends vorbereiten, morgens nur noch backen. 20 minuten arbeit am vorabend, frische schnecken zum frühstück. vorbereiten frühstück weizenmehl type 550 zucker trockenhefe salz lauwarme milch ei weiche butter weiche butter für die füllung brauner zucker zimt frischkäse puderzucker">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/E4CFB2/3B2A20?text=Zimtschnecken" alt="" loading="lazy">
+            <span class="badge badge--sweet recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Sweet</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--sweet" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Über-Nacht-Zimtschnecken</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>45 min</span>
+              <span>Medium</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Vorbereiten</span>
+            <span class="tag">Frühstück</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/ofen-gnocchi-gemuese.html" data-recipe-card data-category="herzhaft" data-minutes="35" data-difficulty="einfach" data-search="ofen-gnocchi mit gemüse vom blech alles roh auf ein blech, 25 minuten in den ofen, fertig. die gnocchi werden außen knusprig. ein blech vegetarisch gnocchi aus dem kühlregal kirschtomaten zucchini rote paprika rote zwiebel olivenöl mozzarella getrockneter thymian salz, pfeffer">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/E7F1E4/3B2A20?text=Ofen-Gnocchi" alt="" loading="lazy">
+            <span class="badge badge--savory recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--savory" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Ofen-Gnocchi mit Gemüse vom Blech</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>35 min</span>
+              <span>Easy</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Ein Blech</span>
+            <span class="tag">Vegetarisch</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/new-york-cheesecake.html" data-recipe-card data-category="backen" data-minutes="90" data-difficulty="mittel" data-search="new york cheesecake ohne risse cremig bis in die mitte, glatte oberfläche. der trick liegt im wasserbad und im langsamen auskühlen. klassiker kuchen butterkekse geschmolzene butter doppelrahm-frischkäse, zimmerwarm zucker saure sahne eier, zimmerwarm vanilleextrakt speisestärke salz">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/FBE7EE/3B2A20?text=Cheesecake" alt="" loading="lazy">
+            <span class="badge badge--sweet recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Sweet</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--sweet" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">New York Cheesecake ohne Risse</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>1 h 30 min</span>
+              <span>Medium</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Klassiker</span>
+            <span class="tag">Kuchen</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/haehnchen-teriyaki-bowl.html" data-recipe-card data-category="herzhaft" data-minutes="30" data-difficulty="einfach" data-search="hähnchen-teriyaki-bowl sauce aus vier zutaten, die man immer da hat. meal-prep-tauglich für drei tage. meal prep bowl hähnchenbrust sushi- oder jasminreis sojasauce honig reisessig geriebener ingwer karotte gurke sesam frühlingszwiebeln">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/4F7C4A/FFFFFF?text=Teriyaki-Bowl" alt="" loading="lazy">
+            <span class="badge badge--savory recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--savory" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Hähnchen-Teriyaki-Bowl</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>30 min</span>
+              <span>Easy</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Meal Prep</span>
+            <span class="tag">Bowl</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/bananenbrot-saftig.html" data-recipe-card data-category="backen" data-minutes="70" data-difficulty="einfach" data-search="saftiges bananenbrot in einer schüssel eine schüssel, ein löffel, zehn minuten arbeit. das rezept für zu braune bananen. schnell resteverwertung sehr reife bananen brauner zucker eier neutrales öl naturjoghurt weizenmehl natron zimt salz schokotropfen (optional)">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/E4CFB2/3B2A20?text=Bananenbrot" alt="" loading="lazy">
+            <span class="badge badge--sweet recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Sweet</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--sweet" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Saftiges Bananenbrot in einer Schüssel</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>1 h 10 min</span>
+              <span>Easy</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Schnell</span>
+            <span class="tag">Resteverwertung</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/zitronen-blechkuchen.html" data-recipe-card data-category="backen" data-minutes="55" data-difficulty="einfach" data-search="zitronen-blechkuchen für die ganze runde ein blech, 20 stücke, hält drei tage saftig. mein standard, wenn besuch kommt. blechkuchen für gäste weiche butter zucker eier weizenmehl backpulver naturjoghurt bio-zitronen (abrieb und saft) puderzucker für die glasur">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/FBE7EE/3B2A20?text=Zitronenkuchen" alt="" loading="lazy">
+            <span class="badge badge--sweet recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Sweet</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--sweet" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Zitronen-Blechkuchen für die ganze Runde</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>55 min</span>
+              <span>Easy</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Blechkuchen</span>
+            <span class="tag">Für Gäste</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/linsen-dal-30-min.html" data-recipe-card data-category="herzhaft" data-minutes="30" data-difficulty="einfach" data-search="rote-linsen-dal in 30 minuten ein topf, günstige zutaten, wärmt durch. schmeckt am zweiten tag noch besser. ein topf vegan rote linsen zwiebel knoblauchzehen ingwer (daumengroß) currypulver kreuzkümmel kurkuma kokosmilch stückige tomaten gemüsebrühe limette frischer koriander">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/E7F1E4/3B2A20?text=Linsen-Dal" alt="" loading="lazy">
+            <span class="badge badge--savory recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--savory" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Rote-Linsen-Dal in 30 Minuten</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>30 min</span>
+              <span>Easy</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Ein Topf</span>
+            <span class="tag">Vegan</span>
+            </div>
+          </div>
+        </a>
+        <a class="card recipe-card lift-3d" href="recipes/kaesespaetzle.html" data-recipe-card data-category="herzhaft" data-minutes="60" data-difficulty="mittel" data-search="käsespätzle mit röstzwiebeln spätzleteig selbst gemacht, mit drei käsesorten geschichtet. sonntagsessen mit aufwand-rechtfertigung. soulfood sonntag spätzlemehl (oder type 405) eier wasser mit kohlensäure salz muskatnuss bergkäse emmentaler räucherkäse zwiebeln butter">
+          <div class="recipe-card__media">
+            <img src="https://placehold.co/800x600/4F7C4A/FFFFFF?text=K%C3%A4sesp%C3%A4tzle" alt="" loading="lazy">
+            <span class="badge badge--savory recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury</span>
+          </div>
+          <div class="recipe-card__stripe recipe-card__stripe--savory" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3 lang="de">Käsespätzle mit Röstzwiebeln</h3>
+            <div class="recipe-card__meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>1 h</span>
+              <span>Medium</span>
+            </div>
+            <div class="recipe-card__tags">
+            <span class="tag">Soulfood</span>
+            <span class="tag">Sonntag</span>
+            </div>
+          </div>
+        </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__cols">
+      <div>
+        <p class="site-footer__brand">Constantinteck</p>
+        <p class="site-footer__claim">The recipes from my videos – without the endless scrolling.</p>
+        <p class="site-footer__contact">
+          Questions about an order?<br>
+          <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a>
+        </p>
+      </div>
+
+      <div>
+        <h2>Pages</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recipes.html">Recipes</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+
+      <!-- Rechtslinks gehören in den Fuß jeder Seite – Käufer suchen sie hier,
+           und in Deutschland müssen sie von überall erreichbar sein. -->
+      <div>
+        <h2>Orders &amp; legal</h2>
+        <ul>
+          <li><a href="shipping-returns.html">Shipping &amp; returns</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="imprint.html">Imprint</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Follow</h2>
+        <ul>
+          <li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
+          <li><a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container site-footer__legal">
+      <div class="site-footer__legal-row">
+        <p>All prices include VAT, plus €4.90 shipping – free from €60.00.</p>
+        <p>© 2026 Constantinteck</p>
+      </div>
+        <p class="site-footer__prototype">
+          <strong>This shop is not live yet.</strong>
+          You can browse everything, but checkout ends in a confirmation screen –
+          nothing is charged and nothing ships.
+        </p>
+    </div>
+  </footer>
+
+  <script src="assets/js/shop-data.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/recipe-filter.js"></script>
+</body>
+</html>

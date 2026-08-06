@@ -1,0 +1,2794 @@
+/* ==========================================================================
+   Constantinteck – Stylesheet
+
+   Eine einzige CSS-Datei für die ganze Seite. Kein Build, kein Framework:
+   Datei ändern, Browser neu laden, fertig.
+
+   Aufbau (in dieser Reihenfolge):
+     1. Design-Tokens      – Farben, Schatten, Abstände als CSS-Variablen
+     2. Reset & Basis      – html/body, Typografie-Grundlagen
+     3. Layout             – .container, Abschnitte, Raster
+     4. Bausteine          – Buttons, Chips, Karten, Panels
+     5. Kopf & Fuß         – Ankündigungsleiste, Header, Footer
+     6. Seiten             – Startseite, Shop, Rezepte, Warenkorb, Recht
+     7. Bewegung           – Hover-Lift, Einblend-Animation, reduced motion
+
+   Farben nur über die Variablen unter :root ändern – sie werden überall
+   referenziert, eine Änderung dort zieht durch die ganze Seite.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design-Tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Warme Basis (Teig / Creme / Kruste) */
+  --cream: #fdf8f1;
+  --dough: #f6ecdd;
+  --crust: #e4cfb2;
+  --cocoa: #3b2a20;
+  --mocha: #6e5544;
+
+  /* Kategorie-Akzente: Backen/Süßes vs. Herzhaft/Alltag */
+  --sweet: #d4517a;
+  --sweet-soft: #fbe7ee;
+  --savory: #4f7c4a;
+  --savory-soft: #e7f1e4;
+
+  /* Marken-Akzent (CTAs, Shop) */
+  --brand: #c2410c;
+  --brand-soft: #ffedd5;
+
+  /* Halbtransparente Ableitungen – als Variable, damit rgba() nicht überall
+     als Zahlenkolonne im Stylesheet steht. */
+  --line: rgba(228, 207, 178, 0.6);
+  --line-soft: rgba(228, 207, 178, 0.5);
+  --crust-40: rgba(228, 207, 178, 0.4);
+  --cocoa-15: rgba(59, 42, 32, 0.15);
+  --cocoa-20: rgba(59, 42, 32, 0.2);
+  --cocoa-30: rgba(59, 42, 32, 0.3);
+
+  /* Drei Höhenstufen. Jede hat einen engen Kontaktschatten plus einen
+     weiten weichen – erst dieses Paar liest sich wie ein Gegenstand, der
+     auf dem Papier liegt, statt wie ein Rechteck mit Weichzeichner. */
+  --shadow-card: 0 1px 2px rgba(59, 42, 32, 0.06),
+    0 8px 24px -12px rgba(59, 42, 32, 0.18);
+  --shadow-lift: 0 2px 4px rgba(59, 42, 32, 0.08),
+    0 18px 40px -16px rgba(59, 42, 32, 0.28);
+
+  /* Ease-out ohne Überschwingen – Bewegung läuft aus, statt abzubrechen. */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --font-display: Georgia, Cambria, "Times New Roman", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Mindestens 44px Touch-Target – die Seite wird überwiegend am Handy
+     benutzt. */
+  --tap: 44px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Basis
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Die Grundfarbe sitzt auf <html>, damit die beiden fixierten Ebenen
+     unten zwischen ihr und dem Seiteninhalt liegen können. */
+  background-color: var(--cream);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--cocoa);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * Warmer Verlauf hinter allem: drei weiche Farbfelder in den Markentönen,
+ * am Viewport fixiert, damit sie beim Scrollen stehen bleiben. Bewusst ein
+ * fixiertes Pseudo-Element statt `background-attachment: fixed` – letzteres
+ * ruckelt auf iOS erheblich.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+      48rem 34rem at 92% -4%,
+      rgba(212, 81, 122, 0.26),
+      transparent 60%
+    ),
+    radial-gradient(
+      44rem 36rem at -14% 10%,
+      rgba(194, 65, 12, 0.22),
+      transparent 58%
+    ),
+    radial-gradient(
+      42rem 32rem at 58% 104%,
+      rgba(79, 124, 74, 0.2),
+      transparent 58%
+    ),
+    radial-gradient(
+      36rem 26rem at 20% 62%,
+      rgba(228, 207, 178, 0.35),
+      transparent 62%
+    );
+}
+
+/*
+ * Papierkorn. Sehr kontrastarm gehalten – gerade genug, um einer großen
+ * leeren Fläche die Flachheit zu nehmen, nicht genug, um als Rauschen zu
+ * lesen oder mit den Fotos zu konkurrieren.
+ */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.09'/%3E%3C/svg%3E");
+}
+
+img,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Muss die display-Werte der Bausteine schlagen: `hidden` wird hier auf
+   Chips und Buttons gesetzt, die sonst inline-flex sind. */
+[hidden] {
+  display: none !important;
+}
+
+strong {
+  font-weight: 600;
+}
+
+/* Fokus-Ring, der auf warmem Hintergrund sichtbar bleibt */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Nur für Screenreader – Text bleibt vorhanden, ist aber unsichtbar. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Sprunglink: unsichtbar, bis er per Tab den Fokus bekommt. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 60;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background-color: var(--cocoa);
+  color: var(--cream);
+  font-weight: 600;
+}
+
+/* Horizontale Leisten auf dem Handy ohne sichtbare Scrollbar */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Abschnitt mit Standard-Innenabstand */
+.section {
+  padding-block: 3rem;
+}
+
+.section--tight {
+  padding-block: 2rem;
+}
+
+/* Abschnitt auf leicht aufgehelltem Grund, oben und unten abgesetzt */
+.band {
+  border-block: 1px solid var(--line);
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.band--top {
+  border-block-end: 1px solid var(--line);
+  border-block-start: 0;
+}
+
+.band--dough {
+  border-bottom: 1px solid var(--line);
+  background-color: var(--dough);
+}
+
+/* Responsive Raster. Mobil eine Spalte (bzw. zwei bei Produkten),
+   ab sm zwei, ab lg die volle Zahl. */
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid--3 {
+  grid-template-columns: 1fr;
+}
+
+.grid--4,
+.grid--products {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .grid--products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Kopfzeile eines Abschnitts: Überschrift links, Link/Button rechts */
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.section-head h2 {
+  font-size: 1.5rem;
+}
+
+.section-head p {
+  max-width: 65ch;
+  margin-top: 0.5rem;
+  color: var(--mocha);
+}
+
+.eyebrow {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.lede {
+  max-width: 65ch;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: var(--mocha);
+}
+
+.muted {
+  color: var(--mocha);
+}
+
+/* Die einzigen Abstands-Hilfsklassen. Bewusst wenige – alles andere steht
+   bei dem Baustein, zu dem es gehört. */
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.mt-12 {
+  margin-top: 3rem;
+}
+
+.link-brand {
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.link-brand:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: var(--tap);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mocha);
+}
+
+.back-link:hover {
+  color: var(--brand);
+}
+
+@media (min-width: 640px) {
+  .section-head h2 {
+    font-size: 1.875rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Bausteine
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding-inline: 1.5rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--primary {
+  background-color: var(--brand);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: #a93a0b;
+}
+
+.btn--secondary {
+  border: 2px solid var(--cocoa-15);
+  background-color: #fff;
+  color: var(--cocoa);
+}
+
+.btn--secondary:hover {
+  border-color: var(--cocoa-30);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 40px;
+  padding-inline: 1rem;
+  border: 1px solid var(--crust);
+  border-radius: 999px;
+  background-color: #fff;
+  color: var(--mocha);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 0.2s var(--ease-soft),
+    background-color 0.2s var(--ease-soft), color 0.2s var(--ease-soft);
+}
+
+.chip:hover {
+  border-color: var(--cocoa-30);
+}
+
+.chip.is-active {
+  border-color: var(--cocoa);
+  background-color: var(--cocoa);
+  color: var(--cream);
+}
+
+.chip--sweet.is-active {
+  border-color: var(--sweet);
+  background-color: var(--sweet);
+  color: #fff;
+}
+
+.chip--savory.is-active {
+  border-color: var(--savory);
+  background-color: var(--savory);
+  color: #fff;
+}
+
+.chip--plain {
+  border-color: transparent;
+  background-color: var(--dough);
+}
+
+.chip--plain:hover {
+  background-color: var(--crust);
+  border-color: transparent;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+/* Weiße Fläche mit großem Radius – Warenkorb-Summe, Zutaten, Kaufbox */
+.panel {
+  border-radius: 1.5rem;
+  background-color: #fff;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* Wie .panel, aber mit Kontur statt Schatten – Cross-Selling-Blöcke */
+.panel--outline {
+  border: 2px solid var(--crust);
+  box-shadow: none;
+}
+
+@media (min-width: 640px) {
+  .panel--outline {
+    padding: 1.5rem;
+  }
+}
+
+/* Leerer Zustand: gestrichelte Kontur, damit er nicht wie ein Fehler wirkt */
+.empty-state {
+  border: 2px dashed var(--crust);
+  border-radius: 1.5rem;
+  background-color: #fff;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.empty-state h2,
+.empty-state p:first-child {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.empty-state .muted {
+  max-width: 34rem;
+  margin-inline: auto;
+  margin-top: 0.5rem;
+}
+
+/* Dunkler Abschluss-Block mit einem Angebot */
+.feature {
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+  border-radius: 1.5rem;
+  background-color: var(--cocoa);
+  color: var(--cream);
+  padding: 1.5rem;
+}
+
+.feature h2 {
+  font-size: 1.5rem;
+}
+
+.feature__eyebrow {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--crust);
+}
+
+.feature__text {
+  max-width: 65ch;
+  margin-top: 0.75rem;
+  color: rgba(253, 248, 241, 0.8);
+}
+
+.feature__list {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 0.5rem;
+  color: rgba(253, 248, 241, 0.9);
+}
+
+.feature__list li {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.feature__list svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--crust);
+}
+
+.feature__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.feature__actions a:not(.btn) {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.feature__actions a:not(.btn):hover {
+  color: var(--crust);
+}
+
+.feature__image {
+  width: 100%;
+  max-width: 24rem;
+  margin-inline: auto;
+  border-radius: 1rem;
+  object-fit: cover;
+  box-shadow: var(--shadow-card);
+}
+
+@media (min-width: 640px) {
+  .feature {
+    padding: 2.5rem;
+  }
+
+  .feature h2 {
+    font-size: 1.875rem;
+  }
+
+  .feature__actions {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .feature {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .feature--split {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+/* Kategorie-Plakette (Backen / Herzhaft) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.badge--md {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.badge--md svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.badge--sweet {
+  background-color: var(--sweet-soft);
+  color: var(--sweet);
+}
+
+.badge--savory {
+  background-color: var(--savory-soft);
+  color: var(--savory);
+}
+
+/* Kleine Auszeichnung in Markenfarbe, z. B. "Instant download" */
+.pill-brand {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background-color: var(--brand-soft);
+  color: var(--brand);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tag {
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background-color: var(--dough);
+  color: var(--mocha);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Mengen-Wähler: − 1 + */
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 2px solid var(--crust);
+  border-radius: 999px;
+}
+
+.qty button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.qty button:hover {
+  background-color: var(--dough);
+}
+
+.qty output {
+  width: 2rem;
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hinweis "Prototyp – hier wird nichts abgebucht" */
+.notice {
+  border-radius: 0.75rem;
+  background-color: var(--crust-40);
+  padding: 0.5rem 0.75rem;
+  color: var(--mocha);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.notice--success {
+  border-radius: 1rem;
+  background-color: var(--savory-soft);
+  color: var(--savory);
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   5. Kopf & Fuß
+   -------------------------------------------------------------------------- */
+
+/* Ankündigungsleiste – das Erste, was ein Besucher sieht. */
+.announcement {
+  background-color: var(--cocoa);
+  color: var(--cream);
+  font-size: 0.875rem;
+}
+
+.announcement__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 1.5rem;
+  min-height: var(--tap);
+  padding-block: 0.5rem;
+}
+
+.announcement__deal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.announcement__deal:hover {
+  text-decoration: underline;
+}
+
+.announcement__dot {
+  display: none;
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background-color: var(--brand);
+}
+
+.announcement__terms {
+  display: none;
+  color: rgba(253, 248, 241, 0.75);
+}
+
+/* Zwei Textlängen: die kurze bleibt auf dem Handy in einer Zeile – eine
+   Leiste, die auf zwei Zeilen umbricht, frisst den oberen Bildrand. */
+.only-wide {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .announcement__inner {
+    justify-content: space-between;
+  }
+
+  .announcement__dot {
+    display: block;
+  }
+
+  .only-narrow {
+    display: none;
+  }
+
+  .only-wide {
+    display: inline;
+  }
+}
+
+@media (min-width: 768px) {
+  .announcement__terms {
+    display: block;
+  }
+}
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--line);
+  background-color: rgba(253, 248, 241, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  height: 4rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.brand__name {
+  font-family: var(--font-display);
+}
+
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav {
+  display: none;
+}
+
+.nav__link {
+  display: flex;
+  align-items: center;
+  height: 2.75rem;
+  padding-inline: 1rem;
+  border-radius: 999px;
+  color: var(--mocha);
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav__link:hover {
+  background-color: rgba(246, 236, 221, 0.6);
+}
+
+.nav__link.is-active {
+  background-color: var(--dough);
+  color: var(--cocoa);
+}
+
+.cart-link {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+}
+
+.cart-link:hover {
+  background-color: var(--dough);
+}
+
+.cart-link__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 0.25rem;
+  border-radius: 999px;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cart-link__badge[hidden] {
+  display: none;
+}
+
+/* Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü */
+.nav-mobile {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  border-top: 1px solid var(--line-soft);
+  padding: 0.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nav-mobile {
+    display: none;
+  }
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 5rem;
+  border-top: 1px solid var(--line);
+  background-color: var(--dough);
+}
+
+.site-footer__cols {
+  display: grid;
+  gap: 2rem;
+  padding-block: 3rem;
+}
+
+.site-footer h2 {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+
+.site-footer__brand {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.site-footer__claim {
+  max-width: 20rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.site-footer__contact {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.site-footer ul {
+  margin-top: 0.75rem;
+}
+
+.site-footer ul a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+.site-footer ul a:hover {
+  color: var(--brand);
+}
+
+.site-footer__legal {
+  border-top: 1px solid var(--line);
+  padding-block: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--mocha);
+}
+
+.site-footer__legal-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.site-footer__prototype {
+  margin-top: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--crust-40);
+  padding: 0.75rem 1rem;
+}
+
+.site-footer__prototype strong {
+  color: var(--cocoa);
+}
+
+@media (min-width: 640px) {
+  .site-footer__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-footer__cols {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Seiten
+   -------------------------------------------------------------------------- */
+
+/* --- Startseite: Hero --------------------------------------------------- */
+
+/* Das Foto trägt den ganzen Abschnitt, der Text sitzt in seiner leeren
+   linken Hälfte. Unter lg wird das Foto zum Banner über dem Text, weil der
+   Bildausschnitt dort keinen Platz zum Schreiben lässt. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--dough);
+}
+
+.hero__media {
+  position: relative;
+}
+
+.hero__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 62% center;
+}
+
+/* Verlauf: blendet das Foto in den Hintergrund und hält die Überschrift
+   lesbar – auf dem Handy nach oben, ab lg zur Seite. */
+.hero__scrim {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 8rem;
+  background-image: linear-gradient(to top, var(--dough), transparent);
+}
+
+.hero__body {
+  position: relative;
+  z-index: 1;
+  padding-block: 2.5rem;
+}
+
+.hero__inner {
+  max-width: 36rem;
+}
+
+.hero h1 {
+  margin-top: 0.75rem;
+  font-size: 1.875rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+/* Direkteinstieg: beide Rezeptwelten und der Shop – ein Tap */
+.hero__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 92px;
+  padding: 1rem;
+  border: 2px solid var(--crust);
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+.tile svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: rgba(59, 42, 32, 0.7);
+}
+
+.tile__label {
+  display: block;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tile__count {
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.tile--sweet {
+  border-color: var(--sweet);
+}
+
+.tile--savory {
+  border-color: var(--savory);
+}
+
+.tile--shop {
+  grid-column: span 2;
+  border-color: var(--brand);
+  background-color: var(--brand-soft);
+}
+
+.tile--shop svg,
+.tile--shop .tile__label {
+  color: var(--brand);
+}
+
+/* Die Schürze, bündig mit den Kacheln darüber. Früher schwebte sie in der
+   unteren Ecke des Fotos, wo sie wie eine Bildunterschrift wirkte statt wie
+   das, was diese Seite verkauft. */
+.hero__product {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border: 2px solid var(--crust);
+  border-radius: 1rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.hero__product img {
+  flex-shrink: 0;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.hero__product-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero__product-kicker {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.hero__product-title {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.hero__product-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.125rem 0.5rem;
+  margin-top: 0.375rem;
+}
+
+.hero__product-price b {
+  font-size: 1.25rem;
+}
+
+.hero__product-price span {
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.hero__product-arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 1.25rem;
+  transition: transform 0.3s var(--ease-soft), background-color 0.3s;
+}
+
+.hero__product:hover .hero__product-arrow {
+  background-color: #a93a0b;
+  transform: translateX(2px);
+}
+
+@media (min-width: 640px) {
+  .hero__media img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .hero__body {
+    padding-block: 3.5rem;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+
+  .hero__actions {
+    flex-direction: row;
+  }
+
+  .hero__tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tile--shop {
+    grid-column: span 1;
+  }
+
+  .hero__product {
+    gap: 1.25rem;
+  }
+
+  .hero__product img {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .hero__product-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__media img {
+    height: 100%;
+    aspect-ratio: auto;
+    object-position: center;
+  }
+
+  .hero__scrim {
+    inset: 0;
+    height: 100%;
+    background-image: linear-gradient(
+      to right,
+      var(--dough) 0%,
+      rgba(246, 236, 221, 0.85) 52%,
+      transparent 100%
+    );
+  }
+
+  .hero__body {
+    padding-block: 4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero__inner {
+    max-width: 40rem;
+  }
+}
+
+/* --- Vertrauensleiste --------------------------------------------------- */
+
+/* Die vier Fragen, die ein Erstkäufer hat, bevor er einem kleinen Shop
+   traut: wann kommt es an, was kostet es, kann ich zurückschicken, ist das
+   Bezahlen sicher. */
+.trust {
+  border-block: 1px solid var(--line);
+  background-color: #fff;
+}
+
+.trust ul {
+  display: grid;
+  gap: 1.25rem 1.5rem;
+  padding-block: 1.5rem;
+}
+
+.trust li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.trust svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--brand);
+}
+
+.trust b {
+  display: block;
+  line-height: 1.3;
+}
+
+.trust span {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--mocha);
+}
+
+@media (min-width: 640px) {
+  .trust ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .trust ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* --- Rezeptkarte -------------------------------------------------------- */
+
+.recipe-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background-color: var(--dough);
+}
+
+.recipe-card__media img,
+.product-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-soft);
+}
+
+.recipe-card:hover .recipe-card__media img,
+.product-card:hover .product-card__media img {
+  transform: scale(1.06);
+}
+
+.recipe-card__badge,
+.product-card__badge {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+}
+
+.product-card__badge {
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--mocha);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Farbstreifen als schneller visueller Anker für die Kategorie */
+.recipe-card__stripe {
+  height: 4px;
+  width: 100%;
+}
+
+.recipe-card__stripe--sweet {
+  background-color: var(--sweet);
+}
+
+.recipe-card__stripe--savory {
+  background-color: var(--savory);
+}
+
+.recipe-card__body,
+.product-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.recipe-card h3,
+.product-card h3 {
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.recipe-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.recipe-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.recipe-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
+}
+
+/* --- Produktkarte ------------------------------------------------------- */
+
+.product-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background-color: var(--dough);
+}
+
+.product-card__text {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+  /* Zwei Zeilen, danach Auslassungszeichen – sonst reißen unterschiedlich
+     lange Texte die Kartenhöhen im Raster auseinander. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.product-card__price {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.product-card__swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.swatch {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--cocoa-20);
+  border-radius: 999px;
+}
+
+/* --- Rezeptübersicht: Suche & Filter ------------------------------------ */
+
+/* Suchfeld bleibt beim Scrollen sichtbar. Abgerundet statt volle Breite:
+   vor dem strukturierten Seitenhintergrund liest sich ein hartkantiger
+   Streifen einfarbiger Fläche als Flicken. */
+.explorer__search {
+  position: sticky;
+  top: 104px;
+  z-index: 30;
+  margin-inline: -0.5rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 1rem;
+  background-color: rgba(253, 248, 241, 0.85);
+  box-shadow: 0 8px 24px -16px rgba(59, 42, 32, 0.5);
+  outline: 1px solid var(--crust-40);
+  backdrop-filter: blur(8px);
+}
+
+.search-field {
+  position: relative;
+}
+
+.search-field svg {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--mocha);
+  pointer-events: none;
+}
+
+.search-field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 1rem 0 2.75rem;
+  border: 2px solid var(--crust);
+  border-radius: 999px;
+  background-color: #fff;
+  font-size: 1rem;
+}
+
+.search-field input::placeholder {
+  color: rgba(110, 85, 68, 0.6);
+}
+
+.search-field input:focus {
+  border-color: var(--brand);
+  outline: none;
+}
+
+.explorer__categories {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-top: 0.75rem;
+  padding-bottom: 2px;
+}
+
+.explorer__selects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding-inline: 1rem;
+  border: 2px solid var(--crust);
+  border-radius: 999px;
+  background-color: #fff;
+  font-size: 0.875rem;
+}
+
+.select select {
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  font-weight: 500;
+}
+
+.select select:focus {
+  outline: none;
+}
+
+.explorer__count {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.explorer__results {
+  margin-top: 1rem;
+}
+
+/* Vom Filter ausgeblendete Karte */
+.is-filtered-out {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .explorer__search {
+    top: 4rem;
+  }
+}
+
+/* --- Shop --------------------------------------------------------------- */
+
+.shop-section {
+  margin-top: 3rem;
+}
+
+.shop-section:first-child {
+  margin-top: 0;
+}
+
+.shop-section__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.shop-section__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background-color: var(--brand-soft);
+  color: var(--brand);
+}
+
+.shop-section__icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.shop-section h2 {
+  font-size: 1.5rem;
+}
+
+.shop-section__hint {
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.shop-section .grid {
+  margin-top: 1.5rem;
+  gap: 1.25rem;
+}
+
+/* --- Produktseite ------------------------------------------------------- */
+
+.product-layout {
+  display: grid;
+  gap: 2rem;
+  margin-top: 0.25rem;
+}
+
+.product-gallery__main {
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: var(--dough);
+}
+
+.product-gallery__main img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.product-gallery__thumbs {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  margin-top: 0.75rem;
+}
+
+.product-gallery__thumbs img {
+  flex-shrink: 0;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+.product-type {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: var(--brand-soft);
+  color: var(--brand);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.product-info h1 {
+  margin-top: 0.75rem;
+  font-size: 1.875rem;
+}
+
+/* Kaufbereich: Variante, Menge, Warenkorb */
+.buybox {
+  margin-top: 1.5rem;
+}
+
+.buybox__price {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.buybox__terms {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.buybox fieldset {
+  margin-top: 1.25rem;
+  padding: 0;
+  border: 0;
+}
+
+.buybox legend,
+.buybox__label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+
+.buybox__variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.buybox__qty {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.buybox__submit {
+  margin-top: 1.5rem;
+}
+
+.buybox__added {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.buybox__added a {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.buybox__added a:hover {
+  text-decoration: underline;
+}
+
+/* Lieferung, Rückgabe und Zahlung direkt unter dem Kaufbutton. Ein Shop,
+   der das bis zur Kasse versteckt, verliert den vorsichtigen Käufer. */
+.promise {
+  margin-top: 1rem;
+  border: 1px solid var(--crust);
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.promise ul {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.promise li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--mocha);
+}
+
+.promise svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--brand);
+}
+
+.promise a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.promise a:hover {
+  text-decoration: underline;
+}
+
+.check-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.check-list li {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.check-list svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--savory);
+}
+
+@media (min-width: 640px) {
+  .product-info h1 {
+    font-size: 2.25rem;
+  }
+
+  .product-gallery__thumbs img {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Cross-Selling ------------------------------------------------------ */
+
+.used-products ul {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.used-products li {
+  display: flex;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background-color: var(--cream);
+  padding: 0.75rem;
+}
+
+.used-products img {
+  flex-shrink: 0;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.used-products__text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.used-products__title {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.used-products__title:hover {
+  color: var(--brand);
+}
+
+.used-products__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight: 700;
+}
+
+.related-recipes ul {
+  margin-top: 1rem;
+}
+
+.related-recipes li + li {
+  border-top: 1px solid var(--line);
+}
+
+.related-recipes a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.75rem;
+  transition: color 0.2s;
+}
+
+.related-recipes a:hover {
+  color: var(--brand);
+}
+
+.related-recipes img {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.related-recipes__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.related-recipes__title {
+  display: block;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.related-recipes__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.related-recipes__meta svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (min-width: 640px) {
+  .used-products li {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .used-products img {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+/* --- Rezeptseite -------------------------------------------------------- */
+
+.recipe-header {
+  margin-top: 0.25rem;
+}
+
+.recipe-header h1 {
+  margin-top: 0.75rem;
+  font-size: 1.875rem;
+}
+
+.recipe-header .lede {
+  margin-top: 0.75rem;
+}
+
+/* Zeit / Portionen / Aufwand */
+.recipe-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 0.75rem;
+  box-shadow: var(--shadow-card);
+}
+
+.recipe-facts > div {
+  padding-inline: 0.5rem;
+  text-align: center;
+}
+
+.recipe-facts > div + div {
+  border-left: 1px solid var(--line);
+}
+
+.recipe-facts dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+
+.recipe-facts dd {
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Video – auf großen Bildschirmen gedeckelt, die Videos sind hochkant */
+.recipe-video {
+  margin-top: 1.5rem;
+}
+
+.video-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px dashed var(--crust);
+  border-radius: 1rem;
+  background-color: var(--dough);
+  text-align: center;
+}
+
+.video-placeholder__play {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background-color: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.video-placeholder__play svg {
+  margin-left: 3px;
+  width: 1.375rem;
+  height: 1.375rem;
+  color: var(--brand);
+}
+
+.video-placeholder p {
+  padding-inline: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mocha);
+}
+
+.share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.share__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mocha);
+}
+
+.share .chip {
+  color: var(--cocoa);
+}
+
+.share .chip svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.recipe-body {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.recipe-body__side {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+}
+
+.ingredients ul {
+  margin-top: 1rem;
+}
+
+.ingredients li {
+  display: flex;
+  gap: 0.75rem;
+  padding-block: 0.625rem;
+}
+
+.ingredients li + li {
+  border-top: 1px solid var(--line-soft);
+}
+
+.ingredients__amount {
+  flex-shrink: 0;
+  width: 5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.method ol {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.method li {
+  display: flex;
+  gap: 1rem;
+}
+
+.method__num {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.method__num--sweet {
+  background-color: var(--sweet);
+}
+
+.method__num--savory {
+  background-color: var(--savory);
+}
+
+.method li p {
+  padding-top: 0.375rem;
+  line-height: 1.7;
+}
+
+/* Auf großen Bildschirmen steht der Shop-Block neben den Schritten, auf
+   dem Handy kommt er darunter. */
+.only-desktop-block {
+  display: none;
+}
+
+.recipe-footer {
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .recipe-header h1 {
+    font-size: 2.25rem;
+  }
+
+  .recipe-facts {
+    max-width: 28rem;
+  }
+
+  .recipe-facts dd {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .recipe-video {
+    max-width: 48rem;
+  }
+
+  .recipe-body {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .recipe-body__main {
+    grid-column: span 2;
+  }
+
+  .only-desktop-block {
+    display: block;
+  }
+
+  .only-mobile-block {
+    display: none;
+  }
+}
+
+/* --- Warenkorb ---------------------------------------------------------- */
+
+.cart-layout {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.cart-lines {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.cart-line {
+  display: flex;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 0.75rem;
+  box-shadow: var(--shadow-card);
+}
+
+.cart-line img {
+  flex-shrink: 0;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.cart-line__text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.cart-line__title {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cart-line__title:hover {
+  color: var(--brand);
+}
+
+.cart-line__variant {
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.cart-line__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.cart-line__foot .qty button {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.cart-line__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cart-line__remove {
+  min-height: 40px;
+  padding-inline: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mocha);
+  text-decoration: underline;
+}
+
+.cart-line__remove:hover {
+  color: var(--brand);
+}
+
+.cart-summary h2 {
+  font-size: 1.25rem;
+}
+
+.cart-summary dl {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.cart-summary dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cart-summary dt {
+  color: var(--mocha);
+}
+
+.cart-summary dd {
+  font-weight: 600;
+}
+
+.cart-summary__hint {
+  margin-top: 0.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--brand-soft);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--cocoa);
+}
+
+.cart-summary__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  font-weight: 700;
+}
+
+.cart-summary__total b:last-child {
+  font-size: 1.5rem;
+}
+
+.cart-summary__terms {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--mocha);
+}
+
+.cart-summary__terms li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cart-summary__terms svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--brand);
+}
+
+.cart-summary__clear {
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mocha);
+  text-decoration: underline;
+}
+
+.cart-summary__clear:hover {
+  color: var(--brand);
+}
+
+.cart-done {
+  margin-top: 2rem;
+  border-radius: 1.5rem;
+  background-color: #fff;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.cart-done__icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-inline: auto;
+  border-radius: 999px;
+  background-color: var(--savory-soft);
+  color: var(--savory);
+}
+
+.cart-done__icon svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.cart-done h2 {
+  margin-top: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.cart-done p {
+  max-width: 28rem;
+  margin-inline: auto;
+  margin-top: 0.5rem;
+  color: var(--mocha);
+}
+
+@media (min-width: 640px) {
+  .cart-line {
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cart-layout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cart-lines {
+    grid-column: span 2;
+  }
+
+  .cart-summary .panel {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+/* --- Über mich ---------------------------------------------------------- */
+
+.about {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+.about__portrait {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 1.5rem;
+  object-fit: cover;
+  box-shadow: var(--shadow-card);
+}
+
+.about h1 {
+  font-size: 1.875rem;
+}
+
+.about h2 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.about__text {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--mocha);
+}
+
+.about__text p:last-child {
+  font-size: 1rem;
+}
+
+.about__socials {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.about__socials a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 72px;
+  padding-inline: 1rem;
+  border: 2px solid var(--crust);
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+.about__socials a:hover {
+  border-color: var(--brand);
+}
+
+.about__socials b {
+  font-weight: 700;
+}
+
+.about__socials span {
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.about__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .about h1 {
+    font-size: 2.25rem;
+  }
+
+  .about__socials {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .about__actions {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .about__body {
+    grid-column: span 2;
+  }
+}
+
+/* --- Rechtstexte -------------------------------------------------------- */
+
+.legal {
+  display: grid;
+  gap: 2rem;
+}
+
+.legal__nav p {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+
+.legal__nav ul {
+  margin-top: 0.75rem;
+}
+
+.legal__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+.legal__nav a:hover {
+  color: var(--brand);
+}
+
+.legal article {
+  max-width: 65ch;
+}
+
+.legal h1 {
+  font-size: 1.875rem;
+}
+
+.legal__intro {
+  margin-top: 0.75rem;
+  font-size: 1.125rem;
+  color: var(--mocha);
+}
+
+/* Sichtbare Warnung: eine unfertige Rechtsseite darf nie wie eine fertige
+   aussehen – ein leeres Impressum ist schlimmer als eine offene Lücke. */
+.legal__missing {
+  margin-top: 1.5rem;
+  border: 2px solid rgba(194, 65, 12, 0.4);
+  border-radius: 1rem;
+  background-color: var(--brand-soft);
+  padding: 1.25rem;
+}
+
+.legal__missing > p:first-child {
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.legal__missing > p + p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--cocoa);
+}
+
+.legal__missing ul {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+  font-size: 0.875rem;
+  color: var(--cocoa);
+}
+
+.legal__missing li + li {
+  margin-top: 0.25rem;
+}
+
+.legal__sections {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  line-height: 1.7;
+  color: var(--mocha);
+}
+
+.legal__sections h2 {
+  font-size: 1.25rem;
+  color: var(--cocoa);
+}
+
+.legal__sections section > div {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .legal h1 {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .legal {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+
+  .legal article {
+    grid-column: span 3;
+  }
+}
+
+/* --- 404 ---------------------------------------------------------------- */
+
+.notfound {
+  padding-block: 5rem;
+  text-align: center;
+}
+
+.notfound__emoji {
+  font-size: 3rem;
+}
+
+.notfound h1 {
+  margin-top: 1rem;
+  font-size: 1.875rem;
+}
+
+.notfound p {
+  max-width: 28rem;
+  margin-inline: auto;
+  margin-top: 0.75rem;
+  color: var(--mocha);
+}
+
+.notfound__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .notfound__actions {
+    flex-direction: row;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Bewegung
+   -------------------------------------------------------------------------- */
+
+/* Alles, was sich wie ein physischer Gegenstand verhält: hebt sich beim
+   Überfahren zum Leser, drückt sich beim Klick zurück. `will-change` hält
+   die Transformation auf dem Compositor, damit das Anheben auch auf dem
+   Handy flüssig bleibt. */
+.lift {
+  transition: transform 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft);
+  will-change: transform;
+}
+
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+.lift:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-card);
+  transition-duration: 75ms;
+}
+
+/* Dasselbe, aber gekippt: die Karte dreht sich einen Bruchteil zur
+   Cursor-Seite. Unter 2 Grad gehalten – mehr sieht nicht mehr nach Papier
+   aus, sondern nach Bildschirmschoner. */
+.lift-3d {
+  transition: transform 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.lift-3d:hover {
+  transform: perspective(900px) translate3d(0, -4px, 0) rotateX(1.6deg);
+  box-shadow: var(--shadow-lift);
+}
+
+.lift-3d:active {
+  transform: perspective(900px) translate3d(0, 0, 0) rotateX(0deg) scale(0.995);
+  box-shadow: var(--shadow-card);
+  transition-duration: 75ms;
+}
+
+/*
+ * Auftritts-Animation: ein kurzes Aufsteigen beim Laden, gestaffelt über
+ * `style="animation-delay:…"` direkt im HTML.
+ *
+ * Bewusst nur Position, keine Deckkraft. Eine Auftritts-Animation, die bei
+ * opacity 0 beginnt, lässt den Inhalt überall dort unsichtbar, wo sie nicht
+ * läuft (Hintergrund-Tabs, blockiertes CSS, fremde Einbettungen). Läuft
+ * diese hier nie, sitzt das Element schlicht 10px tiefer – das merkt
+ * niemand.
+ */
+@keyframes rise {
+  from {
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.rise {
+  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/*
+ * Wer sein System auf reduzierte Bewegung gestellt hat, bekommt das Layout
+ * ohne die Bewegung: kein Anheben, kein Kippen, kein Auftritt.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .lift:hover,
+  .lift-3d:hover,
+  .lift:active,
+  .lift-3d:active,
+  .recipe-card:hover .recipe-card__media img,
+  .product-card:hover .product-card__media img {
+    transform: none;
+  }
+
+  .rise {
+    animation: none;
+  }
+}

@@ -2,11 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000,
-      "autoPort": true
+      "name": "site",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "const http=require('http'),fs=require('fs'),path=require('path'),root=__dirname;const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml'};http.createServer((req,res)=>{let p=decodeURIComponent(req.url.split('?')[0]);if(p.endsWith('/'))p+='index.html';const file=path.join(root,p);fs.readFile(file,(err,data)=>{if(err){fs.readFile(path.join(root,'404.html'),(e2,d2)=>{res.writeHead(404,{'Content-Type':'text/html; charset=utf-8'});res.end(e2?'Not found':d2);});return;}res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(data);});}).listen(4000,()=>console.log('http://localhost:4000'));"
+      ],
+      "port": 4000
     }
   ]
 }

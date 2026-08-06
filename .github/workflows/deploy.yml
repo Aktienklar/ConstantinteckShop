@@ -6,7 +6,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Der Workflow schreibt das Bau-Ergebnis in den Branch gh-pages.
+# Der Workflow schreibt den Seiteninhalt in den Branch gh-pages.
 permissions:
   contents: write
 
@@ -15,30 +15,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
+      # Nichts zu bauen: die HTML-Dateien im Repo sind bereits die Website.
+      # Kopiert wird alles außer den Dateien, die nur die Entwicklung betreffen.
+      - name: Website einsammeln
+        run: |
+          mkdir ../site
+          rsync -a ./ ../site/ \
+            --exclude .git \
+            --exclude .github \
+            --exclude .claude \
+            --exclude .gitignore \
+            --exclude deploy.sh \
+            --exclude README.md
+          # Ohne diese Datei ignoriert GitHub Pages Ordner, die mit _ beginnen.
+          touch ../site/.nojekyll
 
-      - run: npm ci
-
-      # Erzeugt die fertigen HTML/CSS/JS-Dateien in out/
-      - run: npm run build
-
-      # Ohne diese Datei ignoriert GitHub Pages den Ordner _next/ – die Seite
-      # käme dann komplett ohne CSS und JavaScript an.
-      - run: touch out/.nojekyll
-
-      # Der Inhalt von out/ wird zum kompletten Inhalt des Branches gh-pages.
+      # Der Inhalt von ../site wird zum kompletten Inhalt des Branches gh-pages.
       # Jeder Deploy überschreibt ihn als einzelner Commit, damit sich im Repo
-      # keine Historie aus generierten Dateien ansammelt.
+      # keine Historie aus Kopien ansammelt.
       - name: Nach gh-pages veröffentlichen
-        working-directory: out
+        working-directory: ../site
         run: |
           git init -b gh-pages
           git config user.name "github-actions[bot]"
