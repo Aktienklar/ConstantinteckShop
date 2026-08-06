@@ -6,18 +6,16 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Der Workflow schreibt das Bau-Ergebnis in den Branch gh-pages.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# Bei mehreren Pushes kurz hintereinander gewinnt der neueste.
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,24 +27,24 @@ jobs:
 
       - run: npm ci
 
+      # Erzeugt die fertigen HTML/CSS/JS-Dateien in out/
       - run: npm run build
 
       # Ohne diese Datei ignoriert GitHub Pages den Ordner _next/ – die Seite
       # käme dann komplett ohne CSS und JavaScript an.
       - run: touch out/.nojekyll
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: out
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      # Der Inhalt von out/ wird zum kompletten Inhalt des Branches gh-pages.
+      # Jeder Deploy überschreibt ihn als einzelner Commit, damit sich im Repo
+      # keine Historie aus generierten Dateien ansammelt.
+      - name: Nach gh-pages veröffentlichen
+        working-directory: out
+        run: |
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy von ${GITHUB_SHA::7}"
+          git push --force \
+            "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" \
+            gh-pages
