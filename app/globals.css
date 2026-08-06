@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* The base colour lives on <html> so the two fixed layers below can sit
+       between it and the page content. */
+    @apply bg-cream;
+  }
+
+  body {
+    @apply text-cocoa antialiased;
+  }
+
+  /*
+   * Warm wash behind everything: three soft colour fields in the brand tones,
+   * pinned to the viewport so they stay put while the page scrolls. Uses a
+   * fixed pseudo-element rather than `background-attachment: fixed`, which
+   * janks badly on iOS.
+   */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        48rem 34rem at 92% -4%,
+        rgba(212, 81, 122, 0.26),
+        transparent 60%
+      ),
+      radial-gradient(
+        44rem 36rem at -14% 10%,
+        rgba(194, 65, 12, 0.22),
+        transparent 58%
+      ),
+      radial-gradient(
+        42rem 32rem at 58% 104%,
+        rgba(79, 124, 74, 0.2),
+        transparent 58%
+      ),
+      radial-gradient(
+        36rem 26rem at 20% 62%,
+        rgba(228, 207, 178, 0.35),
+        transparent 62%
+      );
+  }
+
+  /*
+   * Paper grain. Kept very low contrast – enough to take the flatness off a
+   * large empty area, not enough to read as noise or to fight the photography.
+   */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.09'/%3E%3C/svg%3E");
+  }
+
+  /* Fokus-Ring, der auf warmem Hintergrund sichtbar bleibt */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-cream;
+  }
+}
+
+@layer components {
+  /* Mindestens 44px Touch-Target – die Seite wird überwiegend am Handy benutzt */
+  .btn {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition active:scale-[.98];
+  }
+
+  .btn-primary {
+    @apply btn bg-brand text-white hover:bg-brand/90;
+  }
+
+  .btn-secondary {
+    @apply btn border-2 border-cocoa/15 bg-white text-cocoa hover:border-cocoa/30;
+  }
+
+  .chip {
+    @apply inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition duration-200 ease-soft active:scale-[.97];
+  }
+
+  .card {
+    @apply overflow-hidden rounded-2xl bg-white shadow-card;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  /* Anything that behaves like a physical tile: lifts towards the reader on
+     hover, presses back down on click. `will-change` keeps the transform on
+     the compositor so the lift stays smooth on a phone. */
+  .lift {
+    @apply transition duration-300 ease-soft will-change-transform hover:-translate-y-1 hover:shadow-lift active:translate-y-0 active:shadow-card active:duration-75;
+  }
+
+  /* Same, but tilted: the card rotates a fraction towards the cursor side.
+     Kept under 2deg – more than that stops looking like paper and starts
+     looking like a screensaver. */
+  .lift-3d {
+    @apply lift;
+    transform-style: preserve-3d;
+  }
+
+  .lift-3d:hover {
+    transform: perspective(900px) translate3d(0, -4px, 0) rotateX(1.6deg);
+  }
+
+  .lift-3d:active {
+    transform: perspective(900px) translate3d(0, 0, 0) rotateX(0deg) scale(0.995);
+  }
+}
+
+/*
+ * Entrance animation: a short rise on load, staggered via inline
+ * `animationDelay`.
+ *
+ * CSS-only on purpose. A scroll-triggered version needs JavaScript to release
+ * the element, and it animates position rather than opacity so that content is
+ * never hidden behind an animation that might not run.
+ */
+.rise {
+  @apply animate-rise;
+}
+
+/*
+ * Anyone who has asked their system to reduce motion gets the layout without
+ * the movement: no lift, no tilt, no entrance animation. Content must never
+ * depend on an animation having run, so `.reveal` becomes plainly visible.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .lift:hover,
+  .lift-3d:hover,
+  .lift:active,
+  .lift-3d:active {
+    transform: none;
+  }
+
+  .rise {
+    animation: none;
+  }
+}
+
+/* Horizontale Filterleiste auf dem Handy ohne sichtbare Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
