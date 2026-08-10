@@ -12,8 +12,11 @@ SITE_BASE = "https://aktienklar.github.io/ConstantinteckShop"
 # Download-Links gebaut. Ausgegeben von "wrangler deploy".
 WORKER_BASE = "https://constantinteck-checkout.constantinteck-checkout.workers.dev"
 MAIL_FROM = "Constantinteck <hallo@constantinteck.de>"
-# Erst auf "true" stellen, wenn im Dashboard unter Tax eine Registrierung und
-# eine Herkunftsadresse hinterlegt sind. Vorher bricht jede Session ab.
+# Bleibt aus. Der Betreiber ist Kleinunternehmer nach § 19 UStG und weist keine
+# Umsatzsteuer aus – Stripe Tax hätte nichts zu berechnen und würde auf den
+# Belegen Steuer ausweisen, die nicht erhoben wird. Das ist keine offene
+# Baustelle mehr, sondern eine Entscheidung: erst wieder anfassen, wenn der
+# Betreiber in die Regelbesteuerung wechselt.
 AUTOMATIC_TAX = "false"
 # Häkchen "Ich akzeptiere die AGB" an der Kasse. Auf "true" stellen, sobald
 # unter https://dashboard.stripe.com/settings/public eine AGB-Adresse steht
