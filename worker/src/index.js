@@ -94,9 +94,14 @@ async function describeSession(url, env, stripe) {
   });
 }
 
-/** Erlaubte Absender: die veröffentlichte Website und die lokale Vorschau. */
+/**
+ * Erlaubte Absender: die veröffentlichte Website und die lokale Vorschau.
+ * SITE_ORIGIN darf mehrere Adressen mit Komma getrennt enthalten – die Seite
+ * ist unter der nackten Domain und unter www erreichbar.
+ */
 function allowedOrigins(env) {
-  return [env.SITE_ORIGIN, "http://localhost:4000", "http://127.0.0.1:4000"];
+  const published = env.SITE_ORIGIN.split(",").map((entry) => entry.trim()).filter(Boolean);
+  return [...published, "http://localhost:4000", "http://127.0.0.1:4000"];
 }
 
 function corsHeaders(request, env) {

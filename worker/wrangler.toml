@@ -6,8 +6,10 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Woher Anfragen kommen dürfen und wohin Stripe nach der Zahlung zurückschickt.
-SITE_ORIGIN = "https://aktienklar.github.io"
-SITE_BASE = "https://aktienklar.github.io/ConstantinteckShop"
+# Mehrere erlaubte Absender mit Komma trennen. GitHub Pages leitet www auf die
+# nackte Domain um, www steht hier nur für den Fall, dass es das mal nicht tut.
+SITE_ORIGIN = "https://constantinteck.com,https://www.constantinteck.com"
+SITE_BASE = "https://constantinteck.com"
 # Die Adresse, unter der dieser Worker läuft. Aus ihr werden später die
 # Download-Links gebaut. Ausgegeben von "wrangler deploy".
 WORKER_BASE = "https://constantinteck-checkout.constantinteck-checkout.workers.dev"
@@ -20,7 +22,7 @@ MAIL_FROM = "Constantinteck <hallo@constantinteck.de>"
 AUTOMATIC_TAX = "false"
 # Häkchen "Ich akzeptiere die AGB" an der Kasse. Auf "true" stellen, sobald
 # unter https://dashboard.stripe.com/settings/public eine AGB-Adresse steht
-# (https://aktienklar.github.io/ConstantinteckShop/terms.html). Vorher bricht
+# (https://constantinteck.com/terms.html). Vorher bricht
 # jede Session ab. Für einen deutschen Shop gehört das an.
 TOS_CONSENT = "false"
 
