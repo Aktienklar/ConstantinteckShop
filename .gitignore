@@ -21,3 +21,9 @@ out
 # zwei Zeilen würden die Regeln darüber sie mit ausschließen.
 !.dev.vars.example
 !.env.example
+
+# Übergabenotizen an die nächste Session. Darin stehen Worker-Adresse,
+# Stripe-Account-ID und die Cloudflare-Kontomailadresse – nichts davon gehört
+# auf eine öffentliche Website, und "git add -A" in deploy.sh würde die Datei
+# sonst mitnehmen.
+NEXT-STEPS.md
