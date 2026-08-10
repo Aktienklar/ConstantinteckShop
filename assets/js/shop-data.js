@@ -74,13 +74,16 @@ var SHOP_TERMS = {
    */
   paymentMethods: ["Credit card", "PayPal", "Klarna", "SEPA Direct Debit"],
   /**
-   * Auf false setzen, sobald die Kasse mit echten Schlüsseln läuft. Solange
-   * true, sagt die Seite überall, dass keine echte Bestellung zustande kommt –
-   * ohne diesen Hinweis würde der Shop Bestellungen annehmen, die er nicht
-   * erfüllen kann. Beim Testen mit sk_test_-Schlüsseln bleibt der Wert true:
-   * es wird zwar eine echte Stripe-Kasse geöffnet, aber kein Geld bewegt.
+   * Seit dem 10.08.2026 false: Auf dem Worker liegt ein sk_live_-Schlüssel,
+   * jede Kasse bucht echtes Geld ab (geprüft, die Session kam als cs_live_
+   * zurück). Der Hinweis "nothing is charged" wäre damit eine Falschaussage
+   * gegenüber dem Käufer.
+   *
+   * Wieder auf true, falls der Worker je auf einen Testschlüssel zurückfällt –
+   * dieser Wert und der Schlüssel auf dem Worker müssen zusammenpassen, sonst
+   * lügt die Seite in die eine oder die andere Richtung.
    */
-  isPrototype: true
+  isPrototype: false
 };
 
 /**
