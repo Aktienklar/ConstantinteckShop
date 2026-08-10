@@ -12,15 +12,12 @@
   "use strict";
 
   var root;
-  var ordered = false;
 
   document.addEventListener("DOMContentLoaded", function () {
     root = document.querySelector("[data-cart-root]");
     if (!root) return;
     render();
-    window.Cart.subscribe(function () {
-      if (!ordered) render();
-    });
+    window.Cart.subscribe(render);
   });
 
   function render() {
@@ -44,6 +41,16 @@
 
     var hasPhysical = lines.some(function (line) {
       return SHOP_PRODUCTS[line.productSlug].type === "physical";
+    });
+
+    var hasDigital = lines.some(function (line) {
+      return SHOP_PRODUCTS[line.productSlug].type === "digital";
+    });
+
+    /* Kann im Warenkorb liegen, wenn jemand ihn vor der Umstellung gefüllt
+       hat. Die Kasse würde es abweisen – das soll er hier schon erfahren. */
+    var blocked = lines.filter(function (line) {
+      return SHOP_PRODUCTS[line.productSlug].available === false;
     });
 
     /* Reine PDF-Bestellungen werden nie versandt, und die Freigrenze gilt
@@ -88,7 +95,25 @@
       '<div class="cart-summary__total"><b>Total</b><b>' +
       formatPrice(total + shipping) +
       "</b></div>" +
-      '<button type="button" class="btn btn--primary btn--block" data-checkout style="margin-top:1.25rem">Checkout (mockup)</button>' +
+      (blocked.length > 0
+        ? '<p class="notice" style="margin-top:1rem">' +
+          escapeHtml(
+            blocked
+              .map(function (line) {
+                return SHOP_PRODUCTS[line.productSlug].title;
+              })
+              .join(", ")
+          ) +
+          (blocked.length === 1 ? " is" : " are") +
+          " not on sale yet. Please remove " +
+          (blocked.length === 1 ? "it" : "them") +
+          " to continue.</p>"
+        : "") +
+      (hasDigital && blocked.length === 0 ? waiverMarkup() : "") +
+      '<button type="button" class="btn btn--primary btn--block" data-checkout' +
+      (blocked.length > 0 ? " disabled" : "") +
+      ' style="margin-top:1.25rem">Pay securely</button>' +
+      '<p class="cart-summary__error" data-checkout-error hidden></p>' +
       '<ul class="cart-summary__terms">' +
       term(
         "truck",
@@ -98,7 +123,7 @@
       term("shield", SHOP_TERMS.paymentMethods.join(" · ")) +
       "</ul>" +
       (SHOP_TERMS.isPrototype
-        ? '<p class="notice" style="margin-top:.75rem">Prototype: this button charges nothing and ships nothing.</p>'
+        ? '<p class="notice" style="margin-top:.75rem">Test mode: a real Stripe checkout opens, but no money moves and nothing ships.</p>'
         : "") +
       '<button type="button" class="cart-summary__clear" data-clear>Empty cart</button>' +
       "</div>" +
@@ -161,6 +186,28 @@
       "</div>" +
       "</div>" +
       "</li>"
+    );
+  }
+
+  /**
+   * Verzicht auf das Widerrufsrecht.
+   *
+   * Bei einer Datei, die sofort heruntergeladen werden kann, muss der Käufer
+   * vor dem Kauf ausdrücklich zustimmen, dass die Ausführung sofort beginnt –
+   * sonst darf er 14 Tage lang widerrufen und die PDF trotzdem behalten. Ein
+   * vorangekreuztes Kästchen zählt nicht, deshalb ist es leer und die Kasse
+   * bleibt bis zum Anhaken gesperrt.
+   *
+   * Der Wortlaut ist noch nicht anwaltlich geprüft.
+   */
+  function waiverMarkup() {
+    return (
+      '<label class="cart-summary__waiver">' +
+      '<input type="checkbox" data-waiver>' +
+      "<span>I agree that the download starts immediately and that I " +
+      "therefore lose my 14-day right of withdrawal for the PDF." +
+      "</span>" +
+      "</label>"
     );
   }
 
@@ -229,23 +276,93 @@
     var checkout = root.querySelector("[data-checkout]");
     if (checkout) {
       checkout.addEventListener("click", function () {
-        ordered = true;
-        window.Cart.clear();
-        showConfirmation();
+        startCheckout(checkout);
       });
     }
   }
 
-  function showConfirmation() {
-    root.innerHTML =
-      '<div class="cart-done">' +
-      '<span class="cart-done__icon">' +
-      iconMarkup("shield") +
-      "</span>" +
-      "<h2>That was the mockup checkout</h2>" +
-      "<p>In this prototype nothing is charged and nothing is shipped. Stripe or Shopify will take over here later on.</p>" +
-      '<a class="btn btn--primary" href="recipes.html" style="margin-top:1.5rem">On to the recipes</a>' +
-      "</div>";
+  /**
+   * Schickt den Warenkorb an den Worker und folgt der Adresse, die Stripe
+   * zurückgibt. Geschickt werden nur Slug, Variante und Menge – die Preise
+   * holt sich der Worker aus seinem eigenen Katalog. Was hier im Browser
+   * steht, könnte jeder verändern.
+   */
+  function startCheckout(button) {
+    var errorBox = root.querySelector("[data-checkout-error]");
+    var waiver = root.querySelector("[data-waiver]");
+
+    function fail(message) {
+      if (!errorBox) return;
+      errorBox.textContent = message;
+      errorBox.hidden = false;
+    }
+
+    if (errorBox) errorBox.hidden = true;
+
+    if (waiver && !waiver.checked) {
+      fail("Please confirm the note about the download before paying.");
+      waiver.focus();
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "One moment …";
+
+    var lines = window.Cart.lines().filter(function (line) {
+      return Boolean(SHOP_PRODUCTS[line.productSlug]);
+    });
+
+    fetch(SHOP_CHECKOUT.endpoint.replace(/\/$/, "") + "/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        lines: lines.map(function (line) {
+          return {
+            productSlug: line.productSlug,
+            variantId: line.variantId || null,
+            quantity: line.quantity
+          };
+        }),
+        waivesWithdrawal: Boolean(waiver && waiver.checked),
+        // Ein Doppelklick soll keine zweite Bestellung anlegen.
+        idempotencyKey: checkoutKey(lines)
+      })
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok) throw new Error(data.error || "Checkout failed.");
+          return data;
+        });
+      })
+      .then(function (data) {
+        /* Der Warenkorb wird hier absichtlich NICHT geleert. Wer bei Stripe
+           abbricht, landet wieder auf dieser Seite und soll seine Auswahl
+           vorfinden. Geleert wird erst auf der Bestätigungsseite, nachdem
+           die Zahlung bestätigt ist. */
+        window.location.href = data.url;
+      })
+      .catch(function (error) {
+        button.disabled = false;
+        button.textContent = "Pay securely";
+        fail(error.message || "The checkout could not be opened. Please try again.");
+      });
+  }
+
+  /** Gleicher Warenkorb in derselben Minute = gleiche Bestellung. */
+  function checkoutKey(lines) {
+    var fingerprint = lines
+      .map(function (line) {
+        return line.productSlug + ":" + (line.variantId || "") + ":" + line.quantity;
+      })
+      .sort()
+      .join("|");
+    return "ct-" + Math.floor(Date.now() / 60000) + "-" + hash(fingerprint);
+  }
+
+  function hash(value) {
+    var out = 5381;
+    for (var i = 0; i < value.length; i++) out = ((out * 33) ^ value.charCodeAt(i)) >>> 0;
+    return out.toString(36);
   }
 
   function escapeHtml(value) {

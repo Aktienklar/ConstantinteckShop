@@ -34,10 +34,15 @@ var SHOP_PRODUCTS = {
     image: "https://placehold.co/800x800/F6ECDD/3B2A20?text=Scraper+Set",
     variants: []
   },
+  /* available:false = ansehen ja, kaufen nein. Verkauft wird vorerst nur die
+     Schürze. Die PDFs brauchen erst noch Dateien, Mailversand und die
+     Widerrufsbelehrung – bis dahin darf sie niemand bezahlen können.
+     Dasselbe Feld steht in worker/src/catalog.js; beides muss übereinstimmen. */
   "baking-book-pdf": {
     slug: "baking-book-pdf",
     title: "Sweet & Simple – The Baking Book (PDF)",
     type: "digital",
+    available: false,
     price: 19.9,
     image: "https://placehold.co/800x1000/D4517A/FFFFFF?text=Baking+Book+PDF",
     variants: []
@@ -46,6 +51,7 @@ var SHOP_PRODUCTS = {
     slug: "weeknight-pdf",
     title: "Weeknight Kitchen – 30 everyday dishes (PDF)",
     type: "digital",
+    available: false,
     price: 12.9,
     image: "https://placehold.co/800x1000/4F7C4A/FFFFFF?text=Weeknight+PDF",
     variants: []
@@ -61,15 +67,44 @@ var SHOP_TERMS = {
   shipsTo: "Germany and Austria",
   /** Gesetzliches Minimum in der EU sind 14 Tage. Nicht unterschreiten. */
   returnDays: 14,
-  paymentMethods: ["PayPal", "Credit card", "Instant bank transfer"],
   /**
-   * Auf false setzen, sobald eine echte Kasse angebunden ist. Solange true,
-   * sagt die Seite überall, dass keine echte Bestellung zustande kommt –
+   * Muss zu dem passen, was im Stripe-Dashboard unter Zahlungsmethoden
+   * tatsächlich aktiviert ist. "Sofortüberweisung" stand hier früher – die
+   * Methode gibt es nicht mehr, Stripe hat sie abgeschaltet.
+   */
+  paymentMethods: ["Credit card", "PayPal", "Klarna", "SEPA Direct Debit"],
+  /**
+   * Auf false setzen, sobald die Kasse mit echten Schlüsseln läuft. Solange
+   * true, sagt die Seite überall, dass keine echte Bestellung zustande kommt –
    * ohne diesen Hinweis würde der Shop Bestellungen annehmen, die er nicht
-   * erfüllen kann.
+   * erfüllen kann. Beim Testen mit sk_test_-Schlüsseln bleibt der Wert true:
+   * es wird zwar eine echte Stripe-Kasse geöffnet, aber kein Geld bewegt.
    */
   isPrototype: true
 };
+
+/**
+ * KASSE
+ *
+ * Die Adresse des Cloudflare Workers aus worker/. Er rechnet den Warenkorb
+ * neu durch und legt die Stripe-Session an. Das muss ein Server tun: Der
+ * geheime Stripe-Schlüssel darf nicht in den Browser, und Beträge aus dem
+ * localStorage des Besuchers darf niemand ungeprüft abrechnen.
+ *
+ * Nach "wrangler deploy" die ausgegebene Adresse hier eintragen.
+ */
+var SHOP_CHECKOUT = {
+  endpoint: "https://constantinteck-checkout.constantinteck-checkout.workers.dev"
+};
+
+/* Lokale Vorschau: dann liegt die Kasse nebenan auf Port 8787
+   ("npx wrangler dev" in worker/), nicht auf der veröffentlichten Adresse. */
+if (
+  location.hostname === "localhost" ||
+  location.hostname === "127.0.0.1"
+) {
+  SHOP_CHECKOUT.endpoint = "http://localhost:8787";
+}
 
 /** Einheitliche Preisdarstellung: 44.9 -> "€44.90" */
 function formatPrice(value) {

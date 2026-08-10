@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FDF8F1">
+  <title>Order confirmed | Constantinteck</title>
+  <meta name="description" content="Thank you for your order.">
+  <!-- Eine Bestellbestätigung gehört nicht in Suchergebnisse. -->
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__bar">
+      <a class="brand" href="index.html">
+        <span class="brand__mark" aria-hidden="true">C</span>
+        <span class="brand__name">Constantinteck</span>
+      </a>
+
+      <div class="site-header__right">
+        <nav class="nav" aria-label="Main">
+        <a class="nav__link" href="index.html">Home</a>
+        <a class="nav__link" href="recipes.html">Recipes</a>
+        <a class="nav__link" href="shop.html">Shop</a>
+        <a class="nav__link" href="about.html">About</a>
+        </nav>
+
+        <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart, 0 items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-link__badge" data-cart-count hidden>0</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="nav-mobile no-scrollbar" aria-label="Main">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip" href="recipes.html">Recipes</a>
+      <a class="chip" href="shop.html">Shop</a>
+      <a class="chip" href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <div class="container section--tight">
+      <!-- Was hier steht, entscheidet sich erst nach einer Rückfrage beim
+           Worker. Diese Adresse lässt sich auch ohne Bezahlung aufrufen –
+           "Danke für deine Bestellung" darf deshalb nicht fest im HTML
+           stehen. -->
+      <div data-order-root>
+        <p class="muted">Checking your order …</p>
+        <noscript>
+          <p class="muted">
+            This page needs JavaScript to look up your order. If your payment
+            went through, your confirmation email is on its way regardless.
+          </p>
+        </noscript>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__cols">
+      <div>
+        <p class="site-footer__brand">Constantinteck</p>
+        <p class="site-footer__claim">The recipes from my videos – without the endless scrolling.</p>
+        <p class="site-footer__contact">
+          Questions about an order?<br>
+          <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a>
+        </p>
+      </div>
+
+      <div>
+        <h2>Pages</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recipes.html">Recipes</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Orders &amp; legal</h2>
+        <ul>
+          <li><a href="shipping-returns.html">Shipping &amp; returns</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="imprint.html">Imprint</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Follow</h2>
+        <ul>
+          <li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
+          <li><a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container site-footer__legal">
+      <div class="site-footer__legal-row">
+        <p>All prices include VAT, plus €4.90 shipping – free from €60.00.</p>
+        <p>© 2026 Constantinteck</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/shop-data.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/order-confirmed.js"></script>
+</body>
+</html>

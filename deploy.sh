@@ -28,7 +28,10 @@ import os, re, sys, urllib.parse
 
 pages = []
 for dirpath, dirnames, filenames in os.walk("."):
-    dirnames[:] = [d for d in dirnames if d not in (".git", ".github", ".claude")]
+    # node_modules gehört nicht ins Repository und wird nie veröffentlicht –
+    # die HTML-Dateien darin sind fremder Code und dürfen die Prüfung nicht
+    # zum Scheitern bringen.
+    dirnames[:] = [d for d in dirnames if d not in (".git", ".github", ".claude", "node_modules")]
     pages += [os.path.join(dirpath, f) for f in filenames if f.endswith(".html")]
 
 broken = []

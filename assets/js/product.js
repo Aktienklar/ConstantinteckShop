@@ -56,6 +56,15 @@
 
     if (!addButton) return;
 
+    /* Noch nicht verkäuflich: Der Button bleibt sichtbar, aber tot – sonst
+       landet etwas im Warenkorb, das an der Kasse abgewiesen wird. */
+    var product = SHOP_PRODUCTS[slug];
+    if (product && product.available === false) {
+      addButton.disabled = true;
+      addButton.textContent = "Not on sale yet";
+      return;
+    }
+
     addButton.addEventListener("click", function () {
       window.Cart.add(slug, variantId, quantity);
 
@@ -69,6 +78,13 @@
   /* Kompakter Button in den Cross-Selling-Blöcken ------------------------- */
 
   function setupSimpleButton(button) {
+    var simpleProduct = SHOP_PRODUCTS[button.getAttribute("data-slug")];
+    if (simpleProduct && simpleProduct.available === false) {
+      button.disabled = true;
+      button.textContent = "Not on sale yet";
+      return;
+    }
+
     button.addEventListener("click", function () {
       var slug = button.getAttribute("data-slug");
       var variantId = button.getAttribute("data-variant") || undefined;

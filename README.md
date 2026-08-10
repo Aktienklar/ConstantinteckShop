@@ -52,10 +52,10 @@ There is no database and no CMS. The text you see is the text in the file.
 Open the file (e.g. `recipes/schoko-babka.html`), change the text, save. Titles,
 ingredients, steps and prices are plain HTML.
 
-**One thing to watch:** a product's price and title appear in two places – in
-its `shop/<slug>.html` **and** in `assets/js/shop-data.js`, which is what the
-cart uses to add things up. Change both, otherwise the cart shows a different
-price than the product page.
+**One thing to watch:** a product's price and title appear in three places – in
+its `shop/<slug>.html`, in `assets/js/shop-data.js` (what the cart adds up) and
+in `worker/src/catalog.js` (what the customer is actually charged, in cents).
+Change all three, otherwise the shop shows one price and bills another.
 
 ### Adding a recipe
 
@@ -83,7 +83,11 @@ price than the product page.
 1. Copy an existing product file in `shop/` and edit it.
 2. Add an entry to `SHOP_PRODUCTS` in `assets/js/shop-data.js` – without it the
    cart cannot price the product.
-3. Add a card for it in `shop.html`, and wherever else it should appear.
+3. Add the same product to `PRODUCTS` in `worker/src/catalog.js`, with the price
+   **in cents**. Without it the checkout rejects the product; if the amount
+   disagrees with step 2, the customer is charged something other than what the
+   cart showed them.
+4. Add a card for it in `shop.html`, and wherever else it should appear.
 
 ## Language
 
@@ -106,8 +110,76 @@ These are promises to a paying customer. Make sure each one is something you can
 actually honour, and keep the JavaScript values and the HTML text in agreement.
 
 `isPrototype: true` is what produces the "this shop is not live yet" notices.
-Set it to `false` – and remove the matching sentences from the footer and the
-product pages – once a real checkout is connected.
+Leave it `true` while the worker runs on `sk_test_` keys: a real Stripe checkout
+opens, but no money moves. Set it to `false` – and remove the matching sentences
+from the footer and the product pages – only once live keys are in place and the
+legal pages below are finished.
+
+The `paymentMethods` list must match what is actually switched on in the Stripe
+Dashboard. It previously advertised "Instant bank transfer" (Sofort), which
+Stripe has since retired.
+
+## Payment (Stripe)
+
+The website itself stays static. Payment needs one thing a static site cannot
+have: a **secret Stripe key**, which must never reach the browser. GitHub Pages
+serves every file in this repository, so a key in the page source would be
+public. That is the only reason `worker/` exists.
+
+```
+worker/src/catalog.js    Prices the checkout actually trusts
+worker/src/checkout.js   Cart  ->  Stripe Checkout Session
+worker/src/webhook.js    Payment confirmed  ->  email with the download link
+worker/src/download.js   Signed, expiring PDF links
+```
+
+**The browser never sends a price.** It sends only slug, variant and quantity;
+`catalog.js` looks up what those cost. Otherwise anyone could order the apron
+for one cent by editing the cart in their developer tools. This means a price
+now lives in **three** places – the product's HTML, `assets/js/shop-data.js`
+and `worker/src/catalog.js`. All three must agree.
+
+### One-time setup
+
+```bash
+cd worker
+npm install
+wrangler r2 bucket create constantinteck-pdfs
+wrangler kv namespace create ORDERS          # ID in wrangler.toml eintragen
+wrangler r2 object put constantinteck-pdfs/sweet-and-simple-baking-book.pdf --file=...
+wrangler secret put STRIPE_SECRET_KEY
+wrangler secret put STRIPE_WEBHOOK_SECRET
+wrangler secret put DOWNLOAD_SECRET          # openssl rand -base64 32
+wrangler secret put RESEND_API_KEY           # optional
+wrangler deploy
+```
+
+Then put the deployed address into `WORKER_BASE` in `worker/wrangler.toml` and
+into `SHOP_CHECKOUT.endpoint` in `assets/js/shop-data.js`, and register
+`<address>/api/webhook` in the Stripe Dashboard for the events
+`checkout.session.completed` and `checkout.session.async_payment_succeeded`.
+
+### Testing locally
+
+`npx wrangler dev` in `worker/` and `python3 -m http.server 4000` in the root.
+The storefront notices `localhost` and talks to port 8787 instead of the
+deployed worker. Forward the webhook with
+`stripe listen --forward-to localhost:8787/api/webhook`. Card `4242 4242 4242
+4242` completes a test payment. Without a `RESEND_API_KEY` no mail is sent –
+the download link appears in the `wrangler dev` log instead.
+
+### Things that are easy to get wrong
+
+- **Fulfilment happens in the webhook, never on the success page.** That page
+  can be opened without paying, and a buyer may close the tab before reaching
+  it.
+- **`.dev.vars` must never be committed.** It is in `.gitignore`; `deploy.sh`
+  runs `git add -A`, so a slip would publish your secret key.
+- **`AUTOMATIC_TAX` stays `"false"`** until a tax registration and a head
+  office address exist in the Stripe Dashboard. Before that, every session
+  errors out.
+- The PDFs use tax code `txcd_10302000` (digital books), which is what gets
+  them Germany's reduced 7 % VAT rate instead of 19 %.
 
 ## Legal pages
 
@@ -157,10 +229,6 @@ the stylesheet, so the page appears unstyled but still readable.
 
 ## What the prototype deliberately leaves out
 
-- **No payment.** The cart lives in `localStorage` (`assets/js/cart.js`),
-  "Checkout" only shows a confirmation. For Stripe or Shopify, replace the
-  `data-checkout` click handler in `assets/js/cart-page.js` with a real checkout
-  call, then set `isPrototype` to `false`.
 - **No real photos.** Every product and recipe image is still a `placehold.co`
   colour block. This is the biggest thing standing between the current site and
   one that looks trustworthy – see "Swapping images".

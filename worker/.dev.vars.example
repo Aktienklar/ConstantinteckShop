@@ -1,0 +1,20 @@
+# Vorlage. Kopieren nach .dev.vars und echte Werte eintragen:
+#   cp .dev.vars.example .dev.vars
+#
+# .dev.vars ist in .gitignore und darf niemals ins Repository – die Website
+# liegt öffentlich auf GitHub Pages, jede Datei darin ist abrufbar.
+
+# Dashboard -> Entwickler -> API-Schlüssel (Sandbox: beginnt mit sk_test_)
+STRIPE_SECRET_KEY=sk_test_...
+
+# Gibt "stripe listen --forward-to localhost:8787/api/webhook" beim Start aus.
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Beliebige lange Zufallszeichenkette. Damit werden die Download-Links
+# signiert. Erzeugen mit:  openssl rand -base64 32
+# Wird der Wert geändert, sind alle bereits verschickten Links ungültig.
+DOWNLOAD_SECRET=
+
+# Optional. Ohne diesen Schlüssel wird keine Mail verschickt, der
+# Download-Link landet stattdessen im Log von "wrangler dev".
+RESEND_API_KEY=

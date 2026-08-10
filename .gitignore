@@ -6,3 +6,18 @@
 .next
 node_modules
 out
+
+# Geheimnisse. deploy.sh macht "git add -A", und GitHub Pages liefert alles
+# aus, was in main liegt – eine .env mit dem Stripe-Secret-Key wäre also
+# unter aktienklar.github.io abrufbar. Diese Zeilen stehen hier, BEVOR es
+# eine solche Datei gibt.
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+.wrangler
+
+# Die Vorlagen enthalten keine Werte und sollen mit ins Repository – ohne diese
+# zwei Zeilen würden die Regeln darüber sie mit ausschließen.
+!.dev.vars.example
+!.env.example

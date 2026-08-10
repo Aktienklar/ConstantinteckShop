@@ -1,0 +1,44 @@
+name = "constantinteck-checkout"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+# stripe-node greift auf ein paar Node-Bausteine zurück.
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Woher Anfragen kommen dürfen und wohin Stripe nach der Zahlung zurückschickt.
+SITE_ORIGIN = "https://aktienklar.github.io"
+SITE_BASE = "https://aktienklar.github.io/ConstantinteckShop"
+# Die Adresse, unter der dieser Worker läuft. Aus ihr werden später die
+# Download-Links gebaut. Ausgegeben von "wrangler deploy".
+WORKER_BASE = "https://constantinteck-checkout.constantinteck-checkout.workers.dev"
+MAIL_FROM = "Constantinteck <hallo@constantinteck.de>"
+# Erst auf "true" stellen, wenn im Dashboard unter Tax eine Registrierung und
+# eine Herkunftsadresse hinterlegt sind. Vorher bricht jede Session ab.
+AUTOMATIC_TAX = "false"
+# Häkchen "Ich akzeptiere die AGB" an der Kasse. Auf "true" stellen, sobald
+# unter https://dashboard.stripe.com/settings/public eine AGB-Adresse steht
+# (https://aktienklar.github.io/ConstantinteckShop/terms.html). Vorher bricht
+# jede Session ab. Für einen deutschen Shop gehört das an.
+TOS_CONSENT = "false"
+
+# Verkauft wird vorerst nur die Schürze – ein physisches Produkt, das von Hand
+# verschickt wird. Dafür braucht der Worker weder Dateispeicher noch Datenbank.
+# Beides erst einkommentieren, wenn die PDFs dazukommen:
+#
+# Die PDFs. Anlegen mit:  wrangler r2 bucket create constantinteck-pdfs
+# [[r2_buckets]]
+# binding = "PDFS"
+# bucket_name = "constantinteck-pdfs"
+#
+# Merkt sich verarbeitete Stripe-Ereignisse, damit niemand seine Mail doppelt
+# bekommt. Anlegen mit:  wrangler kv namespace create ORDERS
+# Die ausgegebene ID hier eintragen.
+# [[kv_namespaces]]
+# binding = "ORDERS"
+# id = "HIER_DIE_KV_ID_EINTRAGEN"
+
+# Geheim, deshalb nicht hier, sondern per "wrangler secret put":
+#   STRIPE_SECRET_KEY       (jetzt nötig)
+#   STRIPE_WEBHOOK_SECRET   (nur falls du den Webhook einrichtest)
+#   DOWNLOAD_SECRET         (erst mit den PDFs)
+#   RESEND_API_KEY          (erst mit den PDFs)
