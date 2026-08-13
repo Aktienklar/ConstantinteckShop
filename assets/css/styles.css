@@ -2678,9 +2678,98 @@ strong {
   margin-top: 0.5rem;
 }
 
+.legal__sections h3 {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cocoa);
+}
+
+.legal__sections ul,
+.legal__sections ol {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.legal__sections ol {
+  list-style: decimal;
+}
+
+.legal__sections li + li {
+  margin-top: 0.375rem;
+}
+
+/* Verbindlich ist die deutsche Fassung – die englische Übersetzung steht
+   darunter, erkennbar zurückgenommen. Sie soll gelesen werden können, ohne
+   je mit dem Text zu konkurrieren, an dem sich ein Gericht orientiert. */
+.legal__en {
+  margin-top: 0.5rem;
+  padding-left: 0.875rem;
+  border-left: 2px solid var(--line);
+  font-size: 0.9375rem;
+  color: var(--mocha);
+  opacity: 0.85;
+}
+
+/* Der amtliche Wortlaut (Widerrufsbelehrung, Muster-Widerrufsformular) darf
+   nicht wie Fließtext aussehen: er ist zitierter Gesetzestext und wird als
+   solcher abgesetzt. */
+.legal__quote {
+  margin-top: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background-color: var(--dough);
+  padding: 1.25rem;
+}
+
+.legal__quote > * + * {
+  margin-top: 0.75rem;
+}
+
+.legal__quote .legal__en {
+  border-left-color: var(--crust);
+}
+
+/* Das Muster-Widerrufsformular ist ein Formular, keine Aufzählung: Punkte
+   davor würden Gliederungsebenen suggerieren, die der amtliche Text nicht
+   hat. Die Zeilen stehen dafür weiter auseinander – sie werden ausgefüllt. */
+.legal__quote ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.legal__quote li + li {
+  margin-top: 0.75rem;
+}
+
+/* Die Kopfzeile klebt oben. Ohne diesen Abstand landet ein Sprungziel –
+   #widerruf aus § 8 der AGB – hinter ihr, und der Leser sieht die
+   Überschrift nicht, wegen der er geklickt hat. */
+.legal__sections section[id] {
+  scroll-margin-top: 8.5rem;
+}
+
+/* Eine noch nicht ausgefüllte Pflichtangabe muss im Text auffallen, sonst
+   wird sie beim Korrekturlesen überlesen. Siehe rechtsdaten.conf. */
+.fill {
+  border-bottom: 2px dashed var(--brand);
+  background-color: var(--brand-soft);
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  color: var(--brand);
+  white-space: nowrap;
+}
+
 @media (min-width: 640px) {
   .legal h1 {
     font-size: 2.25rem;
+  }
+
+  /* Ab hier fällt die zweite Navigationszeile weg, der Kopf ist nur noch
+     4rem hoch. */
+  .legal__sections section[id] {
+    scroll-margin-top: 5.5rem;
   }
 }
 

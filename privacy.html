@@ -1,11 +1,14 @@
 <!doctype html>
-<html lang="en">
+<!-- lang="de": Der Rechtstext dieser Seite ist deutsch und verbindlich, die
+     englische Übersetzung darunter trägt ihr eigenes lang="en". Kopf- und
+     Fußzeile bleiben englisch wie auf der übrigen Seite. -->
+<html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FDF8F1">
-  <title>Privacy policy | Constantinteck</title>
-  <meta name="description" content="How Constantinteck handles personal data.">
+  <title>Datenschutzerklärung | Constantinteck</title>
+  <meta name="description" content="Welche Daten Constantinteck verarbeitet, warum und wie lange.">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -71,40 +74,168 @@
         </nav>
 
         <article>
-          <h1>Privacy policy</h1>
-          <p class="legal__intro">What happens to your data when you visit this site or place an order.</p>
-        <!-- Sichtbare Warnung: eine unfertige Rechtsseite darf nie wie eine
-             fertige aussehen – ein leeres Impressum ist schlimmer als eine
-             offene Lücke. -->
+          <h1>Datenschutzerklärung</h1>
+          <p class="legal__intro">Was mit deinen Daten passiert, wenn du diese Seite besuchst oder hier bestellst. Stand: 13. August 2026.</p>
+
+        <!-- Der Kasten verschwindet, sobald rechtsdaten.sh gelaufen ist. -->
+        <!-- AUSFUELLEN:START -->
         <aside class="legal__missing" role="note">
-          <p>This page still needs your details</p>
+          <p>Diese Seite ist noch nicht vollständig</p>
           <p>
-            It is published but incomplete. Selling to consumers in Germany
-            without these details is a legal risk – fill them in before the shop
-            goes live.
+            Die orange markierten Stellen sind Platzhalter. Trag die Werte in
+            <code>rechtsdaten.conf</code> ein und führe <code>./rechtsdaten.sh</code>
+            aus; danach stehen sie hier und auf allen anderen Seiten.
           </p>
           <ul>
-            <li>Controller: your name and address, matching the imprint</li>
-            <li>Hosting provider and where the servers are, plus a data processing agreement with them</li>
-            <li>Payment provider and what data is passed to it during checkout</li>
-            <li>Shipping provider and the address data it receives</li>
-            <li>Analytics or embedded video (YouTube, TikTok, Instagram): which tools, on what legal basis, and a consent banner if they are not strictly necessary</li>
-            <li>Retention periods and the statutory retention duties you are subject to</li>
+            <li>Verantwortlicher: Name und Anschrift, identisch mit dem Impressum</li>
+            <li>Der Versanddienstleister, der Name und Lieferanschrift der Kunden bekommt</li>
+            <li>Die Datenschutz-Aufsichtsbehörde deines Bundeslandes</li>
           </ul>
         </aside>
+        <!-- AUSFUELLEN:ENDE -->
 
           <div class="legal__sections">
           <section>
-            <h2>What this site does today</h2>
+            <h2>Das Wichtigste vorweg · In short</h2>
             <div>
-              <p>The cart is stored only in your own browser (local storage) and is never sent to a server. No account is needed and no newsletter is sent. All recipes are freely readable without giving any data.</p>
-              <p>The recipe videos are embedded from external platforms. As soon as real embeds are switched on, those platforms can set cookies and see your IP address – that needs consent and has to be described here.</p>
+              <p>Diese Website setzt keine Cookies, bindet keine Analyse- oder Trackingdienste ein und verschickt keinen Newsletter. Alle Rezepte lassen sich lesen, ohne irgendetwas anzugeben. Personenbezogene Daten entstehen im Wesentlichen nur, wenn du etwas bestellst.</p>
+              <p class="legal__en" lang="en">This site sets no cookies, uses no analytics or tracking, and sends no newsletter. Every recipe can be read without providing any data. Personal data essentially arises only when you place an order.</p>
             </div>
           </section>
+
           <section>
-            <h2>Your rights</h2>
+            <h2>1. Verantwortlicher · Controller</h2>
             <div>
-              <p>Under the GDPR you can ask for access, correction, deletion, restriction of processing and data portability, and you can object to processing. You can also complain to a supervisory authority. Requests go to <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a>.</p>
+              <p>Verantwortlicher im Sinne des Art. 4 Nr. 7 DSGVO ist:</p>
+              <p>
+                <span class="fill">[Vor- und Nachname]</span><br>
+                <span class="fill">[Straße und Hausnummer]</span><br>
+                <span class="fill">[PLZ und Ort]</span><br>
+                Deutschland
+              </p>
+              <p>
+                E-Mail: <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a><br>
+                Telefon: <span class="fill">[Telefonnummer]</span>
+              </p>
+              <!-- Ein Datenschutzbeauftragter ist erst ab 20 Personen Pflicht,
+                   die ständig mit automatisierter Verarbeitung befasst sind
+                   (§ 38 BDSG). Das ausdrücklich zu sagen erspart die Frage. -->
+              <p>Ein Datenschutzbeauftragter ist nicht bestellt; die Voraussetzungen des § 38 BDSG liegen nicht vor.</p>
+              <p class="legal__en" lang="en">The controller under Art. 4 (7) GDPR is the person named above. No data protection officer has been appointed, as the conditions of § 38 BDSG are not met.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>2. Cookies und Speicherung im Browser · Cookies and browser storage</h2>
+            <div>
+              <!-- Diese Seite setzt tatsächlich keine Cookies. Deshalb steht
+                   hier kein Banner: Ein Einwilligungsdialog, der nichts
+                   abfragt, wozu eine Einwilligung nötig wäre, ist keine
+                   Vorsichtsmaßnahme, sondern eine Falschangabe. Wenn später
+                   Analyse, Karten oder echte Video-Embeds dazukommen, ändert
+                   sich das – dann gehört ein Banner davor. -->
+              <p><strong>Diese Website setzt keine Cookies.</strong> Es gibt keinen Cookie-Banner, weil es nichts gibt, wozu du einwilligen müsstest.</p>
+              <p>Gespeichert wird im Browser nur eines: dein Warenkorb. Er liegt im lokalen Speicher (<em>localStorage</em>) deines eigenen Geräts, wird nie an einen Server übertragen und ist für uns nicht einsehbar. Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG – die Speicherung ist unbedingt erforderlich, damit der Warenkorb den Seitenwechsel übersteht, und deshalb einwilligungsfrei. Du löschst ihn, indem du im Warenkorb auf „Empty cart“ klickst oder die Websitedaten in deinem Browser löschst.</p>
+              <p>Auf der Bezahlseite von Stripe gilt die Datenschutzerklärung von Stripe; dort werden Cookies gesetzt, die für die Zahlungsabwicklung und die Betrugsprävention erforderlich sind.</p>
+              <p class="legal__en" lang="en">This website sets no cookies, which is why there is no cookie banner – there is nothing to consent to. The only thing stored in your browser is your cart, held in your device’s local storage, never transmitted to a server and not visible to us. It is strictly necessary for the cart to survive a page change (§ 25 (2) no. 2 TDDDG) and therefore exempt from consent. Stripe’s own privacy policy applies on the payment page.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>3. Aufruf der Website und Server-Logfiles · Hosting and server logs</h2>
+            <div>
+              <p>Die Seiten werden von GitHub Pages ausgeliefert, einem Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA (Microsoft-Konzern). Beim Aufruf einer Seite überträgt dein Browser technisch notwendige Daten, die GitHub kurzzeitig protokolliert: IP-Adresse, Datum und Uhrzeit, aufgerufene Datei, übertragene Datenmenge, Referrer sowie Browser- und Betriebssystemkennung.</p>
+              <p>Diese Verarbeitung ist erforderlich, um die Website überhaupt anzeigen und ihren Betrieb absichern zu können. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt in der stabilen und sicheren Bereitstellung des Angebots. Auf die Speicherdauer bei GitHub haben wir keinen Einfluss; eine Zusammenführung dieser Daten mit anderen Quellen findet durch uns nicht statt.</p>
+              <p>Die Übermittlung in die USA stützt sich auf den Angemessenheitsbeschluss der EU-Kommission zum EU-US Data Privacy Framework, dem Microsoft und GitHub beigetreten sind, ergänzt um die Standardvertragsklauseln aus dem Auftragsverarbeitungsvertrag (GitHub Data Protection Agreement). Einzelheiten: <a class="link-brand" href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">GitHub Privacy Statement</a>.</p>
+              <p class="legal__en" lang="en">The pages are served by GitHub Pages (GitHub, Inc., USA). Your browser transmits technically necessary data that GitHub logs briefly: IP address, time, file requested, volume transferred, referrer, browser and operating system. This is required to display the site at all and to keep it secure; the legal basis is Art. 6 (1) (f) GDPR. Transfers to the USA rest on the EU-US Data Privacy Framework adequacy decision together with standard contractual clauses.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>4. Bestellung und Zahlung · Orders and payment</h2>
+            <div>
+              <p>Wenn du auf „Pay securely“ klickst, wird dein Warenkorb an unsere Kassenfunktion übertragen. Sie läuft bei der Cloudflare Germany GmbH, Rosental 7, 80331 München (Cloudflare, Inc., USA), prüft die Preise gegen unseren Katalog und legt daraus eine Bezahlseite bei Stripe an. Dabei verarbeitet Cloudflare deine IP-Adresse und die Angaben zu den bestellten Artikeln. Grundlage ist ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO.</p>
+              <p>Die Zahlung selbst wickelt die Stripe Payments Europe Ltd., 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irland, ab. Deine Zahlungsdaten gibst du unmittelbar bei Stripe ein – wir sehen und speichern keine vollständigen Karten- oder Kontodaten. An uns übermittelt Stripe Name, Rechnungs- und Lieferanschrift, E-Mail-Adresse, gekaufte Artikel, Betrag und Zahlungsstatus.</p>
+              <p>Rechtsgrundlage für diese Verarbeitung ist Art. 6 Abs. 1 lit. b DSGVO (Erfüllung des Kaufvertrags), für die Betrugsprävention durch Stripe zusätzlich Art. 6 Abs. 1 lit. f DSGVO. Stripe ist als Zahlungsdienstleister eigenständig Verantwortlicher; es gilt die <a class="link-brand" href="https://stripe.com/de/privacy" target="_blank" rel="noreferrer">Datenschutzerklärung von Stripe</a>.</p>
+              <p>Bestellst du eine Rezeptsammlung als PDF, wird zusätzlich der Zeitpunkt deiner Zustimmung zum sofortigen Download an der Bestellung vermerkt. Das ist erforderlich, um das Erlöschen des Widerrufsrechts nach § 356 Abs. 5 BGB nachweisen zu können (Art. 6 Abs. 1 lit. c DSGVO).</p>
+              <p class="legal__en" lang="en">Clicking „Pay securely“ sends your cart to our checkout function, which runs on Cloudflare and creates a payment page at Stripe Payments Europe Ltd. in Ireland. You enter your payment details directly with Stripe; we never see or store full card or account details. Stripe passes us your name, billing and delivery address, email address, items, amount and payment status. The legal basis is Art. 6 (1) (b) GDPR. For PDF orders we additionally record when you consented to the immediate download, in order to evidence the lapse of the withdrawal right.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>5. Versand · Shipping</h2>
+            <div>
+              <p>Zur Zustellung geben wir deinen Namen und deine Lieferanschrift an <span class="fill">[Versanddienstleister]</span> weiter. Ohne diese Weitergabe lässt sich die Ware nicht liefern; Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
+              <p class="legal__en" lang="en">To deliver your order we pass your name and delivery address to our shipping provider. Without this the goods cannot be delivered; the legal basis is Art. 6 (1) (b) GDPR.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>6. E-Mails zu deiner Bestellung · Emails about your order</h2>
+            <div>
+              <p>Bestellbestätigungen und Rückfragen laufen über die oben genannte E-Mail-Adresse. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
+              <!-- Die PDFs stehen in shop-data.js auf available:false. Der
+                   Absatz beschreibt deshalb ausdrücklich einen Zustand, der
+                   noch nicht eingetreten ist, statt ihn als laufend
+                   darzustellen. -->
+              <p>Rezeptsammlungen als PDF werden derzeit nicht verkauft. Sobald sie in den Verkauf gehen, versendet die Resend, Inc., 2261 Market Street, San Francisco, CA 94114, USA, in unserem Auftrag die E-Mail mit dem Download-Link; sie verarbeitet dafür deine E-Mail-Adresse. Grundlage ist ein Auftragsverarbeitungsvertrag mit Standardvertragsklauseln.</p>
+              <p class="legal__en" lang="en">Order confirmations and enquiries go through the email address given above (Art. 6 (1) (b) GDPR). PDF recipe collections are not currently on sale; once they are, Resend, Inc. (USA) will send the download link email on our behalf, processing your email address under a data processing agreement with standard contractual clauses.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>7. Eingebundene Inhalte Dritter · Third-party content</h2>
+            <div>
+              <!-- placehold.co liefert derzeit die Produktbilder. Der Dienst
+                   sieht dabei die IP jedes Besuchers. Das gehört benannt,
+                   solange es so ist – und es sollte nicht so bleiben. -->
+              <p>Die Produktabbildungen im Shop sind derzeit Platzhalter und werden vom Dienst placehold.co geladen. Dabei erfährt dessen Server deine IP-Adresse. Wir haben darauf keinen Einfluss und erhalten von dort keine Daten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (Darstellung des Angebots); die Bilder werden durch eigene Aufnahmen ersetzt, sobald sie vorliegen.</p>
+              <p>Alle Rezeptfotos liegen auf unserem eigenen Server. Videos sind nicht eingebettet. Die Verweise auf Instagram, TikTok und YouTube in der Fußzeile sowie die Teilen-Schaltflächen unter den Rezepten sind gewöhnliche Links: Zu den jeweiligen Anbietern werden Daten erst übertragen, wenn du sie anklickst. Dann gilt deren Datenschutzerklärung.</p>
+              <p class="legal__en" lang="en">Product images are currently placeholders loaded from placehold.co, whose server therefore sees your IP address; they will be replaced by our own photographs. All recipe photos are hosted on our own server and no videos are embedded. The social links in the footer and the share buttons under each recipe are ordinary links – data reaches those providers only once you click.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>8. Speicherdauer · Retention</h2>
+            <div>
+              <p>Bestelldaten bewahren wir so lange auf, wie es das Steuer- und Handelsrecht verlangt: Rechnungen und Buchungsbelege zehn Jahre nach § 147 AO, sonstige Handelsbriefe sechs Jahre nach § 257 HGB. Die Fristen laufen jeweils ab dem Ende des Kalenderjahres, in dem die Bestellung erfolgt ist. Bis dahin ist die Verarbeitung auf die Aufbewahrung beschränkt.</p>
+              <p>E-Mail-Anfragen ohne Bestellbezug löschen wir, sobald sie erledigt sind und keine Aufbewahrungspflicht besteht.</p>
+              <p class="legal__en" lang="en">Order data is kept for as long as tax and commercial law require: ten years for invoices and accounting records, six years for other business correspondence, each counted from the end of the calendar year of the order. Email enquiries unrelated to an order are deleted once dealt with.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>9. Deine Rechte · Your rights</h2>
+            <div>
+              <p>Dir stehen gegenüber dem Verantwortlichen folgende Rechte zu: Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3).</p>
+              <p><strong>Widerspruchsrecht:</strong> Soweit wir Daten auf Grundlage berechtigter Interessen nach Art. 6 Abs. 1 lit. f DSGVO verarbeiten, kannst du dieser Verarbeitung nach Art. 21 DSGVO aus Gründen widersprechen, die sich aus deiner besonderen Situation ergeben.</p>
+              <p>Es genügt eine formlose Nachricht an <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a>. Eine Begründung ist nur beim Widerspruch nötig, und Kosten entstehen dir keine.</p>
+              <p>Unabhängig davon kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, insbesondere bei der für uns zuständigen: <span class="fill">[Aufsichtsbehörde]</span></p>
+              <p class="legal__en" lang="en">You have the right to access, rectification, erasure, restriction of processing, data portability, and to withdraw consent with future effect. Where we rely on legitimate interests, you may object under Art. 21 GDPR on grounds relating to your particular situation. An informal email suffices and costs you nothing. You may also complain to a supervisory authority, in particular the one named above.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>10. Keine automatisierte Entscheidungsfindung · No automated decision-making</h2>
+            <div>
+              <p>Eine automatisierte Entscheidungsfindung einschließlich Profiling nach Art. 22 DSGVO findet nicht statt. Deine Daten werden nicht für Werbung genutzt und nicht an Dritte verkauft.</p>
+              <p class="legal__en" lang="en">There is no automated decision-making or profiling within the meaning of Art. 22 GDPR. Your data is not used for advertising and is never sold.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>11. Bereitstellung deiner Daten · Whether you have to provide data</h2>
+            <div>
+              <p>Zum Lesen der Rezepte musst du nichts angeben. Für eine Bestellung sind Name, Anschrift, E-Mail-Adresse und Zahlungsdaten erforderlich – ohne sie kommt kein Vertrag zustande und die Ware kann nicht geliefert werden. Eine gesetzliche Pflicht zur Bereitstellung besteht nicht.</p>
+              <p class="legal__en" lang="en">You need provide nothing to read the recipes. For an order, name, address, email address and payment details are required – without them no contract can be concluded and nothing can be delivered. There is no statutory obligation to provide data.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>12. Änderungen dieser Erklärung · Changes to this policy</h2>
+            <div>
+              <p>Ändert sich das Angebot – etwa durch neue Dienste oder eingebettete Inhalte –, passen wir diese Erklärung an. Es gilt jeweils die hier veröffentlichte Fassung mit dem oben genannten Stand.</p>
+              <p class="legal__en" lang="en">If the site changes – new services or embedded content, for example – this policy is updated. The version published here, dated above, is the one that applies.</p>
             </div>
           </section>
           </div>

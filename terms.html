@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="en">
+<!-- lang="de": Der Rechtstext dieser Seite ist deutsch und verbindlich, die
+     englische Übersetzung darunter trägt ihr eigenes lang="en". -->
+<html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FDF8F1">
-  <title>Terms and conditions | Constantinteck</title>
-  <meta name="description" content="The terms that apply to orders placed with Constantinteck.">
+  <title>AGB | Constantinteck</title>
+  <meta name="description" content="Allgemeine Geschäftsbedingungen für Bestellungen bei Constantinteck.">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -71,51 +73,160 @@
         </nav>
 
         <article>
-          <h1>Terms and conditions</h1>
-          <p class="legal__intro">The rules that apply when you order from this shop.</p>
-        <!-- Sichtbare Warnung: eine unfertige Rechtsseite darf nie wie eine
-             fertige aussehen – ein leeres Impressum ist schlimmer als eine
-             offene Lücke. -->
+          <h1>Allgemeine Geschäftsbedingungen</h1>
+          <p class="legal__intro">Was gilt, wenn du in diesem Shop bestellst. Stand: 13. August 2026.</p>
+
+        <!-- AUSFUELLEN:START -->
         <aside class="legal__missing" role="note">
-          <p>This page still needs your details</p>
+          <p>Diese Seite ist noch nicht vollständig</p>
           <p>
-            It is published but incomplete. Selling to consumers in Germany
-            without these details is a legal risk – fill them in before the shop
-            goes live.
+            Die Vertragsklauseln stehen, aber der Vertragspartner fehlt: Die
+            orange markierten Stellen sind Platzhalter. Trag die Werte in
+            <code>rechtsdaten.conf</code> ein und führe <code>./rechtsdaten.sh</code>
+            aus.
           </p>
           <ul>
-            <li>Your full business details as the contracting party</li>
-            <li>How a contract comes about: at which click the order is binding and when you accept it</li>
-            <li>Whether the contract text is stored and in which language it is concluded</li>
-            <li>Retention of title until full payment</li>
-            <li>Warranty and liability clauses, checked against current German consumer law</li>
-            <li>For the PDFs: that the download starts before the withdrawal period ends and that the customer expressly consents to this, losing the right of withdrawal</li>
+            <li>AGB ohne benannten Vertragspartner binden im Zweifel niemanden</li>
+            <li>Diese Texte hat kein Anwalt geprüft – für einen Shop, der echtes Geld abbucht, ist eine Durchsicht das Geld wert</li>
           </ul>
         </aside>
+        <!-- AUSFUELLEN:ENDE -->
 
           <div class="legal__sections">
           <section>
-            <h2>Scope</h2>
+            <h2>§ 1 Geltungsbereich und Vertragspartner</h2>
             <div>
-              <p>These terms apply to all orders placed through this shop by consumers and businesses.</p>
+              <p>Diese Bedingungen gelten für alle Bestellungen über diesen Shop. Vertragspartner ist <span class="fill">[Vor- und Nachname]</span>, <span class="fill">[Straße und Hausnummer]</span>, <span class="fill">[PLZ und Ort]</span> (nachfolgend „Anbieter“).</p>
+              <p>Verbraucher ist, wer den Vertrag zu Zwecken abschließt, die überwiegend weder der gewerblichen noch der selbständigen beruflichen Tätigkeit zugerechnet werden können (§ 13 BGB). Abweichende Bedingungen des Kunden werden nicht Vertragsbestandteil, es sei denn, der Anbieter stimmt ihnen ausdrücklich zu.</p>
+              <p class="legal__en" lang="en">These terms govern every order placed through this shop. The German version above is the binding one; this English text is a convenience translation. „Consumer“ means anyone contracting for purposes outside their trade or profession.</p>
             </div>
           </section>
+
           <section>
-            <h2>Prices and payment</h2>
+            <h2>§ 2 Vertragsschluss</h2>
             <div>
-              <p>No VAT is shown. The seller applies the small-business rule under § 19 UStG – in German, as required: »Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.« For physical goods, shipping of €4.90 is added, and orders from €60.00 ship free. Payment is possible by PayPal, Credit card, Instant bank transfer.</p>
+              <!-- Der Ablauf muss beschreiben, was die Seite tatsächlich tut:
+                   Warenkorb → Stripe-Bezahlseite → Bestätigungsseite. Eine
+                   AGB-Klausel, die einen anderen Bestellweg schildert als den
+                   gebauten, hilft im Streitfall niemandem. -->
+              <p>Die Darstellung der Produkte im Shop ist kein bindendes Angebot, sondern eine Aufforderung zur Bestellung.</p>
+              <ol>
+                <li>Du legst Artikel in den Warenkorb und gelangst über „Checkout“ auf die Bezahlseite unseres Zahlungsdienstleisters Stripe.</li>
+                <li>Dort gibst du deine Rechnungs- und Lieferanschrift sowie deine Zahlungsdaten ein. Vor dem Absenden werden dir alle Angaben und der Gesamtbetrag angezeigt und du kannst sie korrigieren.</li>
+                <li>Mit dem Klick auf die Zahlungsschaltfläche gibst du ein verbindliches Angebot zum Kauf der im Warenkorb enthaltenen Waren ab.</li>
+                <li>Der Anbieter nimmt dieses Angebot an, indem er die Bestellung bestätigt oder die Ware versendet – spätestens jedoch innerhalb von fünf Werktagen. Nimmt er nicht an, kommt kein Vertrag zustande und bereits belastete Beträge werden unverzüglich erstattet.</li>
+              </ol>
+              <p>Der Eingang deiner Bestellung wird dir unverzüglich elektronisch bestätigt. Diese Eingangsbestätigung stellt noch keine Annahme dar.</p>
+              <p class="legal__en" lang="en">Clicking the payment button on the Stripe checkout page places a binding offer. A contract is formed once the seller confirms the order or ships the goods, at the latest within five working days. The automatic acknowledgement of receipt is not yet an acceptance.</p>
             </div>
           </section>
+
           <section>
-            <h2>Delivery</h2>
+            <h2>§ 3 Vertragssprache und Vertragstext</h2>
             <div>
-              <p>Physical goods are shipped to Germany and Austria and normally arrive in 2–4 working days. Digital products are made available as a download immediately after payment.</p>
+              <p>Der Vertrag kann in deutscher oder englischer Sprache geschlossen werden. Maßgeblich für die Auslegung dieser Bedingungen ist die deutsche Fassung.</p>
+              <p>Der Anbieter speichert den Vertragstext nicht in einer für dich abrufbaren Form. Die Bestelldaten und diese Bedingungen werden dir jedoch mit der Bestellbestätigung per E-Mail zugesandt; diese Seite kannst du jederzeit ausdrucken oder als Datei sichern.</p>
+              <p class="legal__en" lang="en">The contract may be concluded in German or English; the German version of these terms prevails. The contract text is not stored in a form you can retrieve later, but the order details are sent to you by email and this page can be printed or saved at any time.</p>
             </div>
           </section>
+
           <section>
-            <h2>Right of withdrawal</h2>
+            <h2>§ 4 Preise und Versandkosten</h2>
             <div>
-              <p>Consumers have a statutory right of withdrawal of at least 14 days. The formal withdrawal instruction and the model withdrawal form still have to be inserted here in the exact statutory wording – see the shipping and returns page.</p>
+              <p>Es gelten die zum Zeitpunkt der Bestellung im Shop angegebenen Preise. <strong>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</strong></p>
+              <p>Bei Warensendungen kommen Versandkosten von 4,90 € pro Bestellung hinzu. Ab einem Bestellwert von 60,00 € entfallen sie. Rezeptsammlungen als PDF verursachen keine Versandkosten.</p>
+              <p class="legal__en" lang="en">The prices shown at the time of ordering apply. No VAT is charged (German small-business rule, § 19 UStG). Shipping is €4.90 per order and free from an order value of €60.00; PDFs have no shipping cost.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 5 Zahlung</h2>
+            <div>
+              <!-- Bewusst keine feste Aufzählung: Welche Methoden Stripe
+                   anzeigt, hängt vom Land des Käufers, vom Betrag und von den
+                   Einstellungen im Dashboard ab. Eine hier eingefrorene Liste
+                   wäre am Tag der ersten Änderung im Dashboard falsch. -->
+              <p>Die Zahlung wird über Stripe Payments Europe Ltd. abgewickelt. Welche Zahlungsarten dir zur Verfügung stehen – etwa Kreditkarte, PayPal oder Klarna –, wird dir vor dem Absenden der Bestellung auf der Bezahlseite angezeigt. Der Kaufpreis ist mit Vertragsschluss sofort fällig.</p>
+              <p>Bei Zahlungsverzug fallen Verzugszinsen in gesetzlicher Höhe an. Ein Zurückbehaltungsrecht steht dir nur zu, soweit es auf Ansprüchen aus demselben Vertragsverhältnis beruht.</p>
+              <p class="legal__en" lang="en">Payments are processed by Stripe Payments Europe Ltd. The payment methods available to you are shown on the payment page before you place the order. The purchase price falls due immediately on conclusion of the contract.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 6 Lieferung</h2>
+            <div>
+              <p>Es wird nach Deutschland und Österreich geliefert. Die Lieferzeit beträgt in der Regel 2–4 Werktage ab Zahlungseingang, sofern beim Artikel nichts anderes angegeben ist.</p>
+              <p>Ist ein Artikel nicht verfügbar, wird der Anbieter dich unverzüglich informieren und bereits gezahlte Beträge zurückerstatten.</p>
+              <p>Bei Verbrauchern geht die Gefahr des zufälligen Untergangs erst mit Übergabe der Ware über, auch beim Versendungskauf (§ 475 Abs. 2 BGB).</p>
+              <p class="legal__en" lang="en">Delivery to Germany and Austria, normally 2–4 working days after payment. For consumers, the risk passes only when the goods are handed over, even when they are dispatched by carrier.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 7 Eigentumsvorbehalt</h2>
+            <div>
+              <p>Die gelieferte Ware bleibt bis zur vollständigen Bezahlung Eigentum des Anbieters.</p>
+              <p class="legal__en" lang="en">The goods remain the seller’s property until paid for in full.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 8 Widerrufsrecht</h2>
+            <div>
+              <p>Verbrauchern steht ein gesetzliches Widerrufsrecht von 14 Tagen zu. Die vollständige Widerrufsbelehrung und das Muster-Widerrufsformular findest du unter <a class="link-brand" href="shipping-returns.html#widerruf">Versand &amp; Widerruf</a>; sie sind Bestandteil dieser Bedingungen.</p>
+              <!-- Das Häkchen dazu holt cart.html ein, geprüft wird es in
+                   worker/src/checkout.js. Solange die PDFs auf
+                   available:false stehen, greift der Absatz nicht – er muss
+                   aber schon dastehen, bevor jemand sie freischaltet. -->
+              <p>Bei Rezeptsammlungen als PDF erlischt das Widerrufsrecht, sobald der Anbieter mit der Ausführung begonnen hat, nachdem du ausdrücklich zugestimmt hast, dass er vor Ablauf der Widerrufsfrist damit beginnt, und du deine Kenntnis vom Erlöschen des Widerrufsrechts bestätigt hast (§ 356 Abs. 5 BGB). Diese Zustimmung wird im Warenkorb ausdrücklich abgefragt.</p>
+              <p class="legal__en" lang="en">Consumers have a statutory 14-day right of withdrawal; the full instruction and the model form are on the <a class="link-brand" href="shipping-returns.html#widerruf">shipping and returns page</a>. For PDF downloads the right lapses once delivery has begun with your express prior consent and your acknowledgement that you thereby lose it.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 9 Mängelhaftung</h2>
+            <div>
+              <p>Es gilt das gesetzliche Mängelhaftungsrecht. Bei Verbrauchern beträgt die Verjährungsfrist für Ansprüche wegen Mängeln zwei Jahre ab Ablieferung der Ware.</p>
+              <p>Ist die gelieferte Ware beschädigt, wende dich bitte an <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a>. Das hilft dem Anbieter, Ansprüche gegenüber dem Transportunternehmen geltend zu machen – deine gesetzlichen Rechte werden dadurch nicht eingeschränkt.</p>
+              <p class="legal__en" lang="en">Statutory warranty law applies; for consumers the limitation period is two years from delivery. Reporting transport damage helps the seller pursue the carrier and does not limit your statutory rights in any way.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 10 Haftung</h2>
+            <div>
+              <p>Der Anbieter haftet unbeschränkt für Vorsatz und grobe Fahrlässigkeit sowie für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit, bei Übernahme einer Garantie und nach dem Produkthaftungsgesetz.</p>
+              <p>Bei einfacher Fahrlässigkeit haftet der Anbieter nur bei Verletzung einer Pflicht, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst ermöglicht und auf deren Einhaltung du regelmäßig vertrauen darfst (Kardinalpflicht), und der Höhe nach begrenzt auf den bei Vertragsschluss vorhersehbaren, vertragstypischen Schaden. Im Übrigen ist die Haftung ausgeschlossen.</p>
+              <p class="legal__en" lang="en">Unlimited liability for intent, gross negligence, injury to life, body or health, guarantees and product liability. For ordinary negligence, liability is limited to breaches of essential contractual duties and to the foreseeable damage typical for this type of contract.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 11 Rezepte und Nutzungsrechte</h2>
+            <div>
+              <!-- Rezepte sind Lebensmittelzubereitung, keine geprüfte
+                   Ernährungsberatung. Der Hinweis kostet nichts und beugt der
+                   naheliegendsten Erwartung vor. -->
+              <p>Die auf dieser Website und in den Rezeptsammlungen veröffentlichten Rezepte sind für den privaten Gebrauch bestimmt. Eine gewerbliche Nutzung oder Weitergabe der PDF-Dateien ist ohne Zustimmung nicht gestattet.</p>
+              <p>Rezepte ersetzen keine ernährungsmedizinische Beratung. Prüfe die Zutaten eigenverantwortlich auf Allergene und Unverträglichkeiten.</p>
+              <p class="legal__en" lang="en">Recipes are for private use; commercial use or redistribution of the PDF files requires permission. Recipes are not dietary or medical advice – please check ingredients for allergens yourself.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 12 Streitbeilegung</h2>
+            <div>
+              <p>Der Anbieter ist nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen (§ 36 VSBG).</p>
+              <p class="legal__en" lang="en">The seller is neither willing nor obliged to take part in dispute resolution proceedings before a consumer arbitration board.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>§ 13 Schlussbestimmungen</h2>
+            <div>
+              <p>Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts. Hast du als Verbraucher deinen gewöhnlichen Aufenthalt in einem anderen Staat, bleiben die zwingenden Verbraucherschutzvorschriften dieses Staates unberührt (Art. 6 Abs. 2 Rom-I-VO).</p>
+              <p>Sollte eine Bestimmung dieser Bedingungen unwirksam sein, bleibt der Vertrag im Übrigen wirksam.</p>
+              <p class="legal__en" lang="en">German law applies, excluding the UN Convention on Contracts for the International Sale of Goods. If you are a consumer resident elsewhere, the mandatory consumer protection rules of your country of residence remain unaffected.</p>
             </div>
           </section>
           </div>

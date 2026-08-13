@@ -73,22 +73,21 @@
         <article>
           <h1>Shipping &amp; returns</h1>
           <p class="legal__intro">What delivery costs, how long it takes and how to send something back.</p>
-        <!-- Sichtbare Warnung: eine unfertige Rechtsseite darf nie wie eine
-             fertige aussehen – ein leeres Impressum ist schlimmer als eine
-             offene Lücke. -->
+        <!-- Der Kasten verschwindet, sobald rechtsdaten.sh gelaufen ist. -->
+        <!-- AUSFUELLEN:START -->
         <aside class="legal__missing" role="note">
-          <p>This page still needs your details</p>
+          <p>Diese Seite ist noch nicht vollständig</p>
           <p>
-            It is published but incomplete. Selling to consumers in Germany
-            without these details is a legal risk – fill them in before the shop
-            goes live.
+            Die Widerrufsbelehrung steht, aber die Anschrift fehlt, an die
+            zurückgeschickt wird. Trag sie in <code>rechtsdaten.conf</code> ein
+            und führe <code>./rechtsdaten.sh</code> aus.
           </p>
           <ul>
-            <li>The statutory withdrawal instruction (Widerrufsbelehrung) in its exact wording, plus the model withdrawal form</li>
-            <li>The return address goods should be sent to</li>
-            <li>Who pays the return postage – say so plainly, customers look for this</li>
+            <li>Eine Belehrung ohne Rücksendeadresse setzt die 14-Tage-Frist nicht in Gang</li>
+            <li>Diese Texte hat kein Anwalt geprüft – für einen Shop, der echtes Geld abbucht, ist eine Durchsicht das Geld wert</li>
           </ul>
         </aside>
+        <!-- AUSFUELLEN:ENDE -->
 
           <div class="legal__sections">
           <section>
@@ -101,10 +100,71 @@
           <section>
             <h2>Returns</h2>
             <div>
-              <p>You have 14 days to send an item back, without giving a reason. Items should be unused and in their original packaging. Once the return arrives, you get your money back using the payment method you paid with.</p>
+              <p>You have 14 days to send an item back, without giving a reason. Items should be unused and in their original packaging. Once the return arrives, you get your money back using the payment method you paid with. Return postage is at your own cost.</p>
               <p>PDFs are excluded from returns as soon as the download has started – you will be asked to confirm this explicitly during checkout.</p>
+              <p>This is the short version. The binding wording is in the <a class="link-brand" href="#widerruf">Widerrufsbelehrung</a> below.</p>
             </div>
           </section>
+          <!-- Amtlicher Wortlaut: Anlage 1 und Anlage 2 zu Art. 246a § 1
+               Abs. 2 Satz 2 EGBGB. Angepasst ist ausschließlich die Anrede
+               ("du" statt "Sie"), weil der ganze Shop duzt – jede weitere
+               Umformulierung würde die Gesetzlichkeitsfiktion des Musters
+               kosten, und dann haftet der Anbieter für jede Lücke selbst.
+               § 8 der AGB verlinkt auf #widerruf: Die id bleibt, wo sie ist. -->
+          <section id="widerruf">
+            <h2>Widerrufsbelehrung · Right of withdrawal</h2>
+            <div>
+              <p>Für Verbraucher gilt die folgende Belehrung. Verbindlich ist der deutsche Wortlaut; die englische Fassung darunter ist eine Lesehilfe.</p>
+
+              <div class="legal__quote" lang="de">
+                <h3>Widerrufsrecht</h3>
+                <p>Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen.</p>
+                <p>Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem du oder ein von dir benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen hast bzw. hat. Umfasst deine Bestellung mehrere Waren, die getrennt geliefert werden, beträgt die Frist vierzehn Tage ab dem Tag, an dem du oder ein von dir benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen hast bzw. hat.</p>
+                <p>Um dein Widerrufsrecht auszuüben, musst du uns – <span class="fill">[Rücksendeadresse]</span>, Telefon <span class="fill">[Telefonnummer]</span>, E-Mail <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a> – mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über deinen Entschluss, diesen Vertrag zu widerrufen, informieren. Du kannst dafür das untenstehende Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.</p>
+                <p>Zur Wahrung der Widerrufsfrist reicht es aus, dass du die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absendest.</p>
+
+                <h3>Folgen des Widerrufs</h3>
+                <p>Wenn du diesen Vertrag widerrufst, haben wir dir alle Zahlungen, die wir von dir erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass du eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt hast), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über deinen Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das du bei der ursprünglichen Transaktion eingesetzt hast, es sei denn, mit dir wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden dir wegen dieser Rückzahlung Entgelte berechnet.</p>
+                <p>Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis du den Nachweis erbracht hast, dass du die Waren zurückgesandt hast, je nachdem, welches der frühere Zeitpunkt ist.</p>
+                <p>Du hast die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem du uns über den Widerruf dieses Vertrags unterrichtest, an <span class="fill">[Rücksendeadresse]</span> zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn du die Waren vor Ablauf der Frist von vierzehn Tagen absendest.</p>
+                <p>Du trägst die unmittelbaren Kosten der Rücksendung der Waren.</p>
+                <p>Du musst für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.</p>
+              </div>
+
+              <p class="legal__en" lang="en">You may withdraw from the contract within 14 days without giving a reason. The period starts on the day you – or a third party named by you who is not the carrier – take possession of the goods; where an order is delivered in several parts, it starts with the last item. To withdraw, send us a clear statement (letter or email) at the address above; the model form below may be used but is not mandatory. Sending the statement before the period ends is enough to meet the deadline. We refund all payments received, including the standard delivery cost, within 14 days of receiving your withdrawal, using the same means of payment you used, at no charge to you; we may withhold the refund until the goods are back with us or you have proved you sent them. Return the goods within 14 days of telling us. <strong>You bear the direct cost of returning the goods.</strong> You are only liable for any diminished value of the goods resulting from handling beyond what is necessary to establish their nature, characteristics and functioning.</p>
+
+              <!-- Kein Teil des amtlichen Musters, deshalb außerhalb des
+                   Zitatkastens: Die PDFs stehen in shop-data.js noch auf
+                   available:false, aber der Hinweis muss stehen, bevor sie
+                   jemand freischaltet. Deckungsgleich mit § 8 der AGB. -->
+              <p>Hinweis zu Rezeptsammlungen als PDF: Das Widerrufsrecht erlischt, sobald wir mit der Ausführung begonnen haben, nachdem du ausdrücklich zugestimmt hast, dass wir vor Ablauf der Widerrufsfrist damit beginnen, und du deine Kenntnis vom Erlöschen des Widerrufsrechts bestätigt hast (§ 356 Abs. 5 BGB). Diese Zustimmung wird im Warenkorb ausdrücklich abgefragt.</p>
+              <p class="legal__en" lang="en">For recipe collections delivered as PDFs, the right of withdrawal lapses once delivery has begun with your express prior consent and your acknowledgement that you thereby lose that right (§ 356 (5) BGB). You are asked for that consent in the cart.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Muster-Widerrufsformular · Model withdrawal form</h2>
+            <div>
+              <p>Du kannst das Formular ausfüllen und per E-Mail oder Post zurücksenden – vorgeschrieben ist es nicht, eine formlose eindeutige Erklärung genügt.</p>
+
+              <div class="legal__quote" lang="de">
+                <p>(Wenn du den Vertrag widerrufen willst, dann fülle bitte dieses Formular aus und sende es zurück.)</p>
+                <ul>
+                  <li>An <span class="fill">[Rücksendeadresse]</span>, E-Mail: <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a>:</li>
+                  <li>Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*)</li>
+                  <li>Bestellt am (*)/erhalten am (*)</li>
+                  <li>Name des/der Verbraucher(s)</li>
+                  <li>Anschrift des/der Verbraucher(s)</li>
+                  <li>Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)</li>
+                  <li>Datum</li>
+                </ul>
+                <p>(*) Unzutreffendes streichen.</p>
+              </div>
+
+              <p class="legal__en" lang="en">Complete this form and return it only if you wish to withdraw from the contract. Addressed to the seller named above: „I hereby give notice that I withdraw from my contract of sale of the following goods“, followed by the date ordered or received, your name and address, your signature (only if sent on paper) and the date.</p>
+            </div>
+          </section>
+
           <section>
             <h2>Something arrived damaged?</h2>
             <div>

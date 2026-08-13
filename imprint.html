@@ -1,11 +1,14 @@
 <!doctype html>
-<html lang="en">
+<!-- lang="de": Der Rechtstext dieser Seite ist deutsch und verbindlich, die
+     englische Übersetzung darunter trägt ihr eigenes lang="en". Kopf- und
+     Fußzeile bleiben englisch wie auf der übrigen Seite. -->
+<html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FDF8F1">
-  <title>Imprint | Constantinteck</title>
-  <meta name="description" content="Provider identification for Constantinteck.">
+  <title>Impressum | Constantinteck</title>
+  <meta name="description" content="Anbieterkennzeichnung nach § 5 DDG für Constantinteck.">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -71,39 +74,102 @@
         </nav>
 
         <article>
-          <h1>Imprint</h1>
-          <p class="legal__intro">Provider identification under § 5 DDG (formerly § 5 TMG).</p>
-        <!-- Sichtbare Warnung: eine unfertige Rechtsseite darf nie wie eine
-             fertige aussehen – ein leeres Impressum ist schlimmer als eine
-             offene Lücke. -->
+          <h1>Impressum</h1>
+          <p class="legal__intro">Anbieterkennzeichnung nach § 5 DDG · Provider identification under § 5 DDG (formerly § 5 TMG).</p>
+
+        <!-- Der Kasten verschwindet, sobald rechtsdaten.sh gelaufen ist. Eine
+             unfertige Rechtsseite darf nie wie eine fertige aussehen – ein
+             Impressum mit erfundener Anschrift ist schlimmer als eine sichtbare
+             Lücke, weil niemand die Lücke mehr sucht. -->
+        <!-- AUSFUELLEN:START -->
         <aside class="legal__missing" role="note">
-          <p>This page still needs your details</p>
+          <p>Diese Seite ist noch nicht vollständig</p>
           <p>
-            It is published but incomplete. Selling to consumers in Germany
-            without these details is a legal risk – fill them in before the shop
-            goes live.
+            Die orange markierten Stellen sind Platzhalter. Der Shop bucht
+            bereits echtes Geld ab – bis die Angaben stehen, fehlen dem
+            Impressum Pflichtangaben nach § 5 DDG. Trag die Werte in
+            <code>rechtsdaten.conf</code> ein und führe <code>./rechtsdaten.sh</code>
+            aus; danach sind sie hier und auf allen anderen Seiten eingesetzt.
           </p>
           <ul>
-            <li>Full name and postal address – a P.O. box is not enough, it has to be an address where post can be served</li>
-            <li>Email address and a second way to reach you quickly (phone or a contact form)</li>
-            <li>No VAT identification number under § 27a UStG is needed – the small-business rule applies</li>
-            <li>Done: the small-business note (§ 19 UStG) is on every page and in the terms</li>
-            <li>Person responsible for the content under § 18 (2) MStV, if you publish editorial content</li>
+            <li>Vollständiger Name und ladungsfähige Anschrift – ein Postfach genügt nicht</li>
+            <li>Eine E-Mail-Adresse, die tatsächlich gelesen wird, und ein zweiter Kontaktweg</li>
+            <li>Keine USt-IdNr. nötig: Als Kleinunternehmer nach § 19 UStG gibt es keine</li>
           </ul>
         </aside>
+        <!-- AUSFUELLEN:ENDE -->
 
           <div class="legal__sections">
           <section>
-            <h2>Contact</h2>
+            <h2>Anbieter · Provider</h2>
             <div>
-              <p>Email: <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a></p>
-              <p>The address above is a placeholder and has to be replaced with your real details before the shop takes orders.</p>
+              <p>
+                <span class="fill">[Vor- und Nachname]</span><br>
+                <span class="fill">[Straße und Hausnummer]</span><br>
+                <span class="fill">[PLZ und Ort]</span><br>
+                Deutschland
+              </p>
+              <p>Einzelunternehmen. Es besteht keine Eintragung im Handelsregister.</p>
+              <p class="legal__en" lang="en">Sole trader, not entered in the commercial register. „Constantinteck“ is a trading name, not a legal entity.</p>
             </div>
           </section>
+
           <section>
-            <h2>Online dispute resolution</h2>
+            <h2>Kontakt · Contact</h2>
             <div>
-              <p>The EU Commission provides a platform for online dispute resolution at <a class="link-brand" href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer">ec.europa.eu/consumers/odr</a>. State here whether you are willing or obliged to take part in dispute resolution proceedings before a consumer arbitration board.</p>
+              <p>
+                E-Mail: <a class="link-brand" href="mailto:hello@constantinteck.example">hello@constantinteck.example</a><br>
+                Telefon: <span class="fill">[Telefonnummer]</span>
+              </p>
+              <p>Anfragen zu Bestellungen, Widerruf und Datenschutz gehen an dieselbe Adresse und werden in der Regel innerhalb von zwei Werktagen beantwortet.</p>
+              <p class="legal__en" lang="en">Questions about orders, withdrawal and data protection all go to the same address, normally answered within two working days.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Umsatzsteuer · VAT</h2>
+            <div>
+              <!-- Kleinunternehmer haben keine USt-IdNr. – das ausdrücklich zu
+                   sagen ist besser als das Feld wegzulassen, sonst sucht der
+                   Leser nach einer Angabe, die es nicht geben kann. -->
+              <p>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Eine Umsatzsteuer-Identifikationsnummer nach § 27a UStG besteht deshalb nicht.</p>
+              <p class="legal__en" lang="en">No VAT is charged under the German small-business rule (§ 19 UStG). Consequently there is no VAT identification number.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Verantwortlich für den Inhalt · Editorial responsibility</h2>
+            <div>
+              <p>Verantwortlich für journalistisch-redaktionelle Inhalte nach § 18 Abs. 2 MStV:</p>
+              <p>
+                <span class="fill">[Vor- und Nachname]</span>,
+                <span class="fill">[Straße und Hausnummer]</span>,
+                <span class="fill">[PLZ und Ort]</span>
+              </p>
+              <p class="legal__en" lang="en">Responsible for editorial content under § 18 (2) of the German Interstate Media Treaty: the person named above.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Verbraucherstreitbeilegung · Consumer dispute resolution</h2>
+            <div>
+              <!-- Die ODR-Plattform der EU-Kommission wurde zum 20. Juli 2025
+                   abgeschaltet (Verordnung (EU) 2024/3228). Der frühere
+                   Pflichtlink darauf ist seitdem ein toter Link – und ein
+                   Impressum, das auf eine nicht mehr existierende Stelle
+                   verweist, ist selbst wieder angreifbar. Deshalb steht hier
+                   nur noch die Erklärung nach § 36 VSBG. -->
+              <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen (§ 36 VSBG).</p>
+              <p>Die frühere Online-Streitbeilegungsplattform der Europäischen Kommission wurde zum 20. Juli 2025 eingestellt; ein Verweis darauf entfällt daher.</p>
+              <p class="legal__en" lang="en">We are neither willing nor obliged to take part in dispute resolution proceedings before a consumer arbitration board. The European Commission’s online dispute resolution platform was discontinued on 20 July 2025, so no link to it is given.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Bilder und Rezepte · Images and recipes</h2>
+            <div>
+              <p>Alle Rezeptfotos und Rezepttexte stammen von <span class="fill">[Vor- und Nachname]</span> und dürfen ohne Zustimmung nicht weiterverwendet werden.</p>
+              <p class="legal__en" lang="en">All recipe photos and texts are the author’s own and may not be reused without permission.</p>
             </div>
           </section>
           </div>
