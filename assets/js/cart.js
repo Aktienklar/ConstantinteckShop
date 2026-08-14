@@ -102,10 +102,17 @@
       write([]);
     },
 
-    /** Gesamtzahl der Artikel – das, was im Header steht. */
+    /**
+     * Gesamtzahl der Artikel – das, was im Header steht.
+     *
+     * Zählt nur, was es noch zu kaufen gibt. Wer die Schürze und daneben ein
+     * inzwischen aus dem Sortiment genommenes Produkt im Warenkorb liegen
+     * hatte, bekam sonst "2 items" über einer einzigen Zeile – die Kasse und
+     * die Summe rechnen beide nur mit dem, was im Katalog steht.
+     */
     count: function () {
       return read().reduce(function (sum, line) {
-        return sum + line.quantity;
+        return SHOP_PRODUCTS[line.productSlug] ? sum + line.quantity : sum;
       }, 0);
     },
 

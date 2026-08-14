@@ -30,7 +30,7 @@
       root.innerHTML =
         '<div class="empty-state">' +
         "<p>Your cart is empty</p>" +
-        '<p class="muted">An apron, dough scrapers or a recipe collection as a PDF – have a look around the shop.</p>' +
+        '<p class="muted">The linen apron from the videos is waiting in the shop.</p>' +
         '<a class="btn btn--primary" href="shop.html" style="margin-top:1.5rem">Go to shop</a>' +
         "</div>";
       return;

@@ -14,6 +14,9 @@
  * Jeder Wert muss dem entsprechen, was du tatsächlich leisten kannst.
  */
 
+/* Ein einziges Produkt. Der Warenkorb, die Kaufbox und cart-page.js kommen mit
+   beliebig vielen Einträgen zurecht – wer wieder etwas verkaufen will, legt es
+   hier an und in worker/src/catalog.js. Beide Listen müssen übereinstimmen. */
 var SHOP_PRODUCTS = {
   "linen-apron": {
     slug: "linen-apron",
@@ -25,36 +28,6 @@ var SHOP_PRODUCTS = {
       { id: "natural", label: "Natural" },
       { id: "berry", label: "Berry red" }
     ]
-  },
-  "dough-scraper-set": {
-    slug: "dough-scraper-set",
-    title: "Dough scraper set (3 pieces)",
-    type: "physical",
-    price: 14.9,
-    image: "https://placehold.co/800x800/F6ECDD/3B2A20?text=Scraper+Set",
-    variants: []
-  },
-  /* available:false = ansehen ja, kaufen nein. Verkauft wird vorerst nur die
-     Schürze. Die PDFs brauchen erst noch Dateien, Mailversand und die
-     Widerrufsbelehrung – bis dahin darf sie niemand bezahlen können.
-     Dasselbe Feld steht in worker/src/catalog.js; beides muss übereinstimmen. */
-  "baking-book-pdf": {
-    slug: "baking-book-pdf",
-    title: "Sweet & Simple – The Baking Book (PDF)",
-    type: "digital",
-    available: false,
-    price: 19.9,
-    image: "https://placehold.co/800x1000/D4517A/FFFFFF?text=Baking+Book+PDF",
-    variants: []
-  },
-  "weeknight-pdf": {
-    slug: "weeknight-pdf",
-    title: "Weeknight Kitchen – 30 everyday dishes (PDF)",
-    type: "digital",
-    available: false,
-    price: 12.9,
-    image: "https://placehold.co/800x1000/4F7C4A/FFFFFF?text=Weeknight+PDF",
-    variants: []
   }
 };
 

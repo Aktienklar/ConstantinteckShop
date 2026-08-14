@@ -13,16 +13,17 @@
 
 export const CURRENCY = "eur";
 
-/**
- * txcd_10302000 = "Digital Books – downloaded – non subscription – with
- * permanent rights". Stripe nennt Kochbücher in der Beschreibung dieses Codes
- * ausdrücklich. In Deutschland gilt dafür der ermäßigte Satz von 7 % – mit dem
- * allgemeinen Code für elektronische Dienstleistungen wären es 19 %.
- */
-const TAX_DIGITAL_BOOK = "txcd_10302000";
 /** txcd_99999999 = "General – Tangible Goods". */
 const TAX_TANGIBLE = "txcd_99999999";
 
+/**
+ * Verkauft wird nur die Schürze. Kommt wieder eine Rezeptsammlung als PDF
+ * dazu, gehört sie hier und in assets/js/shop-data.js angelegt – mit
+ * type:"digital", einem file-Schlüssel für den R2-Bucket, dem Steuercode
+ * txcd_10302000 ("Digital Books – downloaded – non subscription – with
+ * permanent rights", in Deutschland ermäßigte 7 % statt 19 %), und den in
+ * wrangler.toml auskommentierten Blöcken für R2 und KV.
+ */
 export const PRODUCTS = {
   "linen-apron": {
     title: "Linen apron »Dough Love«",
@@ -33,38 +34,6 @@ export const PRODUCTS = {
       natural: "Natural",
       berry: "Berry red"
     }
-  },
-  "dough-scraper-set": {
-    title: "Dough scraper set (3 pieces)",
-    type: "physical",
-    amount: 1490,
-    taxCode: TAX_TANGIBLE,
-    variants: {}
-  },
-  /* Die beiden PDFs sind vorbereitet, aber NICHT verkäuflich: available:false.
-     Verkauft wird vorerst nur die Schürze. Bevor eine PDF freigeschaltet wird,
-     muss dreierlei stehen – die Datei im R2-Bucket, der Mailversand für den
-     Download-Link, und das Widerrufs-Häkchen im Warenkorb. Sonst zahlt jemand
-     und bekommt nichts. Zum Freischalten: available auf true setzen und in
-     wrangler.toml die Blöcke für R2 und KV wieder einkommentieren. */
-  "baking-book-pdf": {
-    title: "Sweet & Simple – The Baking Book (PDF)",
-    type: "digital",
-    available: false,
-    amount: 1990,
-    taxCode: TAX_DIGITAL_BOOK,
-    variants: {},
-    /** Objektschlüssel im R2-Bucket. */
-    file: "sweet-and-simple-baking-book.pdf"
-  },
-  "weeknight-pdf": {
-    title: "Weeknight Kitchen – 30 everyday dishes (PDF)",
-    type: "digital",
-    available: false,
-    amount: 1290,
-    taxCode: TAX_DIGITAL_BOOK,
-    variants: {},
-    file: "weeknight-kitchen.pdf"
   }
 };
 

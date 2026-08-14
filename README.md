@@ -144,14 +144,21 @@ and `worker/src/catalog.js`. All three must agree.
 ```bash
 cd worker
 npm install
-wrangler r2 bucket create constantinteck-pdfs
-wrangler kv namespace create ORDERS          # ID in wrangler.toml eintragen
-wrangler r2 object put constantinteck-pdfs/sweet-and-simple-baking-book.pdf --file=...
 wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_WEBHOOK_SECRET
 wrangler secret put DOWNLOAD_SECRET          # openssl rand -base64 32
 wrangler secret put RESEND_API_KEY           # optional
 wrangler deploy
+```
+
+Only the apron is on sale, so R2 and KV are not needed. Should a recipe
+collection as a PDF come back, add these before it goes live – and uncomment
+the matching blocks in `worker/wrangler.toml`:
+
+```bash
+wrangler r2 bucket create constantinteck-pdfs
+wrangler kv namespace create ORDERS          # ID in wrangler.toml eintragen
+wrangler r2 object put constantinteck-pdfs/<file>.pdf --file=...
 ```
 
 Then put the deployed address into `WORKER_BASE` in `worker/wrangler.toml` and
