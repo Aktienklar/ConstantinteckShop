@@ -110,35 +110,47 @@
     </section>
 
     <div class="container section">
-      <section class="shop-section" aria-labelledby="physical">
-        <div class="shop-section__head">
-          <span class="shop-section__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.8 3.4 6.4V19a2 2 0 0 0 2 2h13.2a2 2 0 0 0 2-2V6.4L18 2.8Z"/><path d="M3.4 6.4h17.2"/><path d="M16 10.2a4 4 0 0 1-8 0"/></svg></span>
-          <div>
-            <h2 id="physical">For the kitchen</h2>
-            <p class="shop-section__hint">Shipped to Germany and Austria in 2–4 working days.</p>
-          </div>
-        </div>
-
-        <!-- Feste drei Spalten. Die Spaltenzahl aus der Produktanzahl
-             abzuleiten hat einen Abschnitt mit zwei Produkten auf halbe
-             Bildschirmbreite aufgeblasen. -->
-        <div class="grid grid--products">
-<div class="rise" style="animation-delay:0ms;height:100%">
-        <a class="card product-card lift-3d" href="shop/linen-apron.html" style="height:100%">
-          <div class="product-card__media">
+      <!-- Ein Artikel, also kein Raster und keine Rubrik darüber: Eine
+           Überschrift "For the kitchen" über einer einzelnen Karte kündigt
+           eine Auswahl an, die es nicht gibt. -->
+      <section class="showcase rise" aria-labelledby="apron">
+        <div class="showcase__media">
+          <!-- Der Bildlink ist für die Tastatur und den Screenreader
+               ausgeblendet: Die Überschrift daneben führt ans selbe Ziel, zwei
+               Sprungmarken auf dasselbe Produkt sind nur Umweg. Das Abzeichen
+               steht deshalb außerhalb – sonst bliebe es ungelesen. -->
+          <a href="shop/linen-apron.html" tabindex="-1" aria-hidden="true">
             <img src="https://placehold.co/800x800/E4CFB2/3B2A20?text=Linen+Apron" alt="" loading="lazy">
-            <span class="product-card__badge">Shipped</span>
+          </a>
+          <span class="product-card__badge">Shipped in 2–4 working days</span>
+        </div>
+        <div class="showcase__body">
+          <p class="eyebrow">The apron from the videos</p>
+          <h2 class="showcase__title" id="apron">
+            <a href="shop/linen-apron.html">Linen apron »Dough Love«</a>
+          </h2>
+          <p class="showcase__text">
+            Heavy washed linen, an adjustable neck strap and a front pocket big
+            enough for a scraper, your phone and a towel. Softer with every wash.
+          </p>
+
+          <ul class="check-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>100 % washed linen, 240 gsm</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Unisex cut, one size, machine washable at 40 °C</span></li>
+          </ul>
+
+          <ul class="showcase__colours">
+            <li><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Natural</li>
+            <li><span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span>Berry red</li>
+          </ul>
+
+          <div class="showcase__foot">
+            <p class="showcase__price">
+              €44.90
+              <span>No VAT (§ 19 UStG) · plus €4.90 shipping</span>
+            </p>
+            <a class="btn btn--primary" href="shop/linen-apron.html">Choose a colour</a>
           </div>
-          <div class="product-card__body">
-            <h3>Linen apron »Dough Love«</h3>
-            <p class="product-card__text">The apron from my videos – heavy linen, a big pocket, softer with every wash.</p>
-            <div class="product-card__foot">
-              <span class="product-card__price">€44.90</span>
-            <span class="product-card__swatches" aria-hidden="true"><span class="swatch" style="background-color:#E4CFB2" title="Natural"></span><span class="swatch" style="background-color:#D4517A" title="Berry red"></span></span>
-            </div>
-          </div>
-        </a>
-</div>
         </div>
       </section>
 

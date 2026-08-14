@@ -170,24 +170,48 @@
               linen apron I wear in every video.
             </p>
           </div>
-          <a class="btn btn--primary" href="shop.html">Go to shop</a>
+          <!-- Nur ein Textlink: Der eigentliche Knopf steht unten im
+               Schaufenster, zwei Primärknöpfe nebeneinander streiten sich. -->
+          <a class="link-brand" href="shop.html">Go to shop</a>
         </div>
 
-        <div class="grid grid--products mt-6">
-        <a class="card product-card lift-3d" href="shop/linen-apron.html" style="height:100%">
-          <div class="product-card__media">
-            <img src="https://placehold.co/800x800/E4CFB2/3B2A20?text=Linen+Apron" alt="" loading="lazy">
-            <span class="product-card__badge">Shipped</span>
+        <!-- Ein Artikel bekommt die ganze Breite statt eine Karte neben zwei
+             leeren Rasterspalten. Gleicher Baustein wie auf shop.html. -->
+        <div class="showcase mt-6">
+          <div class="showcase__media">
+            <a href="shop/linen-apron.html" tabindex="-1" aria-hidden="true">
+              <img src="https://placehold.co/800x800/E4CFB2/3B2A20?text=Linen+Apron" alt="" loading="lazy">
+            </a>
+            <span class="product-card__badge">Shipped in 2–4 working days</span>
           </div>
-          <div class="product-card__body">
-            <h3>Linen apron »Dough Love«</h3>
-            <p class="product-card__text">The apron from my videos – heavy linen, a big pocket, softer with every wash.</p>
-            <div class="product-card__foot">
-              <span class="product-card__price">€44.90</span>
-            <span class="product-card__swatches" aria-hidden="true"><span class="swatch" style="background-color:#E4CFB2" title="Natural"></span><span class="swatch" style="background-color:#D4517A" title="Berry red"></span></span>
+          <div class="showcase__body">
+            <p class="eyebrow">The apron from the videos</p>
+            <h3 class="showcase__title">
+              <a href="shop/linen-apron.html">Linen apron »Dough Love«</a>
+            </h3>
+            <p class="showcase__text">
+              Heavy washed linen, an adjustable neck strap and a front pocket big
+              enough for a scraper, your phone and a towel. Softer with every wash.
+            </p>
+
+            <ul class="check-list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>100 % washed linen, 240 gsm</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Unisex cut, one size, machine washable at 40 °C</span></li>
+            </ul>
+
+            <ul class="showcase__colours">
+              <li><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Natural</li>
+              <li><span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span>Berry red</li>
+            </ul>
+
+            <div class="showcase__foot">
+              <p class="showcase__price">
+                €44.90
+                <span>No VAT (§ 19 UStG) · plus €4.90 shipping</span>
+              </p>
+              <a class="btn btn--primary" href="shop/linen-apron.html">Choose a colour</a>
             </div>
           </div>
-        </a>
         </div>
       </div>
     </section>
@@ -373,17 +397,25 @@
       </div>
     </section>
 
-    <!-- Abschluss: ein Produkt, groß, am Ende der Seite -->
+    <!-- Abschluss, vier Bildschirme unter dem Schaufenster. Bewusst andere
+         Sätze: Dort stehen Material und Maße, hier steht, warum es genau
+         einen Artikel gibt. Zweimal dieselbe Stichpunktliste läse sich wie
+         ein Versehen. -->
     <section class="container section">
       <div class="feature">
         <div>
-          <p class="feature__eyebrow">The one thing I sell</p>
-          <h2 style="margin-top:.5rem">Linen apron »Dough Love«</h2>
-          <p class="feature__text">The apron from my videos – heavy linen, a big pocket, softer with every wash.</p>
+          <p class="feature__eyebrow">One product, that's it</p>
+          <h2 style="margin-top:.5rem">Why there's only an apron</h2>
+          <p class="feature__text">
+            Every recipe here stays free – the shop isn't what pays for this
+            site, and it isn't meant to grow into a department store. There is
+            one thing I actually use every day and can honestly recommend, so
+            that is the one thing I sell.
+          </p>
           <ul class="feature__list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>100 % washed linen, 240 gsm</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Adjustable neck strap, one size</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Natural or Berry red, machine washable at 40 °C</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>The apron from every video, in Natural or Berry red</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Ships to Germany and Austria in 2–4 working days</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>14 days to change your mind, no reason needed</span></li>
           </ul>
           <div class="feature__actions">
             <a class="btn btn--primary" href="shop/linen-apron.html">See it for €44.90</a>
