@@ -18,12 +18,18 @@
    beliebig vielen Einträgen zurecht – wer wieder etwas verkaufen will, legt es
    hier an und in worker/src/catalog.js. Beide Listen müssen übereinstimmen. */
 var SHOP_PRODUCTS = {
+  /* Der Slug heißt weiter "linen-apron", obwohl die Schürze aus Waffelpiqué
+     ist und nicht aus Leinen. Das ist Absicht: Am Slug hängen die Adresse
+     shop/linen-apron.html, jeder geteilte Link darauf und die Warenkörbe im
+     localStorage der Besucher. Ein Umbenennen macht alte Links zu 404 und
+     leert offene Warenkörbe – für einen Namen, den nur die Adresszeile
+     zeigt. Der Slug ist eine Kennung, kein Text für Kunden. */
   "linen-apron": {
     slug: "linen-apron",
-    title: "Linen apron »Dough Love«",
+    title: "Waffle apron »Dough Love«",
     type: "physical",
     price: 44.9,
-    image: "https://placehold.co/800x800/E4CFB2/3B2A20?text=Linen+Apron",
+    image: "https://placehold.co/800x800/E4CFB2/3B2A20?text=Waffle+Apron",
     variants: [
       { id: "natural", label: "Natural" },
       { id: "berry", label: "Berry red" }

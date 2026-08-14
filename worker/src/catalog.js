@@ -25,8 +25,11 @@ const TAX_TANGIBLE = "txcd_99999999";
  * wrangler.toml auskommentierten Blöcken für R2 und KV.
  */
 export const PRODUCTS = {
+  /* "linen-apron" ist ein historischer Slug – die Schürze ist aus Waffelpiqué.
+     Er muss zeichengleich zu assets/js/shop-data.js bleiben, sonst weist die
+     Kasse jede Bestellung mit "Unknown product" ab. Siehe die Begründung dort. */
   "linen-apron": {
-    title: "Linen apron »Dough Love«",
+    title: "Waffle apron »Dough Love«",
     type: "physical",
     amount: 4490,
     taxCode: TAX_TANGIBLE,
