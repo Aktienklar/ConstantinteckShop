@@ -131,13 +131,20 @@
               <!-- Diese Seite setzt tatsächlich keine Cookies. Deshalb steht
                    hier kein Banner: Ein Einwilligungsdialog, der nichts
                    abfragt, wozu eine Einwilligung nötig wäre, ist keine
-                   Vorsichtsmaßnahme, sondern eine Falschangabe. Wenn später
-                   Analyse, Karten oder echte Video-Embeds dazukommen, ändert
-                   sich das – dann gehört ein Banner davor. -->
-              <p><strong>Diese Website setzt keine Cookies.</strong> Es gibt keinen Cookie-Banner, weil es nichts gibt, wozu du einwilligen müsstest.</p>
+                   Vorsichtsmaßnahme, sondern eine Falschangabe.
+
+                   Der Instagram-Player unter den Rezepten setzt welche – aber
+                   erst nach einem Klick auf den Abspielknopf, und der Klick
+                   ist die Einwilligung. Genau deshalb ist er als
+                   Zwei-Klick-Lösung gebaut (assets/js/video-embed.js). Wer ihn
+                   je fest einbaut, damit er beim Seitenaufruf lädt, braucht ab
+                   diesem Tag ein Banner davor – und muss die beiden folgenden
+                   Absätze umschreiben. Dasselbe gilt für Analyse oder Karten. -->
+              <p><strong>Diese Website setzt von sich aus keine Cookies.</strong> Es gibt keinen Cookie-Banner, weil es beim Aufruf der Seite nichts gibt, wozu du einwilligen müsstest.</p>
+              <p>Eine Ausnahme gibt es, und sie liegt in deiner Hand: Startest du unter einem Rezept das Instagram-Video, setzt dessen Player Cookies von Instagram. Bis zu diesem Klick wird nichts davon geladen. Näheres in Abschnitt 7.</p>
               <p>Gespeichert wird im Browser nur eines: dein Warenkorb. Er liegt im lokalen Speicher (<em>localStorage</em>) deines eigenen Geräts, wird nie an einen Server übertragen und ist für uns nicht einsehbar. Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG – die Speicherung ist unbedingt erforderlich, damit der Warenkorb den Seitenwechsel übersteht, und deshalb einwilligungsfrei. Du löschst ihn, indem du im Warenkorb auf „Empty cart“ klickst oder die Websitedaten in deinem Browser löschst.</p>
               <p>Auf der Bezahlseite von Stripe gilt die Datenschutzerklärung von Stripe; dort werden Cookies gesetzt, die für die Zahlungsabwicklung und die Betrugsprävention erforderlich sind.</p>
-              <p class="legal__en" lang="en">This website sets no cookies, which is why there is no cookie banner – there is nothing to consent to. The only thing stored in your browser is your cart, held in your device’s local storage, never transmitted to a server and not visible to us. It is strictly necessary for the cart to survive a page change (§ 25 (2) no. 2 TDDDG) and therefore exempt from consent. Stripe’s own privacy policy applies on the payment page.</p>
+              <p class="legal__en" lang="en">This website sets no cookies of its own, which is why there is no cookie banner – there is nothing to consent to when the page loads. The one exception is under your control: starting an Instagram video under a recipe loads its player, which sets Instagram cookies (see section 7). The only thing stored in your browser is your cart, held in your device’s local storage, never transmitted to a server and not visible to us. It is strictly necessary for the cart to survive a page change (§ 25 (2) no. 2 TDDDG) and therefore exempt from consent. Stripe’s own privacy policy applies on the payment page.</p>
             </div>
           </section>
 
@@ -190,8 +197,13 @@
                    sieht dabei die IP jedes Besuchers. Das gehört benannt,
                    solange es so ist – und es sollte nicht so bleiben. -->
               <p>Die Produktabbildungen im Shop sind derzeit Platzhalter und werden vom Dienst placehold.co geladen. Dabei erfährt dessen Server deine IP-Adresse. Wir haben darauf keinen Einfluss und erhalten von dort keine Daten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (Darstellung des Angebots); die Bilder werden durch eigene Aufnahmen ersetzt, sobald sie vorliegen.</p>
-              <p>Alle Rezeptfotos liegen auf unserem eigenen Server. Videos sind nicht eingebettet. Die Verweise auf Instagram, TikTok und YouTube in der Fußzeile sowie die Teilen-Schaltflächen unter den Rezepten sind gewöhnliche Links: Zu den jeweiligen Anbietern werden Daten erst übertragen, wenn du sie anklickst. Dann gilt deren Datenschutzerklärung.</p>
-              <p class="legal__en" lang="en">Product images are currently placeholders loaded from placehold.co, whose server therefore sees your IP address; they will be replaced by our own photographs. All recipe photos are hosted on our own server and no videos are embedded. The social links in the footer and the share buttons under each recipe are ordinary links – data reaches those providers only once you click.</p>
+              <p>Alle Rezeptfotos liegen auf unserem eigenen Server. Die Verweise auf Instagram, TikTok und YouTube in der Fußzeile sowie die Teilen-Schaltflächen unter den Rezepten sind gewöhnliche Links: Zu den jeweiligen Anbietern werden Daten erst übertragen, wenn du sie anklickst. Dann gilt deren Datenschutzerklärung.</p>
+              <!-- Zwei-Klick-Lösung: Der Instagram-Player wird erst nach dem
+                   Klick geladen. Solange das so bleibt, ist dieser Absatz
+                   richtig. Wer den Player fest einbaut, muss ihn umschreiben
+                   und braucht eine Einwilligung vor dem Laden. -->
+              <p>Unter manchen Rezepten steht das zugehörige Video von Instagram (Meta Platforms Ireland Ltd.). Beim Aufruf der Seite wird davon <b>nichts</b> geladen – zu sehen ist zunächst nur ein Foto von unserem eigenen Server. Erst wenn du auf den Abspielknopf drückst, wird der Player von Instagram nachgeladen. Ab diesem Moment erfährt Instagram deine IP-Adresse, Angaben zu deinem Gerät und Browser und, dass du diese Seite aufgerufen hast; bist du bei Instagram angemeldet, kann der Aufruf deinem Konto zugeordnet werden. Meta verarbeitet die Daten auch in den USA. Rechtsgrundlage ist deine Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO, die du mit dem Klick auf den Abspielknopf erteilst und für die Zukunft jederzeit widerrufen kannst, indem du ihn nicht mehr benutzt. Was Instagram anschließend mit den Daten tut, entzieht sich unserem Einfluss: <a href="https://privacycenter.instagram.com/policy" target="_blank" rel="noreferrer">privacycenter.instagram.com/policy</a>.</p>
+              <p class="legal__en" lang="en">Product images are currently placeholders loaded from placehold.co, whose server therefore sees your IP address; they will be replaced by our own photographs. All recipe photos are hosted on our own server. The social links in the footer and the share buttons under each recipe are ordinary links – data reaches those providers only once you click. Some recipes show the matching Instagram video: nothing is loaded from Instagram when the page opens – you first see a photo from our own server, and the player is fetched only after you press play. From that moment Instagram receives your IP address, device and browser data and the fact that you opened this page, and Meta also processes it in the USA. The legal basis is your consent under Art. 6(1)(a) GDPR, given by pressing play.</p>
             </div>
           </section>
 

@@ -86,15 +86,16 @@
         </dl>
       </header>
 
-      <!-- Video – auf großen Bildschirmen gedeckelt, die Videos sind hochkant.
-           Solange kein echtes Embed eingetragen ist, steht hier ein Platzhalter
-           mit demselben Seitenverhältnis: so springt das Layout später nicht. -->
+      <!-- Video. Bis zum Klick liegt hier nur das eigene Rezeptfoto – zu
+           Instagram geht keine einzige Anfrage, solange niemand auf Abspielen
+           drückt. Welches Reel zu diesem Rezept gehört, steht in
+           assets/js/recipe-videos.js; ohne Eintrag bleibt das Foto ohne
+           Abspielknopf stehen. Diese Stelle hier muss dafür nie geändert
+           werden. -->
       <div class="recipe-video">
-        <div class="video-placeholder">
-          <span class="video-placeholder__play">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-          </span>
-          <p>Placeholder for the TikTok embed</p>
+        <div class="video-embed" data-video-embed data-slug="yellow-watermelon-sorbet">
+          <img class="video-embed__poster" src="../assets/img/yellow-watermelon-sorbet.jpg" alt="Yellow Watermelon Sorbet">
+          <p class="video-embed__note">Video coming soon</p>
         </div>
       </div>
 
@@ -341,5 +342,7 @@
   <script src="../assets/js/cart.js"></script>
   <script src="../assets/js/product.js"></script>
   <script src="../assets/js/share.js"></script>
+  <script src="../assets/js/recipe-videos.js"></script>
+  <script src="../assets/js/video-embed.js"></script>
 </body>
 </html>

@@ -57,6 +57,30 @@ its `shop/<slug>.html`, in `assets/js/shop-data.js` (what the cart adds up) and
 in `worker/src/catalog.js` (what the customer is actually charged, in cents).
 Change all three, otherwise the shop shows one price and bills another.
 
+### Adding the video to a recipe
+
+Open `assets/js/recipe-videos.js`, find the recipe's line and paste the
+Instagram link between the quotation marks:
+
+```js
+"peach-sorbet": "https://www.instagram.com/reel/DAbc123XyZ/",
+```
+
+That is the whole job – the recipe page itself is never touched. Get the link
+from the app via *Share → Copy link*, or from the address bar. Anything after
+the code (`?igsh=…`) may stay.
+
+Empty entry = the recipe photo stays put without a play button, and nothing is
+requested from Instagram.
+
+**Why the player only loads on click.** Until someone presses play, the page
+shows nothing but our own photo. A permanently embedded player would load Meta
+code and set cookies for every visitor, including those who never watch – in
+Germany that needs consent before it loads, which means a banner. The click is
+the consent, so there is none. Section 2 and section 7 of `privacy.html`
+describe exactly this behaviour; if the player is ever wired to load on page
+load, both sections become false and a consent banner has to come first.
+
 ### Adding a recipe
 
 1. Copy an existing recipe file, e.g.
