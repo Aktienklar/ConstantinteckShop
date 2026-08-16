@@ -17,12 +17,13 @@ export const CURRENCY = "eur";
 const TAX_TANGIBLE = "txcd_99999999";
 
 /**
- * Verkauft wird nur die Schürze. Kommt wieder eine Rezeptsammlung als PDF
- * dazu, gehört sie hier und in assets/js/shop-data.js angelegt – mit
- * type:"digital", einem file-Schlüssel für den R2-Bucket, dem Steuercode
- * txcd_10302000 ("Digital Books – downloaded – non subscription – with
- * permanent rights", in Deutschland ermäßigte 7 % statt 19 %), und den in
- * wrangler.toml auskommentierten Blöcken für R2 und KV.
+ * Verkauft werden die beiden Schürzen und das Set aus beiden. Kommt wieder
+ * eine Rezeptsammlung als PDF dazu, gehört sie hier und in
+ * assets/js/shop-data.js angelegt – mit type:"digital", einem file-Schlüssel
+ * für den R2-Bucket, dem Steuercode txcd_10302000 ("Digital Books –
+ * downloaded – non subscription – with permanent rights", in Deutschland
+ * ermäßigte 7 % statt 19 %), und den in wrangler.toml auskommentierten
+ * Blöcken für R2 und KV.
  */
 export const PRODUCTS = {
   /* "linen-apron" ist ein historischer Slug – die Schürze ist aus Waffelpiqué.
@@ -36,6 +37,34 @@ export const PRODUCTS = {
     variants: {
       natural: "Natural",
       berry: "Berry red"
+    }
+  },
+
+  "kids-apron": {
+    title: "Kids' waffle apron »Little Dough Love«",
+    type: "physical",
+    amount: 3490,
+    taxCode: TAX_TANGIBLE,
+    variants: {
+      natural: "Natural",
+      berry: "Berry red"
+    }
+  },
+
+  /* Eigene Position mit eigenem Preis statt eines Rabatts auf zwei Zeilen –
+     die Begründung steht bei apron-set in assets/js/shop-data.js. Wichtig für
+     das Packen der Bestellung: In der Variante stecken beide Farben, und
+     genau dieser Text steht später auf der Stripe-Bestellung. */
+  "apron-set": {
+    title: "Apron set »Dough Love« (adult + kids)",
+    type: "physical",
+    amount: 7490,
+    taxCode: TAX_TANGIBLE,
+    variants: {
+      "natural-natural": "Both Natural",
+      "berry-berry": "Both Berry red",
+      "natural-berry": "Adult Natural · Kids Berry",
+      "berry-natural": "Adult Berry · Kids Natural"
     }
   }
 };

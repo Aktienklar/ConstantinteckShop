@@ -28,7 +28,7 @@ index.html               Start page
 recipes.html             Recipe overview with search and filters
 recipes/<slug>.html      One file per recipe (10)
 shop.html                Shop overview
-shop/<slug>.html         One file per product (4)
+shop/<slug>.html         One file per product (3)
 cart.html                Cart
 about.html               About
 imprint.html  privacy.html  terms.html  shipping-returns.html
@@ -88,6 +88,22 @@ Change all three, otherwise the shop shows one price and bills another.
    disagrees with step 2, the customer is charged something other than what the
    cart showed them.
 4. Add a card for it in `shop.html`, and wherever else it should appear.
+
+### Bundles
+
+A bundle is an ordinary product with its own price, not a discount rule – see
+`apron-set`. Nothing in the cart or the checkout adds two items together, so a
+bundle can never cost something different depending on the order things were
+added in. The trade-off: the price of the bundle does **not** follow the prices
+of its parts. Change €44.90 or €34.90 and you have to decide what €74.90
+becomes – in `shop-data.js`, `worker/src/catalog.js` and the pages that print
+it (`shop/apron-set.html`, `shop.html`, `index.html`, `about.html`, and the
+announcement bar on every page).
+
+Because one product has only one list of variants, the set asks for the two
+colours as one combined choice (`natural-berry` = adult Natural, kids Berry).
+Four combinations still fit on a phone; with a third colour there would be
+nine, and the buy box would need two separate choices instead of one list.
 
 ## Language
 
@@ -151,7 +167,7 @@ wrangler secret put RESEND_API_KEY           # optional
 wrangler deploy
 ```
 
-Only the apron is on sale, so R2 and KV are not needed. Should a recipe
+Only the two aprons and the set are on sale, so R2 and KV are not needed. Should a recipe
 collection as a PDF come back, add these before it goes live – and uncomment
 the matching blocks in `worker/wrangler.toml`:
 

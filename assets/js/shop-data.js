@@ -14,8 +14,8 @@
  * Jeder Wert muss dem entsprechen, was du tatsächlich leisten kannst.
  */
 
-/* Ein einziges Produkt. Der Warenkorb, die Kaufbox und cart-page.js kommen mit
-   beliebig vielen Einträgen zurecht – wer wieder etwas verkaufen will, legt es
+/* Drei Positionen, aber nur zwei Dinge: die große Schürze, die kleine – und
+   das Set, das beide zusammen billiger macht. Wer etwas hinzufügt, legt es
    hier an und in worker/src/catalog.js. Beide Listen müssen übereinstimmen. */
 var SHOP_PRODUCTS = {
   /* Der Slug heißt weiter "linen-apron", obwohl die Schürze aus Waffelpiqué
@@ -33,6 +33,46 @@ var SHOP_PRODUCTS = {
     variants: [
       { id: "natural", label: "Natural" },
       { id: "berry", label: "Berry red" }
+    ]
+  },
+
+  "kids-apron": {
+    slug: "kids-apron",
+    title: "Kids' waffle apron »Little Dough Love«",
+    type: "physical",
+    price: 34.9,
+    image: "https://placehold.co/800x800/E4CFB2/3B2A20?text=Kids+Apron",
+    variants: [
+      { id: "natural", label: "Natural" },
+      { id: "berry", label: "Berry red" }
+    ]
+  },
+
+  /* Das Set ist eine eigene Position, kein Rabatt auf zwei andere. Das ist die
+     ehrlichste Bauart für einen Shop dieser Größe: Der Preis steht als eine
+     Zahl im Katalog, die Kasse rechnet nichts zusammen, und es gibt keinen
+     Zustand, in dem der Warenkorb je nach Reihenfolge des Hinzufügens etwas
+     anderes kostet.
+
+     Die Farbe wird deshalb als Kombination gewählt: Eine Variantenliste je
+     Produkt kann nur eine Frage stellen, hier sind es aber zwei Schürzen.
+     Vier Kombinationen sind noch überschaubar – bei einer dritten Farbe wären
+     es neun, dann braucht die Kaufbox zwei getrennte Auswahlen. */
+  "apron-set": {
+    slug: "apron-set",
+    title: "Apron set »Dough Love« (adult + kids)",
+    type: "physical",
+    price: 74.9,
+    /** Nur zur Anzeige: Summe der Einzelpreise, durchgestrichen neben dem Preis. */
+    compareAtPrice: 79.8,
+    /** Überschrift der Variante im Warenkorb. Ohne Angabe steht dort "Colour". */
+    variantLegend: "Colours",
+    image: "https://placehold.co/800x800/F6ECDD/3B2A20?text=Apron+Set",
+    variants: [
+      { id: "natural-natural", label: "Both Natural" },
+      { id: "berry-berry", label: "Both Berry red" },
+      { id: "natural-berry", label: "Adult Natural · Kids Berry" },
+      { id: "berry-natural", label: "Adult Berry · Kids Natural" }
     ]
   }
 };

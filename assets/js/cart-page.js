@@ -30,7 +30,7 @@
       root.innerHTML =
         '<div class="empty-state">' +
         "<p>Your cart is empty</p>" +
-        '<p class="muted">The waffle piqué apron from the videos is waiting in the shop.</p>' +
+        '<p class="muted">The waffle piqué aprons from the videos are waiting in the shop – in two sizes, or as a set.</p>' +
         '<a class="btn btn--primary" href="shop.html" style="margin-top:1.5rem">Go to shop</a>' +
         "</div>";
       return;
@@ -160,7 +160,14 @@
       escapeHtml(product.title) +
       "</a>" +
       '<p class="cart-line__variant">' +
-      (variant ? "Colour: " + escapeHtml(variant.label) + " · " : "") +
+      /* Beim Set stehen zwei Farben in einer Variante – dort heißt die Zeile
+         deshalb "Colours", überall sonst "Colour". */
+      (variant
+        ? (product.variantLegend || "Colour") +
+          ": " +
+          escapeHtml(variant.label) +
+          " · "
+        : "") +
       (product.type === "digital" ? "PDF download" : "Shipped") +
       "</p>" +
       '<div class="cart-line__foot">' +

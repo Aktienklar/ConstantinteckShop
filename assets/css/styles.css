@@ -1870,6 +1870,46 @@ strong {
   color: var(--mocha);
 }
 
+/* Setpreis: daneben die durchgestrichene Summe der Einzelpreise und der
+   Betrag, den der Käufer spart. Als Betrag, nicht als Prozentsatz – bei zwei
+   Artikeln ist "€4.90" die Auskunft, die jemand nachrechnen kann. */
+.buybox__was,
+.price-was {
+  font-weight: 400;
+  color: var(--mocha);
+}
+
+.buybox__was {
+  margin-left: 0.5rem;
+  font-size: 1.125rem;
+}
+
+.price-save {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1875rem 0.625rem;
+  border-radius: 999px;
+  background-color: var(--brand-soft);
+  color: var(--brand);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+/* Der Preis in der Produktkarte hat nur eine Zeile Platz – dort steht die
+   Summe kleiner hinter dem Setpreis. */
+.product-card__price .price-was {
+  margin-left: 0.375rem;
+  font-size: 0.875rem;
+}
+
+/* Im Schaufenster steht der Preis in der Display-Schrift; die durchgestrichene
+   Summe daneben darf ihn nicht überstimmen. */
+.showcase__price .price-was {
+  margin-left: 0.375rem;
+  font-size: 1.125rem;
+}
+
 .buybox fieldset {
   margin-top: 1.25rem;
   padding: 0;
@@ -1890,6 +1930,14 @@ strong {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
+}
+
+/* Chips brechen sonst nie um (white-space: nowrap). Beim Set heißt eine
+   Auswahl "Adult Natural · Kids Berry" – auf einem schmalen Handy ragt das
+   sonst aus der Kaufbox heraus. */
+.buybox__variants .chip {
+  white-space: normal;
+  text-align: left;
 }
 
 .buybox__qty {
