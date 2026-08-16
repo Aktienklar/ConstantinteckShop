@@ -2772,10 +2772,6 @@ strong {
   color: var(--mocha);
 }
 
-.about__text p:last-child {
-  font-size: 1rem;
-}
-
 .about__socials {
   display: grid;
   gap: 0.75rem;
