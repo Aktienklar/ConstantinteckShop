@@ -869,15 +869,13 @@ strong {
   letter-spacing: -0.01em;
 }
 
+/* Die Bildmarke: C und T mit der Kochmütze, nachgezeichnet vom gestickten
+   Etikett auf den Schürzen. Die beiden Klammerbögen des Etiketts fehlen mit
+   Absicht – bei 36 Pixeln Höhe wären sie dünner als ein Bildpunkt, und sie
+   würden dem CT ein Drittel der Breite wegnehmen. */
 .brand__mark {
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
+  width: auto;
   height: 2.25rem;
-  border-radius: 999px;
-  background-color: var(--brand);
-  color: #fff;
-  font-size: 1rem;
 }
 
 .brand__name {
