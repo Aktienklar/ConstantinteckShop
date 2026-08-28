@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Warenkorb und Bestellbestätigung sind für jeden Besucher verschieden und
+# haben in einem Suchindex nichts zu suchen. Dieselben Seiten tragen zusätzlich
+# ein <meta name="robots" content="noindex"> – robots.txt hält Crawler fern,
+# noindex hält die Seite aus dem Index, falls doch jemand darauf verlinkt.
+Disallow: /cart.html
+Disallow: /order-confirmed.html
+
+Sitemap: https://constantinteck.com/sitemap.xml

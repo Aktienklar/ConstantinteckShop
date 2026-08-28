@@ -28,8 +28,8 @@ var SHOP_PRODUCTS = {
     slug: "linen-apron",
     title: "Waffle apron »Dough Love«",
     type: "physical",
-    price: 44.9,
-    image: "https://placehold.co/800x800/E4CFB2/3B2A20?text=Waffle+Apron",
+    price: 49.9,
+    image: "assets/img/apron-adult.jpg",
     variants: [
       { id: "natural", label: "Natural" },
       { id: "berry", label: "Berry red" }
@@ -40,8 +40,8 @@ var SHOP_PRODUCTS = {
     slug: "kids-apron",
     title: "Kids' waffle apron »Little Dough Love«",
     type: "physical",
-    price: 34.9,
-    image: "https://placehold.co/800x800/E4CFB2/3B2A20?text=Kids+Apron",
+    price: 29.9,
+    image: "assets/img/apron-kids.jpg",
     variants: [
       { id: "natural", label: "Natural" },
       { id: "berry", label: "Berry red" }
@@ -62,12 +62,12 @@ var SHOP_PRODUCTS = {
     slug: "apron-set",
     title: "Apron set »Dough Love« (adult + kids)",
     type: "physical",
-    price: 74.9,
+    price: 69.9,
     /** Nur zur Anzeige: Summe der Einzelpreise, durchgestrichen neben dem Preis. */
     compareAtPrice: 79.8,
     /** Überschrift der Variante im Warenkorb. Ohne Angabe steht dort "Colour". */
     variantLegend: "Colours",
-    image: "https://placehold.co/800x800/F6ECDD/3B2A20?text=Apron+Set",
+    image: "assets/img/apron-set.jpg",
     variants: [
       { id: "natural-natural", label: "Both Natural" },
       { id: "berry-berry", label: "Both Berry red" },

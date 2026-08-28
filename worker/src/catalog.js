@@ -7,7 +7,7 @@
  * über die Entwicklertools für einen Cent bestellen.
  *
  * WICHTIG: Diese Beträge müssen zu assets/js/shop-data.js passen. Dort stehen
- * sie in Euro (44.9), hier in Cent (4490) – Stripe rechnet in der kleinsten
+ * sie in Euro (49.9), hier in Cent (4990) – Stripe rechnet in der kleinsten
  * Währungseinheit.
  */
 
@@ -32,7 +32,7 @@ export const PRODUCTS = {
   "linen-apron": {
     title: "Waffle apron »Dough Love«",
     type: "physical",
-    amount: 4490,
+    amount: 4990,
     taxCode: TAX_TANGIBLE,
     variants: {
       natural: "Natural",
@@ -43,7 +43,7 @@ export const PRODUCTS = {
   "kids-apron": {
     title: "Kids' waffle apron »Little Dough Love«",
     type: "physical",
-    amount: 3490,
+    amount: 2990,
     taxCode: TAX_TANGIBLE,
     variants: {
       natural: "Natural",
@@ -58,7 +58,7 @@ export const PRODUCTS = {
   "apron-set": {
     title: "Apron set »Dough Love« (adult + kids)",
     type: "physical",
-    amount: 7490,
+    amount: 6990,
     taxCode: TAX_TANGIBLE,
     variants: {
       "natural-natural": "Both Natural",
