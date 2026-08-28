@@ -34,10 +34,11 @@ export const PRODUCTS = {
     type: "physical",
     amount: 4990,
     taxCode: TAX_TANGIBLE,
-    variants: {
-      natural: "Natural",
-      berry: "Berry red"
-    }
+    /* Vorerst nur Natural, deshalb keine Variante. Muss zu den Varianten in
+       assets/js/shop-data.js passen: Steht dort eine Liste und hier nicht,
+       geht die Farbe auf der Bestellung verloren; umgekehrt weist die Kasse
+       jede Bestellung mit "Please choose an option" ab. */
+    variants: {}
   },
 
   "kids-apron": {
@@ -45,27 +46,20 @@ export const PRODUCTS = {
     type: "physical",
     amount: 2990,
     taxCode: TAX_TANGIBLE,
-    variants: {
-      natural: "Natural",
-      berry: "Berry red"
-    }
+    variants: {}
   },
 
   /* Eigene Position mit eigenem Preis statt eines Rabatts auf zwei Zeilen –
-     die Begründung steht bei apron-set in assets/js/shop-data.js. Wichtig für
-     das Packen der Bestellung: In der Variante stecken beide Farben, und
-     genau dieser Text steht später auf der Stripe-Bestellung. */
+     die Begründung steht bei apron-set in assets/js/shop-data.js. Sobald es
+     mehr als eine Farbe gibt, stecken hier beide Farben in einer Variante,
+     und genau dieser Text steht später auf der Stripe-Bestellung, nach der
+     gepackt wird. */
   "apron-set": {
     title: "Apron set »Dough Love« (adult + kids)",
     type: "physical",
     amount: 6990,
     taxCode: TAX_TANGIBLE,
-    variants: {
-      "natural-natural": "Both Natural",
-      "berry-berry": "Both Berry red",
-      "natural-berry": "Adult Natural · Kids Berry",
-      "berry-natural": "Adult Berry · Kids Natural"
-    }
+    variants: {}
   }
 };
 

@@ -129,14 +129,22 @@
       <a class="back-link" href="../shop.html">‹ Back to shop</a>
 
       <div class="product-layout">
-        <!-- Bilder -->
-        <div>
-          <div class="product-gallery__main">
-            <img src="../assets/img/apron-set.jpg" alt="Apron set »Dough Love« – the grown-up and the kids' apron side by side">
-          </div>
+        <!-- Bilder. Das große Feld ist ein Knopf: Ein Klick zeigt die
+             Aufnahme in Originalgröße, ein Klick auf ein Vorschaubild holt
+             sie nach oben. Das erste Vorschaubild ist dasselbe wie das große
+             – die Leiste zeigt damit immer alle Aufnahmen, und man sieht,
+             wo man gerade steht. Ohne JavaScript bleibt alles sichtbar.
+             Zuständig: assets/js/gallery.js -->
+        <div data-gallery>
+          <button type="button" class="product-gallery__main" data-gallery-zoom>
+            <img src="../assets/img/apron-set.jpg" alt="Apron set »Dough Love« – the grown-up and the kids' apron side by side" data-gallery-main>
+            <span class="product-gallery__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="7"/><path d="M15.9 15.9 21 21"/><path d="M10.8 8v5.6"/><path d="M8 10.8h5.6"/></svg></span>
+            <span class="sr-only">Show both aprons larger</span>
+          </button>
           <div class="product-gallery__thumbs no-scrollbar">
-            <img src="../assets/img/apron-detail-pocket.jpg" alt="Close-up of the front pocket with the sewn-in CT label" loading="lazy">
-            <img src="../assets/img/apron-detail-strap.jpg" alt="Close-up of the neck strap with its metal slider" loading="lazy">
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-set.jpg" alt="Apron set »Dough Love« – the grown-up and the kids' apron side by side"></button>
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-pocket.jpg" alt="Close-up of the front pocket with the sewn-in CT label" loading="lazy"></button>
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-strap.jpg" alt="Close-up of the neck strap with its metal slider" loading="lazy"></button>
           </div>
         </div>
 
@@ -154,28 +162,15 @@
             </p>
             <p class="buybox__terms">No VAT (§ 19 UStG) · free shipping – the set is above the €60.00 threshold</p>
 
-          <!-- Zwei Schürzen, aber nur eine Variantenliste: Die Auswahl fragt
-               deshalb nach der Kombination. Die Beschriftung muss zeichengleich
-               zu den Varianten in assets/js/shop-data.js und in
-               worker/src/catalog.js bleiben – sie steht später so auf der
-               Bestellung, nach der gepackt wird. -->
-          <fieldset>
-            <legend>Colours</legend>
-            <div class="buybox__variants">
-              <button type="button" class="chip is-active" data-variant="natural-natural" aria-pressed="true">
-                <span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Both Natural
-              </button>
-              <button type="button" class="chip" data-variant="berry-berry" aria-pressed="false">
-                <span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span><span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span>Both Berry red
-              </button>
-              <button type="button" class="chip" data-variant="natural-berry" aria-pressed="false">
-                <span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span><span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span>Adult Natural · Kids Berry
-              </button>
-              <button type="button" class="chip" data-variant="berry-natural" aria-pressed="false">
-                <span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Adult Berry · Kids Natural
-              </button>
-            </div>
-          </fieldset>
+          <!-- Nur eine Farbe im Angebot. Eine Auswahl mit einem einzigen Knopf
+               wäre eine Frage ohne zweite Antwort – die Farbe steht deshalb
+               als Angabe da. Kommt eine zweite dazu, wird hieraus wieder ein
+               <fieldset> mit Chips, und die Varianten in assets/js/shop-data.js
+               und worker/src/catalog.js müssen mitwachsen. -->
+          <div class="buybox__colour">
+            <span class="buybox__label">Colours</span>
+            <span class="buybox__colour-value"><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Both Natural</span>
+          </div>
 
             <div class="buybox__qty">
               <span class="buybox__label">Quantity</span>
@@ -224,7 +219,7 @@
             <p class="muted" style="margin-top:.5rem;line-height:1.7">The same waffle piqué twice, cut and sewn by hand here in Germany – once in my size, once for someone who still needs a stool at the counter. Both have an adjustable neck strap and a front pocket, both wash at 40 °C, and both get softer with every wash. The set exists because almost every message about the apron ends with the same question: whether there is a small one too. Now there is, and taking both costs less than taking them one at a time.</p>
             <ul class="check-list">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Two aprons: one adult size, one for roughly 4–8 years</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Matching or mixed colours – four combinations</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Both in Natural – the colour from the videos</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>€69.90 instead of €79.80, and no shipping on top</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Cut and sewn by hand in Germany</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Machine washable at 40 °C</span></li>
@@ -331,5 +326,6 @@
   <script src="../assets/js/shop-data.js"></script>
   <script src="../assets/js/cart.js"></script>
   <script src="../assets/js/product.js"></script>
+  <script src="../assets/js/gallery.js"></script>
 </body>
 </html>

@@ -30,10 +30,11 @@ var SHOP_PRODUCTS = {
     type: "physical",
     price: 49.9,
     image: "assets/img/apron-adult.jpg",
-    variants: [
-      { id: "natural", label: "Natural" },
-      { id: "berry", label: "Berry red" }
-    ]
+    /* Vorerst nur Natural. Eine leere Liste heißt: keine Auswahl an der
+       Kaufbox, keine Farbe auf der Bestellung. Kommt Berry rot zurück, hier
+       wieder { id: "natural", ... }, { id: "berry", ... } eintragen – und
+       zeichengleich in worker/src/catalog.js, sonst weist die Kasse ab. */
+    variants: []
   },
 
   "kids-apron": {
@@ -42,10 +43,7 @@ var SHOP_PRODUCTS = {
     type: "physical",
     price: 29.9,
     image: "assets/img/apron-kids.jpg",
-    variants: [
-      { id: "natural", label: "Natural" },
-      { id: "berry", label: "Berry red" }
-    ]
+    variants: []
   },
 
   /* Das Set ist eine eigene Position, kein Rabatt auf zwei andere. Das ist die
@@ -54,10 +52,12 @@ var SHOP_PRODUCTS = {
      Zustand, in dem der Warenkorb je nach Reihenfolge des Hinzufügens etwas
      anderes kostet.
 
-     Die Farbe wird deshalb als Kombination gewählt: Eine Variantenliste je
-     Produkt kann nur eine Frage stellen, hier sind es aber zwei Schürzen.
-     Vier Kombinationen sind noch überschaubar – bei einer dritten Farbe wären
-     es neun, dann braucht die Kaufbox zwei getrennte Auswahlen. */
+     Solange es nur Natural gibt, hat das Set keine Varianten. Sobald eine
+     zweite Farbe dazukommt, wird sie hier als Kombination gewählt: Eine
+     Variantenliste je Produkt kann nur eine Frage stellen, hier sind es aber
+     zwei Schürzen. Vier Kombinationen sind noch überschaubar – bei einer
+     dritten Farbe wären es neun, dann braucht die Kaufbox zwei getrennte
+     Auswahlen. */
   "apron-set": {
     slug: "apron-set",
     title: "Apron set »Dough Love« (adult + kids)",
@@ -65,15 +65,8 @@ var SHOP_PRODUCTS = {
     price: 69.9,
     /** Nur zur Anzeige: Summe der Einzelpreise, durchgestrichen neben dem Preis. */
     compareAtPrice: 79.8,
-    /** Überschrift der Variante im Warenkorb. Ohne Angabe steht dort "Colour". */
-    variantLegend: "Colours",
     image: "assets/img/apron-set.jpg",
-    variants: [
-      { id: "natural-natural", label: "Both Natural" },
-      { id: "berry-berry", label: "Both Berry red" },
-      { id: "natural-berry", label: "Adult Natural · Kids Berry" },
-      { id: "berry-natural", label: "Adult Berry · Kids Natural" }
-    ]
+    variants: []
   }
 };
 

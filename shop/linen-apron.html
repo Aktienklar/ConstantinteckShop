@@ -129,14 +129,22 @@
       <a class="back-link" href="../shop.html">‹ Back to shop</a>
 
       <div class="product-layout">
-        <!-- Bilder -->
-        <div>
-          <div class="product-gallery__main">
-            <img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Natural, laid out flat">
-          </div>
+        <!-- Bilder. Das große Feld ist ein Knopf: Ein Klick zeigt die
+             Aufnahme in Originalgröße, ein Klick auf ein Vorschaubild holt
+             sie nach oben. Das erste Vorschaubild ist dasselbe wie das große
+             – die Leiste zeigt damit immer alle Aufnahmen, und man sieht,
+             wo man gerade steht. Ohne JavaScript bleibt alles sichtbar.
+             Zuständig: assets/js/gallery.js -->
+        <div data-gallery>
+          <button type="button" class="product-gallery__main" data-gallery-zoom>
+            <img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Natural, laid out flat" data-gallery-main>
+            <span class="product-gallery__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="7"/><path d="M15.9 15.9 21 21"/><path d="M10.8 8v5.6"/><path d="M8 10.8h5.6"/></svg></span>
+            <span class="sr-only">Show the apron larger</span>
+          </button>
           <div class="product-gallery__thumbs no-scrollbar">
-            <img src="../assets/img/apron-detail-pocket.jpg" alt="Close-up of the front pocket with the sewn-in CT label" loading="lazy">
-            <img src="../assets/img/apron-detail-strap.jpg" alt="Close-up of the neck strap with its metal slider" loading="lazy">
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Natural, laid out flat"></button>
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-pocket.jpg" alt="Close-up of the front pocket with the sewn-in CT label" loading="lazy"></button>
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-strap.jpg" alt="Close-up of the neck strap with its metal slider" loading="lazy"></button>
           </div>
         </div>
 
@@ -151,17 +159,15 @@
           <div class="panel buybox" data-buybox data-slug="linen-apron">
             <p class="buybox__price">€49.90</p>
             <p class="buybox__terms">No VAT (§ 19 UStG), plus €4.90 shipping – free from €60.00</p>
-          <fieldset>
-            <legend>Colour</legend>
-            <div class="buybox__variants">
-              <button type="button" class="chip is-active" data-variant="natural" aria-pressed="true">
-                <span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Natural
-              </button>
-              <button type="button" class="chip" data-variant="berry" aria-pressed="false">
-                <span class="swatch" style="background-color:#D4517A" aria-hidden="true"></span>Berry red
-              </button>
-            </div>
-          </fieldset>
+          <!-- Nur eine Farbe im Angebot. Eine Auswahl mit einem einzigen Knopf
+               wäre eine Frage ohne zweite Antwort – die Farbe steht deshalb
+               als Angabe da. Kommt eine zweite dazu, wird hieraus wieder ein
+               <fieldset> mit Chips, und die Varianten in assets/js/shop-data.js
+               und worker/src/catalog.js müssen mitwachsen. -->
+          <div class="buybox__colour">
+            <span class="buybox__label">Colour</span>
+            <span class="buybox__colour-value"><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Natural</span>
+          </div>
 
             <div class="buybox__qty">
               <span class="buybox__label">Quantity</span>
@@ -212,6 +218,7 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Cut and sewn by hand in Germany</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Carefully finished seams, built to last for years</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Adjustable neck strap, one size, unisex cut</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Natural – the colour from the videos</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Large front pocket with a slot for a dough scraper</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Machine washable at 40 °C</span></li>
             </ul>
@@ -317,5 +324,6 @@
   <script src="../assets/js/shop-data.js"></script>
   <script src="../assets/js/cart.js"></script>
   <script src="../assets/js/product.js"></script>
+  <script src="../assets/js/gallery.js"></script>
 </body>
 </html>

@@ -1812,16 +1812,65 @@ strong {
   margin-top: 0.25rem;
 }
 
+/* Das Hauptbild ist ein Knopf – ein Klick zeigt die Aufnahme groß. Aussehen
+   soll es trotzdem wie ein Bild, deshalb die Zurücksetzung. */
 .product-gallery__main {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
   overflow: hidden;
+  border: 0;
   border-radius: 1.5rem;
   background-color: var(--dough);
+  cursor: zoom-in;
 }
 
 .product-gallery__main img {
+  display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  transition: transform 0.5s var(--ease-soft);
+}
+
+.product-gallery__main:hover img {
+  transform: scale(1.03);
+}
+
+/* Die Lupe ist der einzige Hinweis darauf, dass hier etwas zu holen ist –
+   ein Mauszeiger allein erreicht kein Handy. */
+.product-gallery__zoom {
+  position: absolute;
+  right: 0.875rem;
+  bottom: 0.875rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background-color: rgba(253, 248, 241, 0.92);
+  color: var(--cocoa);
+  box-shadow: var(--shadow-card);
+}
+
+.product-gallery__zoom svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Ohne <dialog> gibt es nichts zu vergrößern – dann verschwindet der Hinweis
+   samt Zeigefinger, statt ein Versprechen zu geben, das niemand einlöst. */
+.product-gallery__main.is-plain {
+  cursor: default;
+}
+
+.product-gallery__main.is-plain:hover img {
+  transform: none;
+}
+
+.product-gallery__main.is-plain .product-gallery__zoom {
+  display: none;
 }
 
 .product-gallery__thumbs {
@@ -1831,12 +1880,140 @@ strong {
   margin-top: 0.75rem;
 }
 
-.product-gallery__thumbs img {
+.product-gallery__thumb {
   flex-shrink: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  background-color: var(--dough);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: border-color 0.2s var(--ease-soft), opacity 0.2s var(--ease-soft);
+}
+
+.product-gallery__thumb img {
+  display: block;
   width: 6rem;
   height: 6rem;
-  border-radius: 1rem;
   object-fit: cover;
+}
+
+/* Welche Aufnahme gerade oben steht – ohne diese Markierung tippt man im
+   Kreis, weil alle drei Vorschaubilder gleich aussehen. */
+.product-gallery__thumb.is-active {
+  border-color: var(--brand);
+  opacity: 1;
+}
+
+.product-gallery__thumb:hover {
+  opacity: 1;
+}
+
+/* Großansicht. <dialog> bringt Escape, den Hintergrund und das Stilllegen der
+   Seite dahinter schon mit; nachbauen müsste man das alles von Hand. */
+.lightbox {
+  /* Mitte per Hand: Der Reset ganz oben setzt margin überall auf 0 und nimmt
+     dem <dialog> damit die Zentrierung, die der Browser sonst mitbringt. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: fit-content;
+  max-width: min(100vw - 1.5rem, 46rem);
+  max-height: calc(100vh - 1.5rem);
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  overflow: visible;
+}
+
+.lightbox::backdrop {
+  background-color: rgba(59, 42, 32, 0.75);
+}
+
+.lightbox__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: var(--dough);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Das Bild bestimmt die Größe des Rahmens – so bleibt kein leerer Streifen
+   neben einer hochkant aufgenommenen Schürze stehen. */
+.lightbox__img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 1.5rem);
+}
+
+.lightbox__button {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 999px;
+  background-color: rgba(253, 248, 241, 0.92);
+  color: var(--cocoa);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-soft);
+}
+
+.lightbox__button:hover {
+  background-color: var(--cream);
+}
+
+.lightbox__button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.lightbox__close {
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.lightbox__prev {
+  top: 50%;
+  left: 0.75rem;
+  margin-top: -1.375rem;
+}
+
+.lightbox__next {
+  top: 50%;
+  right: 0.75rem;
+  margin-top: -1.375rem;
+}
+
+.lightbox__count {
+  position: absolute;
+  left: 50%;
+  bottom: 0.75rem;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: rgba(253, 248, 241, 0.92);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* Nur eine Farbe: Statt einer Auswahl mit einem einzigen Knopf steht die
+   Farbe als Angabe da – in derselben Zeilenform wie die Menge darunter. */
+.buybox__colour {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.buybox__colour-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
 }
 
 .product-type {
@@ -2037,7 +2214,7 @@ strong {
     font-size: 2.25rem;
   }
 
-  .product-gallery__thumbs img {
+  .product-gallery__thumb img {
     width: 7rem;
     height: 7rem;
   }
@@ -3157,7 +3334,8 @@ strong {
   .lift:active,
   .lift-3d:active,
   .recipe-card:hover .recipe-card__media img,
-  .product-card:hover .product-card__media img {
+  .product-card:hover .product-card__media img,
+  .product-gallery__main:hover img {
     transform: none;
   }
 
