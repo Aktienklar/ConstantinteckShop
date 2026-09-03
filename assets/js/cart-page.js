@@ -53,9 +53,9 @@
       return SHOP_PRODUCTS[line.productSlug].available === false;
     });
 
-    /* Reine PDF-Bestellungen werden nie versandt, und die Freigrenze gilt
-       auf den Warenwert – beides genau so, wie es dem Kunden an anderer
-       Stelle versprochen wird. */
+    /* Reine PDF-Bestellungen werden nie versandt. Eine Freigrenze gibt es
+       nicht mehr (freeShippingFrom ist null), der Zweig bleibt aber stehen,
+       falls je wieder eine eingeführt wird. */
     var qualifiesForFreeShipping =
       SHOP_TERMS.freeShippingFrom !== null && total >= SHOP_TERMS.freeShippingFrom;
     var shipping =
@@ -117,7 +117,7 @@
       '<ul class="cart-summary__terms">' +
       term(
         "truck",
-        "Delivery in " + SHOP_TERMS.deliveryTime + " to " + SHOP_TERMS.shipsTo
+        SHOP_TERMS.deliveryPromise + " to " + SHOP_TERMS.shipsTo
       ) +
       term("return", SHOP_TERMS.returnDays + " days to return") +
       term("shield", SHOP_TERMS.paymentMethods.join(" · ")) +

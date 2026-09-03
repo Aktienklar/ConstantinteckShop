@@ -69,10 +69,10 @@ export const PRODUCTS = {
  */
 export const SHIPPING = {
   flatRateCents: 490,
-  freeFromCents: 6000,
-  countries: ["DE", "AT"],
-  minDays: 2,
-  maxDays: 4
+  /* null = keine Freigrenze. Die Pauschale fällt bei jeder Warensendung an,
+     egal wie hoch der Bestellwert ist – so steht es auch in den AGB. */
+  freeFromCents: null,
+  countries: ["DE", "AT"]
 };
 
 /** Höchstmenge je Position – bremst Unfug und Tippfehler. */
@@ -132,10 +132,12 @@ export function resolveCart(rawLines) {
   const hasPhysical = lines.some((l) => l.product.type === "physical");
   const hasDigital = lines.some((l) => l.product.type === "digital");
 
-  /* Reine PDF-Bestellungen werden nie versandt, und die Freigrenze zählt auf
-     den Warenwert – genau wie es cart-page.js dem Kunden vorrechnet. */
-  const shippingCents =
-    hasPhysical && subtotal < SHIPPING.freeFromCents ? SHIPPING.flatRateCents : 0;
+  /* Reine PDF-Bestellungen werden nie versandt. Eine Freigrenze gibt es
+     derzeit nicht; der Zweig bleibt für den Fall stehen, dass wieder eine
+     eingeführt wird – genau wie es cart-page.js dem Kunden vorrechnet. */
+  const shippingFree =
+    SHIPPING.freeFromCents !== null && subtotal >= SHIPPING.freeFromCents;
+  const shippingCents = hasPhysical && !shippingFree ? SHIPPING.flatRateCents : 0;
 
   return { lines, subtotal, hasPhysical, hasDigital, shippingCents };
 }

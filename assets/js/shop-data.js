@@ -74,8 +74,12 @@ var SHOP_TERMS = {
   /** Versandpauschale innerhalb Deutschlands, in Euro. */
   shippingFlatRate: 4.9,
   /** Bestellwert, ab dem der Versand entfällt. null = keine Freigrenze. */
-  freeShippingFrom: 60,
-  deliveryTime: "2–4 working days",
+  freeShippingFrom: null,
+  /**
+   * Bewusst ohne Tagesangabe: Es wird schnell verschickt, aber keine konkrete
+   * Laufzeit versprochen, die der Versanddienstleister nicht garantiert.
+   */
+  deliveryPromise: "Fast shipping",
   shipsTo: "Germany and Austria",
   /** Gesetzliches Minimum in der EU sind 14 Tage. Nicht unterschreiten. */
   returnDays: 14,

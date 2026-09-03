@@ -72,11 +72,9 @@
     }
     if (order.hasPhysical) {
       lines.push(
-        "</p><p>Your parcel goes out within " +
-          escapeHtml(SHOP_TERMS.deliveryTime) +
-          " to " +
+        "</p><p>Your parcel goes out to " +
           escapeHtml(SHOP_TERMS.shipsTo) +
-          "."
+          " as quickly as I can pack it."
       );
     }
     lines.push("</p>");

@@ -102,11 +102,9 @@ export async function createCheckoutSession(request, env, stripe) {
           display_name:
             cart.shippingCents === 0 ? "Shipping (free)" : "Shipping",
           fixed_amount: { amount: cart.shippingCents, currency: CURRENCY },
-          tax_behavior: "inclusive",
-          delivery_estimate: {
-            minimum: { unit: "business_day", value: SHIPPING.minDays },
-            maximum: { unit: "business_day", value: SHIPPING.maxDays }
-          }
+          tax_behavior: "inclusive"
+          /* Bewusst kein delivery_estimate: Es wird schnell verschickt, aber
+             keine Laufzeit in Tagen zugesagt, die niemand garantiert. */
         }
       }
     ];
