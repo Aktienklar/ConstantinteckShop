@@ -117,7 +117,7 @@
       '<ul class="cart-summary__terms">' +
       term(
         "truck",
-        SHOP_TERMS.deliveryPromise + " to " + SHOP_TERMS.shipsTo
+        SHOP_TERMS.deliveryPromise + ", " + SHOP_TERMS.shipsTo
       ) +
       term("return", SHOP_TERMS.returnDays + " days to return") +
       term("shield", SHOP_TERMS.paymentMethods.join(" · ")) +

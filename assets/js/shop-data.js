@@ -80,15 +80,19 @@ var SHOP_TERMS = {
    * Laufzeit versprochen, die der Versanddienstleister nicht garantiert.
    */
   deliveryPromise: "Fast shipping",
-  shipsTo: "Germany and Austria",
+  shipsTo: "all over the world",
   /** Gesetzliches Minimum in der EU sind 14 Tage. Nicht unterschreiten. */
   returnDays: 14,
   /**
    * Muss zu dem passen, was im Stripe-Dashboard unter Zahlungsmethoden
    * tatsächlich aktiviert ist. "Sofortüberweisung" stand hier früher – die
-   * Methode gibt es nicht mehr, Stripe hat sie abgeschaltet.
+   * Methode gibt es nicht mehr, Stripe hat sie abgeschaltet. PayPal und
+   * SEPA-Lastschrift standen bis September 2026 hier, tauchen an der echten
+   * Kasse aber nicht auf (im Checkout geprüft) – nichts nennen, was der
+   * Käufer dort nicht anklicken kann. Unter "Weitere Zahlungsmethoden"
+   * zeigt Stripe je nach Land noch eps und andere lokale Verfahren.
    */
-  paymentMethods: ["Credit card", "PayPal", "Klarna", "SEPA Direct Debit"],
+  paymentMethods: ["Card", "Apple Pay", "Klarna", "Link", "Amazon Pay"],
   /**
    * Seit dem 10.08.2026 false: Auf dem Worker liegt ein sk_live_-Schlüssel,
    * jede Kasse bucht echtes Geld ab (geprüft, die Session kam als cs_live_

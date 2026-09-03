@@ -72,9 +72,7 @@
     }
     if (order.hasPhysical) {
       lines.push(
-        "</p><p>Your parcel goes out to " +
-          escapeHtml(SHOP_TERMS.shipsTo) +
-          " as quickly as I can pack it."
+        "</p><p>Your parcel goes out as quickly as I can pack it."
       );
     }
     lines.push("</p>");
@@ -86,7 +84,7 @@
     show(
       root,
       "Your order is on its way",
-      "<p>Thanks! Your payment method (SEPA Direct Debit or Klarna, for instance) " +
+      "<p>Thanks! Your payment method (Klarna, for instance) " +
         "takes a little longer to confirm – sometimes a couple of days.</p>" +
         (order.hasDigital
           ? "<p>Your download link goes out as soon as the payment clears.</p>"
