@@ -1075,43 +1075,25 @@ strong {
   background-color: var(--dough);
 }
 
-/* Auf dem Handy stand das Foto bis September 2026 als Banner über dem Text.
-   Die obere Bildhälfte war dabei nur Wand – viel Fläche, die nichts sagt,
-   während die Überschrift darunter aus dem ersten Bildschirm rutschte. Jetzt
-   liegt das Foto hinter dem Text, wie auf dem Desktop auch. Es hört nach
-   34rem auf; was danach kommt, steht auf dem normalen Hintergrund. */
 .hero__media {
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 34rem;
+  position: relative;
 }
 
 .hero__media img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
-  object-position: 62% 62%;
+  object-position: 62% center;
 }
 
 /* Verlauf: blendet das Foto in den Hintergrund und hält die Überschrift
    lesbar – auf dem Handy nach oben, ab lg zur Seite. */
 .hero__scrim {
   position: absolute;
-  inset: 0;
-  /* Zwei Verläufe: Der erste wäscht die obere Bildhälfte aus, damit die
-     Überschrift auf ruhigem Grund steht statt auf Kochlöffeln. Der zweite
-     blendet die Unterkante in den Seitenhintergrund, damit das Foto nicht
-     mit einer harten Kante endet. */
-  background-image:
-    linear-gradient(
-      to bottom,
-      var(--dough) 0%,
-      rgba(246, 236, 221, 0.94) 26%,
-      rgba(246, 236, 221, 0.55) 44%,
-      rgba(246, 236, 221, 0.12) 60%,
-      rgba(246, 236, 221, 0) 72%
-    ),
-    linear-gradient(to top, var(--dough) 0%, rgba(246, 236, 221, 0) 22%);
+  inset-inline: 0;
+  bottom: 0;
+  height: 8rem;
+  background-image: linear-gradient(to top, var(--dough), transparent);
 }
 
 .hero__body {
@@ -1273,8 +1255,8 @@ strong {
 }
 
 @media (min-width: 640px) {
-  .hero__media {
-    height: 38rem;
+  .hero__media img {
+    aspect-ratio: 16 / 9;
   }
 
   .hero__body {
@@ -1315,8 +1297,6 @@ strong {
   .hero__media {
     position: absolute;
     inset: 0;
-    /* Setzt die feste Höhe der Handyfassung zurück. */
-    height: auto;
   }
 
   .hero__media img {
