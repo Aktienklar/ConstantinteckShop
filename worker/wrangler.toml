@@ -13,18 +13,20 @@ SITE_BASE = "https://constantinteck.com"
 # Die Adresse, unter der dieser Worker läuft. Aus ihr werden später die
 # Download-Links gebaut. Ausgegeben von "wrangler deploy".
 WORKER_BASE = "https://constantinteck-checkout.constantinteck-checkout.workers.dev"
-MAIL_FROM = "Constantinteck <hallo@constantinteck.de>"
+# Absender der Download-Mails. Muss zur Adresse im Impressum passen und die
+# Domain muss bei Resend verifiziert sein, sonst kommen die Mails nie an.
+MAIL_FROM = "Constantinteck <info@constantinteck.com>"
 # Bleibt aus. Der Betreiber ist Kleinunternehmer nach § 19 UStG und weist keine
 # Umsatzsteuer aus – Stripe Tax hätte nichts zu berechnen und würde auf den
 # Belegen Steuer ausweisen, die nicht erhoben wird. Das ist keine offene
 # Baustelle mehr, sondern eine Entscheidung: erst wieder anfassen, wenn der
 # Betreiber in die Regelbesteuerung wechselt.
 AUTOMATIC_TAX = "false"
-# Häkchen "Ich akzeptiere die AGB" an der Kasse. Auf "true" stellen, sobald
+# Häkchen "Ich akzeptiere die AGB" an der Kasse. Seit September 2026 an: Die
+# AGB-Seite ist vollständig und an der echten Kasse geprüft. Setzt voraus, dass
 # unter https://dashboard.stripe.com/settings/public eine AGB-Adresse steht
-# (https://constantinteck.com/terms.html). Vorher bricht
-# jede Session ab. Für einen deutschen Shop gehört das an.
-TOS_CONSENT = "false"
+# (https://constantinteck.com/terms.html) – fehlt sie, bricht jede Session ab.
+TOS_CONSENT = "true"
 
 # Verkauft wird vorerst nur die Schürze – ein physisches Produkt, das von Hand
 # verschickt wird. Dafür braucht der Worker weder Dateispeicher noch Datenbank.

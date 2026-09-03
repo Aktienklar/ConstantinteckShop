@@ -34,7 +34,10 @@ source "$CONF"
 # Als Zeichenkette statt als Array: macOS liefert bash 3.2 aus, und dort
 # stolpert "set -u" über ein leeres Array.
 fehlend=""
-for feld in NAME STRASSE PLZ_ORT EMAIL TELEFON VERSANDDIENSTLEISTER AUFSICHTSBEHOERDE; do
+# TELEFON steht bewusst nicht in dieser Liste: Fehlt die Nummer, wird die
+# Telefonzeile unten ersatzlos entfernt statt leer stehen zu lassen. Die
+# Begründung dazu steht in rechtsdaten.conf.
+for feld in NAME STRASSE PLZ_ORT EMAIL VERSANDDIENSTLEISTER AUFSICHTSBEHOERDE; do
   # Indirekte Expansion: ${!feld} ist der Wert der Variablen, deren Name in
   # $feld steht.
   if [ -z "${!feld:-}" ]; then
@@ -120,6 +123,12 @@ echo "Bearbeite ${#dateien[@]} HTML-Dateien ..."
 # leuchten. Der Block zwischen den AUSFUELLEN-Markierungen ist der
 # Warnkasten – er fällt komplett weg.
 perl -0777 -pi -e '
+  # Ohne Nummer verschwindet die ganze Zeile. Ein "Telefon:" ohne etwas
+  # dahinter sähe nach einem Fehler aus und hilft niemandem weiter.
+  if ($ENV{FILL_TELEFON} eq "") {
+    s{<br>\n(\s*)Telefon: <span class="fill">\[Telefonnummer\]</span>}{}g;
+    s{, Telefon <span class="fill">\[Telefonnummer\]</span>,}{,}g;
+  }
   s{<span class="fill">\[Vor- und Nachname\]</span>}{$ENV{FILL_NAME}}g;
   s{<span class="fill">\[Straße und Hausnummer\]</span>}{$ENV{FILL_STRASSE}}g;
   s{<span class="fill">\[PLZ und Ort\]</span>}{$ENV{FILL_PLZ_ORT}}g;
