@@ -1106,9 +1106,45 @@ strong {
   max-width: 36rem;
 }
 
+/* Die Kopfzeile über der Überschrift stand bis September 2026 im
+   Markenorange in Versalien. Sie hat damit lauter gerufen als die
+   Überschrift darunter, die eigentlich trägt. Gedämpft und weiter gesperrt
+   ordnet sie sich unter, statt zu konkurrieren. */
+.hero .eyebrow {
+  color: var(--mocha);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  opacity: 0.85;
+}
+
+/* Georgia läuft in großen Graden auseinander; das negative Sperren nimmt das
+   zurück. Gerade Schrift für die Aussage, kursiv für das Versprechen – die
+   zweite Zeile ist deshalb <em> und nicht bloß ein Zeilenumbruch. */
 .hero h1 {
   margin-top: 0.75rem;
   font-size: 1.875rem;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--mocha);
+}
+
+/* Auf sehr schmalen Geräten (iPhone SE und ähnlich) bricht die Kursivzeile
+   sonst um und die Überschrift wächst auf vier Zeilen. Ein Grad kleiner hält
+   sie zweizeilig. */
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+}
+
+.hero .lede {
+  max-width: 34rem;
 }
 
 .hero__actions {
