@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" role="img" aria-label="Portrait placeholder">
+  <!-- Platzhalter für das Porträt auf der Seite "Über mich". Ersetzt den
+       Dienst placehold.co: Der lieferte dasselbe Bild, bekam dafür aber die
+       IP-Adresse jedes Besuchers. Farben wie zuvor. Wird durch ein echtes
+       Foto ersetzt, sobald eines vorliegt. -->
+  <rect width="600" height="600" fill="#E4CFB2"/>
+  <text x="300" y="300" fill="#3B2A20" font-family="Helvetica, Arial, sans-serif"
+        font-size="48" text-anchor="middle" dominant-baseline="middle">Portrait</text>
+</svg>
