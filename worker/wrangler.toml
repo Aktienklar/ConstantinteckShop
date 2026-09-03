@@ -22,11 +22,13 @@ MAIL_FROM = "Constantinteck <info@constantinteck.com>"
 # Baustelle mehr, sondern eine Entscheidung: erst wieder anfassen, wenn der
 # Betreiber in die Regelbesteuerung wechselt.
 AUTOMATIC_TAX = "false"
-# Häkchen "Ich akzeptiere die AGB" an der Kasse. Seit September 2026 an: Die
-# AGB-Seite ist vollständig und an der echten Kasse geprüft. Setzt voraus, dass
-# unter https://dashboard.stripe.com/settings/public eine AGB-Adresse steht
-# (https://constantinteck.com/terms.html) – fehlt sie, bricht jede Session ab.
-TOS_CONSENT = "true"
+# Häkchen "Ich akzeptiere die AGB" an der Kasse. Am 03.09.2026 auf "true"
+# gestellt und sofort wieder zurück: Ohne AGB-Adresse unter
+# https://dashboard.stripe.com/settings/public lehnt Stripe JEDE Session ab,
+# die Kasse antwortete mit 500 (an der echten Kasse nachgestellt). Erst dort
+# https://constantinteck.com/terms.html eintragen, dann hier auf "true" und
+# "npx wrangler deploy" – danach eine Testbestellung anklicken.
+TOS_CONSENT = "false"
 
 # Verkauft wird vorerst nur die Schürze – ein physisches Produkt, das von Hand
 # verschickt wird. Dafür braucht der Worker weder Dateispeicher noch Datenbank.
