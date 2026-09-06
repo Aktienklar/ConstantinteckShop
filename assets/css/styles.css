@@ -1998,22 +1998,6 @@ strong {
   font-weight: 600;
 }
 
-/* Nur eine Farbe: Statt einer Auswahl mit einem einzigen Knopf steht die
-   Farbe als Angabe da – in derselben Zeilenform wie die Menge darunter. */
-.buybox__colour {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-.buybox__colour-value {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-}
-
 .product-type {
   display: inline-flex;
   padding: 0.25rem 0.75rem;
@@ -2115,6 +2099,21 @@ strong {
   text-align: left;
 }
 
+/* Kleingedrucktes unter einer Auswahl: was die Größen bedeuten, wo die Maße
+   stehen. Gehört unter die Chips, nicht in die Beschriftung darüber – dort
+   liest es niemand, der schon beim Wählen ist. */
+.buybox__hint {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--mocha);
+}
+
+.buybox__hint a {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
 .buybox__qty {
   display: flex;
   align-items: center;
@@ -2140,6 +2139,50 @@ strong {
 
 .buybox__added a:hover {
   text-decoration: underline;
+}
+
+/* Größentabelle der Kinderschürze. Sechs Spalten passen auf kein Handy –
+   deshalb scrollt die Tabelle in ihrem eigenen Kasten, statt die Seite quer
+   zu schieben oder die Zahlen umbrechen zu lassen. */
+.size-table__scroll {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.size-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.size-table th,
+.size-table td {
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--cocoa-20);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.size-table thead th {
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+
+.size-table tbody th {
+  font-weight: 700;
+}
+
+.size-table tbody td {
+  font-variant-numeric: tabular-nums;
+  color: var(--mocha);
+}
+
+.size-table tbody tr:last-child th,
+.size-table tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 /* Lieferung, Rückgabe und Zahlung direkt unter dem Kaufbutton. Ein Shop,

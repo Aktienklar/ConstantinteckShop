@@ -14,6 +14,33 @@
  * Jeder Wert muss dem entsprechen, was du tatsächlich leisten kannst.
  */
 
+/**
+ * FARBEN UND GRÖSSEN
+ *
+ * Beide Schürzen gibt es in denselben drei Farben; die Kinderschürze zusätzlich
+ * in drei Größen. Weil dieselbe Farbliste an mehreren Produkten hängt, steht
+ * sie hier einmal und wird unten verwiesen – eine neue Farbe muss sonst an
+ * drei Stellen gleich getippt werden.
+ *
+ * Die hex-Werte sind dieselben, die als Farbtupfer (.swatch) in den
+ * Produktseiten stehen. Ändert sich hier einer, ändert er sich auch dort.
+ */
+var SHOP_COLOURS = [
+  { id: "sand", label: "Sand", hex: "#D6C3A5" },
+  { id: "rose", label: "Dusty pink", hex: "#D9A7A2" },
+  { id: "grey", label: "Grey", hex: "#8E979B" }
+];
+
+/* Die Größen sind die drei Stufen des Schnittmusters. Das Alter ist eine
+   Zusage an einen Käufer – wer "ab 8 Jahre" bestellt und die 34-cm-Schürze
+   bekommt, schickt sie zurück. Die Maße dazu stehen sichtbar in der
+   Größentabelle auf shop/kids-apron.html; beide müssen zusammenpassen. */
+var SHOP_KIDS_SIZES = [
+  { id: "4y", label: "From 4 years" },
+  { id: "8y", label: "From 8 years" },
+  { id: "12y", label: "From 12 years" }
+];
+
 /* Drei Positionen, aber nur zwei Dinge: die große Schürze, die kleine – und
    das Set, das beide zusammen billiger macht. Wer etwas hinzufügt, legt es
    hier an und in worker/src/catalog.js. Beide Listen müssen übereinstimmen. */
@@ -30,11 +57,8 @@ var SHOP_PRODUCTS = {
     type: "physical",
     price: 49.9,
     image: "assets/img/apron-adult.jpg",
-    /* Vorerst nur Natural. Eine leere Liste heißt: keine Auswahl an der
-       Kaufbox, keine Farbe auf der Bestellung. Kommt Berry rot zurück, hier
-       wieder { id: "natural", ... }, { id: "berry", ... } eintragen – und
-       zeichengleich in worker/src/catalog.js, sonst weist die Kasse ab. */
-    variants: []
+    /* Eine Frage: die Farbe. Die Erwachsenenschürze hat nur eine Größe. */
+    options: [{ id: "colour", legend: "Colour", choices: SHOP_COLOURS }]
   },
 
   "kids-apron": {
@@ -43,7 +67,15 @@ var SHOP_PRODUCTS = {
     type: "physical",
     price: 29.9,
     image: "assets/img/apron-kids.jpg",
-    variants: []
+    /* Zwei Fragen: Farbe und Größe. Als Kombination ausgeschrieben wären das
+       neun Knöpfe unter einer Überschrift – zwei getrennte Auswahlen sind
+       kürzer und lassen sich einzeln ändern. */
+    options: [
+      { id: "colour", legend: "Colour", choices: SHOP_COLOURS },
+      { id: "size", legend: "Size", choices: SHOP_KIDS_SIZES }
+    ],
+    /** Überschrift der Zeile im Warenkorb. Ohne Angabe steht dort "Colour". */
+    variantLegend: "Colour & size"
   },
 
   /* Das Set ist eine eigene Position, kein Rabatt auf zwei andere. Das ist die
@@ -52,12 +84,11 @@ var SHOP_PRODUCTS = {
      Zustand, in dem der Warenkorb je nach Reihenfolge des Hinzufügens etwas
      anderes kostet.
 
-     Solange es nur Natural gibt, hat das Set keine Varianten. Sobald eine
-     zweite Farbe dazukommt, wird sie hier als Kombination gewählt: Eine
-     Variantenliste je Produkt kann nur eine Frage stellen, hier sind es aber
-     zwei Schürzen. Vier Kombinationen sind noch überschaubar – bei einer
-     dritten Farbe wären es neun, dann braucht die Kaufbox zwei getrennte
-     Auswahlen. */
+     Im Paket liegen zwei Schürzen, also werden drei Fragen gestellt: die Farbe
+     der großen, die Farbe der kleinen und deren Größe. Ausgeschrieben wären
+     das 27 Kombinationen – deshalb bekommt jede Frage ihre eigene Zeile, und
+     jede Auswahl trägt vorn, zu welcher Schürze sie gehört. Genau dieser Text
+     steht später auf der Stripe-Bestellung, nach der gepackt wird. */
   "apron-set": {
     slug: "apron-set",
     title: "Apron set »Dough Love« (adult + kids)",
@@ -66,9 +97,75 @@ var SHOP_PRODUCTS = {
     /** Nur zur Anzeige: Summe der Einzelpreise, durchgestrichen neben dem Preis. */
     compareAtPrice: 79.8,
     image: "assets/img/apron-set.jpg",
-    variants: []
+    options: [
+      {
+        id: "adult-colour",
+        legend: "Colour of the grown-up apron",
+        prefix: "Adult",
+        choices: SHOP_COLOURS
+      },
+      {
+        id: "kids-colour",
+        legend: "Colour of the kids' apron",
+        prefix: "Kids",
+        choices: SHOP_COLOURS
+      },
+      {
+        id: "kids-size",
+        legend: "Size of the kids' apron",
+        prefix: "Kids size",
+        choices: SHOP_KIDS_SIZES
+      }
+    ],
+    /* Leer, nicht "Choice": Jede der drei Auswahlen trägt ihre Zuordnung schon
+       selbst ("Adult: Sand"), eine Überschrift davor ergäbe im Warenkorb eine
+       zweite Doppelpunkt-Ebene. */
+    variantLegend: ""
   }
 };
+
+/**
+ * Aus den Fragen die fertigen Varianten bauen.
+ *
+ * Der Warenkorb speichert je Zeile eine einzige Kennung, kein Objekt aus
+ * mehreren Auswahlen – daran hängen der Vergleich zweier Zeilen, die Kasse und
+ * der Text auf der Bestellung. Die Kennung ist deshalb die Aneinanderreihung
+ * der gewählten Werte, getrennt durch "__": "sand__8y", beim Set
+ * "sand__rose__8y". Die Reihenfolge ist die der Fragen oben; wer sie umstellt,
+ * macht bestehende Warenkörbe ungültig.
+ *
+ * Erzeugt wird jede mögliche Kombination – neun bei der Kinderschürze, 27 beim
+ * Set. Das ist eine Liste zum Nachschlagen, keine Lagerhaltung: Gebraucht wird
+ * sie nur, um zu einer Kennung wieder die Beschriftung zu finden (Warenkorb).
+ */
+function buildVariants(options) {
+  var variants = [{ id: "", label: "" }];
+
+  options.forEach(function (group) {
+    var next = [];
+
+    variants.forEach(function (partial) {
+      group.choices.forEach(function (choice) {
+        next.push({
+          id: partial.id ? partial.id + "__" + choice.id : choice.id,
+          label:
+            (partial.label ? partial.label + " · " : "") +
+            (group.prefix ? group.prefix + ": " : "") +
+            choice.label
+        });
+      });
+    });
+
+    variants = next;
+  });
+
+  return variants;
+}
+
+Object.keys(SHOP_PRODUCTS).forEach(function (slug) {
+  var product = SHOP_PRODUCTS[slug];
+  product.variants = product.options ? buildVariants(product.options) : [];
+});
 
 var SHOP_TERMS = {
   /** Versandpauschale innerhalb Deutschlands, in Euro. */

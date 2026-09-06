@@ -127,12 +127,12 @@
              Zuständig: assets/js/gallery.js -->
         <div data-gallery>
           <button type="button" class="product-gallery__main" data-gallery-zoom>
-            <img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Natural, laid out flat" data-gallery-main>
+            <img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Sand, laid out flat" data-gallery-main>
             <span class="product-gallery__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="7"/><path d="M15.9 15.9 21 21"/><path d="M10.8 8v5.6"/><path d="M8 10.8h5.6"/></svg></span>
             <span class="sr-only">Show the apron larger</span>
           </button>
           <div class="product-gallery__thumbs no-scrollbar">
-            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Natural, laid out flat"></button>
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-adult.jpg" alt="Waffle apron »Dough Love« in Sand, laid out flat"></button>
             <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-pocket.jpg" alt="Close-up of the front pocket with the sewn-in CT label" loading="lazy"></button>
             <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-strap.jpg" alt="Close-up of the neck strap with its metal slider" loading="lazy"></button>
           </div>
@@ -149,15 +149,19 @@
           <div class="panel buybox" data-buybox data-slug="linen-apron">
             <p class="buybox__price">€49.90</p>
             <p class="buybox__terms">No VAT (§ 19 UStG), plus €4.90 shipping per order</p>
-          <!-- Nur eine Farbe im Angebot. Eine Auswahl mit einem einzigen Knopf
-               wäre eine Frage ohne zweite Antwort – die Farbe steht deshalb
-               als Angabe da. Kommt eine zweite dazu, wird hieraus wieder ein
-               <fieldset> mit Chips, und die Varianten in assets/js/shop-data.js
-               und worker/src/catalog.js müssen mitwachsen. -->
-          <div class="buybox__colour">
-            <span class="buybox__label">Colour</span>
-            <span class="buybox__colour-value"><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Natural</span>
-          </div>
+          <!-- Die Farbauswahl. Die Werte in data-variant-value müssen
+               zeichengleich zu SHOP_COLOURS in assets/js/shop-data.js und zu
+               COLOURS in worker/src/catalog.js stehen – sonst weist die Kasse
+               die Bestellung ab. Ohne JavaScript bleibt der erste Chip als
+               aktiv markiert stehen; gekauft wird ohnehin erst mit Skript. -->
+          <fieldset data-variant-group="colour">
+            <legend>Colour</legend>
+            <div class="buybox__variants">
+              <button type="button" class="chip is-active" data-variant-value="sand" aria-pressed="true"><span class="swatch" style="background-color:#D6C3A5" aria-hidden="true"></span>Sand</button>
+              <button type="button" class="chip" data-variant-value="rose" aria-pressed="false"><span class="swatch" style="background-color:#D9A7A2" aria-hidden="true"></span>Dusty pink</button>
+              <button type="button" class="chip" data-variant-value="grey" aria-pressed="false"><span class="swatch" style="background-color:#8E979B" aria-hidden="true"></span>Grey</button>
+            </div>
+          </fieldset>
 
             <div class="buybox__qty">
               <span class="buybox__label">Quantity</span>
@@ -202,13 +206,13 @@
 
           <section class="mt-6">
             <h2 style="font-size:1.25rem">Details</h2>
-            <p class="muted" style="margin-top:.5rem;line-height:1.7">Exactly the apron I wear in almost every video. Waffle piqué, cut and sewn by hand here in Germany – not a factory run, which is why the seams are worth a second look and why there are never many in stock at once. The waffle weave is soft on the skin, absorbent enough to dry your hands on, and hard-wearing enough to outlast the recipes on this site. Adjustable neck strap and a large front pocket for a dough scraper, your phone or a kitchen towel. Unisex cut, one size. Machine washable at 40 °C – chocolate and tomato sauce stains build character.</p>
+            <p class="muted" style="margin-top:.5rem;line-height:1.7">Exactly the apron I wear in almost every video. Waffle piqué, cut and sewn by hand here in Germany – not a factory run, which is why the seams are worth a second look and why there are never many in stock at once. The waffle weave is soft on the skin, absorbent enough to dry your hands on, and hard-wearing enough to outlast the recipes on this site. Adjustable neck strap and a large front pocket for a dough scraper, your phone or a kitchen towel. Unisex cut, one size, in three colours – Sand is the one from the videos, Dusty pink and Grey are the same fabric in a different mood. Machine washable at 40 °C – chocolate and tomato sauce stains build character.</p>
             <ul class="check-list">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Waffle piqué – soft on the skin, absorbent, hard-wearing</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Cut and sewn by hand in Germany</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Carefully finished seams, built to last for years</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Adjustable neck strap, one size, unisex cut</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Natural – the colour from the videos</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Three colours: Sand, Dusty pink and Grey</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Large front pocket with a slot for a dough scraper</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Machine washable at 40 °C</span></li>
             </ul>

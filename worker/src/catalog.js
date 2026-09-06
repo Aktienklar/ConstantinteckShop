@@ -17,6 +17,55 @@ export const CURRENCY = "eur";
 const TAX_TANGIBLE = "txcd_99999999";
 
 /**
+ * Farben und Größen – zeichengleich zu SHOP_COLOURS und SHOP_KIDS_SIZES in
+ * assets/js/shop-data.js. Die Beschriftungen von hier stehen später auf der
+ * Stripe-Bestellung, nach der gepackt wird; die Kennungen ("sand", "8y")
+ * kommen aus dem Browser und müssen deshalb auf beiden Seiten gleich heißen.
+ */
+const COLOURS = [
+  { id: "sand", label: "Sand" },
+  { id: "rose", label: "Dusty pink" },
+  { id: "grey", label: "Grey" }
+];
+
+const KIDS_SIZES = [
+  { id: "4y", label: "From 4 years" },
+  { id: "8y", label: "From 8 years" },
+  { id: "12y", label: "From 12 years" }
+];
+
+/**
+ * Baut aus den Fragen zu einem Produkt die Tabelle "Kennung -> Beschriftung".
+ *
+ * Der Browser schickt eine einzige Kennung je Zeile, in der alle Auswahlen
+ * stecken: "sand__8y", beim Set "sand__rose__8y". Dieselbe Reihenfolge und
+ * dasselbe Trennzeichen wie in buildVariants() in assets/js/shop-data.js –
+ * weicht eines davon ab, weist die Kasse jede Bestellung ab.
+ */
+function variantsFrom(groups) {
+  let variants = [["", ""]];
+
+  for (const group of groups) {
+    const next = [];
+
+    for (const [partialId, partialLabel] of variants) {
+      for (const choice of group.choices) {
+        next.push([
+          partialId ? partialId + "__" + choice.id : choice.id,
+          (partialLabel ? partialLabel + " · " : "") +
+            (group.prefix ? group.prefix + ": " : "") +
+            choice.label
+        ]);
+      }
+    }
+
+    variants = next;
+  }
+
+  return Object.fromEntries(variants);
+}
+
+/**
  * Verkauft werden die beiden Schürzen und das Set aus beiden. Kommt wieder
  * eine Rezeptsammlung als PDF dazu, gehört sie hier und in
  * assets/js/shop-data.js angelegt – mit type:"digital", einem file-Schlüssel
@@ -34,11 +83,11 @@ export const PRODUCTS = {
     type: "physical",
     amount: 4990,
     taxCode: TAX_TANGIBLE,
-    /* Vorerst nur Natural, deshalb keine Variante. Muss zu den Varianten in
-       assets/js/shop-data.js passen: Steht dort eine Liste und hier nicht,
-       geht die Farbe auf der Bestellung verloren; umgekehrt weist die Kasse
-       jede Bestellung mit "Please choose an option" ab. */
-    variants: {}
+    /* Nur die Farbe – die große Schürze hat eine Größe. Muss zu den Optionen in
+       assets/js/shop-data.js passen: Fehlt hier eine Farbe, die die Seite
+       anbietet, weist die Kasse die Bestellung mit "Please choose an option"
+       ab, obwohl der Käufer gewählt hat. */
+    variants: variantsFrom([{ choices: COLOURS }])
   },
 
   "kids-apron": {
@@ -46,20 +95,26 @@ export const PRODUCTS = {
     type: "physical",
     amount: 2990,
     taxCode: TAX_TANGIBLE,
-    variants: {}
+    /* Farbe und Größe – neun Kombinationen. Die Größe ist die wichtigste
+       Angabe auf der Bestellung: Danach wird zugeschnitten. */
+    variants: variantsFrom([{ choices: COLOURS }, { choices: KIDS_SIZES }])
   },
 
   /* Eigene Position mit eigenem Preis statt eines Rabatts auf zwei Zeilen –
-     die Begründung steht bei apron-set in assets/js/shop-data.js. Sobald es
-     mehr als eine Farbe gibt, stecken hier beide Farben in einer Variante,
-     und genau dieser Text steht später auf der Stripe-Bestellung, nach der
-     gepackt wird. */
+     die Begründung steht bei apron-set in assets/js/shop-data.js. Im Paket
+     liegen zwei Schürzen, deshalb drei Auswahlen: beide Farben und die Größe
+     der kleinen. Die Vorsilben stehen mit auf der Bestellung, damit beim
+     Packen nicht geraten werden muss, welche Farbe zu welcher Schürze gehört. */
   "apron-set": {
     title: "Apron set »Dough Love« (adult + kids)",
     type: "physical",
     amount: 6990,
     taxCode: TAX_TANGIBLE,
-    variants: {}
+    variants: variantsFrom([
+      { prefix: "Adult", choices: COLOURS },
+      { prefix: "Kids", choices: COLOURS },
+      { prefix: "Kids size", choices: KIDS_SIZES }
+    ])
   }
 };
 

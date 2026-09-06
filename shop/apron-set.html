@@ -152,15 +152,42 @@
             </p>
             <p class="buybox__terms">No VAT (§ 19 UStG) · plus €4.90 shipping per order</p>
 
-          <!-- Nur eine Farbe im Angebot. Eine Auswahl mit einem einzigen Knopf
-               wäre eine Frage ohne zweite Antwort – die Farbe steht deshalb
-               als Angabe da. Kommt eine zweite dazu, wird hieraus wieder ein
-               <fieldset> mit Chips, und die Varianten in assets/js/shop-data.js
-               und worker/src/catalog.js müssen mitwachsen. -->
-          <div class="buybox__colour">
-            <span class="buybox__label">Colours</span>
-            <span class="buybox__colour-value"><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Both Natural</span>
-          </div>
+          <!-- Im Paket liegen zwei Schürzen, also drei Fragen: die Farbe der
+               großen, die Farbe der kleinen und deren Größe. Ausgeschrieben
+               wären das 27 Kombinationen unter einer Überschrift – getrennte
+               Auswahlen sind kürzer und einzeln änderbar. Die Reihenfolge
+               dieser drei Blöcke muss der Reihenfolge der Optionen in
+               assets/js/shop-data.js entsprechen: Aus ihr wird die Kennung
+               ("sand__rose__8y") gebaut, die die Kasse prüft und nach der
+               gepackt wird. -->
+          <fieldset data-variant-group="adult-colour">
+            <legend>Colour of the grown-up apron</legend>
+            <div class="buybox__variants">
+              <button type="button" class="chip is-active" data-variant-value="sand" aria-pressed="true"><span class="swatch" style="background-color:#D6C3A5" aria-hidden="true"></span>Sand</button>
+              <button type="button" class="chip" data-variant-value="rose" aria-pressed="false"><span class="swatch" style="background-color:#D9A7A2" aria-hidden="true"></span>Dusty pink</button>
+              <button type="button" class="chip" data-variant-value="grey" aria-pressed="false"><span class="swatch" style="background-color:#8E979B" aria-hidden="true"></span>Grey</button>
+            </div>
+          </fieldset>
+
+          <fieldset data-variant-group="kids-colour">
+            <legend>Colour of the kids' apron</legend>
+            <div class="buybox__variants">
+              <button type="button" class="chip is-active" data-variant-value="sand" aria-pressed="true"><span class="swatch" style="background-color:#D6C3A5" aria-hidden="true"></span>Sand</button>
+              <button type="button" class="chip" data-variant-value="rose" aria-pressed="false"><span class="swatch" style="background-color:#D9A7A2" aria-hidden="true"></span>Dusty pink</button>
+              <button type="button" class="chip" data-variant-value="grey" aria-pressed="false"><span class="swatch" style="background-color:#8E979B" aria-hidden="true"></span>Grey</button>
+            </div>
+            <p class="buybox__hint">Matching or deliberately different – both are the same fabric.</p>
+          </fieldset>
+
+          <fieldset data-variant-group="kids-size">
+            <legend>Size of the kids' apron</legend>
+            <div class="buybox__variants">
+              <button type="button" class="chip is-active" data-variant-value="4y" aria-pressed="true">From 4 years</button>
+              <button type="button" class="chip" data-variant-value="8y" aria-pressed="false">From 8 years</button>
+              <button type="button" class="chip" data-variant-value="12y" aria-pressed="false">From 12 years</button>
+            </div>
+            <p class="buybox__hint">34, 41 or 47 cm long – <a href="kids-apron.html#sizes">the measurements are on the kids' apron page</a>. The grown-up apron comes in one size.</p>
+          </fieldset>
 
             <div class="buybox__qty">
               <span class="buybox__label">Quantity</span>
@@ -188,7 +215,7 @@
             <h2 id="whats-inside" style="font-size:1.25rem">What's in the parcel</h2>
             <ul class="check-list" style="margin-top:.75rem">
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span><a class="link-brand" href="linen-apron.html">Waffle apron »Dough Love«</a> – one size, unisex cut (€49.90 on its own)</span></li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span><a class="link-brand" href="kids-apron.html">Kids' waffle apron »Little Dough Love«</a> – for roughly 4–8 years (€29.90 on its own)</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span><a class="link-brand" href="kids-apron.html">Kids' waffle apron »Little Dough Love«</a> – in three sizes from 4 years (€29.90 on its own)</span></li>
             </ul>
           </section>
 
@@ -206,10 +233,10 @@
 
           <section class="mt-6">
             <h2 style="font-size:1.25rem">Details</h2>
-            <p class="muted" style="margin-top:.5rem;line-height:1.7">The same waffle piqué twice, cut and sewn by hand here in Germany – once in my size, once for someone who still needs a stool at the counter. Both have an adjustable neck strap and a front pocket, both wash at 40 °C, and both get softer with every wash. The set exists because almost every message about the apron ends with the same question: whether there is a small one too. Now there is, and taking both costs less than taking them one at a time.</p>
+            <p class="muted" style="margin-top:.5rem;line-height:1.7">The same waffle piqué twice, cut and sewn by hand here in Germany – once in my size, once for someone who still needs a stool at the counter. Both have an adjustable neck strap and a front pocket, both wash at 40 °C, and both get softer with every wash. Each apron gets its own colour – Sand, Dusty pink or Grey – and the small one its own size, so a pair can match or deliberately not. The set exists because almost every message about the apron ends with the same question: whether there is a small one too. Now there is, and taking both costs less than taking them one at a time.</p>
             <ul class="check-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Two aprons: one adult size, one for roughly 4–8 years</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Both in Natural – the colour from the videos</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Two aprons: one adult size, the small one in your choice of three sizes</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Three colours to pick from for each apron – Sand, Dusty pink, Grey</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>€69.90 instead of €79.80 – €9.90 less than buying them separately</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Cut and sewn by hand in Germany</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Machine washable at 40 °C</span></li>

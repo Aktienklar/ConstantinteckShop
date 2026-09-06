@@ -20,29 +20,60 @@
 
   function setupBuyBox(box) {
     var slug = box.getAttribute("data-slug");
-    var variantButtons = box.querySelectorAll("[data-variant]");
     var quantityOutput = box.querySelector("[data-qty-value]");
     var addButton = box.querySelector("[data-add]");
     var added = box.querySelector("[data-added]");
     var addedText = box.querySelector("[data-added-text]");
 
     var quantity = 1;
-    var variantId = variantButtons.length
-      ? variantButtons[0].getAttribute("data-variant")
-      : undefined;
 
-    variantButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        variantId = button.getAttribute("data-variant");
+    /* Eine Kaufbox kann mehrere Fragen stellen: die Kinderschürze Farbe und
+       Größe, das Set beide Farben und die Größe. Jede Frage ist ein
+       [data-variant-group] mit Chips darin; die Reihenfolge im HTML muss die
+       der Optionen in shop-data.js sein, denn aus ihr wird die Kennung
+       zusammengesetzt, die im Warenkorb und an der Kasse landet. */
+    var groups = [].map.call(
+      box.querySelectorAll("[data-variant-group]"),
+      function (group) {
+        var buttons = [].slice.call(
+          group.querySelectorAll("[data-variant-value]")
+        );
+        return {
+          buttons: buttons,
+          /* Vorausgewählt ist, was im HTML als aktiv markiert ist – sonst der
+             erste Chip. So steht die Auswahl auch ohne JavaScript richtig da. */
+          value: (
+            buttons.filter(function (button) {
+              return button.classList.contains("is-active");
+            })[0] || buttons[0]
+          ).getAttribute("data-variant-value")
+        };
+      }
+    );
 
-        variantButtons.forEach(function (other) {
-          var active = other === button;
-          other.classList.toggle("is-active", active);
-          other.setAttribute("aria-pressed", active ? "true" : "false");
+    function variantId() {
+      if (!groups.length) return undefined;
+      return groups
+        .map(function (group) {
+          return group.value;
+        })
+        .join("__");
+    }
+
+    groups.forEach(function (group) {
+      group.buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          group.value = button.getAttribute("data-variant-value");
+
+          group.buttons.forEach(function (other) {
+            var active = other === button;
+            other.classList.toggle("is-active", active);
+            other.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+
+          // Die Bestätigung gehört zur vorherigen Auswahl – also weg damit.
+          if (added) added.hidden = true;
         });
-
-        // Die Bestätigung gehört zur vorherigen Auswahl – also weg damit.
-        if (added) added.hidden = true;
       });
     });
 
@@ -66,7 +97,7 @@
     }
 
     addButton.addEventListener("click", function () {
-      window.Cart.add(slug, variantId, quantity);
+      window.Cart.add(slug, variantId(), quantity);
 
       if (added && addedText) {
         addedText.textContent = quantity + "× in your cart";
@@ -78,17 +109,36 @@
   /* Kompakter Button in den Cross-Selling-Blöcken ------------------------- */
 
   function setupSimpleButton(button) {
-    var simpleProduct = SHOP_PRODUCTS[button.getAttribute("data-slug")];
+    var slug = button.getAttribute("data-slug");
+    var cartHref = button.getAttribute("data-cart-href") || "cart.html";
+    var simpleProduct = SHOP_PRODUCTS[slug];
+
     if (simpleProduct && simpleProduct.available === false) {
       button.disabled = true;
       button.textContent = "Not on sale yet";
       return;
     }
 
+    /* Seit es Farben und Größen gibt, kann dieser Knopf die Schürze nicht mehr
+       selbst in den Warenkorb legen: Er müsste eine Farbe raten, und die Kasse
+       weist eine Bestellung ohne gewählte Variante ohnehin ab. Er wird deshalb
+       zum Weg auf die Produktseite, wo die Auswahl steht. Aus "../cart.html"
+       wird "../shop/linen-apron.html" – der Verweis auf den Warenkorb trägt
+       die einzige Ortsangabe, die diese Blöcke haben. */
+    if (simpleProduct && simpleProduct.options) {
+      var link = document.createElement("a");
+      link.className = button.className;
+      link.href = cartHref.replace(/cart\.html$/, "shop/" + slug + ".html");
+      link.textContent =
+        simpleProduct.options.length > 1
+          ? "Choose colour & size"
+          : "Choose a colour";
+      button.replaceWith(link);
+      return;
+    }
+
     button.addEventListener("click", function () {
-      var slug = button.getAttribute("data-slug");
       var variantId = button.getAttribute("data-variant") || undefined;
-      var cartHref = button.getAttribute("data-cart-href") || "cart.html";
 
       window.Cart.add(slug, variantId);
 

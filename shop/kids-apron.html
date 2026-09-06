@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FDF8F1">
   <title>Kids' waffle apron »Little Dough Love« | Constantinteck</title>
-  <meta name="description" content="The small version of the apron from my videos – same waffle piqué, sewn by hand in Germany, cut for children aged about 4 to 8.">
+  <meta name="description" content="The small version of the apron from my videos – same waffle piqué, sewn by hand in Germany, in three sizes from 4 years and three colours.">
   <!-- Favicon, canonical, Vorschaubild beim Teilen -->
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
@@ -14,7 +14,7 @@
   <meta property="og:site_name" content="Constantinteck">
   <meta property="og:url" content="https://constantinteck.com/shop/kids-apron.html">
   <meta property="og:title" content="Kids' waffle apron »Little Dough Love«">
-  <meta property="og:description" content="The small version of the apron from my videos – same waffle piqué, sewn by hand in Germany, cut for children aged about 4 to 8.">
+  <meta property="og:description" content="The small version of the apron from my videos – same waffle piqué, sewn by hand in Germany, in three sizes from 4 years and three colours.">
   <meta property="og:image" content="https://constantinteck.com/assets/img/apron-kids.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
@@ -30,7 +30,7 @@
     "https://constantinteck.com/assets/img/apron-detail-pocket.jpg",
     "https://constantinteck.com/assets/img/apron-detail-strap.jpg"
   ],
-  "description": "The small version of the apron from my videos – same fabric, same seams, cut for someone who needs a stool to reach the counter.",
+  "description": "The small version of the apron from my videos – same fabric, same seams, in three sizes from 4 years and three colours.",
   "brand": {
     "@type": "Brand",
     "name": "Constantinteck"
@@ -127,12 +127,12 @@
              Zuständig: assets/js/gallery.js -->
         <div data-gallery>
           <button type="button" class="product-gallery__main" data-gallery-zoom>
-            <img src="../assets/img/apron-kids.jpg" alt="Kids' waffle apron »Little Dough Love« in Natural, laid out flat" data-gallery-main>
+            <img src="../assets/img/apron-kids.jpg" alt="Kids' waffle apron »Little Dough Love« in Sand, laid out flat" data-gallery-main>
             <span class="product-gallery__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="7"/><path d="M15.9 15.9 21 21"/><path d="M10.8 8v5.6"/><path d="M8 10.8h5.6"/></svg></span>
             <span class="sr-only">Show the apron larger</span>
           </button>
           <div class="product-gallery__thumbs no-scrollbar">
-            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-kids.jpg" alt="Kids' waffle apron »Little Dough Love« in Natural, laid out flat"></button>
+            <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-kids.jpg" alt="Kids' waffle apron »Little Dough Love« in Sand, laid out flat"></button>
             <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-pocket.jpg" alt="Close-up of the front pocket with the sewn-in CT label" loading="lazy"></button>
             <button type="button" class="product-gallery__thumb" data-gallery-thumb aria-pressed="false"><img src="../assets/img/apron-detail-strap.jpg" alt="Close-up of the adjustable neck strap" loading="lazy"></button>
           </div>
@@ -142,20 +142,39 @@
         <div class="product-info">
           <span class="product-type">Physical · shipped to you</span>
           <h1>Kids' waffle apron »Little Dough Love«</h1>
-          <p class="lede">The small version of the apron from my videos – same fabric, same seams, cut for someone who needs a stool to reach the counter.</p>
+          <p class="lede">The small version of the apron from my videos – same fabric, same seams, in three sizes and three colours, cut for someone who needs a stool to reach the counter.</p>
 
           <div class="panel buybox" data-buybox data-slug="kids-apron">
             <p class="buybox__price">€29.90</p>
             <p class="buybox__terms">No VAT (§ 19 UStG), plus €4.90 shipping per order</p>
-          <!-- Nur eine Farbe im Angebot. Eine Auswahl mit einem einzigen Knopf
-               wäre eine Frage ohne zweite Antwort – die Farbe steht deshalb
-               als Angabe da. Kommt eine zweite dazu, wird hieraus wieder ein
-               <fieldset> mit Chips, und die Varianten in assets/js/shop-data.js
-               und worker/src/catalog.js müssen mitwachsen. -->
-          <div class="buybox__colour">
-            <span class="buybox__label">Colour</span>
-            <span class="buybox__colour-value"><span class="swatch" style="background-color:#E4CFB2" aria-hidden="true"></span>Natural</span>
-          </div>
+          <!-- Zwei Fragen: Farbe und Größe. Die Reihenfolge dieser beiden
+               Blöcke muss der Reihenfolge der Optionen in
+               assets/js/shop-data.js entsprechen – aus ihr wird die Kennung
+               zusammengesetzt ("rose__8y"), die im Warenkorb steht und an der
+               Kasse geprüft wird. Auch die Werte selbst müssen dort und in
+               worker/src/catalog.js zeichengleich stehen. -->
+          <fieldset data-variant-group="colour">
+            <legend>Colour</legend>
+            <div class="buybox__variants">
+              <button type="button" class="chip is-active" data-variant-value="sand" aria-pressed="true"><span class="swatch" style="background-color:#D6C3A5" aria-hidden="true"></span>Sand</button>
+              <button type="button" class="chip" data-variant-value="rose" aria-pressed="false"><span class="swatch" style="background-color:#D9A7A2" aria-hidden="true"></span>Dusty pink</button>
+              <button type="button" class="chip" data-variant-value="grey" aria-pressed="false"><span class="swatch" style="background-color:#8E979B" aria-hidden="true"></span>Grey</button>
+            </div>
+          </fieldset>
+
+          <!-- Die Altersangabe ist eine Zusage, keine Zierde: Danach wird
+               zugeschnitten. Die Maße dazu stehen unten in der Größentabelle,
+               damit niemand nach dem Alter allein raten muss – Kinder gleichen
+               Alters sind verschieden groß. -->
+          <fieldset data-variant-group="size">
+            <legend>Size</legend>
+            <div class="buybox__variants">
+              <button type="button" class="chip is-active" data-variant-value="4y" aria-pressed="true">From 4 years</button>
+              <button type="button" class="chip" data-variant-value="8y" aria-pressed="false">From 8 years</button>
+              <button type="button" class="chip" data-variant-value="12y" aria-pressed="false">From 12 years</button>
+            </div>
+            <p class="buybox__hint">34, 41 or 47 cm long – <a href="#sizes">see the measurements</a> before you choose.</p>
+          </fieldset>
 
             <div class="buybox__qty">
               <span class="buybox__label">Quantity</span>
@@ -201,16 +220,67 @@
                schickt sie zurück. -->
           <section class="mt-6">
             <h2 style="font-size:1.25rem">Details</h2>
-            <p class="muted" style="margin-top:.5rem;line-height:1.7">Same waffle piqué as the big one, cut down to size and sewn by hand here in Germany. One size, made for roughly 4 to 8 years (about 104–128 cm) – the neck strap adjusts, so it grows along for a while. The front pocket is a proper pocket, not a decoration: a small whisk, a cookie cutter and a folded towel fit. Machine washable at 40 °C, which is the only sensible way to sell a child's apron.</p>
+            <p class="muted" style="margin-top:.5rem;line-height:1.7">Same waffle piqué as the big one, cut down to size and sewn by hand here in Germany. Three sizes – from 4, from 8 and from 12 years – and the same three colours as the grown-up apron, so a pair can match or deliberately not. The neck strap adjusts, so each size grows along for a while. The front pocket is a proper pocket, not a decoration: a small whisk, a cookie cutter and a folded towel fit. Machine washable at 40 °C, which is the only sensible way to sell a child's apron.</p>
             <ul class="check-list">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Waffle piqué – soft on the skin, absorbent, hard-wearing</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Cut and sewn by hand in Germany</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>One size for roughly 4–8 years (about 104–128 cm)</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Three sizes: from 4, from 8 and from 12 years</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Adjustable neck strap, ties at the back</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Natural – the colour from the videos</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Three colours: Sand, Dusty pink and Grey</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Front pocket, same as on the grown-up apron</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.6 4.6 4.5L19 7"/></svg><span>Machine washable at 40 °C</span></li>
             </ul>
+          </section>
+
+          <!-- Die Zahlen stammen aus dem Schnittmuster, nach dem zugeschnitten
+               wird. Sie stehen hier, weil "ab 8 Jahre" allein nichts sagt:
+               Kinder gleichen Alters sind verschieden groß, und die Länge vom
+               Halsband bis zum Saum ist das, was ein Käufer nachmessen kann.
+               Wer die Maße hier ändert, ändert sie auch am Schnitt. -->
+          <section class="mt-6" id="sizes">
+            <h2 style="font-size:1.25rem">Size table</h2>
+            <p class="muted" style="margin-top:.5rem;line-height:1.7">Measured flat, without the straps. The age is a starting point – if you can, measure the child from the base of the neck to just below the knee and pick by length.</p>
+            <div class="size-table__scroll no-scrollbar">
+              <table class="size-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Size</th>
+                    <th scope="col">Length</th>
+                    <th scope="col">Width at the hem</th>
+                    <th scope="col">Width at the bib</th>
+                    <th scope="col">Neck strap</th>
+                    <th scope="col">Ties</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">From 4 years</th>
+                    <td>34 cm</td>
+                    <td>27 cm</td>
+                    <td>12 cm</td>
+                    <td>approx. 41 cm</td>
+                    <td>approx. 61 cm</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">From 8 years</th>
+                    <td>41 cm</td>
+                    <td>34 cm</td>
+                    <td>15 cm</td>
+                    <td>approx. 44 cm</td>
+                    <td>approx. 71 cm</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">From 12 years</th>
+                    <td>47 cm</td>
+                    <td>37 cm</td>
+                    <td>17 cm</td>
+                    <td>approx. 51 cm</td>
+                    <td>approx. 81 cm</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="muted" style="margin-top:.75rem;font-size:.875rem">Between two sizes? Take the larger one – the neck strap adjusts, and the apron is worn for years.</p>
           </section>
         </div>
       </div>

@@ -141,6 +141,9 @@
       if (product.variants[i].id === line.variantId) variant = product.variants[i];
     }
 
+    var variantLegend =
+      product.variantLegend === undefined ? "Colour" : product.variantLegend;
+
     var attrs =
       'data-slug="' +
       product.slug +
@@ -160,11 +163,13 @@
       escapeHtml(product.title) +
       "</a>" +
       '<p class="cart-line__variant">' +
-      /* Beim Set stehen zwei Farben in einer Variante – dort heißt die Zeile
-         deshalb "Colours", überall sonst "Colour". */
+      /* Die Überschrift der Auswahl steht am Produkt: "Colour & size" bei der
+         Kinderschürze. Beim Set ist sie leer – dort trägt jede Auswahl ihre
+         Zuordnung schon selbst ("Adult: Sand · Kids: Grey"), eine Überschrift
+         davor ergäbe eine zweite Doppelpunkt-Ebene. Fehlt die Angabe ganz,
+         steht dort "Colour". */
       (variant
-        ? (product.variantLegend || "Colour") +
-          ": " +
+        ? (variantLegend ? variantLegend + ": " : "") +
           escapeHtml(variant.label) +
           " · "
         : "") +

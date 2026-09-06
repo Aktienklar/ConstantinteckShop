@@ -15,7 +15,12 @@
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "ct-cart-v1";
+  /* v2, seit es Farben und Größen gibt. Zeilen aus einem alten Warenkorb
+     tragen keine Variante – die Kasse weist sie mit "Please choose an option"
+     ab, und die Warenkorbseite hat keine Auswahl, mit der man das noch
+     nachholen könnte. Ein neuer Schlüssel lässt solche Warenkörbe leer starten,
+     statt den Besucher in eine Sackgasse laufen zu lassen. */
+  var STORAGE_KEY = "ct-cart-v2";
   var listeners = [];
 
   function read() {
