@@ -1810,6 +1810,13 @@ strong {
   margin-top: 0.25rem;
 }
 
+/* Rasterspalten sind von sich aus so breit wie ihr breitester Inhalt. Die
+   Größentabelle der Kinderschürze ist breiter als ein Handy – ohne diese
+   Zeile schiebt sie die ganze Spalte auf und damit die Seite quer. */
+.product-layout > * {
+  min-width: 0;
+}
+
 /* Das Hauptbild ist ein Knopf – ein Klick zeigt die Aufnahme groß. Aussehen
    soll es trotzdem wie ein Bild, deshalb die Zurücksetzung. */
 .product-gallery__main {
