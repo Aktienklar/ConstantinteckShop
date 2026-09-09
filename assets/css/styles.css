@@ -2979,6 +2979,18 @@ strong {
   box-shadow: var(--shadow-card);
 }
 
+/* Solange kein Foto da ist, steht die Bildmarke im Porträtfeld. Sie ist
+   kein Foto, darf also nicht beschnitten werden: contain statt cover, dazu
+   ein Innenabstand, damit das Zeichen nicht an die abgerundeten Ecken
+   stößt. Der Abstand wächst mit dem Feld mit (Prozent beziehen sich auf
+   die Breite), das Zeichen behält dadurch in jeder Fenstergröße denselben
+   Anteil an der Fläche. */
+.about__portrait--logo {
+  padding: 12%;
+  object-fit: contain;
+  background: var(--dough);
+}
+
 .about h1 {
   font-size: 1.875rem;
 }
