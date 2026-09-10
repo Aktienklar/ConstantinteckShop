@@ -22,12 +22,16 @@ var RECIPE_VIDEOS = {
   "avocado-ice-cream"                      : "",  // Avocado Ice Cream
   "baba-ganoush"                           : "",  // Baba Ganoush
   "blueberry-sorbet"                       : "",  // Blueberry Sorbet
+  "cheesy-roasted-chicken-wrap"            : "",  // Cheesy Roasted Chicken Wrap
+  "chocolate-banana-ice-cream"             : "",  // Chocolate Banana Ice Cream
   "coconut-mango-sorbet"                   : "",  // Coconut Mango Sorbet
   "creamy-one-pan-salmon-pasta"            : "",  // Creamy One-Pan Salmon Pasta
   "creamy-roasted-red-pepper-tomato-pasta" : "",  // Creamy Roasted Red Pepper & Tomato Pasta
+  "creamy-sucuk-carbonara"                 : "",  // Creamy Sucuk Carbonara
   "dragon-fruit-smoothie"                  : "",  // Dragon Fruit Smoothie
   "dragonfruit-mango-sorbet"               : "",  // Dragonfruit Mango Sorbet
   "fudgy-chocolate-raspberry-banana-bread" : "",  // Fudgy Chocolate Raspberry Banana Bread
+  "granola-berry-smoothie-bowl"            : "",  // Granola Berry Smoothie Bowl
   "grape-sorbet"                           : "",  // Grape Sorbet
   "healthy-raspberry-chocolate-nice-cream" : "",  // Healthy Raspberry Chocolate Nice Cream
   "kiwi-sorbet"                            : "",  // Kiwi Sorbet
@@ -35,6 +39,7 @@ var RECIPE_VIDEOS = {
   "mango-passionfruit-smoothie"            : "",  // Mango x Passionfruit Smoothie
   "mango-raspberry-sorbet"                 : "",  // Mango Raspberry Sorbet
   "peach-sorbet"                           : "",  // Peach Sorbet
+  "peanut-spicy-udon"                      : "",  // Peanut Spicy Udon
   "pineapple-sorbet"                       : "",  // Pineapple Sorbet
   "strawberry-passion-fruit-smoothie"      : "",  // Strawberry Passion Fruit Smoothie
   "strawberry-pineapple-sorbet"            : "",  // Strawberry Pineapple Sorbet
