@@ -10,9 +10,19 @@
        Strich neben der Flaeche. Im Pixelbild faellt das nicht auf, als Vektor
        waere daraus in jeder Groesse ein freistehender Haarstrich geworden.
 
+       Die beiden Boegen sind echte Kreisboegen (A-Befehle), keine Kette kurzer
+       Geraden mehr. Der Umriss aus dem Pixelbild lieferte sie als rund dreissig
+       Einzelpunkte, die um bis zu zwei Einheiten vom Kreis abwichen - gross
+       dargestellt sah die Kante dadurch wellig aus. Nachgemessen liegen beide
+       Boegen auf demselben Mittelpunkt 239,3 / 239,3: aussen mit Radius 239,3,
+       innen mit 224. Der Aussenkreis beruehrt damit genau die linke und die
+       obere Kante der Zeichenflaeche, der Ring ist ueberall 15,3 Einheiten
+       breit. Wer die Form aendert, sollte diese vier Zahlen zusammen aendern,
+       sonst laeuft der Ring wieder ungleichmaessig.
+
        Die Fuellfarbe ist der Wert der Variablen cocoa aus
        assets/css/styles.css, damit das Zeichen zum Schriftzug daneben passt.
        Wer die Variable aendert, muss die Farbe hier mitaendern: Eine Datei,
        die als Bild eingebunden ist, erbt keine Farbe von der Seite. -->
-  <path fill="#3b2a20" d="M245.6 2.7 247.6 3.3 247.7 11.7 247.8 216.7 247.8 226.4 257.6 226.4 517.6 226.4 522.9 227.4 527.6 229.7 528.6 234.7 527.8 239.9 519.4 242.4 409.6 242.5 391.8 242.5 367.8 242.5 366 243.7 366 252.7 366 506.7 364.6 517.2 352.6 517.2 324.5 517.2 250.6 517.2 242.3 517.2 239.6 515.7 239.6 498.7 237.6 478.7 211.7 476.6 174.1 469.2 139 456.3 116.1 444.2 99.7 432.7 82.1 418.2 67.4 404 52.9 387.5 34.3 361 22.8 339.6 9.5 308.1 6.9 298 3.6 291 3.6 280.6 0 268.2 0 228.6 0 205 3.9 187.9 9.1 169.8 18 147 29.6 124.7 43.2 103.3 58.7 83.8 78.3 63.4 96.8 47.9 118.3 33.4 140.9 21 156.4 14.5 183.2 6.3 206.5 1.6 235 0 241.9 0ZM13.6 232.7 16.9 269.6 20.9 281.2 20.9 290.9 31.5 321.8 42.8 345.5 54.9 365.4 77 393.4 91.4 407 107.9 420.4 123.7 430.7 147.1 443.2 173.7 453.6 194.5 458.9 224.7 462.3 234.9 462.3 238.6 460.7 239.6 458.6 239.5 430.7 239.5 251.7 239.5 233.9 238.6 231.1 224.6 231.1 28.6 231.1Z"/>
+  <path fill="#3b2a20" d="M245.6 2.7 247.6 3.3 247.7 11.7 247.8 216.7 247.8 226.4 257.6 226.4 517.6 226.4 522.9 227.4 527.6 229.7 528.6 234.7 527.8 239.9 519.4 242.4 409.6 242.5 391.8 242.5 367.8 242.5 366 243.7 366 252.7 366 506.7 364.6 517.2 352.6 517.2 324.5 517.2 250.6 517.2 242.3 517.2 239.3 515.7 239.3 478.6A239.3 239.3 0 0 1 239.3 0L241.9 0ZM15.45 231.1A224 224 0 0 0 239.3 463.3L239.3 233.9 238.6 231.1 224.6 231.1Z"/>
 </svg>
