@@ -1065,9 +1065,8 @@ strong {
 
 /* --- Startseite: Hero --------------------------------------------------- */
 
-/* Das Foto trägt den ganzen Abschnitt, der Text sitzt in seiner leeren
-   linken Hälfte. Unter lg wird das Foto zum Banner über dem Text, weil der
-   Bildausschnitt dort keinen Platz zum Schreiben lässt. */
+/* Links der Text, rechts die laufende Rezeptwand. Unter lg wird die Wand zum
+   Band über dem Text. */
 .hero {
   position: relative;
   overflow: hidden;
@@ -1077,23 +1076,133 @@ strong {
 
 .hero__media {
   position: relative;
+  overflow: hidden;
 }
 
-.hero__media img {
+/* Rezeptwand: Bahnen mit Rezeptkarten, die gegenläufig durchlaufen. Leicht
+   gekippt, damit sie nicht wie eine Tabelle aussieht; der negative Rand
+   schiebt die dabei entstehenden leeren Ecken aus dem Bild. */
+.hero__wall {
+  --wall-gap: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wall-gap);
+  margin-block: -0.75rem;
+  transform: rotate(-2.5deg) scale(1.06);
+}
+
+.hero__lane:nth-child(3) {
+  display: none;
+}
+
+.hero__track {
+  display: flex;
+  width: max-content;
+}
+
+/* Die Bewegung läuft erst, wenn hero-wall.js jede Bahn verdoppelt hat – eine
+   halbe Bahn würde beim Rücksprung sichtbar ruckeln. */
+.hero__wall.is-live .hero__track {
+  animation: wall-x 64s linear infinite;
+  will-change: transform;
+}
+
+.hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
+  animation-duration: 80s;
+  animation-direction: reverse;
+}
+
+@keyframes wall-x {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes wall-y {
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+/* Der Abstand sitzt als Rand an der Karte statt als gap an der Bahn: nur so
+   ist die halbe Bahn exakt eine Runde und der Rücksprung nahtlos. */
+.wall-card {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 6.5rem;
+  margin-right: var(--wall-gap);
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background-color: var(--crust);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.35s var(--ease-soft), box-shadow 0.35s var(--ease-soft);
+}
+
+.wall-card img {
+  display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: auto;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: 62% center;
 }
 
-/* Verlauf: blendet das Foto in den Hintergrund und hält die Überschrift
-   lesbar – auf dem Handy nach oben, ab lg zur Seite. */
+/* Rezeptname: erst beim Zeigen oder Fokussieren sichtbar, für Screenreader
+   immer da. */
+.wall-card span {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 2rem 0.75rem 0.625rem;
+  background-image: linear-gradient(to top, rgba(59, 42, 32, 0.85), transparent);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.wall-card:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: -3px;
+}
+
+.wall-card:focus-visible span {
+  opacity: 1;
+}
+
+.hero__lane:focus-within .hero__track {
+  animation-play-state: paused;
+}
+
+/* Nur mit echtem Zeiger: am Handy bliebe der Hover-Zustand nach dem Tippen
+   kleben und die Bahn stünde still. */
+@media (hover: hover) {
+  .hero__lane:hover .hero__track {
+    animation-play-state: paused;
+  }
+
+  .wall-card:hover {
+    z-index: 1;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .wall-card:hover span {
+    opacity: 1;
+  }
+}
+
+/* Verlauf: blendet die Wand in den Hintergrund – auf dem Handy nach unten
+   zum Text, ab lg zur Seite. */
 .hero__scrim {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: 8rem;
+  height: 4rem;
   background-image: linear-gradient(to top, var(--dough), transparent);
+  pointer-events: none;
 }
 
 .hero__body {
@@ -1255,8 +1364,12 @@ strong {
 }
 
 @media (min-width: 640px) {
-  .hero__media img {
-    aspect-ratio: 16 / 9;
+  .hero__wall {
+    --wall-gap: 0.75rem;
+  }
+
+  .wall-card {
+    width: 8.5rem;
   }
 
   .hero__body {
@@ -1299,10 +1412,51 @@ strong {
     inset: 0;
   }
 
-  .hero__media img {
-    height: 100%;
-    aspect-ratio: auto;
-    object-position: center;
+  /* Drei senkrechte Bahnen in der rechten Hälfte. Die Wand ragt oben, unten
+     und rechts über den Abschnitt hinaus, damit die Kippung keine leeren
+     Ecken zeigt. */
+  .hero__wall {
+    --wall-gap: 0.875rem;
+    position: absolute;
+    top: -12%;
+    right: -3rem;
+    bottom: -12%;
+    width: clamp(26rem, 42vw, 54rem);
+    flex-direction: row;
+    margin-block: 0;
+    transform: rotate(6deg);
+  }
+
+  .hero__lane,
+  .hero__lane:nth-child(3) {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hero__track {
+    flex-direction: column;
+    width: auto;
+  }
+
+  .hero__wall.is-live .hero__track {
+    animation-name: wall-y;
+    animation-duration: 95s;
+  }
+
+  .hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
+    animation-duration: 120s;
+  }
+
+  .hero__wall.is-live .hero__lane:nth-child(3) .hero__track {
+    animation-duration: 105s;
+  }
+
+  .wall-card {
+    width: auto;
+    margin-right: 0;
+    margin-bottom: var(--wall-gap);
+    border-radius: 1rem;
   }
 
   .hero__scrim {
@@ -1311,13 +1465,20 @@ strong {
     background-image: linear-gradient(
       to right,
       var(--dough) 0%,
-      rgba(246, 236, 221, 0.85) 52%,
-      transparent 100%
+      var(--dough) 52%,
+      transparent 70%
     );
   }
 
+  /* Der Textblock liegt über der ganzen Breite. Ohne das hier finge er jeden
+     Zeiger über der Wand ab, und keine Karte ließe sich anklicken. */
   .hero__body {
     padding-block: 4rem;
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    pointer-events: auto;
   }
 }
 
@@ -3399,7 +3560,8 @@ strong {
     transform: none;
   }
 
-  .rise {
+  .rise,
+  .hero__wall.is-live .hero__track {
     animation: none;
   }
 }
