@@ -1108,8 +1108,15 @@ strong {
 
 /* Die Bewegung läuft erst, wenn hero-wall.js jede Bahn verdoppelt hat – eine
    halbe Bahn würde beim Rücksprung sichtbar ruckeln. */
+/* will-change + backface-visibility halten jede Bahn dauerhaft als fertig
+   gezeichnete Ebene auf der Grafikkarte. Ohne das wirft Safari die Ebene
+   zwischendurch weg und zeichnet sie neu – die Wand blitzt dann kurz leer
+   auf. */
 .hero__wall.is-live .hero__track {
   animation: wall-x 64s linear infinite;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
@@ -3482,6 +3489,259 @@ strong {
 @media (min-width: 640px) {
   .notfound__actions {
     flex-direction: row;
+  }
+}
+
+/* --- Krimi-Dinner: VORERST VERSTECKT ------------------------------------
+   Die Seite ist noch nicht fertig. Diese Regel nimmt jeden Link dorthin aus
+   dem Menü, dem Fuß und dem Shop, auf allen Seiten auf einmal. krimi-dinner.html
+   selbst bleibt über die direkte Adresse erreichbar.
+   Zum Freischalten: 1. diesen Block löschen, 2. in krimi-dinner.html die
+   Zeile <meta name="robots" content="noindex"> entfernen, 3. in sitemap.xml
+   den auskommentierten Eintrag wieder einschalten. */
+a[href$="krimi-dinner.html"],
+li:has(> a[href$="krimi-dinner.html"]),
+.shop-section:has(.krimi-teaser) {
+  display: none !important;
+}
+
+/* --- Krimi-Dinner -------------------------------------------------------
+   Die Fälle werden bei krimiabend24.de verkauft, nicht hier. Alles in diesem
+   Abschnitt ist Schaufenster: Karten, Schritte und Hinweise, deren Knöpfe
+   nach draußen führen. Aufgebaut wird das Markup von
+   assets/js/krimi-dinner.js aus assets/js/krimi-dinner-data.js. */
+
+/* Vier Fälle: mobil untereinander, dann zwei, dann alle in einer Reihe.
+   .grid--products würde bei vier Karten eine allein in die zweite Reihe
+   stellen. */
+.grid--cases {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid--cases {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .grid--cases {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.krimi-card__media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  background-color: var(--dough);
+}
+
+/* Spielerzahl und Dauer nutzen die Meta-Zeile der Rezeptkarte; die Zeichen
+   davor brauchen hier ihre eigene Größe. */
+.product-card .recipe-card__meta span {
+  white-space: nowrap;
+}
+
+.product-card .recipe-card__meta svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.krimi-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* TODO: Platzhalter, bis es eigene Cover gibt (Feld "image" in
+   krimi-dinner-data.js). Bewusst nur Fläche und Zeichen in den Farben der
+   Seite – kein Bild von krimiabend24.de. */
+.krimi-placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(135deg, var(--dough), var(--crust));
+  color: var(--mocha);
+}
+
+.krimi-placeholder svg {
+  width: 3rem;
+  height: 3rem;
+  opacity: 0.7;
+}
+
+.krimi-card__genre {
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.product-card h3 a:hover {
+  color: var(--brand);
+}
+
+.product-card__foot .btn {
+  margin-left: 0.75rem;
+}
+
+/* Kleinerer Knopf für Kartenfüße – bleibt über dem 44px-Touch-Target. */
+.btn--sm {
+  min-height: var(--tap);
+  padding-inline: 1.125rem;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+/* So funktioniert's: vier Schritte als nummerierte Kacheln. */
+.steps {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+.steps__num {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.steps h3 {
+  margin-top: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.steps p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+@media (min-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Hinweis-Block: Zeichen, Text, Knopf. Auf der Krimi-Dinner-Seite sagt er,
+   wo gekauft wird; auf Rezeptseiten führt er vom Gericht zum Spiel.
+
+   Umbruch statt Media-Query: Auf einer Rezeptseite kann der Block in der
+   schmalen Zutatenspalte stehen, obwohl der Bildschirm breit ist. Er richtet
+   sich deshalb nach seinem eigenen Platz – reicht er nicht für eine Zeile,
+   rutschen Text und Knopf untereinander. */
+.krimi-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.krimi-hint__text {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.krimi-hint__lead {
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.krimi-hint__case,
+.krimi-hint__text .muted {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.krimi-hint__case b {
+  color: var(--cocoa);
+}
+
+.krimi-hint .btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Teaser im Shop: eine breite Karte statt einer vierten Produktkarte – sie
+   führt auf krimi-dinner.html, nicht in den Warenkorb, und soll sich deshalb
+   von den Schürzen unterscheiden. */
+.krimi-teaser {
+  display: grid;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.krimi-teaser__media {
+  min-height: 9rem;
+}
+
+.krimi-teaser__body {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.krimi-teaser__title {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.krimi-teaser__text {
+  max-width: 52ch;
+  margin-top: 0.5rem;
+  color: var(--mocha);
+}
+
+.krimi-teaser__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.krimi-teaser__price {
+  font-weight: 700;
+}
+
+@media (min-width: 640px) {
+  .krimi-teaser {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+
+  .krimi-teaser__body {
+    padding: 2rem;
   }
 }
 

@@ -51,6 +51,7 @@
         <a class="nav__link" href="recipes.html">Recipes</a>
         <a class="nav__link is-active" href="shop.html">Shop</a>
         <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="krimi-dinner.html">Murder Mystery</a>
         </nav>
 
         <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart, 0 items">
@@ -66,6 +67,7 @@
       <a class="chip" href="recipes.html">Recipes</a>
       <a class="chip is-active" href="shop.html">Shop</a>
       <a class="chip" href="about.html">About</a>
+      <a class="chip" href="krimi-dinner.html">Murder Mystery</a>
     </nav>
   </header>
 
@@ -186,6 +188,40 @@
         </div>
       </section>
 
+      <!-- Krimi-Dinner: nur ein Teaser. Verkauft werden die Fälle bei
+           krimiabend24.de, deshalb führt die Karte auf krimi-dinner.html und
+           nicht in den Warenkorb. Preis und Anzahl kommen aus
+           assets/js/krimi-dinner-data.js – hier steht keine Zahl von Hand. -->
+      <section class="shop-section" aria-labelledby="game-night">
+        <div class="shop-section__head">
+          <span class="shop-section__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span>
+          <div>
+            <h2 id="game-night">For the table</h2>
+            <p class="shop-section__hint">Something to play while dinner is on.</p>
+          </div>
+        </div>
+
+        <a class="krimi-teaser lift mt-6" href="krimi-dinner.html">
+          <!-- TODO: echtes Bild statt Platzhalter -->
+          <div class="krimi-teaser__media krimi-placeholder" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg>
+          </div>
+          <div class="krimi-teaser__body">
+            <p class="eyebrow">Murder mystery dinner</p>
+            <h3 class="krimi-teaser__title">Cook, eat, and work out who did it</h3>
+            <p class="krimi-teaser__text">
+              Murder mystery games as a PDF to print at home – made for an
+              evening of cooking and eating together.
+            </p>
+            <div class="krimi-teaser__foot">
+              <!-- Ohne JavaScript bleibt die Zeile verborgen, statt "cases · from" ohne Zahlen zu zeigen. -->
+              <span class="krimi-teaser__price" data-krimi-reveal hidden><span data-krimi-count></span> cases · from <span data-krimi-from-price></span></span>
+              <span class="btn btn--secondary">See the cases</span>
+            </div>
+          </div>
+        </a>
+      </section>
+
       <!-- Weg zurück zu den Inhalten, aus denen die Produkte kommen -->
       <section class="feature feature--split mt-12">
         <div>
@@ -218,6 +254,7 @@
           <li><a href="recipes.html">Recipes</a></li>
           <li><a href="shop.html">Shop</a></li>
           <li><a href="about.html">About</a></li>
+          <li><a href="krimi-dinner.html">Murder Mystery</a></li>
         </ul>
       </div>
 
@@ -253,5 +290,7 @@
 
   <script src="assets/js/shop-data.js"></script>
   <script src="assets/js/cart.js"></script>
+  <script src="assets/js/krimi-dinner-data.js"></script>
+  <script src="assets/js/krimi-dinner.js"></script>
 </body>
 </html>

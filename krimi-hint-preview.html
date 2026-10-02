@@ -4,17 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FDF8F1">
-  <title>Cart | Constantinteck</title>
-  <meta name="description" content="Your cart – check your items and go to the secure checkout.">
+  <title>Recipe hint preview | Constantinteck</title>
+  <meta name="description" content="Internal preview of the murder mystery hint block for recipe pages.">
+  <meta name="robots" content="noindex">
   <!-- Favicon, canonical, Vorschaubild beim Teilen -->
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://constantinteck.com/krimi-hint-preview.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Constantinteck">
-  <meta property="og:url" content="https://constantinteck.com/cart.html">
-  <meta property="og:title" content="Cart">
-  <meta property="og:description" content="Your cart – check your items and go to the secure checkout.">
+  <meta property="og:url" content="https://constantinteck.com/krimi-hint-preview.html">
+  <meta property="og:title" content="Recipe hint preview">
+  <meta property="og:description" content="Internal preview of the murder mystery hint block for recipe pages.">
   <meta property="og:image" content="https://constantinteck.com/assets/img/hero-kitchen.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
@@ -72,19 +73,36 @@
   </header>
 
   <main id="content">
-    <div class="container section--tight">
-      <h1 style="font-size:1.875rem">Cart</h1>
+    <!-- NUR VORSCHAU. Diese Seite zeigt den Hinweis-Block für Rezeptseiten,
+         ohne dass er in einem echten Rezept steht. Sie ist nirgends verlinkt
+         und trägt "noindex".
+         TODO: vor dem Veröffentlichen löschen (krimi-hint-preview.html). -->
+    <article class="container" style="padding-block:1.5rem">
+      <a class="back-link" href="krimi-dinner.html">‹ Murder mystery dinner</a>
 
-      <!-- Der Inhalt entsteht in assets/js/cart-page.js: er zeigt, was dieser
-           eine Besucher gewählt hat, und kann deshalb in keiner HTML-Datei
-           stehen. Ohne JavaScript bleibt der Hinweis unten sichtbar. -->
-      <div data-cart-root>
-        <noscript>
-          <p class="muted mt-6">The cart needs JavaScript. Everything else on this site works without it.</p>
-        </noscript>
-      </div>
-    </div>
+      <header class="recipe-header">
+        <p class="eyebrow">Preview only – not a real recipe</p>
+        <h1>Recipe hint block</h1>
+        <p class="lede">
+          This is how the block looks on a recipe page. It is not active in any
+          recipe yet.
+        </p>
+      </header>
+
+      <h2 class="mt-12" style="font-size:1.25rem">1. With a case</h2>
+      <p class="muted" style="margin-top:.25rem;font-size:.875rem"><code>&lt;div data-krimi-hint="the-teatime-caper"&gt;&lt;/div&gt;</code></p>
+      <div class="mt-6" data-krimi-hint="the-teatime-caper"></div>
+
+      <h2 class="mt-12" style="font-size:1.25rem">2. Without a case (links to all cases)</h2>
+      <p class="muted" style="margin-top:.25rem;font-size:.875rem"><code>&lt;div data-krimi-hint&gt;&lt;/div&gt;</code></p>
+      <div class="mt-6" data-krimi-hint></div>
+
+      <h2 class="mt-12" style="font-size:1.25rem">3. In the narrow side column of a recipe</h2>
+      <p class="muted" style="margin-top:.25rem;font-size:.875rem">Same block, at the width of the ingredients column.</p>
+      <div class="mt-6" style="max-width:22rem" data-krimi-hint="silence-in-the-drawing-room"></div>
+    </article>
   </main>
+
 
   <footer class="site-footer">
     <div class="container site-footer__cols">
@@ -140,6 +158,7 @@
 
   <script src="assets/js/shop-data.js"></script>
   <script src="assets/js/cart.js"></script>
-  <script src="assets/js/cart-page.js"></script>
+  <script src="assets/js/krimi-dinner-data.js"></script>
+  <script src="assets/js/krimi-dinner.js"></script>
 </body>
 </html>

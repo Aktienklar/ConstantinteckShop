@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FDF8F1">
+  <!-- Vorerst versteckt: raus damit, sobald die Seite freigeschaltet wird
+       (siehe "Krimi-Dinner: VORERST VERSTECKT" in assets/css/styles.css). -->
+  <meta name="robots" content="noindex">
+  <title>Murder Mystery Dinner | Constantinteck</title>
+  <meta name="description" content="Murder mystery dinner games as a PDF to print at home – made for an evening of cooking and eating together. Sold and delivered by krimiabend24.de.">
+  <!-- Favicon, canonical, Vorschaubild beim Teilen -->
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="canonical" href="https://constantinteck.com/krimi-dinner.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Constantinteck">
+  <meta property="og:url" content="https://constantinteck.com/krimi-dinner.html">
+  <meta property="og:title" content="Murder Mystery Dinner">
+  <meta property="og:description" content="Murder mystery dinner games as a PDF to print at home – made for an evening of cooking and eating together. Sold and delivered by krimiabend24.de.">
+  <meta property="og:image" content="https://constantinteck.com/assets/img/hero-kitchen.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Vorschau -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <!-- Ankündigungsleiste: das Erste, was ein Besucher sieht. Sie trägt das
+       Angebot, das den größten Warenkorb macht, und die zwei Bedingungen,
+       die über den ersten Kauf entscheiden: Versand und Rückgabe. -->
+  <div class="announcement">
+    <div class="container announcement__inner">
+      <a class="announcement__deal" href="shop/apron-set.html">
+        <span class="announcement__dot" aria-hidden="true"></span>
+        <span class="only-narrow">New: the kids' apron · set €69.90</span>
+        <span class="only-wide">New: the kids' apron – both aprons together as a set for €69.90</span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <p class="announcement__terms">Fast shipping · 14-day returns</p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container site-header__bar">
+      <a class="brand" href="index.html">
+        <img class="brand__mark" src="assets/img/logo-ct.svg" alt="" width="37" height="36">
+        <span class="brand__name">Constantinteck</span>
+      </a>
+
+      <div class="site-header__right">
+        <nav class="nav" aria-label="Main">
+        <a class="nav__link" href="index.html">Home</a>
+        <a class="nav__link" href="recipes.html">Recipes</a>
+        <a class="nav__link" href="shop.html">Shop</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link is-active" href="krimi-dinner.html">Murder Mystery</a>
+        </nav>
+
+        <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart, 0 items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-link__badge" data-cart-count hidden>0</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü -->
+    <nav class="nav-mobile no-scrollbar" aria-label="Main">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip" href="recipes.html">Recipes</a>
+      <a class="chip" href="shop.html">Shop</a>
+      <a class="chip" href="about.html">About</a>
+      <a class="chip is-active" href="krimi-dinner.html">Murder Mystery</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <!-- Farbiges Band wie auf shop.html, damit die Seite nicht mit einer
+         Überschrift auf leerem Grund beginnt. -->
+    <section class="band--dough">
+      <div class="container" style="padding-block:2.5rem">
+        <p class="eyebrow rise">Murder mystery dinner</p>
+        <h1 class="rise" style="animation-delay:60ms;margin-top:.5rem;font-size:1.875rem;max-width:48rem">
+          Dinner is served – and one of you did it.
+        </h1>
+        <p class="lede rise" style="animation-delay:120ms">
+          Murder mystery games as a PDF to print at home. They fit an evening
+          of cooking and eating together: everyone gets a role, and the case is
+          solved between the courses. Available to download right after
+          purchase.
+        </p>
+      </div>
+    </section>
+
+    <div class="container section">
+      <!-- Die Fälle. Die Karten baut assets/js/krimi-dinner.js aus
+           assets/js/krimi-dinner-data.js – Namen, Preise und Adressen stehen
+           nur dort. Jeder Knopf führt zur Produktseite bei krimiabend24.de. -->
+      <section class="shop-section" aria-labelledby="cases">
+        <div class="shop-section__head">
+          <span class="shop-section__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span>
+          <div>
+            <h2 id="cases">The cases</h2>
+            <p class="shop-section__hint">Sold and delivered by krimiabend24.de – each button takes you there.</p>
+          </div>
+        </div>
+
+        <div class="grid grid--cases" data-krimi-cases></div>
+        <noscript>
+          <p class="muted mt-6">The cases are listed at www.krimiabend24.de/en/shop.</p>
+        </noscript>
+      </section>
+
+      <!-- So funktioniert's: dieselben vier Schritte wie bei krimiabend24.de. -->
+      <section class="shop-section" aria-labelledby="how">
+        <div class="section-head">
+          <div>
+            <h2 id="how">How it works</h2>
+            <p>Four steps from the purchase to the evening itself.</p>
+          </div>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <span class="steps__num" aria-hidden="true">1</span>
+            <h3>Buy</h3>
+            <p>Pick a case and pay at krimiabend24.de.</p>
+          </li>
+          <li>
+            <span class="steps__num" aria-hidden="true">2</span>
+            <h3>Download</h3>
+            <p>The PDF is ready to download right after payment.</p>
+          </li>
+          <li>
+            <span class="steps__num" aria-hidden="true">3</span>
+            <h3>Print</h3>
+            <p>Print it at home and hand out the roles.</p>
+          </li>
+          <li>
+            <span class="steps__num" aria-hidden="true">4</span>
+            <h3>Play</h3>
+            <p>Cook, eat, and solve the case at your own table.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Wo gekauft wird. Der Satz muss wahr bleiben: Auf dieser Website gibt
+           es für die Krimi-Dinner weder Warenkorb noch Kasse. -->
+      <aside class="panel panel--outline krimi-hint mt-12" aria-labelledby="where">
+        <div class="krimi-hint__text">
+          <h2 id="where" style="font-size:1.25rem">Purchase and download run through krimiabend24.de</h2>
+          <p class="muted">
+            I make these games together with friends, and they are sold on
+            their own site. Checkout, the download and all terms are handled
+            there – nothing is sold or charged for them on this website.
+          </p>
+        </div>
+        <a class="btn btn--secondary" data-krimi-link="shop">All cases at krimiabend24.de <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+      </aside>
+
+      <!-- Weg zurück zu den Rezepten: Das Essen gehört zum Abend dazu. -->
+      <section class="feature feature--split mt-12">
+        <div>
+          <h2>Still need a menu?</h2>
+          <p class="feature__text">
+            Every recipe on this site is free. Pick a few courses for the
+            evening.
+          </p>
+        </div>
+        <a class="btn btn--primary lift" href="recipes.html">Browse the recipes</a>
+      </section>
+    </div>
+  </main>
+
+
+  <footer class="site-footer">
+    <div class="container site-footer__cols">
+      <div>
+        <p class="site-footer__brand">Constantinteck</p>
+        <p class="site-footer__claim">The recipes from my videos – without the endless scrolling.</p>
+        <p class="site-footer__contact">
+          Questions about an order?<br>
+          <a class="link-brand" href="mailto:info@constantinteck.com">info@constantinteck.com</a>
+        </p>
+      </div>
+
+      <div>
+        <h2>Pages</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recipes.html">Recipes</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="krimi-dinner.html">Murder Mystery</a></li>
+        </ul>
+      </div>
+
+      <!-- Rechtslinks gehören in den Fuß jeder Seite – Käufer suchen sie hier,
+           und in Deutschland müssen sie von überall erreichbar sein. -->
+      <div>
+        <h2>Orders &amp; legal</h2>
+        <ul>
+          <li><a href="shipping-returns.html">Shipping &amp; returns</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="imprint.html">Imprint</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Follow</h2>
+        <ul>
+          <li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
+          <li><a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container site-footer__legal">
+      <div class="site-footer__legal-row">
+        <p>No VAT is charged (small-business rule, § 19 UStG). Plus €4.90 shipping per order.</p>
+        <p>© 2026 Constantinteck</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/shop-data.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/krimi-dinner-data.js"></script>
+  <script src="assets/js/krimi-dinner.js"></script>
+</body>
+</html>

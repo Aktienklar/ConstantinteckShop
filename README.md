@@ -129,6 +129,54 @@ colours as one combined choice (`natural-berry` = adult Natural, kids Berry).
 Four combinations still fit on a phone; with a third colour there would be
 nine, and the buy box would need two separate choices instead of one list.
 
+## Murder mystery dinners (Krimi-Dinner)
+
+**Currently hidden.** The page is published but not linked: one CSS rule at the
+top of the Krimi-Dinner section in `assets/css/styles.css` hides every link to
+it. The comment there lists the three steps to switch it on.
+
+The games are sold at krimiabend24.de, **not here**. This site only advertises
+them and links out – no cart, no checkout, nothing in `shop-data.js` or
+`worker/`.
+
+```
+krimi-dinner.html               The page with the case cards
+assets/js/krimi-dinner-data.js  Cases, prices, URLs, UTM parameters – the only place
+assets/js/krimi-dinner.js       Builds cards, links and the recipe hint from the data
+```
+
+- **Changing a case or a price:** edit `KRIMI_CASES` in
+  `assets/js/krimi-dinner-data.js`. The page and the teaser in `shop.html`
+  follow.
+- **Changing the UTM parameters:** `KRIMI_SITE.utm` (and `recipeCampaign`) in
+  the same file. Every link to krimiabend24.de is built by `krimiUrl()`; never
+  write one by hand.
+- **Language of the target:** `KRIMI_SITE.lang` (`"en"` or `"de"`). Cases
+  without an entry for that language are not shown.
+- **Covers:** each case has an empty `image` field and shows a neutral
+  placeholder until a path to a file in `assets/img/` is entered. Do not embed
+  images from krimiabend24.de directly.
+
+### The hint on a recipe page
+
+To mark a recipe as part of a murder mystery menu, add one line where the block
+should appear (e.g. below the method), using the case's `id`:
+
+```html
+<div class="mt-6" data-krimi-hint="the-teatime-caper"></div>
+```
+
+and these two lines next to the other scripts at the bottom of that recipe:
+
+```html
+<script src="../assets/js/krimi-dinner-data.js"></script>
+<script src="../assets/js/krimi-dinner.js"></script>
+```
+
+Its link carries `utm_campaign=krimi-dinner-rezept`. `krimi-hint-preview.html`
+shows the block without touching a real recipe – delete that file before
+publishing.
+
 ## Language
 
 The UI is English; recipe content is German. Blocks holding German text carry
