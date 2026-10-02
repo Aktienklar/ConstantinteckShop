@@ -251,7 +251,7 @@ Right now everything points at `https://placehold.co/...` URLs. For real photos:
    page inside `recipes/` or `shop/`
 
 The hero on the start page is a moving wall of recipe cards. Its small 3:4
-previews (400×534) live in `assets/img/wall/`, one per recipe, named like the
+previews (400×534) live in `assets/img/wall/`, one per recipe on the wall, named like the
 recipe page. For a new recipe, add a preview there and one `wall-card` link to
 the shortest lane in the hero of `index.html`. `assets/img/hero-kitchen.jpg` is
 no longer shown on the page; it stays as the preview image for shared links.
