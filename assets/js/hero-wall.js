@@ -50,15 +50,19 @@
     wall.classList.add("is-live");
 
     /* Zurück-Taste: Der Browser holt die Seite eingefroren aus dem Speicher,
-       statt sie neu zu laden. Die angetippte Karte hat dann noch den Fokus,
-       und Safari lässt die Bahnen mitunter an der alten Stelle hängen.
-       Fokus lösen und die Animation einmal neu anstoßen. */
+       statt sie neu zu laden. Safari am iPhone zeichnet die Wand danach aus
+       alten Ebenen zusammen – der untere Rand der Karten sitzt versetzt und
+       liegt über dem Verlauf. Die Wand einmal aus der Seite nehmen und
+       wieder einsetzen: Dann baut der Browser sie so auf wie beim ersten
+       Laden. */
     window.addEventListener("pageshow", function (event) {
       if (!event.persisted) return;
       if (wall.contains(document.activeElement)) document.activeElement.blur();
-      wall.classList.remove("is-live");
-      void wall.offsetWidth;
-      wall.classList.add("is-live");
+      var parent = wall.parentNode;
+      var next = wall.nextSibling;
+      parent.removeChild(wall);
+      void parent.offsetWidth;
+      parent.insertBefore(wall, next);
     });
   });
 })();

@@ -1074,9 +1074,15 @@ strong {
   background-color: var(--dough);
 }
 
+/* contain + isolation: Die Wand besteht aus bewegten Ebenen in einem
+   gekippten Kasten. Safari am iPhone hat deren unteren Rand nach dem
+   Zurückgehen versetzt und über den Verlauf gezeichnet; ein eigener,
+   abgeschlossener Zeichenbereich hält Zuschnitt und Reihenfolge fest. */
 .hero__media {
   position: relative;
   overflow: hidden;
+  contain: paint;
+  isolation: isolate;
 }
 
 /* Rezeptwand: Bahnen mit Rezeptkarten, die gegenläufig durchlaufen. Leicht
@@ -1104,7 +1110,6 @@ strong {
    halbe Bahn würde beim Rücksprung sichtbar ruckeln. */
 .hero__wall.is-live .hero__track {
   animation: wall-x 64s linear infinite;
-  will-change: transform;
 }
 
 .hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
@@ -1204,6 +1209,7 @@ strong {
   inset-inline: 0;
   bottom: 0;
   height: 4rem;
+  z-index: 1;
   background-image: linear-gradient(to top, var(--dough), transparent);
   pointer-events: none;
 }
