@@ -1172,7 +1172,10 @@ strong {
   opacity: 1;
 }
 
-.hero__lane:focus-within .hero__track {
+/* Nur bei Tastaturfokus anhalten. Mit :focus-within bliebe die Bahn stehen,
+   nachdem jemand am Handy eine Karte angetippt hat und zurückkommt – der
+   Browser stellt die Seite samt Fokus auf der Karte wieder her. */
+.hero__lane:has(:focus-visible) .hero__track {
   animation-play-state: paused;
 }
 

@@ -48,5 +48,17 @@
     wide.addEventListener("change", fillVisibleLanes);
 
     wall.classList.add("is-live");
+
+    /* Zurück-Taste: Der Browser holt die Seite eingefroren aus dem Speicher,
+       statt sie neu zu laden. Die angetippte Karte hat dann noch den Fokus,
+       und Safari lässt die Bahnen mitunter an der alten Stelle hängen.
+       Fokus lösen und die Animation einmal neu anstoßen. */
+    window.addEventListener("pageshow", function (event) {
+      if (!event.persisted) return;
+      if (wall.contains(document.activeElement)) document.activeElement.blur();
+      wall.classList.remove("is-live");
+      void wall.offsetWidth;
+      wall.classList.add("is-live");
+    });
   });
 })();
