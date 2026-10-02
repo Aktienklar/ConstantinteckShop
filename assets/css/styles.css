@@ -1448,17 +1448,24 @@ strong {
     width: auto;
   }
 
+  /* Die Wand ragt oben über den Abschnitt hinaus, die erste Karte jeder Bahn
+     wäre beim Laden also halb abgeschnitten – ausgerechnet die mit den
+     stärksten Fotos. Der negative Start schiebt jede Bahn eine halbe Karte
+     weiter, sodass die erste Karte ganz im Bild steht. */
   .hero__wall.is-live .hero__track {
     animation-name: wall-y;
     animation-duration: 95s;
+    animation-delay: -90s;
   }
 
   .hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
     animation-duration: 120s;
+    animation-delay: -6s;
   }
 
   .hero__wall.is-live .hero__lane:nth-child(3) .hero__track {
     animation-duration: 105s;
+    animation-delay: -100s;
   }
 
   .wall-card {
