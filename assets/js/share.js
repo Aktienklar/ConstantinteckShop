@@ -19,20 +19,39 @@
     }
 
     function copy(button) {
-      var original = button.textContent;
+      function done() {
+        if (button.getAttribute("data-label")) return;
+        button.setAttribute("data-label", button.innerHTML);
+        button.textContent = "Link copied ✓";
+        setTimeout(function () {
+          button.innerHTML = button.getAttribute("data-label");
+          button.removeAttribute("data-label");
+        }, 2000);
+      }
 
-      navigator.clipboard.writeText(currentUrl()).then(
-        function () {
-          button.textContent = "Link copied ✓";
-          setTimeout(function () {
-            button.textContent = original;
-          }, 2000);
-        },
-        function () {
-          // Zwischenablage nicht verfügbar (z. B. ohne HTTPS) – dann
-          // passiert schlicht nichts, statt eine Fehlermeldung zu zeigen.
+      /* Manche In-App-Browser (Instagram, TikTok) kennen navigator.clipboard
+         nicht oder verweigern es – dann der alte Weg über ein Textfeld. */
+      function legacy() {
+        var field = document.createElement("textarea");
+        field.value = currentUrl();
+        field.setAttribute("readonly", "");
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        try {
+          if (document.execCommand("copy")) done();
+        } catch (error) {
+          // Auch das geht nicht – dann passiert schlicht nichts.
         }
-      );
+        field.remove();
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(currentUrl()).then(done, legacy);
+      } else {
+        legacy();
+      }
     }
 
     document.querySelectorAll("[data-share]").forEach(function (button) {
@@ -53,7 +72,8 @@
       });
     });
 
-    // Der WhatsApp-Link braucht die volle Adresse, die es erst im Browser gibt.
+    // Im HTML steht der Link schon mit Titel und veröffentlichter Adresse; hier
+    // wird er auf die Adresse gesetzt, unter der die Seite gerade wirklich läuft.
     document.querySelectorAll("[data-whatsapp]").forEach(function (link) {
       link.href =
         "https://wa.me/?text=" + encodeURIComponent(title + " " + currentUrl());

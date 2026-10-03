@@ -141,21 +141,20 @@
 
       <!-- Video. Bis zum Klick liegt hier nur das eigene Rezeptfoto – zu
            Instagram geht keine einzige Anfrage, solange niemand auf Abspielen
-           drückt. Welches Reel zu diesem Rezept gehört, steht in
-           assets/js/recipe-videos.js; ohne Eintrag bleibt das Foto ohne
+           drückt. Welches Video zu diesem Rezept gehört, steht in
+           assets/js/recipe-data.js; ohne Eintrag bleibt das Foto ohne
            Abspielknopf stehen. Diese Stelle hier muss dafür nie geändert
            werden. -->
       <div class="recipe-video">
         <div class="video-embed" data-video-embed data-slug="granola-berry-smoothie-bowl">
           <img class="video-embed__poster" src="../assets/img/granola-berry-smoothie-bowl.jpg" alt="Granola Berry Smoothie Bowl">
-          <p class="video-embed__note">Video coming soon</p>
         </div>
       </div>
 
       <div class="share">
         <span class="share__label">Share:</span>
         <button type="button" class="chip" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg> Share</button>
-        <a class="chip" href="https://wa.me/" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
+        <a class="chip" href="https://wa.me/?text=Granola%20Berry%20Smoothie%20Bowl%20https%3A%2F%2Fconstantinteck.com%2Frecipes%2Fgranola-berry-smoothie-bowl.html" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
         <button type="button" class="chip" data-copy>Copy link</button>
       </div>
 
@@ -196,8 +195,9 @@
             </ul>
           </section>
 
-          <!-- Auf großen Bildschirmen bleibt der Shop-Block neben den Schritten -->
-          <div class="only-desktop-block">
+          <!-- Der Shop-Block steht genau einmal: auf dem Handy zwischen Zutaten
+               und Zubereitung, auf großen Bildschirmen neben den Schritten. -->
+          <div class="recipe-product">
       <!-- Cross-Selling Rezept -> Shop. Bewusst ein eigener konturierter Block
            (kein Werbebanner): gleiche Bildsprache wie der Rest der Seite, eine
            ehrliche Überschrift. -->
@@ -247,46 +247,11 @@
         </section>
       </div>
 
-      <!-- Auf dem Handy kommt der Shop-Block nach den Schritten -->
-      <div class="only-mobile-block mt-6">
-      <!-- Cross-Selling Rezept -> Shop. Bewusst ein eigener konturierter Block
-           (kein Werbebanner): gleiche Bildsprache wie der Rest der Seite, eine
-           ehrliche Überschrift. -->
-      <section class="panel panel--outline used-products" aria-label="What I use for this">
-        <div class="section-head">
-          <h2 style="font-size:1.25rem">What I use for this</h2>
-          <a class="link-brand" style="font-size:.875rem" href="../shop.html">All in the shop</a>
-        </div>
-        <p class="muted" style="margin-top:.25rem;font-size:.875rem">
-          The apron from the video – designed by my mom, sewn by hand in Germany.
-        </p>
-        <ul>
-          <li class="lift">
-            <a href="../shop/linen-apron.html" tabindex="-1" aria-hidden="true">
-              <img src="../assets/img/apron-adult.jpg" alt="" loading="lazy">
-            </a>
-            <div class="used-products__text">
-              <a class="used-products__title" href="../shop/linen-apron.html">Waffle apron »Dough Love«</a>
-              <p class="product-card__text">Waffle piqué, sewn by hand in Germany.</p>
-              <div class="used-products__price">
-                <span>€49.90</span>
-              </div>
-              <div class="mt-3">
-                <button type="button" class="btn btn--secondary btn--block"
-                        data-add-simple data-slug="linen-apron"
-                        data-cart-href="../cart.html">Add to cart</button>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </section>
-      </div>
-
       <div class="recipe-footer">
       <div class="share">
         <span class="share__label">Share:</span>
         <button type="button" class="chip" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg> Share</button>
-        <a class="chip" href="https://wa.me/" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
+        <a class="chip" href="https://wa.me/?text=Granola%20Berry%20Smoothie%20Bowl%20https%3A%2F%2Fconstantinteck.com%2Frecipes%2Fgranola-berry-smoothie-bowl.html" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
         <button type="button" class="chip" data-copy>Copy link</button>
       </div>
       </div>
@@ -389,9 +354,9 @@
       <div>
         <h2>Follow</h2>
         <ul>
-          <li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-          <li><a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
-          <li><a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+          <li><a href="https://instagram.com/constantinteck" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://tiktok.com/@constantinteck" target="_blank" rel="noreferrer">TikTok</a></li>
+          <li><a href="https://youtube.com/@constantinteck" target="_blank" rel="noreferrer">YouTube</a></li>
         </ul>
       </div>
     </div>
@@ -408,7 +373,7 @@
   <script src="../assets/js/cart.js"></script>
   <script src="../assets/js/product.js"></script>
   <script src="../assets/js/share.js"></script>
-  <script src="../assets/js/recipe-videos.js"></script>
+  <script src="../assets/js/recipe-data.js"></script>
   <script src="../assets/js/video-embed.js"></script>
 </body>
 </html>

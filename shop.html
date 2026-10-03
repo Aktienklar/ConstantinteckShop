@@ -191,7 +191,9 @@
       <!-- Krimi-Dinner: nur ein Teaser. Verkauft werden die Fälle bei
            krimiabend24.de, deshalb führt die Karte auf krimi-dinner.html und
            nicht in den Warenkorb. Preis und Anzahl kommen aus
-           assets/js/krimi-dinner-data.js – hier steht keine Zahl von Hand. -->
+           assets/js/krimi-dinner-data.js und überschreiben beim Laden die
+           Zahlen, die unten als Rückfall im HTML stehen (Stand 03.10.2026) –
+           ändert sich dort etwas Grundlegendes, hier nachziehen. -->
       <section class="shop-section" aria-labelledby="game-night">
         <div class="shop-section__head">
           <span class="shop-section__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span>
@@ -214,8 +216,7 @@
               evening of cooking and eating together.
             </p>
             <div class="krimi-teaser__foot">
-              <!-- Ohne JavaScript bleibt die Zeile verborgen, statt "cases · from" ohne Zahlen zu zeigen. -->
-              <span class="krimi-teaser__price" data-krimi-reveal hidden><span data-krimi-count></span> cases · from <span data-krimi-from-price></span></span>
+              <span class="krimi-teaser__price"><span data-krimi-count>4</span> cases · from <span data-krimi-from-price>€12.90</span></span>
               <span class="btn btn--secondary">See the cases</span>
             </div>
           </div>
@@ -273,9 +274,9 @@
       <div>
         <h2>Follow</h2>
         <ul>
-          <li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-          <li><a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
-          <li><a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+          <li><a href="https://instagram.com/constantinteck" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://tiktok.com/@constantinteck" target="_blank" rel="noreferrer">TikTok</a></li>
+          <li><a href="https://youtube.com/@constantinteck" target="_blank" rel="noreferrer">YouTube</a></li>
         </ul>
       </div>
     </div>

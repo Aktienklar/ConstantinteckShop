@@ -2801,8 +2801,7 @@ strong {
   transform: scale(1.08);
 }
 
-.video-embed__hint,
-.video-embed__note {
+.video-embed__hint {
   position: absolute;
   left: 0.875rem;
   bottom: 0.875rem;
@@ -2814,15 +2813,6 @@ strong {
 .video-embed__hint {
   color: #fff;
   text-shadow: 0 1px 2px rgba(59, 42, 32, 0.5);
-}
-
-/* Noch kein Video eingetragen: eine ruhige Marke auf hellem Grund statt
-   weißer Schrift ohne Verlauf darunter. */
-.video-embed__note {
-  padding: 0.25rem 0.625rem;
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.95);
-  color: var(--mocha);
 }
 
 /* Läuft der Player, gilt das Hochformat: Reels sind 9:16, ein Kasten über die
@@ -2951,12 +2941,6 @@ strong {
   line-height: 1.7;
 }
 
-/* Auf großen Bildschirmen steht der Shop-Block neben den Schritten, auf
-   dem Handy kommt er darunter. */
-.only-desktop-block {
-  display: none;
-}
-
 .recipe-footer {
   margin-top: 2rem;
   border-top: 1px solid var(--line);
@@ -2988,14 +2972,6 @@ strong {
 
   .recipe-body__main {
     grid-column: span 2;
-  }
-
-  .only-desktop-block {
-    display: block;
-  }
-
-  .only-mobile-block {
-    display: none;
   }
 }
 

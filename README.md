@@ -6,8 +6,8 @@ every file in this repository is exactly what the browser receives.
 To look at the site, double-click `index.html`. To edit a page, open its `.html`
 file in any editor, save, reload the browser.
 
-The interface is in English. The **recipes themselves stay in German**, exactly
-as they are written and measured in the videos – see "Language" below.
+The whole site is in English – interface and recipes. Comments in the code are
+German.
 
 ## Local preview
 
@@ -26,7 +26,7 @@ Then open http://localhost:4000. `python3` is already installed on macOS.
 ```
 index.html               Start page
 recipes.html             Recipe overview with search and filters
-recipes/<slug>.html      One file per recipe (10)
+recipes/<slug>.html      One file per recipe (30)
 shop.html                Shop overview
 shop/<slug>.html         One file per product (3)
 cart.html                Cart
@@ -59,19 +59,23 @@ Change all three, otherwise the shop shows one price and bills another.
 
 ### Adding the video to a recipe
 
-Open `assets/js/recipe-videos.js`, find the recipe's line and paste the
-Instagram link between the quotation marks:
+Open `assets/js/recipe-data.js`, find the recipe's line and paste the link
+between the quotation marks of `video`:
 
 ```js
-"peach-sorbet": "https://www.instagram.com/reel/DAbc123XyZ/",
+"peach-sorbet": { order: 12, video: "https://www.instagram.com/reel/DAbc123XyZ/" },
 ```
 
 That is the whole job – the recipe page itself is never touched. Get the link
 from the app via *Share → Copy link*, or from the address bar. Anything after
 the code (`?igsh=…`) may stay.
 
-Empty entry = the recipe photo stays put without a play button, and nothing is
-requested from Instagram.
+- **Instagram** links play on the page after one click.
+- **TikTok / YouTube** links turn the photo into a plain link that opens the
+  video there in a new tab. Nothing from those providers is embedded – embedding
+  them would need sections 2 and 7 of `privacy.html` extended first.
+- Empty = the recipe photo stays put without a play button, and nothing is
+  requested from anyone.
 
 **Why the player only loads on click.** Until someone presses play, the page
 shows nothing but our own photo. A permanently embedded player would load Meta
@@ -131,9 +135,7 @@ nine, and the buy box would need two separate choices instead of one list.
 
 ## Murder mystery dinners (Krimi-Dinner)
 
-**Currently hidden.** The page is published but not linked: one CSS rule at the
-top of the Krimi-Dinner section in `assets/css/styles.css` hides every link to
-it. The comment there lists the three steps to switch it on.
+Live and linked from the navigation since 3 October 2026.
 
 The games are sold at krimiabend24.de, **not here**. This site only advertises
 them and links out – no cart, no checkout, nothing in `shop-data.js` or
@@ -179,10 +181,9 @@ publishing.
 
 ## Language
 
-The UI is English; recipe content is German. Blocks holding German text carry
-`lang="de"` so screen readers pronounce it correctly. The German keys used in
-the filter attributes (`backen`/`herzhaft`, `einfach`/`mittel`/`anspruchsvoll`)
-are never shown to visitors – the visible labels next to them are English.
+UI and recipes are English. The German keys used in the filter attributes
+(`backen`/`herzhaft`, `einfach`/`mittel`/`anspruchsvoll`) are never shown to
+visitors – the visible labels next to them are English.
 
 Prices are written as `€44.90`. The cart formats the same way, via
 `formatPrice()` in `assets/js/shop-data.js`.
