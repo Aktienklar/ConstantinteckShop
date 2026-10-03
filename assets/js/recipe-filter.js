@@ -10,6 +10,12 @@
  *   data-minutes     Zubereitungszeit in Minuten
  *   data-difficulty  einfach | mittel | anspruchsvoll
  *   data-search      Titel, Teaser, Tags und Zutaten in Kleinschreibung
+ *
+ * "Cook with kids" ist kein eigenes Attribut, sondern eine Regel: einfach und
+ * höchstens KIDS_MAX_MINUTES Minuten.
+ *
+ * Die Shop-Karten im Raster ([data-shop-card], eingesetzt von
+ * recipes-overview.js) verschwinden, sobald gesucht oder gefiltert wird.
  */
 (function () {
   "use strict";
@@ -22,6 +28,8 @@
     var categoryButtons = explorer.querySelectorAll("[data-category-filter]");
     var timeSelect = explorer.querySelector("[data-time-filter]");
     var difficultySelect = explorer.querySelector("[data-difficulty-filter]");
+    var kidsButton = explorer.querySelector("[data-kids-filter]");
+    var kidsHint = explorer.querySelector("[data-kids-hint]");
     var resetButton = explorer.querySelector("[data-reset]");
     var counter = explorer.querySelector("[data-count]");
     var empty = explorer.querySelector("[data-empty]");
@@ -30,7 +38,10 @@
       explorer.querySelectorAll("[data-recipe-card]")
     );
 
+    var KIDS_MAX_MINUTES = 15;
+
     var category = "all";
+    var kids = false;
 
     // Die Startseite verlinkt mit ?category=backen bzw. ?category=herzhaft
     // direkt in eine der beiden Welten.
@@ -61,6 +72,14 @@
         }
         if (
           ok &&
+          kids &&
+          (card.getAttribute("data-difficulty") !== "einfach" ||
+            Number(card.getAttribute("data-minutes")) > KIDS_MAX_MINUTES)
+        ) {
+          ok = false;
+        }
+        if (
+          ok &&
           difficulty !== "all" &&
           card.getAttribute("data-difficulty") !== difficulty
         ) {
@@ -80,6 +99,23 @@
         button.setAttribute("aria-pressed", active ? "true" : "false");
       });
 
+      var filtering =
+        query !== "" ||
+        category !== "all" ||
+        kids ||
+        time !== "all" ||
+        difficulty !== "all";
+
+      if (kidsButton) {
+        kidsButton.classList.toggle("is-active", kids);
+        kidsButton.setAttribute("aria-pressed", kids ? "true" : "false");
+      }
+      if (kidsHint) kidsHint.hidden = !kids || visible === 0;
+
+      explorer.querySelectorAll("[data-shop-card]").forEach(function (card) {
+        card.classList.toggle("is-filtered-out", filtering);
+      });
+
       if (counter) {
         counter.textContent =
           visible === 1 ? "1 recipe found" : visible + " recipes found";
@@ -89,17 +125,14 @@
       if (results) results.hidden = visible === 0;
 
       if (resetButton) {
-        resetButton.hidden =
-          query === "" &&
-          category === "all" &&
-          time === "all" &&
-          difficulty === "all";
+        resetButton.hidden = !filtering;
       }
     }
 
     function reset() {
       if (input) input.value = "";
       category = "all";
+      kids = false;
       if (timeSelect) timeSelect.value = "all";
       if (difficultySelect) difficultySelect.value = "all";
       apply();
@@ -120,6 +153,13 @@
         apply();
       });
     });
+
+    if (kidsButton) {
+      kidsButton.addEventListener("click", function () {
+        kids = !kids;
+        apply();
+      });
+    }
 
     apply();
   });

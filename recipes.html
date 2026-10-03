@@ -78,6 +78,29 @@
         Search for a title or an ingredient – the list filters as you type.
       </p>
 
+      <!-- Die neuesten Videos, daneben die Schürze. Welche Rezepte hier stehen,
+           entscheidet das Feld "order" in assets/js/recipe-data.js;
+           assets/js/recipes-overview.js kopiert die Karten aus dem Raster
+           unten hierher. Ohne JavaScript bleibt der Bereich verborgen. -->
+      <section class="latest" aria-labelledby="latest" data-latest hidden>
+        <h2 id="latest" class="latest__title">From the latest videos</h2>
+        <div class="latest__row no-scrollbar" data-latest-row><a class="card product-card latest__product lift-3d" href="shop/linen-apron.html" data-track="product-click/overview-latest/linen-apron">
+            <div class="product-card__media">
+              <img src="assets/img/apron-adult.jpg" alt="">
+              <span class="shop-card__badge">From the shop</span>
+            </div>
+            <div class="product-card__body">
+              <h3>The apron from the videos</h3>
+              <p class="product-card__text">Designed by my mom, sewn by hand in Germany.</p>
+              <div class="product-card__foot">
+                <span class="product-card__price" data-price-for="linen-apron"></span>
+                <span class="shop-card__more">Have a look →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
       <!-- Suche und Filter. Die Karten stehen alle fertig im HTML, das Skript
            blendet nur aus, was nicht passt – ohne JavaScript bleibt die Liste
            vollständig lesbar. -->
@@ -94,6 +117,9 @@
         <button type="button" class="chip is-active" data-category-filter="all" aria-pressed="true">All (30)</button>
         <button type="button" class="chip chip--sweet" data-category-filter="backen" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Baking &amp; Sweets (24)</button>
         <button type="button" class="chip chip--savory" data-category-filter="herzhaft" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.4h12.8v3.6a5.4 5.4 0 0 1-5.4 5.4H9a5.4 5.4 0 0 1-5.4-5.4v-3.6Z"/><path d="M2.6 10.4h14.8"/><path d="M3.4 11.6H2.2a1.6 1.6 0 0 0 0 3.2h1.2"/><path d="M16.6 11.6h1.2a1.6 1.6 0 0 1 0 3.2h-1.2"/><path d="M8 7.6c0-1.1 1.1-1.4 1.1-2.5M12 7.6c0-1.1 1.1-1.4 1.1-2.5"/></svg>Savoury &amp; Everyday (6)</button>
+        <!-- Kein eigenes Feld an den Karten: "mit Kindern" heißt einfach und
+             höchstens 15 Minuten (Grenze in assets/js/recipe-filter.js). -->
+        <button type="button" class="chip" data-kids-filter aria-pressed="false">Cook with kids</button>
           </div>
         </div>
 
@@ -121,6 +147,16 @@
         </div>
 
         <p class="explorer__count" aria-live="polite" data-count>30 recipes found</p>
+
+        <!-- Erscheint nur, solange "Cook with kids" aktiv ist. Der Preis kommt
+             aus shop-data.js. -->
+        <a class="kids-hint lift" href="shop/apron-set.html" data-kids-hint data-track="product-click/overview-kids/apron-set" hidden>
+          <img src="assets/img/apron-set.jpg" alt="" loading="lazy">
+          <span>
+            <b>Cooking with kids? There's an apron for each of you.</b>
+            <span>The set of both: <span data-price-for="apron-set"></span> →</span>
+          </span>
+        </a>
 
         <div class="empty-state mt-6" data-empty hidden>
           <p>Nothing found</p>
@@ -731,6 +767,9 @@
 
   <script src="assets/js/shop-data.js"></script>
   <script src="assets/js/cart.js"></script>
+  <script src="assets/js/krimi-dinner-data.js"></script>
+  <script src="assets/js/recipe-data.js"></script>
+  <script src="assets/js/recipes-overview.js"></script>
   <script src="assets/js/recipe-filter.js"></script>
 </body>
 </html>

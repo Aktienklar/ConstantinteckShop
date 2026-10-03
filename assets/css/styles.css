@@ -1889,6 +1889,146 @@ strong {
   margin-top: 1rem;
 }
 
+/* --- Neueste Videos + Shop-Karten auf der Rezeptübersicht ---------------- */
+
+.latest {
+  margin-top: 1.5rem;
+}
+
+.latest__title {
+  font-size: 1.25rem;
+}
+
+/* Handy: eine Reihe zum Wischen, damit die Suche nicht drei Kartenhöhen nach
+   unten rutscht. Die Reihe läuft bis an den Bildschirmrand, die nächste Karte
+   schaut ein Stück herein – so ist klar, dass es weitergeht. */
+.latest__row {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0.75rem -1rem 0;
+  padding: 0.25rem 1rem 0.75rem;
+  scroll-padding-inline: 1rem;
+}
+
+.latest__row > * {
+  flex: 0 0 72%;
+  max-width: 19rem;
+  scroll-snap-align: start;
+}
+
+/* In der Wisch-Reihe steht die Schürze an zweiter Stelle – als Karte, die am
+   Rand hereinschaut. Ganz hinten würde sie auf dem Handy kaum jemand sehen. */
+.latest__row > :first-child {
+  order: -2;
+}
+
+.latest__row > .latest__product {
+  order: -1;
+}
+
+@media (min-width: 640px) {
+  .latest__row {
+    margin-inline: 0;
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+
+  .latest__row > * {
+    flex-basis: 16rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .latest__row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    overflow: visible;
+  }
+
+  .latest__row > * {
+    max-width: none;
+  }
+
+  .latest__row > .latest__product {
+    order: 1;
+  }
+}
+
+/* Shop-Karte: gleiche Form wie eine Rezeptkarte, aber an Rahmen, Marke und
+   Streifen in der Shop-Farbe sofort als Shop zu erkennen. */
+.shop-card,
+.latest__product {
+  outline: 1.5px solid var(--brand-soft);
+  outline-offset: -1.5px;
+  background-color: #fffaf5;
+}
+
+.shop-card__badge {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background-color: var(--brand);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.shop-card__stripe {
+  background-color: var(--brand);
+}
+
+.shop-card__more {
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.latest__product .product-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+/* Hinweis auf das Set, solange "Cook with kids" aktiv ist */
+.kids-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 1rem;
+  background-color: var(--brand-soft);
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.kids-hint[hidden] {
+  display: none;
+}
+
+.kids-hint img {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.kids-hint b {
+  display: block;
+}
+
+.kids-hint > span > span {
+  color: var(--brand);
+  font-weight: 600;
+}
+
 /* Vom Filter ausgeblendete Karte */
 .is-filtered-out {
   display: none;
