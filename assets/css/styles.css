@@ -3735,6 +3735,137 @@ strong {
   }
 }
 
+/* --- Hinweis-Karte auf der Startseite ------------------------------------
+   Kein Dialog, der die Seite sperrt: eine Karte am unteren Rand, die sich
+   schließen lässt. Mobil über die ganze Breite, ab sm unten rechts. */
+.promo {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 50;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background-color: #fff;
+  padding: 0.75rem;
+  box-shadow: var(--shadow-lift);
+  animation: promo-in 0.45s var(--ease-soft) both;
+}
+
+.promo[hidden] {
+  display: none;
+}
+
+@keyframes promo-in {
+  from {
+    transform: translate3d(0, 1.5rem, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.promo__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 0.5rem;
+}
+
+.promo__head .eyebrow {
+  font-size: 0.75rem;
+}
+
+.promo__close {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  margin: -0.25rem -0.25rem 0 0;
+  border-radius: 999px;
+  color: var(--mocha);
+}
+
+.promo__close:hover {
+  background-color: var(--dough);
+}
+
+.promo__close svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.promo__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.875rem;
+  padding: 0.5rem;
+  transition: background-color 0.2s var(--ease-soft);
+}
+
+.promo__item:hover {
+  background-color: var(--cream);
+}
+
+.promo__thumb {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.promo__thumb--icon {
+  display: grid;
+  place-items: center;
+  background-color: var(--brand-soft);
+  color: var(--brand);
+}
+
+.promo__thumb--icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.promo__text {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--mocha);
+}
+
+.promo__text b {
+  display: block;
+  font-size: 0.9375rem;
+  color: var(--cocoa);
+}
+
+.promo__arrow {
+  flex-shrink: 0;
+  padding-right: 0.25rem;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+@media (min-width: 640px) {
+  .promo {
+    right: 1.5rem;
+    bottom: 1.5rem;
+    left: auto;
+    width: 23rem;
+  }
+}
+
+@media print {
+  .promo {
+    display: none;
+  }
+}
+
 /* --------------------------------------------------------------------------
    7. Bewegung
    -------------------------------------------------------------------------- */

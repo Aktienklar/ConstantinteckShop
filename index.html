@@ -18,7 +18,7 @@
   <meta property="og:image" content="https://constantinteck.com/assets/img/hero-kitchen.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=5">
+  <link rel="stylesheet" href="assets/css/styles.css?v=6">
   <!-- Strukturierte Daten fuer Suchmaschinen -->
   <script type="application/ld+json">
 {
@@ -607,6 +607,40 @@
     </section>
   </main>
 
+  <!-- Hinweis-Karte unten am Rand: zeigt nach ein paar Sekunden auf die beiden
+       Dinge, die es hier zu kaufen bzw. zu entdecken gibt. Bewusst kein
+       Fenster, das die Seite sperrt – die Rezepte bleiben bedienbar, und ein
+       Klick auf das Kreuz schließt sie. Sie steht im HTML auf "hidden";
+       assets/js/promo.js blendet sie ein. Ohne JavaScript erscheint sie nie.
+
+       Der Set-Preis steht hier von Hand, wie an den anderen Stellen der Seite
+       (siehe README, "Bundles"). Der Krimi-Preis kommt aus
+       assets/js/krimi-dinner-data.js. -->
+  <aside class="promo" data-promo aria-label="Offers" hidden>
+    <div class="promo__head">
+      <p class="eyebrow">Also on this site</p>
+      <button type="button" class="promo__close" data-promo-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <a class="promo__item" href="shop.html">
+      <img class="promo__thumb" src="assets/img/apron-set.jpg" alt="" width="56" height="56" loading="lazy">
+      <span class="promo__text">
+        <b>The aprons from the videos</b>
+        <span>Adult + kids as a set for €69.90 – save €9.90</span>
+      </span>
+      <span class="promo__arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="promo__item" href="krimi-dinner.html">
+      <span class="promo__thumb promo__thumb--icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span>
+      <span class="promo__text">
+        <b>Murder mystery dinner</b>
+        <span>Games as a PDF to print at home<span data-krimi-reveal hidden> – from <span data-krimi-from-price></span></span></span>
+      </span>
+      <span class="promo__arrow" aria-hidden="true">→</span>
+    </a>
+  </aside>
+
   <footer class="site-footer">
     <div class="container site-footer__cols">
       <div>
@@ -662,5 +696,8 @@
   <script src="assets/js/shop-data.js"></script>
   <script src="assets/js/cart.js"></script>
   <script src="assets/js/hero-wall.js?v=2"></script>
+  <script src="assets/js/krimi-dinner-data.js"></script>
+  <script src="assets/js/krimi-dinner.js"></script>
+  <script src="assets/js/promo.js"></script>
 </body>
 </html>
