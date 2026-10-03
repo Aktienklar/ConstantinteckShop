@@ -6,6 +6,57 @@
  */
 var SITE_CONFIG = {
   /**
+   * ANKÜNDIGUNGSLEISTE – der dunkle Streifen ganz oben auf jeder Seite.
+   *
+   * Solange "enabled" false ist oder das heutige Datum außerhalb von
+   * start/end liegt, steht dort der Text aus dem HTML (das Set-Angebot).
+   * Eingeschaltet ersetzt dieser Eintrag Text und Link auf allen Seiten.
+   *
+   * text       Text ab Tablet-Breite. {orderBy} wird durch das Datum ersetzt.
+   * textShort  Kurzfassung fürs Handy – muss in eine Zeile passen (ca. 40 Zeichen).
+   * orderBy    Letzter Bestelltag, so wie er dastehen soll: "18 December".
+   *            Kommt {orderBy} im Text vor und ist dieses Feld leer, bleibt
+   *            die Leiste beim Standardtext – nie ein Versprechen ohne Datum.
+   * href       Ziel des Links, ab dem Hauptordner.
+   * start/end  Erster und letzter Tag (einschließlich), "JJJJ-MM-TT".
+   *            Leer = keine Grenze.
+   */
+  banner: {
+    enabled: false,
+    text: "The gift for everyone who loves to cook – order by {orderBy} for delivery before Christmas",
+    textShort: "The gift for cooks · order by {orderBy}",
+    orderBy: "", // TODO: letzter Bestelltag vor Weihnachten, z. B. "18 December"
+    href: "shop/apron-set.html",
+    start: "2026-11-01",
+    end: "2026-12-24"
+  },
+
+  /**
+   * NEWSLETTER-BOX – auf den Rezeptseiten (nach der Zubereitung) und auf
+   * recipes.html. Erscheint erst, wenn "enabled" true ist UND eine
+   * Formular-Adresse eingetragen ist.
+   *
+   * formAction  Die Adresse, an die das Anmeldeformular des Anbieters sendet.
+   *             Brevo: Formular anlegen -> "Teilen" -> HTML-Code; dort steht
+   *             sie im <form action="…">. MailerLite und Buttondown ebenso.
+   * emailField  Name des E-Mail-Feldes im Formular des Anbieters:
+   *             Brevo "EMAIL", MailerLite "fields[email]", Buttondown "email".
+   *
+   * VOR DEM EINSCHALTEN: Im Anbieter Double-Opt-in aktivieren, die PDF
+   * bereitlegen, die der Text verspricht, und privacy.html ergänzen – dort
+   * steht heute, dass die Seite keinen Newsletter verschickt.
+   */
+  newsletter: {
+    enabled: false,
+    formAction: "", // TODO: Formular-Adresse des Anbieters
+    emailField: "EMAIL",
+    heading: "Get all sorbet recipes as a printable PDF – free.",
+    text: "One email with the PDF, and a note from me when a new recipe goes up.",
+    button: "Send me the PDF",
+    note: "You'll get an email to confirm first. Unsubscribe any time."
+  },
+
+  /**
    * KUNDENFOTOS – "In your kitchens" auf den Produktseiten.
    *
    * Dateinamen aus assets/img/customers/, in der Reihenfolge der Anzeige.

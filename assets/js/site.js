@@ -28,6 +28,73 @@
       .replace(/"/g, "&quot;");
   }
 
+  /* --- Ankündigungsleiste -------------------------------------------------- */
+
+  /** "2026-11-01" -> lokales Datum um Mitternacht; leer oder kaputt -> null */
+  function day(value) {
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || "");
+    return match ? new Date(+match[1], +match[2] - 1, +match[3]) : null;
+  }
+
+  function applyBanner() {
+    var banner = config.banner;
+    if (!banner || !banner.enabled || !banner.text) return;
+
+    var now = new Date();
+    var start = day(banner.start);
+    var end = day(banner.end);
+    if (start && now < start) return;
+    // Der Endtag zählt ganz mit.
+    if (end && now >= new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1)) return;
+
+    var long = banner.text;
+    var short = banner.textShort || banner.text;
+    if ((long + short).indexOf("{orderBy}") !== -1) {
+      if (!banner.orderBy) return;
+      long = long.replace("{orderBy}", banner.orderBy);
+      short = short.replace("{orderBy}", banner.orderBy);
+    }
+
+    document.querySelectorAll(".announcement__deal").forEach(function (link) {
+      var narrow = link.querySelector(".only-narrow");
+      var wide = link.querySelector(".only-wide");
+      if (!narrow || !wide) return;
+
+      narrow.textContent = short;
+      wide.textContent = long;
+      if (banner.href) link.setAttribute("href", root + banner.href);
+      link.setAttribute("data-track", "banner-click");
+    });
+  }
+
+  /* --- Newsletter ----------------------------------------------------------- */
+
+  function renderNewsletter() {
+    var news = config.newsletter;
+    if (!news || !news.enabled || !news.formAction) return;
+
+    document.querySelectorAll("[data-newsletter]").forEach(function (box, index) {
+      var id = "newsletter-email-" + index;
+
+      box.innerHTML =
+        '<section class="panel panel--outline newsletter" aria-label="Newsletter">' +
+        '<h2 class="newsletter__title">' + esc(news.heading) + "</h2>" +
+        (news.text ? '<p class="newsletter__text">' + esc(news.text) + "</p>" : "") +
+        /* target="_blank": Die Bestätigungsseite des Anbieters öffnet sich
+           daneben, das Rezept bleibt offen. */
+        '<form class="newsletter__form" method="post" target="_blank" action="' + esc(news.formAction) + '" data-track-submit="newsletter-signup">' +
+        '<label class="sr-only" for="' + id + '">Email address</label>' +
+        '<input id="' + id + '" type="email" required autocomplete="email" inputmode="email"' +
+        ' name="' + esc(news.emailField || "EMAIL") + '" placeholder="you@example.com">' +
+        '<button type="submit" class="btn btn--primary">' + esc(news.button || "Sign up") + "</button>" +
+        "</form>" +
+        '<p class="newsletter__note">' + esc(news.note || "") +
+        ' <a href="' + root + 'privacy.html">Privacy</a></p>' +
+        "</section>";
+      box.hidden = false;
+    });
+  }
+
   /* --- Kundenfotos ------------------------------------------------------- */
 
   function renderCustomerPhotos() {
@@ -59,6 +126,8 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    applyBanner();
+    renderNewsletter();
     renderCustomerPhotos();
   });
 })();
