@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!-- Dasselbe Zeichen wie .brand__mark in der Kopfzeile (assets/img/logo-ct.svg),
-       nur weiß auf der Markenfarbe. In der Tab-Leiste steht das Symbol vor
-       wechselnden Hintergründen – eine gefüllte Scheibe hält sich dort besser
-       als eine freistehende Zeichnung. Das Zeichen sitzt bewusst knapp: Bei
-       16 Pixeln zählt jeder Bildpunkt, den die Buchstaben mehr bekommen. -->
-  <circle cx="16" cy="16" r="16" fill="#c2410c"/>
-  <g transform="translate(5.50 5.73) scale(0.03973)"><path fill="#ffffff" d="M245.6 2.7 247.6 3.3 247.7 11.7 247.8 216.7 247.8 226.4 257.6 226.4 517.6 226.4 522.9 227.4 527.6 229.7 528.6 234.7 527.8 239.9 519.4 242.4 409.6 242.5 391.8 242.5 367.8 242.5 366 243.7 366 252.7 366 506.7 364.6 517.2 352.6 517.2 324.5 517.2 250.6 517.2 242.3 517.2 239.3 515.7 239.3 478.6A239.3 239.3 0 0 1 239.3 0L241.9 0ZM15.45 231.1A224 224 0 0 0 239.3 463.3L239.3 233.9 238.6 231.1 224.6 231.1Z"/></g>
+       in derselben Farbe (cocoa) auf Weiß. Die weiße Fläche ist leicht
+       abgerundet, damit das Symbol auch in einer dunklen Tab-Leiste als
+       ruhiges Kärtchen steht. Das Zeichen bleibt innerhalb des Innenkreises:
+       Google schneidet Favicons in den Suchergebnissen rund zu. -->
+  <rect width="32" height="32" rx="6" fill="#ffffff"/>
+  <g transform="translate(3.58 3.85) scale(0.047)"><path fill="#3b2a20" d="M245.6 2.7 247.6 3.3 247.7 11.7 247.8 216.7 247.8 226.4 257.6 226.4 517.6 226.4 522.9 227.4 527.6 229.7 528.6 234.7 527.8 239.9 519.4 242.4 409.6 242.5 391.8 242.5 367.8 242.5 366 243.7 366 252.7 366 506.7 364.6 517.2 352.6 517.2 324.5 517.2 250.6 517.2 242.3 517.2 239.3 515.7 239.3 478.6A239.3 239.3 0 0 1 239.3 0L241.9 0ZM15.45 231.1A224 224 0 0 0 239.3 463.3L239.3 233.9 238.6 231.1 224.6 231.1Z"/></g>
 </svg>
