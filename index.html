@@ -331,6 +331,10 @@
           <a class="link-brand" href="shop.html">Go to shop</a>
         </div>
 
+        <!-- Dieselbe Zeile wie im Shop. Hier landen auch Besucher, die die
+             Videos noch nicht kennen. -->
+        <p class="social-proof">From the videos with 100M+ views – 50,000+ people cook along.</p>
+
         <!-- Das Schaufenster trägt hier das Set, nicht die einzelne Schürze:
              Es zeigt beide Größen in einem Bild, und die Karte im Hero darüber
              führt bereits auf die große Schürze allein. Die drei Karten
@@ -364,13 +368,27 @@
               <li><span class="swatch" style="background-color:#8E979B" aria-hidden="true"></span>Grey</li>
             </ul>
 
+            <!-- Dieselbe Geschichte wie auf about.html und den Produktseiten:
+                 Die Mutter hat entworfen, sie näht NICHT selbst. -->
+            <aside class="maker">
+              <p class="maker__title">Designed by my mom</p>
+              <p>
+                My mom is a trained seamstress. She designed these aprons, and
+                we picked the fabric together.
+              </p>
+              <a class="link-brand" href="about.html#aprons-story">Why my mom designed these →</a>
+            </aside>
+
             <div class="showcase__foot">
               <p class="showcase__price">
                 €69.90 <s class="price-was">€79.80</s>
                 <span>No VAT (§ 19 UStG) · plus €4.90 shipping</span>
               </p>
-              <a class="btn btn--primary" href="shop/apron-set.html">See the set</a>
+              <a class="btn btn--primary" href="shop/apron-set.html" data-track="product-click/home-showcase/apron-set">See the set</a>
             </div>
+            <!-- Muss wahr bleiben: gefertigt wird von Hand in kleinen Mengen,
+                 so steht es auch auf den Produktseiten. -->
+            <p class="trust-line">Cut and sewn by hand in small batches – never many in stock at once.</p>
           </div>
         </div>
 
@@ -426,6 +444,23 @@
             </div>
           </div>
         </a>
+        <!-- Shop-Karte im Stil von recipes.html: gleiche Form, an Rahmen und
+             Marke als Shop zu erkennen. Der Preis steht auch in shop-data.js. -->
+        <a class="card recipe-card shop-card lift-3d" href="shop/linen-apron.html" data-track="product-click/home-grid/linen-apron">
+          <div class="recipe-card__media">
+            <img src="assets/img/apron-adult.jpg" alt="" loading="lazy">
+            <span class="shop-card__badge">From the shop</span>
+          </div>
+          <div class="recipe-card__stripe shop-card__stripe" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3>The apron from the videos</h3>
+            <p class="product-card__text">Waffle piqué, big front pocket – designed by my mom, sewn by hand in Germany.</p>
+            <div class="product-card__foot">
+              <span class="product-card__price">€49.90</span>
+              <span class="shop-card__more">Have a look →</span>
+            </div>
+          </div>
+        </a>
         <a class="card recipe-card lift-3d" href="recipes/peanut-spicy-udon.html" data-recipe-card data-category="herzhaft" data-minutes="20" data-difficulty="einfach" data-search="peanut spicy udon creamy peanut udon noodles – spicy, nutty and packed with flavour. everything comes together in one pan. one pan weeknight udon noodles peanut butter small onion, finely chopped garlic cloves, minced soy sauce chilli flakes scallions, sliced fresh coriander, chopped sesame seeds">
           <div class="recipe-card__media">
             <img src="assets/img/peanut-spicy-udon.jpg" alt="" loading="lazy">
@@ -477,24 +512,6 @@
             <div class="recipe-card__tags">
             <span class="tag">Breakfast</span>
             <span class="tag">Summer</span>
-            </div>
-          </div>
-        </a>
-        <a class="card recipe-card lift-3d" href="recipes/avocado-ice-cream.html" data-recipe-card data-category="backen" data-minutes="5" data-difficulty="einfach" data-search="avocado ice cream four ingredients, naturally sweet. creamy, refreshing and ready the moment the blender stops. 4 ingredients no churn frozen avocado fresh mint honey lemon juice">
-          <div class="recipe-card__media">
-            <img src="assets/img/avocado-ice-cream.jpg" alt="" loading="lazy">
-            <span class="badge badge--sweet recipe-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.7 11.6h10.6l-1.2 7.7a2 2 0 0 1-2 1.7h-4.2a2 2 0 0 1-2-1.7L6.7 11.6Z"/><path d="M6.8 11.6c-.8-1.5 0-3.4 1.7-3.8.2-2 1.8-3.4 3.5-3.4s3.3 1.4 3.5 3.4c1.7.4 2.5 2.3 1.7 3.8"/><path d="m10.3 11.6-.5 9.4M13.7 11.6l.5 9.4"/></svg>Sweet</span>
-          </div>
-          <div class="recipe-card__stripe recipe-card__stripe--sweet" aria-hidden="true"></div>
-          <div class="recipe-card__body">
-            <h3>Avocado Ice Cream</h3>
-            <div class="recipe-card__meta">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 min</span>
-              <span>Easy</span>
-            </div>
-            <div class="recipe-card__tags">
-            <span class="tag">4 ingredients</span>
-            <span class="tag">No churn</span>
             </div>
           </div>
         </a>

@@ -69,6 +69,8 @@ var SITE_CONFIG = {
    *   product-click/overview-latest/<produkt>  Karte neben "From the latest videos"
    *   product-click/overview-grid/<produkt>    Shop-Karte im Rezept-Raster
    *   product-click/overview-kids/<produkt>    Hinweis bei "Cook with kids"
+   *   product-click/home-showcase/<produkt>    Schaufenster auf der Startseite
+   *   product-click/home-grid/<produkt>        Shop-Karte in "New from the videos"
    *   banner-click                             Ankündigungsleiste (nur die aus dieser Datei)
    *   newsletter-signup                        abgeschicktes Newsletter-Formular
    *
