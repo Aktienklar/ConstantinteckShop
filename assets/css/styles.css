@@ -3492,19 +3492,6 @@ strong {
   }
 }
 
-/* --- Krimi-Dinner: VORERST VERSTECKT ------------------------------------
-   Die Seite ist noch nicht fertig. Diese Regel nimmt jeden Link dorthin aus
-   dem Menü, dem Fuß und dem Shop, auf allen Seiten auf einmal. krimi-dinner.html
-   selbst bleibt über die direkte Adresse erreichbar.
-   Zum Freischalten: 1. diesen Block löschen, 2. in krimi-dinner.html die
-   Zeile <meta name="robots" content="noindex"> entfernen, 3. in sitemap.xml
-   den auskommentierten Eintrag wieder einschalten. */
-a[href$="krimi-dinner.html"],
-li:has(> a[href$="krimi-dinner.html"]),
-.shop-section:has(.krimi-teaser) {
-  display: none !important;
-}
-
 /* --- Krimi-Dinner -------------------------------------------------------
    Die Fälle werden bei krimiabend24.de verkauft, nicht hier. Alles in diesem
    Abschnitt ist Schaufenster: Karten, Schritte und Hinweise, deren Knöpfe
