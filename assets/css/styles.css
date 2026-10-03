@@ -948,8 +948,11 @@ strong {
 /* Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü */
 .nav-mobile {
   display: flex;
+  /* Fünf Punkte passen auf einem Handy nicht in eine Zeile. Umbrechen statt
+     seitlich wischen: Ein Punkt, der rechts aus dem Bild läuft, wird nicht
+     gefunden – so ging "Murder Mystery" nach der Freischaltung unter. */
+  flex-wrap: wrap;
   gap: 0.5rem;
-  overflow-x: auto;
   border-top: 1px solid var(--line-soft);
   padding: 0.5rem 1rem;
 }
