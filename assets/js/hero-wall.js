@@ -29,23 +29,7 @@
       });
     }
 
-    /* Die dritte Bahn ist am Handy ausgeblendet. Ihre Bilder stehen deshalb
-       auf loading="lazy" und sie wird dort auch nicht verdoppelt – so lädt
-       das Handy nichts, was es nie zeigt. Am Desktop müssen die Bilder
-       dagegen sofort da sein, sonst tauchen sie erst auf, wenn die Karte
-       schon ins Bild gelaufen ist. */
-    var wide = window.matchMedia("(min-width: 1024px)");
-    function fillVisibleLanes() {
-      wall.querySelectorAll(".hero__lane").forEach(function (lane) {
-        if (lane.offsetParent === null) return;
-        lane.querySelectorAll('img[loading="lazy"]').forEach(function (img) {
-          img.loading = "eager";
-        });
-        fill(lane.querySelector(".hero__track"));
-      });
-    }
-    fillVisibleLanes();
-    wide.addEventListener("change", fillVisibleLanes);
+    wall.querySelectorAll(".hero__track").forEach(fill);
 
     wall.classList.add("is-live");
 

@@ -1024,6 +1024,25 @@ strong {
   color: var(--brand);
 }
 
+/* Kanäle als kleine Symbole in einer Reihe statt als Textliste. */
+.site-footer .social {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: -0.625rem;
+}
+
+.site-footer .social a {
+  justify-content: center;
+  width: var(--tap);
+  min-height: var(--tap);
+  color: var(--mocha);
+}
+
+.site-footer .social svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
 .site-footer__legal {
   border-top: 1px solid var(--line);
   padding-block: 1.5rem;
@@ -1068,13 +1087,30 @@ strong {
 
 /* --- Startseite: Hero --------------------------------------------------- */
 
-/* Links der Text, rechts die laufende Rezeptwand. Unter lg wird die Wand zum
-   Band über dem Text. */
+/* Die Rezeptwand trägt die ganze Breite, der Text tritt zurück. Unter lg
+   steht er unter der Wand auf dem Grundton, ab lg unten links auf der Wand
+   über einem Verlauf. */
 .hero {
+  /* Feine neutrale Linie der Karten unter der Wand. */
+  --hairline: #e6dfd5;
+  /* Breite einer Rezeptkarte. Unter lg hängt sie an der Höhe der Wand, damit
+     drei Bahnen die Fläche immer füllen; die Untergrenze hält die Bahnen im
+     Querformat lang genug für die Endlosschleife. */
+  --card-w: max(17.5vh, 6.5rem);
+  --wall-gap: 0.625rem;
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid var(--line);
   background-color: var(--dough);
+}
+
+@supports (height: 1svh) {
+  .hero {
+    --card-w: max(17.5svh, 6.5rem);
+  }
+}
+
+.hero__stage {
+  position: relative;
 }
 
 /* contain + isolation: Die Wand besteht aus bewegten Ebenen in einem
@@ -1083,25 +1119,25 @@ strong {
    abgeschlossener Zeichenbereich hält Zuschnitt und Reihenfolge fest. */
 .hero__media {
   position: relative;
+  height: 62vh;
+  height: 62svh;
   overflow: hidden;
   contain: paint;
   isolation: isolate;
 }
 
-/* Rezeptwand: Bahnen mit Rezeptkarten, die gegenläufig durchlaufen. Leicht
-   gekippt, damit sie nicht wie eine Tabelle aussieht; der negative Rand
-   schiebt die dabei entstehenden leeren Ecken aus dem Bild. */
+/* Rezeptwand: drei Bahnen mit Rezeptkarten, die gegenläufig durchlaufen.
+   Leicht gekippt, damit sie nicht wie eine Tabelle aussieht. Die Wand ist
+   höher als ihr Rahmen und sitzt mittig darin – so zeigt die Kippung oben
+   und unten keine leeren Ecken. */
 .hero__wall {
-  --wall-gap: 0.625rem;
+  position: absolute;
+  top: 50%;
+  inset-inline: 0;
   display: flex;
   flex-direction: column;
   gap: var(--wall-gap);
-  margin-block: -0.75rem;
-  transform: rotate(-2.5deg) scale(1.06);
-}
-
-.hero__lane:nth-child(3) {
-  display: none;
+  transform: translateY(-50%) rotate(-3deg) scale(1.08);
 }
 
 .hero__track {
@@ -1116,15 +1152,20 @@ strong {
    zwischendurch weg und zeichnet sie neu – die Wand blitzt dann kurz leer
    auf. */
 .hero__wall.is-live .hero__track {
-  animation: wall-x 64s linear infinite;
+  animation: wall-x 90s linear infinite;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
 .hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
-  animation-duration: 80s;
+  animation-duration: 115s;
   animation-direction: reverse;
+}
+
+.hero__wall.is-live .hero__lane:nth-child(3) .hero__track {
+  animation-duration: 100s;
+  animation-delay: -40s;
 }
 
 @keyframes wall-x {
@@ -1133,9 +1174,28 @@ strong {
   }
 }
 
-@keyframes wall-y {
-  to {
-    transform: translate3d(0, -50%, 0);
+/* Auftritt: Die Bahnen blenden beim Laden nacheinander ein. Nur für Leser,
+   die Bewegung nicht abgestellt haben – alle anderen sehen die Wand sofort.
+   `backwards` statt `both`: Nach dem Auftritt gilt wieder der normale Stil,
+   die Bahn behält keine eigene Ebene. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__lane {
+    animation: wall-in 0.75s var(--ease-soft) backwards;
+  }
+
+  .hero__lane:nth-child(2) {
+    animation-delay: 0.14s;
+  }
+
+  .hero__lane:nth-child(3) {
+    animation-delay: 0.28s;
+  }
+}
+
+@keyframes wall-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
   }
 }
 
@@ -1145,7 +1205,7 @@ strong {
   position: relative;
   display: block;
   flex: none;
-  width: 6.5rem;
+  width: var(--card-w);
   margin-right: var(--wall-gap);
   overflow: hidden;
   border-radius: 0.75rem;
@@ -1172,7 +1232,7 @@ strong {
   background-image: linear-gradient(to top, rgba(59, 42, 32, 0.85), transparent);
   color: #fff;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.25;
   opacity: 0;
   transition: opacity 0.25s;
@@ -1203,7 +1263,7 @@ strong {
 
   .wall-card:hover {
     z-index: 1;
-    transform: scale(1.05);
+    transform: scale(1.04);
     box-shadow: var(--shadow-lift);
   }
 
@@ -1212,13 +1272,14 @@ strong {
   }
 }
 
-/* Verlauf: blendet die Wand in den Hintergrund – auf dem Handy nach unten
-   zum Text, ab lg zur Seite. */
+/* Verlauf: blendet die Wand in den Grundton – unter lg nur am unteren Rand
+   zum Text hin, ab lg zusätzlich aus der Ecke unten links, in der der Text
+   liegt. Kein Kasten: Die Fotos laufen weich aus. */
 .hero__scrim {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: 4rem;
+  height: 5rem;
   z-index: 1;
   background-image: linear-gradient(to top, var(--dough), transparent);
   pointer-events: none;
@@ -1227,53 +1288,91 @@ strong {
 .hero__body {
   position: relative;
   z-index: 1;
-  padding-block: 2.5rem;
+  padding-block: 1.25rem 2rem;
 }
 
-.hero__inner {
-  max-width: 36rem;
+/* Die eine Zeile des Hero: leicht gesetzt, mit kursivem Akzent. */
+.hero__line {
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
-.hero h1 {
-  margin-top: 0.75rem;
-  font-size: 1.875rem;
+.hero__line em {
+  font-style: italic;
+  color: var(--brand);
 }
 
-.hero__actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
+/* Ein Textlink, kein Knopf: Unterstrich und Pfeil reagieren erst beim
+   Zeigen. Die Mindesthöhe hält ihn am Handy gut treffbar. */
+.hero__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--tap);
+  margin-top: 0.5rem;
+  font-size: 1.0625rem;
+  color: var(--cocoa);
+  text-decoration: underline transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.3s var(--ease-soft);
 }
 
-/* Direkteinstieg: beide Rezeptwelten und der Shop – ein Tap */
-.hero__tiles {
+.hero__link span {
+  transition: transform 0.3s var(--ease-soft);
+}
+
+.hero__link:hover {
+  text-decoration-color: currentColor;
+}
+
+.hero__link:hover span {
+  transform: translateX(4px);
+}
+
+/* Direkteinstieg: beide Rezeptwelten, der Shop und die Schürze. Alle Karten
+   teilen sich dieselbe feine Linie und denselben Grund – Farbe trägt nur
+   das Symbol. */
+.hero__cards {
+  position: relative;
+  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-top: 2rem;
+  gap: 0.625rem;
+  padding-bottom: 2.5rem;
+}
+
+.tile,
+.hero__product {
+  border: 1px solid var(--hairline);
+  border-radius: 1rem;
+  background-color: #fffdfa;
+  transition: border-color 0.3s var(--ease-soft);
+}
+
+.tile:hover,
+.hero__product:hover {
+  border-color: var(--crust);
 }
 
 .tile {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 92px;
-  padding: 1rem;
-  border: 2px solid var(--crust);
-  border-radius: 1rem;
-  background-color: #fff;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 4.25rem;
+  padding: 0.75rem 1rem;
 }
 
 .tile svg {
-  width: 1.75rem;
-  height: 1.75rem;
-  color: rgba(59, 42, 32, 0.7);
+  flex-shrink: 0;
+  width: 1.625rem;
+  height: 1.625rem;
 }
 
 .tile__label {
   display: block;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
 }
 
@@ -1282,45 +1381,31 @@ strong {
   color: var(--mocha);
 }
 
-.tile--sweet {
-  border-color: var(--sweet);
+.tile--sweet svg {
+  color: var(--sweet);
 }
 
-.tile--savory {
-  border-color: var(--savory);
+.tile--savory svg {
+  color: var(--savory);
 }
 
-.tile--shop {
-  grid-column: span 2;
-  border-color: var(--brand);
-  background-color: var(--brand-soft);
-}
-
-.tile--shop svg,
-.tile--shop .tile__label {
+.tile--shop svg {
   color: var(--brand);
 }
 
-/* Die Schürze, bündig mit den Kacheln darüber. Früher schwebte sie in der
-   unteren Ecke des Fotos, wo sie wie eine Bildunterschrift wirkte statt wie
-   das, was diese Seite verkauft. */
+/* Die Schürze: dieselbe Karte wie die Kacheln, nur mit Foto und Preis. */
 .hero__product {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-top: 0.75rem;
-  padding: 1rem;
-  border: 2px solid var(--crust);
-  border-radius: 1rem;
-  background-color: #fff;
-  box-shadow: var(--shadow-card);
+  gap: 0.875rem;
+  padding: 0.75rem;
 }
 
 .hero__product img {
   flex-shrink: 0;
-  width: 6rem;
-  height: 6rem;
-  border-radius: 0.75rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.625rem;
   object-fit: cover;
 }
 
@@ -1331,19 +1416,18 @@ strong {
 
 .hero__product-kicker {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--brand);
 }
 
 .hero__product-title {
   display: block;
-  margin-top: 0.25rem;
+  margin-top: 0.125rem;
   font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 700;
+  font-size: 1.0625rem;
   line-height: 1.3;
 }
 
@@ -1351,16 +1435,16 @@ strong {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.125rem 0.5rem;
-  margin-top: 0.375rem;
+  gap: 0 0.5rem;
+  margin-top: 0.125rem;
 }
 
 .hero__product-price b {
-  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .hero__product-price span {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--mocha);
 }
 
@@ -1368,12 +1452,12 @@ strong {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 999px;
   background-color: var(--brand);
   color: #fff;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   transition: transform 0.3s var(--ease-soft), background-color 0.3s;
 }
 
@@ -1383,134 +1467,118 @@ strong {
 }
 
 @media (min-width: 640px) {
-  .hero__wall {
+  .hero {
     --wall-gap: 0.75rem;
   }
 
-  .wall-card {
-    width: 8.5rem;
-  }
-
   .hero__body {
-    padding-block: 3.5rem;
+    padding-block: 1.5rem 2.25rem;
   }
 
-  .hero h1 {
-    font-size: 3rem;
+  .hero__line {
+    font-size: 2rem;
   }
 
-  .hero__actions {
-    flex-direction: row;
-  }
-
-  .hero__tiles {
+  .hero__cards {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding-bottom: 3rem;
   }
 
-  .tile--shop {
-    grid-column: span 1;
+  .tile {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: 6.5rem;
+    padding: 1rem;
   }
 
   .hero__product {
-    gap: 1.25rem;
-  }
-
-  .hero__product img {
-    width: 7rem;
-    height: 7rem;
-  }
-
-  .hero__product-title {
-    font-size: 1.25rem;
+    grid-column: 1 / -1;
+    gap: 1rem;
   }
 }
 
 @media (min-width: 1024px) {
+  .hero {
+    --card-w: clamp(9rem, 12vw, 15rem);
+    --wall-gap: 0.875rem;
+  }
+
+  /* Die Bühne ist so hoch wie gut zweieinhalb Kartenreihen, höchstens aber
+     drei Viertel des Fensters – die Karten darunter sollen noch ins Bild
+     ragen. */
+  .hero__stage {
+    display: flex;
+    align-items: flex-end;
+    height: min(calc(var(--card-w) * 3.5), 76vh);
+    /* Auf ganze Pixel gerundet: Bei einer krummen Höhe zeichnet der Browser
+       am unteren Rand der Wand eine feine dunkle Linie. */
+    height: round(min(calc(var(--card-w) * 3.5), 76vh), 1px);
+    min-height: 26rem;
+  }
+
   .hero__media {
     position: absolute;
     inset: 0;
+    height: auto;
   }
 
-  /* Drei senkrechte Bahnen in der rechten Hälfte. Die Wand ragt oben, unten
-     und rechts über den Abschnitt hinaus, damit die Kippung keine leeren
-     Ecken zeigt. */
-  .hero__wall {
-    --wall-gap: 0.875rem;
-    position: absolute;
-    top: -12%;
-    right: -3rem;
-    bottom: -12%;
-    width: clamp(26rem, 42vw, 54rem);
-    flex-direction: row;
-    margin-block: 0;
-    transform: rotate(6deg);
-  }
-
-  .hero__lane,
-  .hero__lane:nth-child(3) {
-    display: block;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .hero__track {
-    flex-direction: column;
-    width: auto;
-  }
-
-  /* Die Wand ragt oben über den Abschnitt hinaus, die erste Karte jeder Bahn
-     wäre beim Laden also halb abgeschnitten – ausgerechnet die mit den
-     stärksten Fotos. Der negative Start schiebt jede Bahn eine halbe Karte
-     weiter, sodass die erste Karte ganz im Bild steht. */
-  .hero__wall.is-live .hero__track {
-    animation-name: wall-y;
-    animation-duration: 95s;
-    animation-delay: -90s;
-  }
-
-  .hero__wall.is-live .hero__lane:nth-child(2) .hero__track {
-    animation-duration: 120s;
-    animation-delay: -6s;
-  }
-
-  .hero__wall.is-live .hero__lane:nth-child(3) .hero__track {
-    animation-duration: 105s;
-    animation-delay: -100s;
-  }
-
-  .wall-card {
-    width: auto;
-    margin-right: 0;
-    margin-bottom: var(--wall-gap);
-    border-radius: 1rem;
-  }
-
+  /* Flacher Streifen am unteren Rand, in den die Karten hineinragen. */
   .hero__scrim {
     inset: 0;
-    height: 100%;
+    height: auto;
     background-image: linear-gradient(
-      to right,
+      to top,
       var(--dough) 0%,
-      var(--dough) 52%,
-      transparent 70%
+      rgba(246, 236, 221, 0) 30%
     );
   }
 
   /* Der Textblock liegt über der ganzen Breite. Ohne das hier finge er jeden
      Zeiger über der Wand ab, und keine Karte ließe sich anklicken. */
   .hero__body {
-    padding-block: 4rem;
+    padding-block: 0 6.5rem;
     pointer-events: none;
   }
 
   .hero__inner {
+    position: relative;
+    width: fit-content;
     pointer-events: auto;
   }
-}
 
-@media (min-width: 1280px) {
-  .hero__inner {
-    max-width: 40rem;
+  /* Weiches Feld im Grundton hinter dem Text: in der Mitte deckend, zum
+     Rand hin durchsichtig. Es hängt am Textblock statt an der Bühne, damit
+     es bei jeder Fensterbreite genau dort liegt, wo der Text steht. */
+  .hero__inner::before {
+    content: "";
+    position: absolute;
+    inset: -7rem -11rem -8rem -11rem;
+    z-index: -1;
+    background-image: radial-gradient(
+      closest-side,
+      var(--dough) 0%,
+      var(--dough) 62%,
+      rgba(246, 236, 221, 0.86) 76%,
+      rgba(246, 236, 221, 0) 100%
+    );
+    pointer-events: none;
+  }
+
+  .hero__line {
+    font-size: 2.125rem;
+  }
+
+  /* Alle vier Karten in einer Reihe, ein Stück in die Wand geschoben. */
+  .hero__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 2.1fr);
+    margin-top: -3rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .hero__product {
+    grid-column: auto;
   }
 }
 
@@ -3732,137 +3800,6 @@ strong {
 
   .krimi-teaser__body {
     padding: 2rem;
-  }
-}
-
-/* --- Hinweis-Karte auf der Startseite ------------------------------------
-   Kein Dialog, der die Seite sperrt: eine Karte am unteren Rand, die sich
-   schließen lässt. Mobil über die ganze Breite, ab sm unten rechts. */
-.promo {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 50;
-  border: 1px solid var(--line);
-  border-radius: 1.25rem;
-  background-color: #fff;
-  padding: 0.75rem;
-  box-shadow: var(--shadow-lift);
-  animation: promo-in 0.45s var(--ease-soft) both;
-}
-
-.promo[hidden] {
-  display: none;
-}
-
-@keyframes promo-in {
-  from {
-    transform: translate3d(0, 1.5rem, 0);
-    opacity: 0;
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
-  }
-}
-
-.promo__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 0.5rem;
-}
-
-.promo__head .eyebrow {
-  font-size: 0.75rem;
-}
-
-.promo__close {
-  display: grid;
-  place-items: center;
-  width: var(--tap);
-  height: var(--tap);
-  margin: -0.25rem -0.25rem 0 0;
-  border-radius: 999px;
-  color: var(--mocha);
-}
-
-.promo__close:hover {
-  background-color: var(--dough);
-}
-
-.promo__close svg {
-  width: 1.125rem;
-  height: 1.125rem;
-}
-
-.promo__item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border-radius: 0.875rem;
-  padding: 0.5rem;
-  transition: background-color 0.2s var(--ease-soft);
-}
-
-.promo__item:hover {
-  background-color: var(--cream);
-}
-
-.promo__thumb {
-  flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 0.75rem;
-  object-fit: cover;
-}
-
-.promo__thumb--icon {
-  display: grid;
-  place-items: center;
-  background-color: var(--brand-soft);
-  color: var(--brand);
-}
-
-.promo__thumb--icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.promo__text {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.875rem;
-  line-height: 1.35;
-  color: var(--mocha);
-}
-
-.promo__text b {
-  display: block;
-  font-size: 0.9375rem;
-  color: var(--cocoa);
-}
-
-.promo__arrow {
-  flex-shrink: 0;
-  padding-right: 0.25rem;
-  color: var(--brand);
-  font-weight: 700;
-}
-
-@media (min-width: 640px) {
-  .promo {
-    right: 1.5rem;
-    bottom: 1.5rem;
-    left: auto;
-    width: 23rem;
-  }
-}
-
-@media print {
-  .promo {
-    display: none;
   }
 }
 
