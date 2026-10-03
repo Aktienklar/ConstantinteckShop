@@ -95,6 +95,44 @@
     });
   }
 
+  /* --- Besucherzählung ------------------------------------------------------ */
+
+  function setupTracking() {
+    var code = ((config.tracking || {}).goatcounter || "").trim();
+    // Nur Buchstaben, Ziffern, Bindestrich – der Wert landet in einer Adresse.
+    if (!/^[a-z0-9-]+$/i.test(code)) return;
+
+    var tag = document.createElement("script");
+    tag.async = true;
+    tag.src = "https://gc.zgo.at/count.js";
+    tag.setAttribute("data-goatcounter", "https://" + code + ".goatcounter.com/count");
+    document.head.appendChild(tag);
+
+    function count(name) {
+      if (!name || !window.goatcounter || !window.goatcounter.count) return;
+      window.goatcounter.count({ path: name, title: location.pathname, event: true });
+    }
+
+    /* Ein Zuhörer für die ganze Seite: Er erfasst auch Karten, die erst ein
+       Skript eingesetzt hat. Der Klick selbst läuft ungestört weiter. */
+    document.addEventListener(
+      "click",
+      function (event) {
+        var target = event.target.closest ? event.target.closest("[data-track]") : null;
+        if (target) count(target.getAttribute("data-track"));
+      },
+      true
+    );
+
+    document.addEventListener(
+      "submit",
+      function (event) {
+        count(event.target.getAttribute && event.target.getAttribute("data-track-submit"));
+      },
+      true
+    );
+  }
+
   /* --- Kundenfotos ------------------------------------------------------- */
 
   function renderCustomerPhotos() {
@@ -129,5 +167,6 @@
     applyBanner();
     renderNewsletter();
     renderCustomerPhotos();
+    setupTracking();
   });
 })();

@@ -85,6 +85,30 @@ the consent, so there is none. Section 2 and section 7 of `privacy.html`
 describe exactly this behaviour; if the player is ever wired to load on page
 load, both sections become false and a consent banner has to come first.
 
+### Settings in one place
+
+Two files hold everything that can be changed without touching a page:
+
+| File | What it controls |
+| --- | --- |
+| `assets/js/recipe-data.js` | Per recipe: `order` (the three highest appear under "From the latest videos"), `video`, and optionally `featuredProduct` / `productNote` for the product card on the recipe page |
+| `assets/js/site-config.js` | Announcement bar (text, link, start/end date), newsletter box, GoatCounter code, customer photos |
+
+Everything in `site-config.js` ships switched off or empty; the comments in the
+file say what each field does and what has to happen in `privacy.html` before
+switching it on.
+
+**Product card on a recipe page.** Without `featuredProduct`, sweet recipes of
+15 minutes or less show the apron set ("make it with your kids"), everything
+else the adult apron. The rule lives in `assets/js/recipe-product.js`.
+
+**Shop cards in the recipe list.** `assets/js/recipes-overview.js` inserts one
+after every sixth recipe (set, apron, murder mystery in turn) and hides them
+while a search or filter is active.
+
+**Customer photos.** Put the image into `assets/img/customers/` and add its file
+name to `customerPhotos` in `site-config.js`. Empty list = no section.
+
 ### Adding a recipe
 
 1. Copy an existing recipe file, e.g.
@@ -103,7 +127,10 @@ load, both sections become false and a consent banner has to come first.
    | `data-difficulty` | `einfach`, `mittel` or `anspruchsvoll` |
    | `data-search` | everything the search should find, in lower case |
 
-4. Optionally link it from the start page (`index.html`) and update the recipe
+4. Add a line for it in `assets/js/recipe-data.js` with the next higher
+   `order`, and set `data-slug`, `data-category` and `data-minutes` on the
+   `data-recipe-product` block in the new recipe file.
+5. Optionally link it from the start page (`index.html`) and update the recipe
    counts on the two tiles there.
 
 ### Adding a product

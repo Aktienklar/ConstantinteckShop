@@ -57,6 +57,29 @@ var SITE_CONFIG = {
   },
 
   /**
+   * BESUCHERZÄHLUNG (GoatCounter) – ohne Cookies, ohne Profile.
+   *
+   * goatcounter  Der Code deines GoatCounter-Kontos, also der Teil vor
+   *              ".goatcounter.com" (aus "constantinteck.goatcounter.com"
+   *              wird "constantinteck"). Leer = es wird nichts geladen und
+   *              nichts gezählt.
+   *
+   * Gezählt werden Seitenaufrufe und Klicks auf alles mit data-track="…":
+   *   product-click/recipe/<produkt>           Produktkarte auf einer Rezeptseite
+   *   product-click/overview-latest/<produkt>  Karte neben "From the latest videos"
+   *   product-click/overview-grid/<produkt>    Shop-Karte im Rezept-Raster
+   *   product-click/overview-kids/<produkt>    Hinweis bei "Cook with kids"
+   *   banner-click                             Ankündigungsleiste (nur die aus dieser Datei)
+   *   newsletter-signup                        abgeschicktes Newsletter-Formular
+   *
+   * VOR DEM EINTRAGEN: privacy.html ergänzen – dort steht heute, dass die
+   * Seite keine Analysedienste einbindet.
+   */
+  tracking: {
+    goatcounter: "" // TODO: GoatCounter-Code
+  },
+
+  /**
    * KUNDENFOTOS – "In your kitchens" auf den Produktseiten.
    *
    * Dateinamen aus assets/img/customers/, in der Reihenfolge der Anzeige.
