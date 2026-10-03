@@ -948,13 +948,35 @@ strong {
 /* Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü */
 .nav-mobile {
   display: flex;
-  /* Fünf Punkte passen auf einem Handy nicht in eine Zeile. Umbrechen statt
-     seitlich wischen: Ein Punkt, der rechts aus dem Bild läuft, wird nicht
-     gefunden – so ging "Murder Mystery" nach der Freischaltung unter. */
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  /* Fünf Punkte in einer Zeile, über die Breite verteilt. Als Pillen passten
+     sie am Handy nicht nebeneinander: Seitlich wischen versteckte "Murder
+     Mystery", Umbrechen ergab eine zweite, halb leere Zeile. Als schlichte
+     Textlinks passen alle fünf – der aktive Punkt trägt einen Strich. */
+  justify-content: space-between;
+  gap: 0.25rem;
   border-top: 1px solid var(--line-soft);
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
+}
+
+.nav-mobile .chip {
+  min-height: var(--tap);
+  padding-inline: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: inset 0 -2px 0 transparent;
+}
+
+.nav-mobile .chip.is-active {
+  background-color: transparent;
+  color: var(--cocoa);
+  box-shadow: inset 0 -2px 0 var(--brand);
+}
+
+@media (max-width: 359px) {
+  .nav-mobile .chip {
+    font-size: 0.8125rem;
+  }
 }
 
 @media (min-width: 640px) {
@@ -1360,7 +1382,7 @@ strong {
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  min-height: 4.25rem;
+  min-height: 3.5rem;
   padding: 0.75rem 1rem;
 }
 
@@ -1371,14 +1393,8 @@ strong {
 }
 
 .tile__label {
-  display: block;
   font-weight: 600;
   line-height: 1.2;
-}
-
-.tile__count {
-  font-size: 0.875rem;
-  color: var(--mocha);
 }
 
 .tile--sweet svg {
@@ -1489,7 +1505,7 @@ strong {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    min-height: 6.5rem;
+    min-height: 5.5rem;
     padding: 1rem;
   }
 
