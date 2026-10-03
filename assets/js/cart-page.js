@@ -65,6 +65,31 @@
         ? SHOP_TERMS.freeShippingFrom - total
         : 0;
 
+    /* Wer eine der beiden Schürzen einzeln im Warenkorb hat, soll hier
+       erfahren, dass es beide zusammen günstiger gibt – spätestens jetzt,
+       bevor er zahlt. Liegt das Set schon drin, bleibt der Hinweis weg. */
+    function inCart(slug) {
+      return lines.some(function (line) {
+        return line.productSlug === slug;
+      });
+    }
+    var set = SHOP_PRODUCTS["apron-set"];
+    var setHint = "";
+    if (set && set.available !== false && !inCart("apron-set")) {
+      var setPrices =
+        formatPrice(set.price) + " instead of " + formatPrice(set.compareAtPrice);
+      if (inCart("linen-apron") && inCart("kids-apron")) {
+        setHint = "These two cost " + setPrices + " as a set.";
+      } else if (inCart("linen-apron")) {
+        setHint =
+          "Cooking with a small helper? With the kids' apron as a set: " +
+          setPrices + ".";
+      } else if (inCart("kids-apron")) {
+        setHint =
+          "One for you too? With the grown-up apron as a set: " + setPrices + ".";
+      }
+    }
+
     var shippingLabel;
     if (shipping === 0) {
       shippingLabel = hasPhysical ? "Free" : "none (PDF only)";
@@ -91,6 +116,11 @@
         ? '<p class="cart-summary__hint">' +
           formatPrice(missingForFreeShipping) +
           " more and shipping is free.</p>"
+        : "") +
+      (setHint
+        ? '<p class="cart-summary__hint">' +
+          escapeHtml(setHint) +
+          ' <a class="link-brand" href="shop/apron-set.html">See the set →</a></p>'
         : "") +
       '<div class="cart-summary__total"><b>Total</b><b>' +
       formatPrice(total + shipping) +
