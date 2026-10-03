@@ -196,8 +196,11 @@
           </section>
 
           <!-- Der Shop-Block steht genau einmal: auf dem Handy zwischen Zutaten
-               und Zubereitung, auf großen Bildschirmen neben den Schritten. -->
-          <div class="recipe-product">
+               und Zubereitung, auf großen Bildschirmen neben den Schritten. Was hier
+               im HTML steht, ist nur der Rückfall ohne JavaScript –
+               assets/js/recipe-product.js setzt das zum Rezept passende
+               Produkt ein (einstellbar in assets/js/recipe-data.js). -->
+          <div class="recipe-product" data-recipe-product data-slug="kiwi-sorbet" data-category="backen" data-minutes="5">
       <!-- Cross-Selling Rezept -> Shop. Bewusst ein eigener konturierter Block
            (kein Werbebanner): gleiche Bildsprache wie der Rest der Seite, eine
            ehrliche Überschrift. -->
@@ -386,6 +389,7 @@
   <script src="../assets/js/product.js"></script>
   <script src="../assets/js/share.js"></script>
   <script src="../assets/js/recipe-data.js"></script>
+  <script src="../assets/js/recipe-product.js"></script>
   <script src="../assets/js/video-embed.js"></script>
 </body>
 </html>

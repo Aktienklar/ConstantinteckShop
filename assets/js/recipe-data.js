@@ -18,6 +18,16 @@
  *                        Abschnitt 7; eingebettet wird nur Instagram).
  *         Leer = das Rezeptfoto bleibt stehen, ohne Abspielknopf.
  *
+ * featuredProduct  (optional) Welches Produkt auf der Rezeptseite steht:
+ *         "linen-apron" (Erwachsene), "kids-apron" oder "apron-set".
+ *         Ohne Angabe: süß und höchstens 15 Minuten -> Set, sonst die
+ *         Erwachsenenschürze. Die Regel steht in assets/js/recipe-product.js.
+ *
+ * productNote  (optional) Eigener Satz über der Produktkarte, auf Englisch.
+ *
+ *   "kiwi-sorbet": { order: 9, video: "", featuredProduct: "kids-apron",
+ *                    productNote: "My niece makes this one on her own." },
+ *
  * WICHTIG: Der Schlüssel links ist der Dateiname der Rezeptseite ohne ".html".
  * Wird ein Rezept umbenannt, gehört diese Zeile mit umbenannt.
  */

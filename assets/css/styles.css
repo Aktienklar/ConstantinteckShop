@@ -2621,6 +2621,41 @@ strong {
   font-weight: 700;
 }
 
+/* Der persönliche Satz über der Karte – er ist der Grund, warum das Produkt
+   bei diesem Rezept steht, und deshalb etwas kräftiger als ein Hinweistext. */
+.used-products__note {
+  margin-top: 0.375rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--mocha);
+}
+
+.used-products__story {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.used-products__story a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+}
+
+/* Vertrauenszeile: drei kurze Zusagen in einer Zeile, bricht auf dem Handy
+   von selbst um. Steht unter Produktkarten auf Rezeptseiten und in der
+   Übersicht. */
+.trust-line {
+  margin-top: 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--mocha);
+}
+
+/* Sprungziel unter dem festen Kopf sichtbar halten */
+#aprons-story {
+  scroll-margin-top: 8rem;
+}
+
 .related-recipes ul {
   margin-top: 1rem;
 }
