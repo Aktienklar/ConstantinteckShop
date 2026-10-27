@@ -37,6 +37,7 @@
     {
       id: "krimi-dinner",
       href: "krimi-dinner.html",
+      image: "assets/img/krimi/death-at-studio-7.jpg",
       title: "Dinner's sorted. Now: who did it?",
       text: "Murder mystery games as a PDF to print at home – for an evening of cooking together."
     }
@@ -147,8 +148,8 @@
     link.setAttribute("data-track", "product-click/overview-grid/" + entry.id);
     link.innerHTML =
       '<div class="recipe-card__media">' +
-      (product
-        ? '<img src="' + product.image + '" alt="" loading="lazy">'
+      (product || entry.image
+        ? '<img src="' + (product ? product.image : entry.image) + '" alt="" loading="lazy">'
         : '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>") +
       '<span class="shop-card__badge">' + (product ? "From the shop" : "Murder mystery") + "</span>" +
       "</div>" +

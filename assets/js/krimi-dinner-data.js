@@ -47,6 +47,12 @@ var KRIMI_SITE = {
   /**
    * UTM-Parameter, die an JEDEN Link zu Murdernight gehängt werden.
    * Nur hier ändern – krimiUrl() unten baut alle Links daraus.
+   *
+   * Absprache mit Jonas (Murdernight), 27.10.2026: Jeder Link muss
+   * utm_source=<Seitenname> tragen, damit deren Marketing-Cookie erkennt,
+   * dass der Besuch von hier kommt. utm_source darf also nie fehlen und
+   * bleibt "constantinteck". murdernight.de leitet englische Adressen samt
+   * Parametern auf murdernight.store weiter – beide Domains sind in Ordnung.
    */
   utm: {
     utm_source: "constantinteck",
@@ -67,11 +73,10 @@ var KRIMI_SITE = {
  * hours       Dauer in Stunden als Zahl (2.5 = "ca. 2,5 Std.")
  * difficulty  "medium" oder "tricky" – so steht es dort
  * price       Preis in Euro
- * image       TODO: echtes Cover. Solange der Wert leer ist, zeigt die Karte
- *             einen neutralen Platzhalter. Eigene Datei nach assets/img/ legen
- *             und hier den Pfad ab dem Hauptordner eintragen, z. B.
- *             "assets/img/krimi/the-comet-vintage.jpg" – nichts von
- *             Murdernight direkt einbinden.
+ * image       Cover ab dem Hauptordner. Die Dateien in assets/img/krimi/ sind
+ *             die englischen Cover von murdernight.store (27.10.2026, auf
+ *             900 px verkleinert) – als eigene Kopie, nichts von Murdernight
+ *             direkt einbinden. Leer = neutraler Platzhalter.
  * en / de     Titel, Genre, Schauplatz und Pfad der Produktseite. null = den
  *             Fall gibt es in dieser Sprache (noch) nicht.
  */
@@ -82,8 +87,7 @@ var KRIMI_CASES = [
     hours: 4,
     difficulty: "tricky",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/the-comet-vintage.jpg",    en: {
       title: "The Comet Vintage",
       genre: "Country-house classic",
       setting: "An old wine estate on the Moselle",
@@ -102,8 +106,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "tricky",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/the-last-sleigh-ride.jpg",    en: {
       title: "The Last Sleigh Ride",
       genre: "Fairytale",
       setting: "The Christmas village at the North Pole",
@@ -122,8 +125,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "tricky",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/the-last-night-at-fjell.jpg",    en: {
       title: "The Last Night at Fjell",
       genre: "Historical",
       setting: "A Norwegian mountain hotel, 1928",
@@ -142,8 +144,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "medium",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/radio-silence-on-ares.jpg",    en: {
       title: "Radio Silence on Ares",
       genre: "Sci-fi",
       setting: "A Mars station in 2152",
@@ -162,8 +163,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "medium",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/witching-hour-at-ravenmoor.jpg",    en: {
       title: "Witching Hour at Ravenmoor",
       genre: "Historical",
       setting: "A haunted castle, Halloween 1986",
@@ -182,8 +182,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "medium",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/murder-before-hibernation.jpg",    en: {
       title: "Murder Before Hibernation",
       genre: "Fairytale",
       setting: "An autumn forest of talking animals",
@@ -202,8 +201,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "tricky",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/closing-bell-on-the-24th-floor.jpg",    en: {
       title: "Closing Bell on the 24th Floor",
       genre: "Modern / Business",
       setting: "The executive floor of a corporation",
@@ -222,8 +220,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "medium",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/death-at-studio-7.jpg",    en: {
       title: "Death at Studio 7",
       genre: "Historical",
       setting: "Hollywood, 1934",
@@ -242,8 +239,7 @@ var KRIMI_CASES = [
     hours: 3,
     difficulty: "tricky",
     price: 8.99,
-    image: "", // TODO: echtes Cover
-    en: {
+    image: "assets/img/krimi/the-night-of-the-waxworks.jpg",    en: {
       title: "The Night of the Waxworks",
       genre: "Modern / Business",
       setting: "A Halloween case in a hotel full of wax figures",

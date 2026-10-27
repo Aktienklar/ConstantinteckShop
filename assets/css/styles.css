@@ -3925,6 +3925,8 @@ strong {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Die Cover sind Hochformat (3:4), Titel und Motiv sitzen oben. */
+  object-position: center 20%;
 }
 
 /* TODO: Platzhalter, bis es eigene Cover gibt (Feld "image" in
