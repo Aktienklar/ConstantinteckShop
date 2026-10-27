@@ -9,7 +9,7 @@
 > `schuerzen-stand-2026-10-27`. Den Umbau-Commit rückgängig machen:
 >
 > ```bash
-> git revert <sha-des-commits "Nur noch Krimi-Dinner">
+> git revert 80f6334
 > ./deploy.sh "Schuerzen wieder da"
 > ```
 >
