@@ -5,20 +5,22 @@
  * Krimi-Dinnern zu sehen ist. Im HTML stehen dafür nur Markierungen:
  *
  *   <div data-krimi-cases></div>
- *       Die Karten aller Fälle (krimi-dinner.html).
+ *       Die Karten aller Fälle (krimi-dinner.html). Mit data-krimi-limit="3"
+ *       nur die ersten drei (Startseite, about.html).
  *
  *   <a data-krimi-link="shop">…</a>      oder  data-krimi-link="home"
- *       Bekommt die Adresse bei krimiabend24.de samt UTM-Parametern.
+ *       Bekommt die Adresse bei Murdernight samt UTM-Parametern.
  *
  *   <span data-krimi-from-price></span>   <span data-krimi-count></span>
- *       Niedrigster Preis bzw. Anzahl der Fälle – für die Teaser-Karte im Shop.
+ *       Niedrigster Preis bzw. Anzahl der Fälle – für Teaser-Texte.
  *
  *   <div data-krimi-hint="the-teatime-caper"></div>
  *       Der Hinweis-Block für eine Rezeptseite. Der Wert ist die id des Falls
- *       aus KRIMI_CASES; ohne Wert führt der Block zur Shop-Übersicht.
+ *       aus KRIMI_CASES; ohne Wert wirbt der Block allgemein und führt zur
+ *       Shop-Übersicht.
  *
  * Hier wird nichts verkauft und nichts in den Warenkorb gelegt – jeder Knopf
- * ist ein Link nach krimiabend24.de. Die Datei kennt cart.js nicht, und das
+ * ist ein Link nach Murdernight. Die Datei kennt cart.js nicht, und das
  * soll so bleiben.
  *
  * Voraussetzung: krimi-dinner-data.js ist vorher geladen.
@@ -72,7 +74,7 @@
   }
 
   /* Externe Links öffnen im neuen Tab, damit das Rezept offen bleibt.
-     "noopener" ohne "noreferrer": krimiabend24.de darf sehen, woher der
+     "noopener" ohne "noreferrer": Murdernight darf sehen, woher der
      Besuch kommt – genau dafür sind die UTM-Parameter da. */
   function externalAttrs(href) {
     return ' href="' + escapeHtml(href) + '" target="_blank" rel="noopener"';
@@ -89,7 +91,10 @@
   function metaLine(item) {
     return (
       "<span>" + ICON_PLAYERS + escapeHtml(item.players) + " " + labels().players + "</span>" +
-      "<span>" + ICON_CLOCK + escapeHtml(labels().duration(item.hours)) + "</span>"
+      "<span>" + ICON_CLOCK + escapeHtml(labels().duration(item.hours)) + "</span>" +
+      (item.difficulty && labels().difficulty[item.difficulty]
+        ? "<span>" + escapeHtml(labels().difficulty[item.difficulty]) + "</span>"
+        : "")
     );
   }
 
@@ -106,7 +111,9 @@
   }
 
   function renderCases(box) {
+    var limit = Number(box.getAttribute("data-krimi-limit")) || undefined;
     var html = krimiCases()
+      .slice(0, limit)
       .map(function (item, index) {
         var text = item[KRIMI_SITE.lang];
         var href = krimiUrl(text.path);
@@ -120,6 +127,7 @@
           '<div class="product-card__body">' +
           '<span class="tag krimi-card__genre">' + escapeHtml(text.genre) + "</span>" +
           "<h3><a" + externalAttrs(href) + ">" + escapeHtml(text.title) + "</a></h3>" +
+          (text.setting ? '<p class="product-card__text">' + escapeHtml(text.setting) + "</p>" : "") +
           '<div class="recipe-card__meta">' + metaLine(item) + "</div>" +
           '<div class="product-card__foot">' +
           '<span class="product-card__price">' + krimiPrice(item.price) + "</span>" +
@@ -162,7 +170,16 @@
   function renderHint(box) {
     var id = box.getAttribute("data-krimi-hint");
     var path = KRIMI_SITE.paths[KRIMI_SITE.lang].shop;
-    var detail = "";
+    var lead = labels().hintTextGeneric;
+    var prices = krimiCases().map(function (entry) {
+      return entry.price;
+    });
+    var detail = prices.length
+      ? '<p class="krimi-hint__case">' +
+        escapeHtml(labels().hintDetailGeneric(prices.length, krimiPrice(Math.min.apply(null, prices)))) +
+        "</p>"
+      : "";
+    var button = labels().toCases;
 
     if (id) {
       var item = krimiCases().filter(function (entry) {
@@ -176,6 +193,8 @@
 
       var text = item[KRIMI_SITE.lang];
       path = text.path;
+      lead = labels().hintText;
+      button = labels().toGame;
       detail =
         '<p class="krimi-hint__case">' +
         "<b>" + escapeHtml(text.title) + "</b> · " +
@@ -191,12 +210,12 @@
       '<span class="shop-section__icon">' + ICON_CASE + "</span>" +
       '<div class="krimi-hint__text">' +
       '<p class="eyebrow">' + escapeHtml(labels().hintEyebrow) + "</p>" +
-      '<p class="krimi-hint__lead">' + escapeHtml(labels().hintText) + "</p>" +
+      '<p class="krimi-hint__lead">' + escapeHtml(lead) + "</p>" +
       detail +
       "</div>" +
       '<a class="btn btn--secondary"' +
       externalAttrs(krimiUrl(path, KRIMI_SITE.recipeCampaign)) + ">" +
-      escapeHtml(labels().toGame) + newTabHint() +
+      escapeHtml(button) + newTabHint() +
       "</a>" +
       "</aside>";
   }

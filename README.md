@@ -1,5 +1,21 @@
 # Constantinteck – website prototype
 
+> **Stand seit 27.10.2026: nur Krimi-Dinner.** Schürzen, Shop und Warenkorb
+> sind von der Seite genommen; `shop.html`, `shop/*.html` und `cart.html`
+> leiten auf `krimi-dinner.html` um. Verkauft wird nur noch über Murdernight
+> (murdernight.de / murdernight.store, früher krimiabend24.de).
+>
+> **Zurück zum Schürzen-Shop:** Der alte Stand liegt im Git-Tag
+> `schuerzen-stand-2026-10-27`. Den Umbau-Commit rückgängig machen:
+>
+> ```bash
+> git revert <sha-des-commits "Nur noch Krimi-Dinner">
+> ./deploy.sh "Schuerzen wieder da"
+> ```
+>
+> Oder einzelne Dateien holen: `git checkout schuerzen-stand-2026-10-27 -- shop.html`.
+> Der Cloudflare-Worker (Kasse) wurde nicht angefasst und kennt die Schürzen weiter.
+
 Plain HTML, CSS and JavaScript. No framework, no build step, no `node_modules`:
 every file in this repository is exactly what the browser receives.
 
@@ -164,7 +180,7 @@ nine, and the buy box would need two separate choices instead of one list.
 
 Live and linked from the navigation since 3 October 2026.
 
-The games are sold at krimiabend24.de, **not here**. This site only advertises
+The games are sold at Murdernight (formerly krimiabend24.de), **not here**. This site only advertises
 them and links out – no cart, no checkout, nothing in `shop-data.js` or
 `worker/`.
 
@@ -178,13 +194,13 @@ assets/js/krimi-dinner.js       Builds cards, links and the recipe hint from the
   `assets/js/krimi-dinner-data.js`. The page and the teaser in `shop.html`
   follow.
 - **Changing the UTM parameters:** `KRIMI_SITE.utm` (and `recipeCampaign`) in
-  the same file. Every link to krimiabend24.de is built by `krimiUrl()`; never
+  the same file. Every link to Murdernight is built by `krimiUrl()`; never
   write one by hand.
 - **Language of the target:** `KRIMI_SITE.lang` (`"en"` or `"de"`). Cases
   without an entry for that language are not shown.
 - **Covers:** each case has an empty `image` field and shows a neutral
   placeholder until a path to a file in `assets/img/` is entered. Do not embed
-  images from krimiabend24.de directly.
+  images from Murdernight directly.
 
 ### The hint on a recipe page
 

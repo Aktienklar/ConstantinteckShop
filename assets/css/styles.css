@@ -3878,7 +3878,7 @@ strong {
 }
 
 /* --- Krimi-Dinner -------------------------------------------------------
-   Die Fälle werden bei krimiabend24.de verkauft, nicht hier. Alles in diesem
+   Die Fälle werden bei Murdernight verkauft, nicht hier. Alles in diesem
    Abschnitt ist Schaufenster: Karten, Schritte und Hinweise, deren Knöpfe
    nach draußen führen. Aufgebaut wird das Markup von
    assets/js/krimi-dinner.js aus assets/js/krimi-dinner-data.js. */
@@ -3929,7 +3929,7 @@ strong {
 
 /* TODO: Platzhalter, bis es eigene Cover gibt (Feld "image" in
    krimi-dinner-data.js). Bewusst nur Fläche und Zeichen in den Farben der
-   Seite – kein Bild von krimiabend24.de. */
+   Seite – kein Bild von Murdernight. */
 .krimi-placeholder {
   display: grid;
   place-items: center;

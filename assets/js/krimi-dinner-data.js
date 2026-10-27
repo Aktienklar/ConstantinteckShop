@@ -2,27 +2,37 @@
  * KRIMI-DINNER – DATEN
  *
  * Diese Datei ist die einzige Stelle, an der die Krimi-Dinner-Fälle, ihre
- * Preise und ihre Adressen bei krimiabend24.de stehen. Die Seite
- * krimi-dinner.html, die Teaser-Karte in shop.html und der Hinweis-Block für
- * Rezepte lesen alle von hier – wer einen Preis oder einen Fall ändert, ändert
+ * Preise und ihre Adressen bei Murdernight stehen. Die Seite
+ * krimi-dinner.html, die Startseite, about.html und der Hinweis-Block auf
+ * den Rezeptseiten lesen alle von hier – wer einen Preis oder einen Fall ändert, ändert
  * ihn nur hier.
  *
  * WICHTIG: Diese Seite verkauft die Krimi-Dinner NICHT. Kauf, Download und
- * alles Rechtliche laufen ausschließlich über krimiabend24.de; hier wird nur
+ * alles Rechtliche laufen ausschließlich über Murdernight; hier wird nur
  * dorthin verlinkt. Deshalb steht nichts davon in shop-data.js oder in
  * worker/src/catalog.js – die Fälle dürfen nie im Warenkorb landen.
  *
- * Die Werte sind eine Abschrift des Shops auf krimiabend24.de (Stand
- * 02.10.2026). Ändert sich dort ein Preis, muss er hier nachgezogen werden –
+ * Die Werte sind eine Abschrift des Shops auf murdernight.de (Stand
+ * 27.10.2026). Ändert sich dort ein Preis, muss er hier nachgezogen werden –
  * sonst nennt diese Seite einen anderen Preis als die Kasse dort.
  */
 
 var KRIMI_SITE = {
-  /** Ohne Schrägstrich am Ende. */
-  base: "https://www.krimiabend24.de",
+  /**
+   * Adresse je Sprache, ohne Schrägstrich am Ende. krimiabend24.de leitet
+   * seit Oktober 2026 auf Murdernight um: Deutsch läuft über murdernight.de,
+   * Englisch über murdernight.store.
+   */
+  base: {
+    en: "https://murdernight.store",
+    de: "https://murdernight.de"
+  },
+
+  /** So heißt der Shop in sichtbaren Texten. */
+  name: "Murdernight",
 
   /**
-   * Sprache, in der auf krimiabend24.de verlinkt wird: "en" oder "de".
+   * Sprache, in der auf Murdernight verlinkt wird: "en" oder "de".
    * Diese Website ist englisch, also "en". Fälle ohne Eintrag in der
    * gewählten Sprache werden nicht angezeigt.
    */
@@ -31,11 +41,11 @@ var KRIMI_SITE = {
   /** Shop-Übersicht und Startseite je Sprache. */
   paths: {
     en: { home: "/en", shop: "/en/shop" },
-    de: { home: "/de", shop: "/shop" }
+    de: { home: "/", shop: "/shop" }
   },
 
   /**
-   * UTM-Parameter, die an JEDEN Link zu krimiabend24.de gehängt werden.
+   * UTM-Parameter, die an JEDEN Link zu Murdernight gehängt werden.
    * Nur hier ändern – krimiUrl() unten baut alle Links daraus.
    */
   utm: {
@@ -49,116 +59,201 @@ var KRIMI_SITE = {
 };
 
 /**
- * DIE FÄLLE
+ * DIE FÄLLE – Abschrift von murdernight.de / murdernight.store
+ * (Stand 27.10.2026). Reihenfolge wie dort.
  *
- * id        Kennung für den Rezept-Hinweis: <div data-krimi-hint="id"></div>
- * players   Spielerzahl, so wie sie im Shop steht ("6" oder "5–7")
- * hours     Dauer in Stunden als Zahl (2.5 = "ca. 2,5 Std.")
- * price     Preis in Euro
- * image     TODO: echtes Cover. Solange der Wert leer ist, zeigt die Karte
- *           einen neutralen Platzhalter. Eigene Datei nach assets/img/ legen
- *           und hier den Pfad ab dem Hauptordner eintragen, z. B.
- *           "assets/img/krimi-teatime-caper.jpg" – nichts von krimiabend24.de
- *           direkt einbinden.
- * en / de   Titel, Genre und Pfad der Produktseite. null = den Fall gibt es
- *           in dieser Sprache (noch) nicht.
+ * id          Kennung für den Rezept-Hinweis: <div data-krimi-hint="id"></div>
+ * players     Spielerzahl, so wie sie im Shop steht ("6" oder "5–7")
+ * hours       Dauer in Stunden als Zahl (2.5 = "ca. 2,5 Std.")
+ * difficulty  "medium" oder "tricky" – so steht es dort
+ * price       Preis in Euro
+ * image       TODO: echtes Cover. Solange der Wert leer ist, zeigt die Karte
+ *             einen neutralen Platzhalter. Eigene Datei nach assets/img/ legen
+ *             und hier den Pfad ab dem Hauptordner eintragen, z. B.
+ *             "assets/img/krimi/the-comet-vintage.jpg" – nichts von
+ *             Murdernight direkt einbinden.
+ * en / de     Titel, Genre, Schauplatz und Pfad der Produktseite. null = den
+ *             Fall gibt es in dieser Sprache (noch) nicht.
  */
 var KRIMI_CASES = [
   {
-    id: "silence-in-the-drawing-room",
-    players: "6",
-    hours: 3,
-    price: 16.9,
+    id: "the-comet-vintage",
+    players: "8–12",
+    hours: 4,
+    difficulty: "tricky",
+    price: 8.99,
     image: "", // TODO: echtes Cover
     en: {
-      title: "Silence in the Drawing Room",
+      title: "The Comet Vintage",
       genre: "Country-house classic",
-      path: "/en/mysteries/silence-in-the-drawing-room"
+      setting: "An old wine estate on the Moselle",
+      path: "/en/mysteries/the-comet-vintage"
     },
     de: {
-      title: "Das Schweigen im Salon",
+      title: "Der Kometenjahrgang",
       genre: "Landhaus-Klassik",
-      path: "/krimis/das-schweigen-im-salon"
+      setting: "Ein altes Weingut an der Mosel",
+      path: "/krimis/der-kometenjahrgang"
     }
   },
   {
-    id: "murder-in-the-boardroom",
-    players: "5–7",
-    hours: 2.5,
-    price: 14.9,
-    image: "", // TODO: echtes Cover
-    en: {
-      title: "Murder in the Boardroom",
-      genre: "Modern / Business",
-      path: "/en/mysteries/murder-in-the-boardroom"
-    },
-    de: {
-      title: "Mord im Vorstand",
-      genre: "Modern / Business",
-      path: "/krimis/mord-im-vorstand"
-    }
-  },
-  {
-    id: "the-teatime-caper",
-    players: "4–6",
-    hours: 2,
-    price: 12.9,
-    image: "", // TODO: echtes Cover
-    en: {
-      title: "The Teatime Caper",
-      genre: "Comedy mystery",
-      path: "/en/mysteries/the-teatime-caper"
-    },
-    de: {
-      title: "Tatort Teestunde",
-      genre: "Comedy-Krimi",
-      path: "/krimis/tatort-teestunde"
-    }
-  },
-  {
-    id: "silent-night-deadly-night",
-    players: "5–8",
+    id: "the-last-sleigh-ride",
+    players: "6–10",
     hours: 3,
-    price: 16.9,
+    difficulty: "tricky",
+    price: 8.99,
     image: "", // TODO: echtes Cover
     en: {
-      title: "Silent Night, Deadly Night",
-      genre: "Christmas mystery",
-      path: "/en/mysteries/silent-night-deadly-night"
+      title: "The Last Sleigh Ride",
+      genre: "Fairytale",
+      setting: "The Christmas village at the North Pole",
+      path: "/en/mysteries/the-last-sleigh-ride"
     },
     de: {
-      title: "Stille Nacht, tödliche Nacht",
-      genre: "Weihnachtskrimi",
-      path: "/krimis/stille-nacht-toedliche-nacht"
-    }
-  },
-
-  /* Die folgenden zwei Fälle gibt es bisher nur auf Deutsch. Sie erscheinen
-     erst, wenn KRIMI_SITE.lang auf "de" steht oder ein "en"-Eintrag dazukommt. */
-  {
-    id: "signal-aus-dem-nichts",
-    players: "6–8",
-    hours: 3.3,
-    price: 17.9,
-    image: "", // TODO: echtes Cover
-    en: null,
-    de: {
-      title: "Signal aus dem Nichts",
-      genre: "Sci-Fi",
-      path: "/krimis/signal-aus-dem-nichts"
+      title: "Die letzte Bescherung",
+      genre: "Märchenhaft",
+      setting: "Im Weihnachtsdorf am Nordpol",
+      path: "/krimis/die-letzte-bescherung"
     }
   },
   {
-    id: "der-letzte-walzer",
-    players: "7–10",
-    hours: 3.5,
-    price: 18.9,
+    id: "the-last-night-at-fjell",
+    players: "5–6",
+    hours: 3,
+    difficulty: "tricky",
+    price: 8.99,
     image: "", // TODO: echtes Cover
-    en: null,
+    en: {
+      title: "The Last Night at Fjell",
+      genre: "Historical",
+      setting: "A Norwegian mountain hotel, 1928",
+      path: "/en/mysteries/the-last-night-at-fjell"
+    },
     de: {
-      title: "Der letzte Walzer",
+      title: "Die letzte Nacht in Fjell",
       genre: "Historisch",
-      path: "/krimis/der-letzte-walzer"
+      setting: "Ein norwegisches Berghotel, 1928",
+      path: "/krimis/die-letzte-nacht-in-fjell"
+    }
+  },
+  {
+    id: "radio-silence-on-ares",
+    players: "6–8",
+    hours: 3,
+    difficulty: "medium",
+    price: 8.99,
+    image: "", // TODO: echtes Cover
+    en: {
+      title: "Radio Silence on Ares",
+      genre: "Sci-fi",
+      setting: "A Mars station in 2152",
+      path: "/en/mysteries/radio-silence-on-ares"
+    },
+    de: {
+      title: "Funkstille auf Ares",
+      genre: "Sci-Fi",
+      setting: "Eine Marsstation im Jahr 2152",
+      path: "/krimis/funkstille-auf-ares"
+    }
+  },
+  {
+    id: "witching-hour-at-ravenmoor",
+    players: "6–7",
+    hours: 3,
+    difficulty: "medium",
+    price: 8.99,
+    image: "", // TODO: echtes Cover
+    en: {
+      title: "Witching Hour at Ravenmoor",
+      genre: "Historical",
+      setting: "A haunted castle, Halloween 1986",
+      path: "/en/mysteries/witching-hour-at-ravenmoor"
+    },
+    de: {
+      title: "Geisterstunde auf Ravenmoor",
+      genre: "Historisch",
+      setting: "Ein Spukschloss, Halloween 1986",
+      path: "/krimis/geisterstunde-auf-ravenmoor"
+    }
+  },
+  {
+    id: "murder-before-hibernation",
+    players: "5–7",
+    hours: 3,
+    difficulty: "medium",
+    price: 8.99,
+    image: "", // TODO: echtes Cover
+    en: {
+      title: "Murder Before Hibernation",
+      genre: "Fairytale",
+      setting: "An autumn forest of talking animals",
+      path: "/en/mysteries/murder-before-hibernation"
+    },
+    de: {
+      title: "Mord vor dem Winterschlaf",
+      genre: "Märchenhaft",
+      setting: "Der herbstliche Tierwald",
+      path: "/krimis/mord-vor-dem-winterschlaf"
+    }
+  },
+  {
+    id: "closing-bell-on-the-24th-floor",
+    players: "6–7",
+    hours: 3,
+    difficulty: "tricky",
+    price: 8.99,
+    image: "", // TODO: echtes Cover
+    en: {
+      title: "Closing Bell on the 24th Floor",
+      genre: "Modern / Business",
+      setting: "The executive floor of a corporation",
+      path: "/en/mysteries/closing-bell-on-the-24th-floor"
+    },
+    de: {
+      title: "Schlusskurs im 24. Stock",
+      genre: "Modern / Business",
+      setting: "Die Vorstandsetage eines Konzerns",
+      path: "/krimis/schlusskurs-im-24-stock"
+    }
+  },
+  {
+    id: "death-at-studio-7",
+    players: "6–8",
+    hours: 3,
+    difficulty: "medium",
+    price: 8.99,
+    image: "", // TODO: echtes Cover
+    en: {
+      title: "Death at Studio 7",
+      genre: "Historical",
+      setting: "Hollywood, 1934",
+      path: "/en/mysteries/death-at-studio-7"
+    },
+    de: {
+      title: "Tod im Studio 7",
+      genre: "Historisch",
+      setting: "Hollywood im Jahr 1934",
+      path: "/krimis/tod-im-studio-7"
+    }
+  },
+  {
+    id: "the-night-of-the-waxworks",
+    players: "8–10",
+    hours: 3,
+    difficulty: "tricky",
+    price: 8.99,
+    image: "", // TODO: echtes Cover
+    en: {
+      title: "The Night of the Waxworks",
+      genre: "Modern / Business",
+      setting: "A Halloween case in a hotel full of wax figures",
+      path: "/en/mysteries/the-night-of-the-waxworks"
+    },
+    de: {
+      title: "Das Wachsfigurenhotel",
+      genre: "Modern / Business",
+      setting: "Halloween in einem Hotel voller Wachsfiguren",
+      path: "/krimis/das-wachsfigurenhotel"
     }
   }
 ];
@@ -170,9 +265,15 @@ var KRIMI_LABELS = {
     duration: function (hours) { return "approx. " + hours + " hrs"; },
     toCase: "View case",
     toGame: "To the game",
-    newTab: "opens krimiabend24.de in a new tab",
+    toCases: "See the cases",
+    newTab: "opens Murdernight in a new tab",
     hintEyebrow: "Murder mystery dinner",
     hintText: "This dish is part of a murder mystery dinner menu.",
+    hintTextGeneric: "Cooking for friends? Make it a murder mystery night.",
+    hintDetailGeneric: function (count, price) {
+      return count + " cases to print at home · " + price + " each";
+    },
+    difficulty: { medium: "Medium", tricky: "Tricky" },
     locale: "en-IE"
   },
   de: {
@@ -182,20 +283,26 @@ var KRIMI_LABELS = {
     },
     toCase: "Zum Fall",
     toGame: "Zum Spiel",
-    newTab: "öffnet krimiabend24.de in neuem Tab",
+    toCases: "Zu den Fällen",
+    newTab: "öffnet Murdernight in neuem Tab",
     hintEyebrow: "Krimi-Dinner",
     hintText: "Dieses Gericht ist Teil eines Krimi-Dinner-Menüs.",
+    hintTextGeneric: "Kochst du für Freunde? Mach einen Krimiabend daraus.",
+    hintDetailGeneric: function (count, price) {
+      return count + " Fälle zum Ausdrucken · je " + price;
+    },
+    difficulty: { medium: "Mittel", tricky: "Knifflig" },
     locale: "de-DE"
   }
 };
 
 /**
- * Der eine Weg zu einem Link nach krimiabend24.de.
+ * Der eine Weg zu einem Link nach Murdernight.
  *
  *   krimiUrl("/en/shop")                          -> … ?utm_campaign=krimi-dinner
  *   krimiUrl("/en/shop", KRIMI_SITE.recipeCampaign) -> … ?utm_campaign=krimi-dinner-rezept
  *
- * Kein Link zu krimiabend24.de wird irgendwo von Hand geschrieben – nur so
+ * Kein Link zu Murdernight wird irgendwo von Hand geschrieben – nur so
  * lässt sich ein UTM-Parameter später an einer Stelle ändern.
  */
 function krimiUrl(path, campaign) {
@@ -208,7 +315,7 @@ function krimiUrl(path, campaign) {
   });
 
   return (
-    KRIMI_SITE.base +
+    KRIMI_SITE.base[KRIMI_SITE.lang] +
     path +
     (path.indexOf("?") === -1 ? "?" : "&") +
     params.join("&")
