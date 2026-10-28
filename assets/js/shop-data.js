@@ -25,10 +25,15 @@
  * Die hex-Werte sind dieselben, die als Farbtupfer (.swatch) in den
  * Produktseiten stehen. Ändert sich hier einer, ändert er sich auch dort.
  */
+/* Seit 28.10.2026 nach den finalen Produktfotos: Sand, Grey und Mauve. Die
+   Kennung der dritten Farbe bleibt "rose" (früher "Dusty pink") – an ihr
+   hängen offene Warenkörbe und worker/src/catalog.js. Die Fotos je Farbe
+   liegen als assets/img/apron-<farbe>*.jpg; Sand nutzt die alten Namen
+   apron-adult.jpg, apron-detail-pocket.jpg und apron-detail-strap.jpg. */
 var SHOP_COLOURS = [
-  { id: "sand", label: "Sand", hex: "#D6C3A5" },
-  { id: "rose", label: "Dusty pink", hex: "#D9A7A2" },
-  { id: "grey", label: "Grey", hex: "#8E979B" }
+  { id: "sand", label: "Sand", hex: "#C6BBAA" },
+  { id: "rose", label: "Mauve", hex: "#A79399" },
+  { id: "grey", label: "Grey", hex: "#A9AAAF" }
 ];
 
 /* Die Größen sind die drei Stufen des Schnittmusters. Das Alter ist eine

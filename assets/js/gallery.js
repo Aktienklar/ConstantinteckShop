@@ -26,30 +26,28 @@
   function setupGallery(root) {
     var main = root.querySelector("[data-gallery-main]");
     var zoom = root.querySelector("[data-gallery-zoom]");
-    var thumbs = Array.prototype.slice.call(
+    var allThumbs = Array.prototype.slice.call(
       root.querySelectorAll("[data-gallery-thumb]")
     );
 
-    if (!main || thumbs.length === 0) return;
+    if (!main || allThumbs.length === 0) return;
 
     /* Die Liste der Bilder kommt aus den Vorschaubildern – sie stehen im
        HTML in der Reihenfolge, in der sie gezeigt werden sollen, und das
-       erste ist zugleich das Bild, das schon oben steht. */
-    var images = thumbs.map(function (thumb) {
-      var img = thumb.querySelector("img");
-      return {
-        src: img.getAttribute("src"),
-        alt: img.getAttribute("alt") || ""
-      };
-    });
+       erste ist zugleich das Bild, das schon oben steht.
 
-    var gallery = { images: images, index: 0, show: show };
+       Vorschaubilder mit data-colour="sand" gehören zu einer Farbe. Nennt
+       die Galerie mit data-gallery-colour="colour" eine Farbauswahl der
+       Kaufbox, stehen nur die Bilder der gewählten Farbe (und alle ohne
+       data-colour) in der Leiste. Ohne JavaScript sind alle zu sehen. */
+    var gallery = { images: [], thumbs: [], index: 0, show: show };
 
     function show(index) {
-      gallery.index = (index + images.length) % images.length;
+      var thumbs = gallery.thumbs;
+      gallery.index = (index + thumbs.length) % thumbs.length;
 
-      main.setAttribute("src", images[gallery.index].src);
-      main.setAttribute("alt", images[gallery.index].alt);
+      main.setAttribute("src", gallery.images[gallery.index].src);
+      main.setAttribute("alt", gallery.images[gallery.index].alt);
 
       thumbs.forEach(function (thumb, i) {
         var active = i === gallery.index;
@@ -58,9 +56,27 @@
       });
     }
 
-    thumbs.forEach(function (thumb, i) {
+    function filter(colour) {
+      gallery.thumbs = allThumbs.filter(function (thumb) {
+        var own = thumb.getAttribute("data-colour");
+        return !own || !colour || own === colour;
+      });
+      allThumbs.forEach(function (thumb) {
+        thumb.hidden = gallery.thumbs.indexOf(thumb) === -1;
+      });
+      gallery.images = gallery.thumbs.map(function (thumb) {
+        var img = thumb.querySelector("img");
+        return {
+          src: img.getAttribute("src"),
+          alt: img.getAttribute("alt") || ""
+        };
+      });
+      show(0);
+    }
+
+    allThumbs.forEach(function (thumb) {
       thumb.addEventListener("click", function () {
-        show(i);
+        show(gallery.thumbs.indexOf(thumb));
       });
     });
 
@@ -74,7 +90,21 @@
       zoom.classList.add("is-plain");
     }
 
-    show(0);
+    var groupId = root.getAttribute("data-gallery-colour");
+    var group = groupId
+      ? document.querySelector('[data-variant-group="' + groupId + '"]')
+      : null;
+
+    if (group) {
+      group.addEventListener("click", function (event) {
+        var chip = event.target.closest("[data-variant-value]");
+        if (chip) filter(chip.getAttribute("data-variant-value"));
+      });
+      var active = group.querySelector('[data-variant-value][aria-pressed="true"]');
+      filter(active ? active.getAttribute("data-variant-value") : "");
+    } else {
+      filter("");
+    }
   }
 
   /* Großansicht ---------------------------------------------------------- */

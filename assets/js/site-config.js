@@ -9,7 +9,7 @@ var SITE_CONFIG = {
    * ANKÜNDIGUNGSLEISTE – der dunkle Streifen ganz oben auf jeder Seite.
    *
    * Solange "enabled" false ist oder das heutige Datum außerhalb von
-   * start/end liegt, steht dort der Text aus dem HTML (die Krimi-Dinner).
+   * start/end liegt, steht dort der Text aus dem HTML (das Set-Angebot).
    * Eingeschaltet ersetzt dieser Eintrag Text und Link auf allen Seiten.
    *
    * text       Text ab Tablet-Breite. {orderBy} wird durch das Datum ersetzt.
@@ -23,10 +23,10 @@ var SITE_CONFIG = {
    */
   banner: {
     enabled: false,
-    text: "A murder mystery for Christmas dinner – 9 cases to print at home, €8.99 each",
-    textShort: "Christmas murder mystery · €8.99",
-    orderBy: "",
-    href: "krimi-dinner.html",
+    text: "The gift for everyone who loves to cook – order by {orderBy} for delivery before Christmas",
+    textShort: "The gift for cooks · order by {orderBy}",
+    orderBy: "", // TODO: letzter Bestelltag vor Weihnachten, z. B. "18 December"
+    href: "shop/apron-set.html",
     start: "2026-11-01",
     end: "2026-12-24"
   },

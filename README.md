@@ -1,20 +1,11 @@
 # Constantinteck – website prototype
 
-> **Stand seit 27.10.2026: nur Krimi-Dinner.** Schürzen, Shop und Warenkorb
-> sind von der Seite genommen; `shop.html`, `shop/*.html` und `cart.html`
-> leiten auf `krimi-dinner.html` um. Verkauft wird nur noch über Murdernight
-> (murdernight.de / murdernight.store, früher krimiabend24.de).
->
-> **Zurück zum Schürzen-Shop:** Der alte Stand liegt im Git-Tag
-> `schuerzen-stand-2026-10-27`. Den Umbau-Commit rückgängig machen:
->
-> ```bash
-> git revert 80f6334
-> ./deploy.sh "Schuerzen wieder da"
-> ```
->
-> Oder einzelne Dateien holen: `git checkout schuerzen-stand-2026-10-27 -- shop.html`.
-> Der Cloudflare-Worker (Kasse) wurde nicht angefasst und kennt die Schürzen weiter.
+> **Stand seit 28.10.2026:** Schürzen und Krimi-Dinner sind wieder beide auf
+> der Seite. Die Schürzen-Fotos sind die finalen (Sand, Grey, Mauve); die
+> Galerie einer Produktseite zeigt die Fotos der gewählten Farbe
+> (`data-colour` an den Vorschaubildern, siehe `assets/js/gallery.js`).
+> Vom 27. bis 28.10.2026 gab es kurz nur Krimi-Dinner (Commit `80f6334`);
+> der Stand davor liegt im Git-Tag `schuerzen-stand-2026-10-27`.
 
 Plain HTML, CSS and JavaScript. No framework, no build step, no `node_modules`:
 every file in this repository is exactly what the browser receives.

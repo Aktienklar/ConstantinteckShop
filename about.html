@@ -23,18 +23,18 @@
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
 
-  <!-- Ankündigungsleiste: das Erste, was ein Besucher sieht. Seit dem
-       27.10.2026 trägt sie die Krimi-Dinner – Schürzen und Shop sind
-       vorerst raus (alter Stand: Git-Tag schuerzen-stand-2026-10-27). -->
+  <!-- Ankündigungsleiste: das Erste, was ein Besucher sieht. Sie trägt das
+       Angebot, das den größten Warenkorb macht, und die zwei Bedingungen,
+       die über den ersten Kauf entscheiden: Versand und Rückgabe. -->
   <div class="announcement">
     <div class="container announcement__inner">
-      <a class="announcement__deal" href="krimi-dinner.html">
+      <a class="announcement__deal" href="shop/apron-set.html">
         <span class="announcement__dot" aria-hidden="true"></span>
-        <span class="only-narrow">New: 9 murder mystery dinners · €8.99</span>
-        <span class="only-wide">New: 9 murder mystery dinners to print at home – €8.99 each</span>
+        <span class="only-narrow">New: the kids' apron · set €69.90</span>
+        <span class="only-wide">New: the kids' apron – both aprons together as a set for €69.90</span>
         <span aria-hidden="true">→</span>
       </a>
-      <p class="announcement__terms">Instant PDF download · 5 to 12 players</p>
+      <p class="announcement__terms">Fast shipping · 14-day returns</p>
     </div>
   </div>
 
@@ -48,19 +48,26 @@
       <div class="site-header__right">
         <nav class="nav" aria-label="Main">
         <a class="nav__link" href="index.html">Home</a>
-        <a class="nav__link" href="krimi-dinner.html">Murder Mystery</a>
         <a class="nav__link" href="recipes.html">Recipes</a>
+        <a class="nav__link" href="shop.html">Shop</a>
         <a class="nav__link is-active" href="about.html">About</a>
+        <a class="nav__link" href="krimi-dinner.html">Murder Mystery</a>
         </nav>
+
+        <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart, 0 items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-link__badge" data-cart-count hidden>0</span>
+        </a>
       </div>
     </div>
 
     <!-- Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü -->
     <nav class="nav-mobile no-scrollbar" aria-label="Main">
       <a class="chip" href="index.html">Home</a>
-      <a class="chip" href="krimi-dinner.html">Murder Mystery</a>
       <a class="chip" href="recipes.html">Recipes</a>
+      <a class="chip" href="shop.html">Shop</a>
       <a class="chip is-active" href="about.html">About</a>
+      <a class="chip" href="krimi-dinner.html">Murder Mystery</a>
     </nav>
   </header>
 
@@ -92,10 +99,11 @@
               engine behind this whole page. Consider yourself invited along for
               the ride.
             </p>
-            <p id="krimi-story">
-              The murder mystery games are a bit more personal: I make them
-              together with friends, and they fit what this site is about –
-              cooking for people and keeping them at the table a little longer.
+            <p id="aprons-story">
+              The aprons in the shop are a bit more personal: my mom is a trained
+              seamstress and designed them, and we picked the fabric together.
+              Each one is cut and sewn by hand in Germany. It&apos;s become one
+              of my favorite parts of this whole project.
             </p>
             <p>
               This site exists because every other comment asks for the recipe.
@@ -140,18 +148,60 @@
 
           <div class="about__actions">
             <a class="btn btn--primary" href="recipes.html">Go to the recipes</a>
-            <a class="btn btn--secondary" href="krimi-dinner.html">Murder mystery dinners</a>
+            <a class="btn btn--secondary" href="shop.html">Go to shop</a>
           </div>
         </div>
       </div>
 
-      <!-- Die Krimi-Dinner: die ersten drei Fälle aus krimi-dinner-data.js -->
-      <section class="mt-12" aria-labelledby="krimi-teaser">
+      <!-- Was ich benutze, gibt es direkt zum Mitnehmen -->
+      <section class="mt-12" aria-labelledby="shop-teaser">
         <div class="section-head">
-          <h2 id="krimi-teaser">For your next dinner party</h2>
-          <a class="link-brand" href="krimi-dinner.html">All 9 cases</a>
+          <h2 id="shop-teaser">What I work with</h2>
+          <a class="link-brand" href="shop.html">Go to shop</a>
         </div>
-        <div class="grid grid--cases mt-6" data-krimi-cases data-krimi-limit="3"></div>
+        <div class="grid grid--products mt-6">
+        <a class="card product-card lift-3d" href="shop/linen-apron.html" style="height:100%">
+          <div class="product-card__media">
+            <img src="assets/img/apron-adult.jpg" alt="" loading="lazy">
+            <span class="product-card__badge">Shipped</span>
+          </div>
+          <div class="product-card__body">
+            <h3>Waffle apron »Dough Love«</h3>
+            <p class="product-card__text">Waffle piqué, sewn by hand in Germany.</p>
+            <div class="product-card__foot">
+              <span class="product-card__price">€49.90</span>
+            <span class="product-card__swatches" aria-hidden="true"><span class="swatch" style="background-color:#C6BBAA" title="Sand"></span><span class="swatch" style="background-color:#A79399" title="Mauve"></span><span class="swatch" style="background-color:#A9AAAF" title="Grey"></span></span>
+            </div>
+          </div>
+        </a>
+        <a class="card product-card lift-3d" href="shop/kids-apron.html" style="height:100%">
+          <div class="product-card__media">
+            <img src="assets/img/apron-kids.jpg" alt="" loading="lazy">
+            <span class="product-card__badge">New</span>
+          </div>
+          <div class="product-card__body">
+            <h3>Kids' waffle apron »Little Dough Love«</h3>
+            <p class="product-card__text">The same apron in three sizes from 4 years.</p>
+            <div class="product-card__foot">
+              <span class="product-card__price">€29.90</span>
+            <span class="product-card__swatches" aria-hidden="true"><span class="swatch" style="background-color:#C6BBAA" title="Sand"></span><span class="swatch" style="background-color:#A79399" title="Mauve"></span><span class="swatch" style="background-color:#A9AAAF" title="Grey"></span></span>
+            </div>
+          </div>
+        </a>
+        <a class="card product-card lift-3d" href="shop/apron-set.html" style="height:100%">
+          <div class="product-card__media">
+            <img src="assets/img/apron-set.jpg" alt="" loading="lazy">
+            <span class="product-card__badge">Save €9.90</span>
+          </div>
+          <div class="product-card__body">
+            <h3>Apron set »Dough Love« (adult + kids)</h3>
+            <p class="product-card__text">Both aprons in one parcel.</p>
+            <div class="product-card__foot">
+              <span class="product-card__price">€69.90 <s class="price-was">€79.80</s></span>
+            </div>
+          </div>
+        </a>
+        </div>
       </section>
     </div>
   </main>
@@ -162,7 +212,7 @@
         <p class="site-footer__brand">Constantinteck</p>
         <p class="site-footer__claim">The recipes from my videos – without the endless scrolling.</p>
         <p class="site-footer__contact">
-          Questions?<br>
+          Questions about an order?<br>
           <a class="link-brand" href="mailto:info@constantinteck.com">info@constantinteck.com</a>
         </p>
       </div>
@@ -171,17 +221,19 @@
         <h2>Pages</h2>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="krimi-dinner.html">Murder Mystery</a></li>
           <li><a href="recipes.html">Recipes</a></li>
+          <li><a href="shop.html">Shop</a></li>
           <li><a href="about.html">About</a></li>
+          <li><a href="krimi-dinner.html">Murder Mystery</a></li>
         </ul>
       </div>
 
       <!-- Rechtslinks gehören in den Fuß jeder Seite – Käufer suchen sie hier,
            und in Deutschland müssen sie von überall erreichbar sein. -->
       <div>
-        <h2>Legal</h2>
+        <h2>Orders &amp; legal</h2>
         <ul>
+          <li><a href="shipping-returns.html">Shipping &amp; returns</a></li>
           <li><a href="terms.html">Terms</a></li>
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="imprint.html">Imprint</a></li>
@@ -200,7 +252,7 @@
 
     <div class="container site-footer__legal">
       <div class="site-footer__legal-row">
-        <p>No VAT is charged (small-business rule, § 19 UStG).</p>
+        <p>No VAT is charged (small-business rule, § 19 UStG). Plus €4.90 shipping per order.</p>
         <p>© 2026 Constantinteck</p>
       </div>
     </div>
@@ -209,8 +261,6 @@
   <script src="assets/js/shop-data.js"></script>
   <script src="assets/js/site-config.js"></script>
   <script src="assets/js/site.js"></script>
-  <script src="assets/js/krimi-dinner-data.js"></script>
-  <script src="assets/js/krimi-dinner.js"></script>
   <script src="assets/js/cart.js"></script>
 </body>
 </html>

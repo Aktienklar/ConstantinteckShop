@@ -24,7 +24,7 @@ const TAX_TANGIBLE = "txcd_99999999";
  */
 const COLOURS = [
   { id: "sand", label: "Sand" },
-  { id: "rose", label: "Dusty pink" },
+  { id: "rose", label: "Mauve" }, // Kennung bleibt "rose" (früher Dusty pink)
   { id: "grey", label: "Grey" }
 ];
 

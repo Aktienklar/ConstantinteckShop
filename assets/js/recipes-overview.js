@@ -4,11 +4,12 @@
  * Zwei Dinge auf recipes.html, beide aus Daten statt von Hand:
  *
  *   1. "From the latest videos" – die drei Rezepte mit dem höchsten "order"
- *      aus assets/js/recipe-data.js, daneben die Krimi-Dinner. Die Karten werden
+ *      aus assets/js/recipe-data.js, daneben die Schürze. Die Karten werden
  *      aus dem Raster darunter kopiert; Titel und Bild stehen also weiter nur
  *      an einer Stelle.
  *
- *   2. Nach jeder 6. Rezeptkarte eine Karte für die Krimi-Dinner. recipe-filter.js blendet sie aus, sobald gesucht oder
+ *   2. Nach jeder 6. Rezeptkarte eine Shop-Karte (Set, Schürze, Krimi-Dinner
+ *      im Wechsel). recipe-filter.js blendet sie aus, sobald gesucht oder
  *      gefiltert wird – dann soll nur stehen, was zur Suche passt.
  *
  * Preise kommen aus shop-data.js bzw. krimi-dinner-data.js. Ohne JavaScript
@@ -22,9 +23,8 @@
 
   /** So viele Rezepte stehen oben. */
   var LATEST_COUNT = 3;
-  /** Nach so vielen Rezeptkarten kommt eine Shop-Karte. Mit nur einer Karte
-      (Krimi-Dinner) bewusst selten – sonst steht sie viermal da. */
-  var SHOP_CARD_EVERY = 12;
+  /** Nach so vielen Rezeptkarten kommt eine Shop-Karte. */
+  var SHOP_CARD_EVERY = 6;
 
   var ICON_CASE =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg>';
@@ -32,8 +32,18 @@
   /* Die Shop-Karten in der Reihenfolge, in der sie im Raster auftauchen. Nach
      der letzten geht es wieder von vorn los. */
   var SHOP_CARDS = [
-    /* Bis 27.10.2026 standen hier auch Schürze und Set (Git-Tag
-       schuerzen-stand-2026-10-27). */
+    {
+      id: "apron-set",
+      href: "shop/apron-set.html",
+      title: "One apron for you, one for your little helper",
+      text: "Both aprons in one parcel – designed by my mom, sewn by hand in Germany."
+    },
+    {
+      id: "linen-apron",
+      href: "shop/linen-apron.html",
+      title: "The apron from the videos",
+      text: "Waffle piqué, big front pocket – designed by my mom, sewn by hand in Germany."
+    },
     {
       id: "krimi-dinner",
       href: "krimi-dinner.html",
@@ -65,12 +75,7 @@
       var prices = krimiCases().map(function (item) {
         return item.price;
       });
-      if (!prices.length) return "";
-      var low = Math.min.apply(null, prices);
-      // Alle Fälle gleich teuer: "€8.99 each" statt "from €8.99".
-      return low === Math.max.apply(null, prices)
-        ? krimiPrice(low) + " each"
-        : "from " + krimiPrice(low);
+      return prices.length ? "from " + krimiPrice(Math.min.apply(null, prices)) : "";
     }
 
     var product = (window.SHOP_PRODUCTS || {})[id];
@@ -151,7 +156,7 @@
       (product || entry.image
         ? '<img src="' + (product ? product.image : entry.image) + '" alt="" loading="lazy">'
         : '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>") +
-      '<span class="shop-card__badge">' + (product ? "From the shop" : "Murder mystery") + "</span>" +
+      '<span class="shop-card__badge">From the shop</span>' +
       "</div>" +
       '<div class="recipe-card__stripe shop-card__stripe" aria-hidden="true"></div>' +
       '<div class="recipe-card__body">' +
@@ -159,7 +164,7 @@
       '<p class="product-card__text">' + entry.text + "</p>" +
       '<div class="product-card__foot">' +
       '<span class="product-card__price">' + price + "</span>" +
-      '<span class="shop-card__more">' + (product ? "Have a look" : "See the cases") + " →</span>" +
+      '<span class="shop-card__more">Have a look →</span>' +
       "</div>" +
       "</div>";
     return link;
