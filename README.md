@@ -393,8 +393,9 @@ Right now everything points at `https://placehold.co/...` URLs. For real photos:
    page inside `recipes/` or `shop/`
 
 The hero on the start page is a slowly moving wall of recipe cards across the
-full width; on top of it sit three murder mystery covers (`home.heroCovers` in
-`data/cases.json`), next to the headline. The wall's small 3:4 previews
+full width and stands on its own, with one line and a link. Directly below
+it, a band shows three murder mystery covers (`home.heroCovers` in
+`data/cases.json`) with the facts and the way to the cases. The wall's small 3:4 previews
 (400×534) live in `assets/img/wall/`, one per recipe on the wall, named like
 the recipe page. For a new recipe, add a preview there and one `wall-card`
 link to the shortest lane in the hero of `index.html` (from the fifth card of

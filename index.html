@@ -134,11 +134,10 @@
          den Markierungen "geschrieben von tools/cases.py" kommt aus
          data/cases.json – dort ändern, nicht hier. -->
 
-    <!-- a) Hero: Die Rezeptwand trägt die ganze Breite (Rezepte = woher die
-         Besucher kommen), darauf liegen die drei Cover (das Produkt). Text
-         und Knöpfe stehen am Handy unter der Wand, ab 1024px unten links auf
-         ihr. Die Cover sind vollständig, nie beschnitten. -->
-    <section class="hero hero--mystery">
+    <!-- a) Hero: Die Rezeptwand trägt die ganze Breite und steht für sich –
+         wie vor dem 29.10.2026. Darauf nur die eine Zeile und ein Link. Die
+         Krimi-Dinner folgen direkt darunter in einem eigenen Abschnitt. -->
+    <section class="hero">
       <div class="hero__stage">
       <div class="hero__media">
         <!-- Rezeptwand: drei Bahnen mit allen Rezepten, jede Karte führt zum
@@ -285,25 +284,36 @@
           </div>
         </div>
         <div class="hero__scrim" aria-hidden="true"></div>
-          <!-- Hero-Cover (geschrieben von tools/cases.py aus data/cases.json) -->
-          <div class="home-hero__covers" role="img" aria-label="Covers of three murder mystery dinners: Witching Hour at Ravenmoor, The Last Sleigh Ride, Death at Studio 7"><span class="home-hero__cover home-hero__cover--1"><picture><source type="image/webp" srcset="assets/img/krimi/witching-hour-at-ravenmoor-240.webp 240w, assets/img/krimi/witching-hour-at-ravenmoor-400.webp 400w, assets/img/krimi/witching-hour-at-ravenmoor-675.webp 675w" sizes="(min-width: 1024px) 220px, 30vw"><img src="assets/img/krimi/witching-hour-at-ravenmoor.jpg" width="675" height="900" alt="" loading="eager" decoding="async"></picture></span><span class="home-hero__cover home-hero__cover--2"><picture><source type="image/webp" srcset="assets/img/krimi/the-last-sleigh-ride-240.webp 240w, assets/img/krimi/the-last-sleigh-ride-400.webp 400w, assets/img/krimi/the-last-sleigh-ride-675.webp 675w" sizes="(min-width: 1024px) 220px, 30vw"><img src="assets/img/krimi/the-last-sleigh-ride.jpg" width="675" height="900" alt="" loading="eager" decoding="async" fetchpriority="high"></picture></span><span class="home-hero__cover home-hero__cover--3"><picture><source type="image/webp" srcset="assets/img/krimi/death-at-studio-7-240.webp 240w, assets/img/krimi/death-at-studio-7-400.webp 400w, assets/img/krimi/death-at-studio-7-675.webp 675w" sizes="(min-width: 1024px) 220px, 30vw"><img src="assets/img/krimi/death-at-studio-7.jpg" width="675" height="900" alt="" loading="eager" decoding="async"></picture></span></div>
-          <!-- /Hero-Cover -->
-      </div>
+              </div>
 
       <div class="container hero__body">
         <div class="hero__inner">
-          <p class="eyebrow">Murder mystery dinner + menu</p>
-          <h1 class="home-hero__title">Cook the menu. <em>Solve the case.</em></h1>
-          <p class="lede">A murder mystery dinner – and a menu idea to match, from the free recipes in my videos.</p>
+          <h1 class="hero__line">Cook the menu. <em>Solve the case.</em></h1>
+          <a class="hero__link" href="recipes.html">Browse recipes <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- a2) Krimi-Dinner direkt unter der Wand: drei vollständige Cover,
+         Fakten, die zwei Wege. -->
+    <section class="home-hero band--dough" aria-labelledby="mystery">
+      <div class="container home-hero__grid">
+        <div class="home-hero__text">
+          <p class="eyebrow">Murder mystery dinner</p>
+          <h2 id="mystery" class="home-hero__title">9 murder mystery dinners – and a menu idea for each</h2>
+          <p class="lede">Print the case, cook from my free recipes, and find out which of your guests did it.</p>
           <!-- Hero-Fakten (geschrieben von tools/cases.py aus data/cases.json) -->
           <ul class="home-hero__facts"><li>5–12 players</li><li>approx. 3–4 hrs</li><li>Instant PDF</li><li>€8.99 per case</li></ul>
           <!-- /Hero-Fakten -->
           <div class="home-hero__actions">
             <a class="btn btn--primary lift" href="krimi-dinner.html#cases" data-via="home-hero">Find your case <span aria-hidden="true">→</span></a>
-            <a class="btn btn--secondary" href="recipes.html">Browse the recipes</a>
+            <a class="btn btn--secondary" href="krimi-dinner.html#how" data-via="home-hero">How it works</a>
           </div>
         </div>
-      </div>
+          <!-- Hero-Cover (geschrieben von tools/cases.py aus data/cases.json) -->
+          <div class="home-hero__covers" role="img" aria-label="Covers of three murder mystery dinners: Witching Hour at Ravenmoor, The Last Sleigh Ride, Death at Studio 7"><span class="home-hero__cover home-hero__cover--1"><picture><source type="image/webp" srcset="assets/img/krimi/witching-hour-at-ravenmoor-240.webp 240w, assets/img/krimi/witching-hour-at-ravenmoor-400.webp 400w, assets/img/krimi/witching-hour-at-ravenmoor-675.webp 675w" sizes="(min-width: 1024px) 220px, 30vw"><img src="assets/img/krimi/witching-hour-at-ravenmoor.jpg" width="675" height="900" alt="" loading="eager" decoding="async"></picture></span><span class="home-hero__cover home-hero__cover--2"><picture><source type="image/webp" srcset="assets/img/krimi/the-last-sleigh-ride-240.webp 240w, assets/img/krimi/the-last-sleigh-ride-400.webp 400w, assets/img/krimi/the-last-sleigh-ride-675.webp 675w" sizes="(min-width: 1024px) 220px, 30vw"><img src="assets/img/krimi/the-last-sleigh-ride.jpg" width="675" height="900" alt="" loading="eager" decoding="async" fetchpriority="high"></picture></span><span class="home-hero__cover home-hero__cover--3"><picture><source type="image/webp" srcset="assets/img/krimi/death-at-studio-7-240.webp 240w, assets/img/krimi/death-at-studio-7-400.webp 400w, assets/img/krimi/death-at-studio-7-675.webp 675w" sizes="(min-width: 1024px) 220px, 30vw"><img src="assets/img/krimi/death-at-studio-7.jpg" width="675" height="900" alt="" loading="eager" decoding="async"></picture></span></div>
+          <!-- /Hero-Cover -->
       </div>
     </section>
 
