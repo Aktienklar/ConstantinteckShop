@@ -3,26 +3,25 @@
  *
  * Zwei Dinge auf recipes.html, beide aus Daten statt von Hand:
  *
- *   1. "From the latest videos" – die drei Rezepte mit dem höchsten "order"
- *      aus assets/js/recipe-data.js, daneben die Schürze. Die Karten werden
- *      aus dem Raster darunter kopiert; Titel und Bild stehen also weiter nur
- *      an einer Stelle.
+ *   1. "From the latest videos" schreibt seit 29.10.2026 tools/cases.py fest
+ *      ins HTML (die drei Rezepte mit dem höchsten "order" aus
+ *      assets/js/recipe-data.js) – per Skript eingesetzt, schob die Reihe die
+ *      Suche nach unten (Layout-Sprung). Hier wird nur noch der Preis der
+ *      Schürzen-Karte daneben eingesetzt.
  *
- *   2. Nach jeder 6. Rezeptkarte eine Shop-Karte (Schürze und Krimi-Dinner
- *      im Wechsel). recipe-filter.js blendet sie aus, sobald gesucht oder
+ *   2. Nach jeder 6. Rezeptkarte eine Shop-Karte (Krimi-Dinner und Schürze
+ *      im Wechsel, Krimi zuerst). recipe-filter.js blendet sie aus, sobald gesucht oder
  *      gefiltert wird – dann soll nur stehen, was zur Suche passt.
  *
  * Preise kommen aus shop-data.js bzw. krimi-dinner-data.js. Ohne JavaScript
  * fehlt beides, und die Rezeptliste steht vollständig da.
  *
- * Voraussetzung: shop-data.js, krimi-dinner-data.js und recipe-data.js sind
+ * Voraussetzung: shop-data.js und krimi-dinner-data.js sind
  * vorher geladen; recipe-filter.js kommt NACH dieser Datei.
  */
 (function () {
   "use strict";
 
-  /** So viele Rezepte stehen oben. */
-  var LATEST_COUNT = 3;
   /** Nach so vielen Rezeptkarten kommt eine Shop-Karte. */
   var SHOP_CARD_EVERY = 6;
 
@@ -33,26 +32,25 @@
      der letzten geht es wieder von vorn los. */
   var SHOP_CARDS = [
     {
+      id: "krimi-dinner",
+      href: "krimi-dinner.html",
+      via: "recipes-grid",
+      covers: 3,
+      title: "Turn dinner into a mystery",
+      text: "Murder mystery dinners as a PDF – each with a menu from these recipes."
+    },
+    {
       id: "linen-apron",
       href: "shop/linen-apron.html",
       title: "The apron from the videos",
       text: "Waffle piqué, big front pocket – designed by my mom, sewn by hand in Germany."
-    },
-    {
-      id: "krimi-dinner",
-      href: "krimi-dinner.html",
-      covers: 3,
-      title: "Dinner's sorted. Now: who did it?",
-      text: "Murder mystery games as a PDF to print at home – for an evening of cooking together."
     }
   ];
-
   document.addEventListener("DOMContentLoaded", function () {
     var grid = document.querySelector("[data-results]");
     if (!grid) return;
 
     fillPrices();
-    renderLatest(grid);
     insertShopCards(grid);
   });
 
@@ -80,46 +78,6 @@
         ? ' <s class="price-was">' + formatPrice(product.compareAtPrice) + "</s>"
         : "")
     );
-  }
-
-  function slugOf(card) {
-    return (card.getAttribute("href") || "").replace(/^.*\//, "").replace(/\.html$/, "");
-  }
-
-  function renderLatest(grid) {
-    var section = document.querySelector("[data-latest]");
-    var row = document.querySelector("[data-latest-row]");
-    var recipes = window.RECIPES;
-    if (!section || !row || !recipes) return;
-
-    var cards = [].slice
-      .call(grid.querySelectorAll("[data-recipe-card]"))
-      .filter(function (card) {
-        return recipes[slugOf(card)] && recipes[slugOf(card)].order;
-      })
-      .sort(function (a, b) {
-        return recipes[slugOf(b)].order - recipes[slugOf(a)].order;
-      })
-      .slice(0, LATEST_COUNT);
-
-    if (!cards.length) return;
-
-    var first = row.firstChild;
-    cards.forEach(function (card) {
-      var copy = card.cloneNode(true);
-      /* Die Kopie ist keine Karte der Suche: ohne diese Attribute zählt und
-         filtert recipe-filter.js sie nicht mit. */
-      ["data-recipe-card", "data-category", "data-minutes", "data-difficulty", "data-search"].forEach(
-        function (name) {
-          copy.removeAttribute(name);
-        }
-      );
-      var image = copy.querySelector("img");
-      if (image) image.removeAttribute("loading");
-      row.insertBefore(copy, first);
-    });
-
-    section.hidden = false;
   }
 
   function insertShopCards(grid) {
@@ -170,6 +128,7 @@
     link.href = entry.href;
     link.setAttribute("data-shop-card", "");
     link.setAttribute("data-track", "product-click/overview-grid/" + entry.id);
+    if (entry.via) link.setAttribute("data-via", entry.via);
     var media =
       (entry.covers && miniCovers(entry.covers)) ||
       (product || entry.image

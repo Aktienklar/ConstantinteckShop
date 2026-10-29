@@ -1,368 +1,412 @@
 /**
- * KRIMI-DINNER – DATEN
+ * KRIMI-DINNER – DATEN UND HILFSFUNKTIONEN FÜR DIE SKRIPTE
  *
- * Diese Datei ist die einzige Stelle, an der die Krimi-Dinner-Fälle, ihre
- * Preise und ihre Adressen bei Murdernight stehen. Die Seite
- * krimi-dinner.html, die Startseite, about.html und der Hinweis-Block auf
- * den Rezeptseiten lesen alle von hier – wer einen Preis oder einen Fall ändert, ändert
- * ihn nur hier.
+ * Die Fälle selbst (Titel, Spieler, Preise, Murdernight-Adressen, Menüs,
+ * UTM-Parameter) stehen NUR in data/cases.json. tools/cases.py schreibt sie
+ * unten in den Block "Daten" – dort nie von Hand ändern, die nächste
+ * Ausführung überschreibt ihn.
+ *
+ * Karten, Fallseiten und Rezept-Boxen stehen fertig im HTML (ebenfalls von
+ * tools/cases.py). Diese Datei brauchen nur noch die Filter auf
+ * krimi-dinner.html und die Krimi-Karte im Rezept-Raster
+ * (recipes-overview.js).
  *
  * WICHTIG: Diese Seite verkauft die Krimi-Dinner NICHT. Kauf, Download und
  * alles Rechtliche laufen ausschließlich über Murdernight; hier wird nur
  * dorthin verlinkt. Deshalb steht nichts davon in shop-data.js oder in
  * worker/src/catalog.js – die Fälle dürfen nie im Warenkorb landen.
- *
- * Die Werte sind eine Abschrift des Shops auf murdernight.de (Stand
- * 27.10.2026). Ändert sich dort ein Preis, muss er hier nachgezogen werden –
- * sonst nennt diese Seite einen anderen Preis als die Kasse dort.
  */
 
+/* Daten (geschrieben von tools/cases.py aus data/cases.json) – NICHT hier ändern. */
 var KRIMI_SITE = {
-  /**
-   * Adresse je Sprache, ohne Schrägstrich am Ende. krimiabend24.de leitet
-   * seit Oktober 2026 auf Murdernight um: Deutsch läuft über murdernight.de,
-   * Englisch über murdernight.store.
-   */
-  base: {
-    en: "https://murdernight.store",
-    de: "https://murdernight.de"
+  "name": "Murdernight",
+  "lang": "en",
+  "base": {
+    "en": "https://murdernight.store",
+    "de": "https://murdernight.de"
   },
-
-  /** So heißt der Shop in sichtbaren Texten. */
-  name: "Murdernight",
-
-  /**
-   * Sprache, in der auf Murdernight verlinkt wird: "en" oder "de".
-   * Diese Website ist englisch, also "en". Fälle ohne Eintrag in der
-   * gewählten Sprache werden nicht angezeigt.
-   */
-  lang: "en",
-
-  /** Shop-Übersicht und Startseite je Sprache. */
-  paths: {
-    en: { home: "/en", shop: "/en/shop" },
-    de: { home: "/", shop: "/shop" }
+  "paths": {
+    "en": {
+      "home": "/en",
+      "shop": "/en/shop"
+    },
+    "de": {
+      "home": "/",
+      "shop": "/shop"
+    }
   },
-
-  /**
-   * UTM-Parameter, die an JEDEN Link zu Murdernight gehängt werden.
-   * Nur hier ändern – krimiUrl() unten baut alle Links daraus.
-   *
-   * Absprache mit Jonas (Murdernight), 27.10.2026: Jeder Link muss
-   * utm_source=<Seitenname> tragen, damit deren Marketing-Cookie erkennt,
-   * dass der Besuch von hier kommt. utm_source darf also nie fehlen und
-   * bleibt "constantinteck". murdernight.de leitet englische Adressen samt
-   * Parametern auf murdernight.store weiter – beide Domains sind in Ordnung.
-   */
-  utm: {
-    utm_source: "constantinteck",
-    utm_medium: "website",
-    utm_campaign: "krimi-dinner"
+  "utm": {
+    "utm_source": "constantinteck",
+    "utm_medium": "website",
+    "utm_campaign": "krimi-dinner"
   },
-
-  /** Abweichende Kampagne für den Hinweis-Block auf Rezeptseiten. */
-  recipeCampaign: "krimi-dinner-rezept",
-
-  /**
-   * Fall für den Teaser auf der Startseite, wenn gerade kein Fall Saison hat
-   * (Feld "seasonal"). Leer = der erste Fall der Liste.
-   */
-  featured: ""
+  "recipeCampaign": "krimi-dinner-rezept"
 };
 
-/**
- * DIE FÄLLE – Abschrift von murdernight.de / murdernight.store
- * (Stand 27.10.2026). Reihenfolge wie dort.
- *
- * id          Kennung für den Rezept-Hinweis: <div data-krimi-hint="id"></div>
- * players     Spielerzahl, so wie sie im Shop steht ("6" oder "5–7")
- * hours       Dauer in Stunden als Zahl (2.5 = "ca. 2,5 Std.")
- * difficulty  "easy", "medium" oder "tricky" – so steht es dort
- * price       Preis in Euro
- * image       Cover ab dem Hauptordner. Die Dateien in assets/img/krimi/ sind
- *             die englischen Cover von murdernight.store (27.10.2026, auf
- *             900 px verkleinert) – als eigene Kopie, nichts von Murdernight
- *             direkt einbinden. Leer = neutraler Platzhalter.
- *             Hochformat 675 × 900 (3:4), Titel im Bild – wird nie
- *             beschnitten. Neben jedem JPEG liegen <name>-240.webp,
- *             -400.webp und -675.webp; bei einem neuen Cover einmal
- *             python3 tools/krimi-images.py laufen lassen.
- * moods       Stimmung für die Filter auf krimi-dinner.html, Schlüssel aus
- *             KRIMI_LABELS.<lang>.moods ("cosy", "spooky", "glamorous", "scifi")
- * occasions   Anlässe – erscheinen als "Perfect for:" auf der Karte und als
- *             Filter. Schlüssel aus KRIMI_LABELS.<lang>.occasions.
- * seasonal    Optional: Monate (1–12), in denen der Fall als "Seasonal pick"
- *             markiert und im Raster und auf der Startseite nach vorn
- *             gestellt wird. Entscheidet das Datum im Browser des Besuchers.
- * recipes     Rezepte von dieser Seite, die zum Fall passen – für "Cook the
- *             menu, solve the case". { slug: "<datei in recipes/ ohne .html>",
- *             title: "<sichtbarer Titel>" }. Leer = der Fall erscheint dort
- *             nicht.
- * en / de     Titel, Genre, Schauplatz, Pfad der Produktseite und teaser
- *             (1–2 Sätze Story; leer = keine Zeile auf der Karte). null = den
- *             Fall gibt es in dieser Sprache (noch) nicht.
- */
 var KRIMI_CASES = [
   {
-    id: "the-comet-vintage",
-    players: "8–12",
-    hours: 4,
-    difficulty: "tricky",
-    price: 8.99,
-    image: "assets/img/krimi/the-comet-vintage.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["glamorous"],
-    occasions: ["birthday", "new-years-eve"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "The Comet Vintage",
-      genre: "Country-house classic",
-      setting: "An old wine estate on the Moselle",
-      path: "/en/mysteries/the-comet-vintage",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "the-comet-vintage",
+    "players": "8–12",
+    "hours": 4,
+    "difficulty": "tricky",
+    "price": 8.99,
+    "image": "assets/img/krimi/the-comet-vintage.jpg",
+    "moods": [
+      "glamorous"
+    ],
+    "occasions": [
+      "birthday",
+      "new-years-eve"
+    ],
+    "menu": {
+      "starter": "baba-ganoush",
+      "main": "creamy-roasted-red-pepper-tomato-pasta",
+      "dessert": "grape-sorbet"
     },
-    de: {
-      title: "Der Kometenjahrgang",
-      genre: "Landhaus-Klassik",
-      setting: "Ein altes Weingut an der Mosel",
-      path: "/krimis/der-kometenjahrgang"
+    "recipes": [
+      "grape-sorbet",
+      "peach-sorbet",
+      "baba-ganoush",
+      "creamy-roasted-red-pepper-tomato-pasta"
+    ],
+    "en": {
+      "title": "The Comet Vintage",
+      "genre": "Country-house classic",
+      "setting": "An old wine estate on the Moselle",
+      "path": "/en/mysteries/the-comet-vintage",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Der Kometenjahrgang",
+      "genre": "Landhaus-Klassik",
+      "setting": "Ein altes Weingut an der Mosel",
+      "path": "/krimis/der-kometenjahrgang"
     }
   },
   {
-    id: "the-last-sleigh-ride",
-    players: "6–10",
-    hours: 3,
-    difficulty: "tricky",
-    price: 8.99,
-    image: "assets/img/krimi/the-last-sleigh-ride.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["cosy"],
-    occasions: ["christmas"],
-    seasonal: [11, 12],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "The Last Sleigh Ride",
-      genre: "Fairytale",
-      setting: "The Christmas village at the North Pole",
-      path: "/en/mysteries/the-last-sleigh-ride",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "the-last-sleigh-ride",
+    "players": "6–10",
+    "hours": 3,
+    "difficulty": "tricky",
+    "price": 8.99,
+    "image": "assets/img/krimi/the-last-sleigh-ride.jpg",
+    "moods": [
+      "cosy"
+    ],
+    "occasions": [
+      "christmas"
+    ],
+    "seasonal": [
+      11,
+      12
+    ],
+    "menu": {
+      "starter": "strawberry-smoothie",
+      "main": "cheesy-roasted-chicken-wrap",
+      "dessert": "fudgy-chocolate-raspberry-banana-bread"
     },
-    de: {
-      title: "Die letzte Bescherung",
-      genre: "Märchenhaft",
-      setting: "Im Weihnachtsdorf am Nordpol",
-      path: "/krimis/die-letzte-bescherung"
+    "recipes": [
+      "strawberry-smoothie",
+      "cheesy-roasted-chicken-wrap",
+      "fudgy-chocolate-raspberry-banana-bread",
+      "thick-raspberry-chia-pudding"
+    ],
+    "en": {
+      "title": "The Last Sleigh Ride",
+      "genre": "Fairytale",
+      "setting": "The Christmas village at the North Pole",
+      "path": "/en/mysteries/the-last-sleigh-ride",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Die letzte Bescherung",
+      "genre": "Märchenhaft",
+      "setting": "Im Weihnachtsdorf am Nordpol",
+      "path": "/krimis/die-letzte-bescherung"
     }
   },
   {
-    id: "the-last-night-at-fjell",
-    players: "5–6",
-    hours: 3,
-    difficulty: "tricky",
-    price: 8.99,
-    image: "assets/img/krimi/the-last-night-at-fjell.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["cosy"],
-    occasions: ["game-night", "birthday"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "The Last Night at Fjell",
-      genre: "Historical",
-      setting: "A Norwegian mountain hotel, 1928",
-      path: "/en/mysteries/the-last-night-at-fjell",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "the-last-night-at-fjell",
+    "players": "5–6",
+    "hours": 3,
+    "difficulty": "tricky",
+    "price": 8.99,
+    "image": "assets/img/krimi/the-last-night-at-fjell.jpg",
+    "moods": [
+      "cosy"
+    ],
+    "occasions": [
+      "game-night",
+      "birthday"
+    ],
+    "menu": {
+      "starter": "",
+      "main": "creamy-one-pan-salmon-pasta",
+      "dessert": "blueberry-sorbet"
     },
-    de: {
-      title: "Die letzte Nacht in Fjell",
-      genre: "Historisch",
-      setting: "Ein norwegisches Berghotel, 1928",
-      path: "/krimis/die-letzte-nacht-in-fjell"
+    "recipes": [
+      "creamy-one-pan-salmon-pasta",
+      "blueberry-sorbet",
+      "thick-blueberry-chia-pudding"
+    ],
+    "en": {
+      "title": "The Last Night at Fjell",
+      "genre": "Historical",
+      "setting": "A Norwegian mountain hotel, 1928",
+      "path": "/en/mysteries/the-last-night-at-fjell",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Die letzte Nacht in Fjell",
+      "genre": "Historisch",
+      "setting": "Ein norwegisches Berghotel, 1928",
+      "path": "/krimis/die-letzte-nacht-in-fjell"
     }
   },
   {
-    id: "radio-silence-on-ares",
-    players: "6–8",
-    hours: 3,
-    difficulty: "medium",
-    price: 8.99,
-    image: "assets/img/krimi/radio-silence-on-ares.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["scifi"],
-    occasions: ["game-night", "birthday"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "Radio Silence on Ares",
-      genre: "Sci-fi",
-      setting: "A Mars station in 2152",
-      path: "/en/mysteries/radio-silence-on-ares",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "radio-silence-on-ares",
+    "players": "6–8",
+    "hours": 3,
+    "difficulty": "medium",
+    "price": 8.99,
+    "image": "assets/img/krimi/radio-silence-on-ares.jpg",
+    "moods": [
+      "scifi"
+    ],
+    "occasions": [
+      "game-night",
+      "birthday"
+    ],
+    "menu": {
+      "starter": "dragon-fruit-smoothie",
+      "main": "peanut-spicy-udon",
+      "dessert": "dragonfruit-mango-sorbet"
     },
-    de: {
-      title: "Funkstille auf Ares",
-      genre: "Sci-Fi",
-      setting: "Eine Marsstation im Jahr 2152",
-      path: "/krimis/funkstille-auf-ares"
+    "recipes": [
+      "dragon-fruit-smoothie",
+      "peanut-spicy-udon",
+      "dragonfruit-mango-sorbet"
+    ],
+    "en": {
+      "title": "Radio Silence on Ares",
+      "genre": "Sci-fi",
+      "setting": "A Mars station in 2152",
+      "path": "/en/mysteries/radio-silence-on-ares",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Funkstille auf Ares",
+      "genre": "Sci-Fi",
+      "setting": "Eine Marsstation im Jahr 2152",
+      "path": "/krimis/funkstille-auf-ares"
     }
   },
   {
-    id: "witching-hour-at-ravenmoor",
-    players: "6–7",
-    hours: 3,
-    difficulty: "medium",
-    price: 8.99,
-    image: "assets/img/krimi/witching-hour-at-ravenmoor.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["spooky"],
-    occasions: ["halloween"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "Witching Hour at Ravenmoor",
-      genre: "Historical",
-      setting: "A haunted castle, Halloween 1986",
-      path: "/en/mysteries/witching-hour-at-ravenmoor",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "witching-hour-at-ravenmoor",
+    "players": "6–7",
+    "hours": 3,
+    "difficulty": "medium",
+    "price": 8.99,
+    "image": "assets/img/krimi/witching-hour-at-ravenmoor.jpg",
+    "moods": [
+      "spooky"
+    ],
+    "occasions": [
+      "halloween"
+    ],
+    "menu": {
+      "starter": "",
+      "main": "creamy-sucuk-carbonara",
+      "dessert": "healthy-raspberry-chocolate-nice-cream"
     },
-    de: {
-      title: "Geisterstunde auf Ravenmoor",
-      genre: "Historisch",
-      setting: "Ein Spukschloss, Halloween 1986",
-      path: "/krimis/geisterstunde-auf-ravenmoor"
+    "recipes": [
+      "creamy-sucuk-carbonara",
+      "healthy-raspberry-chocolate-nice-cream"
+    ],
+    "en": {
+      "title": "Witching Hour at Ravenmoor",
+      "genre": "Historical",
+      "setting": "A haunted castle, Halloween 1986",
+      "path": "/en/mysteries/witching-hour-at-ravenmoor",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Geisterstunde auf Ravenmoor",
+      "genre": "Historisch",
+      "setting": "Ein Spukschloss, Halloween 1986",
+      "path": "/krimis/geisterstunde-auf-ravenmoor"
     }
   },
   {
-    id: "murder-before-hibernation",
-    players: "5–7",
-    hours: 3,
-    difficulty: "medium",
-    price: 8.99,
-    image: "assets/img/krimi/murder-before-hibernation.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["cosy"],
-    occasions: ["game-night"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "Murder Before Hibernation",
-      genre: "Fairytale",
-      setting: "An autumn forest of talking animals",
-      path: "/en/mysteries/murder-before-hibernation",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "murder-before-hibernation",
+    "players": "5–7",
+    "hours": 3,
+    "difficulty": "medium",
+    "price": 8.99,
+    "image": "assets/img/krimi/murder-before-hibernation.jpg",
+    "moods": [
+      "cosy"
+    ],
+    "occasions": [
+      "game-night"
+    ],
+    "menu": {
+      "starter": "granola-berry-smoothie-bowl",
+      "main": "creamy-roasted-red-pepper-tomato-pasta",
+      "dessert": "chocolate-banana-ice-cream"
     },
-    de: {
-      title: "Mord vor dem Winterschlaf",
-      genre: "Märchenhaft",
-      setting: "Der herbstliche Tierwald",
-      path: "/krimis/mord-vor-dem-winterschlaf"
+    "recipes": [
+      "granola-berry-smoothie-bowl",
+      "chocolate-banana-ice-cream",
+      "thick-mango-chia-pudding"
+    ],
+    "en": {
+      "title": "Murder Before Hibernation",
+      "genre": "Fairytale",
+      "setting": "An autumn forest of talking animals",
+      "path": "/en/mysteries/murder-before-hibernation",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Mord vor dem Winterschlaf",
+      "genre": "Märchenhaft",
+      "setting": "Der herbstliche Tierwald",
+      "path": "/krimis/mord-vor-dem-winterschlaf"
     }
   },
   {
-    id: "closing-bell-on-the-24th-floor",
-    players: "6–7",
-    hours: 3,
-    difficulty: "tricky",
-    price: 8.99,
-    image: "assets/img/krimi/closing-bell-on-the-24th-floor.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["glamorous"],
-    occasions: ["team-event"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "Closing Bell on the 24th Floor",
-      genre: "Modern / Business",
-      setting: "The executive floor of a corporation",
-      path: "/en/mysteries/closing-bell-on-the-24th-floor",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "closing-bell-on-the-24th-floor",
+    "players": "6–7",
+    "hours": 3,
+    "difficulty": "tricky",
+    "price": 8.99,
+    "image": "assets/img/krimi/closing-bell-on-the-24th-floor.jpg",
+    "moods": [
+      "glamorous"
+    ],
+    "occasions": [
+      "team-event"
+    ],
+    "menu": {
+      "starter": "mango-passionfruit-smoothie",
+      "main": "peanut-spicy-udon",
+      "dessert": "lemon-sorbet"
     },
-    de: {
-      title: "Schlusskurs im 24. Stock",
-      genre: "Modern / Business",
-      setting: "Die Vorstandsetage eines Konzerns",
-      path: "/krimis/schlusskurs-im-24-stock"
+    "recipes": [
+      "mango-passionfruit-smoothie",
+      "lemon-sorbet",
+      "kiwi-sorbet"
+    ],
+    "en": {
+      "title": "Closing Bell on the 24th Floor",
+      "genre": "Modern / Business",
+      "setting": "The executive floor of a corporation",
+      "path": "/en/mysteries/closing-bell-on-the-24th-floor",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Schlusskurs im 24. Stock",
+      "genre": "Modern / Business",
+      "setting": "Die Vorstandsetage eines Konzerns",
+      "path": "/krimis/schlusskurs-im-24-stock"
     }
   },
   {
-    id: "death-at-studio-7",
-    players: "6–8",
-    hours: 3,
-    difficulty: "medium",
-    price: 8.99,
-    image: "assets/img/krimi/death-at-studio-7.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["glamorous"],
-    occasions: ["new-years-eve", "birthday"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "Death at Studio 7",
-      genre: "Historical",
-      setting: "Hollywood, 1934",
-      path: "/en/mysteries/death-at-studio-7",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "death-at-studio-7",
+    "players": "6–8",
+    "hours": 3,
+    "difficulty": "medium",
+    "price": 8.99,
+    "image": "assets/img/krimi/death-at-studio-7.jpg",
+    "moods": [
+      "glamorous"
+    ],
+    "occasions": [
+      "new-years-eve",
+      "birthday"
+    ],
+    "menu": {
+      "starter": "strawberry-passion-fruit-smoothie",
+      "main": "creamy-one-pan-salmon-pasta",
+      "dessert": "strawberry-sorbet"
     },
-    de: {
-      title: "Tod im Studio 7",
-      genre: "Historisch",
-      setting: "Hollywood im Jahr 1934",
-      path: "/krimis/tod-im-studio-7"
+    "recipes": [
+      "strawberry-passion-fruit-smoothie",
+      "strawberry-sorbet",
+      "coconut-mango-sorbet",
+      "pineapple-sorbet"
+    ],
+    "en": {
+      "title": "Death at Studio 7",
+      "genre": "Historical",
+      "setting": "Hollywood, 1934",
+      "path": "/en/mysteries/death-at-studio-7",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Tod im Studio 7",
+      "genre": "Historisch",
+      "setting": "Hollywood im Jahr 1934",
+      "path": "/krimis/tod-im-studio-7"
     }
   },
   {
-    id: "the-night-of-the-waxworks",
-    players: "8–10",
-    hours: 3,
-    difficulty: "tricky",
-    price: 8.99,
-    image: "assets/img/krimi/the-night-of-the-waxworks.jpg",
-    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
-    moods: ["spooky"],
-    occasions: ["halloween", "team-event"],
-    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
-    en: {
-      title: "The Night of the Waxworks",
-      genre: "Modern / Business",
-      setting: "A Halloween case in a hotel full of wax figures",
-      path: "/en/mysteries/the-night-of-the-waxworks",
-      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
+    "id": "the-night-of-the-waxworks",
+    "players": "8–10",
+    "hours": 3,
+    "difficulty": "tricky",
+    "price": 8.99,
+    "image": "assets/img/krimi/the-night-of-the-waxworks.jpg",
+    "moods": [
+      "spooky"
+    ],
+    "occasions": [
+      "halloween",
+      "team-event"
+    ],
+    "menu": {
+      "starter": "baba-ganoush",
+      "main": "creamy-sucuk-carbonara",
+      "dessert": "avocado-ice-cream"
     },
-    de: {
-      title: "Das Wachsfigurenhotel",
-      genre: "Modern / Business",
-      setting: "Halloween in einem Hotel voller Wachsfiguren",
-      path: "/krimis/das-wachsfigurenhotel"
+    "recipes": [
+      "avocado-ice-cream",
+      "mango-raspberry-sorbet",
+      "strawberry-pineapple-sorbet",
+      "yellow-watermelon-sorbet"
+    ],
+    "en": {
+      "title": "The Night of the Waxworks",
+      "genre": "Modern / Business",
+      "setting": "A Halloween case in a hotel full of wax figures",
+      "path": "/en/mysteries/the-night-of-the-waxworks",
+      "teaser": "",
+      "roles": []
+    },
+    "de": {
+      "title": "Das Wachsfigurenhotel",
+      "genre": "Modern / Business",
+      "setting": "Halloween in einem Hotel voller Wachsfiguren",
+      "path": "/krimis/das-wachsfigurenhotel"
     }
   }
 ];
 
-/**
- * VORSCHAUSEITEN – "What's inside the PDF" auf krimi-dinner.html.
- *
- * 1–2 Seiten aus einem PDF als Bild (z. B. eine Seite aus einem Rollenheft),
- * die auf der Seite unscharf gezeigt werden. Leere Liste = kein Platz dafür.
- * Bild ab dem Hauptordner, am besten Hochformat; nur Seiten zeigen, die
- * Murdernight freigegeben hat.
- *
- *   { image: "assets/img/krimi/preview-role-booklet.jpg", alt: "A page from a role booklet", caption: "Role booklet" },
- */
-var KRIMI_PREVIEWS = [
-  // TODO: 1–2 Vorschauseiten eintragen
-];
+var KRIMI_PREVIEWS = [];
 
-/**
- * KUNDENSTIMMEN UND FOTOS – unter "Why murder mysteries on a food site?".
- *
- * Nur echte Stimmen und Fotos mit Zustimmung der Absender. Leere Listen =
- * der Bereich erscheint nicht. Nichts erfinden, nichts umformulieren.
- *
- *   reviews: { quote: "…", by: "Anna, Hamburg", caseId: "the-comet-vintage" }
- *   photos:  { image: "assets/img/krimi/evening-anna.jpg", alt: "…", by: "Anna, Hamburg" }
- */
 var KRIMI_SOCIAL = {
-  reviews: [
-    // TODO: echte Kundenstimmen
-  ],
-  photos: [
-    // TODO: echte Fotos von Spieleabenden
-  ]
+  "reviews": [],
+  "photos": []
 };
-
+/* /Daten */
 /** Sichtbare Beschriftungen je Sprache – passend zu KRIMI_SITE.lang. */
 var KRIMI_LABELS = {
   en: {
