@@ -47,7 +47,7 @@ broken = []
 for page in pages:
     html = open(page, encoding="utf-8").read()
     for _, value in re.findall(r'(href|src)="([^"]+)"', html):
-        if value.startswith(("http://", "https://", "mailto:", "#", "data:")):
+        if value.startswith(("http://", "https://", "mailto:", "tel:", "#", "data:")):
             continue
         target = urllib.parse.unquote(value.split("?")[0].split("#")[0])
         # Absolute Pfade (/assets/...) gelten ab dem Wurzelverzeichnis der Seite.
