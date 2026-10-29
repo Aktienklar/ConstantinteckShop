@@ -147,6 +147,14 @@
             "@type": "Answer",
             "text": "Pick a case and pay at Murdernight, the shop I co-own – card, PayPal, Apple Pay and more. The PDF is ready to download right after payment."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "What if the download doesn't work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Right after payment you get straight to your downloads, and Murdernight also emails you a secure link that stays valid for 7 days. If something still doesn't work, write to info@murdernight.store – they usually reply within 1–2 business days."
+          }
         }
       ]
     },
@@ -363,7 +371,7 @@
 
       <!-- g) Fragen. Die strukturierten Daten (FAQPage) schreibt tools/seo.py
            aus genau diesen Einträgen – Fragen mit "hidden" zählen nicht mit.
-           TODO: Die versteckten Fragen beantworten und "hidden" entfernen. -->
+           Antworten nur mit Quelle bei Murdernight. -->
       <section class="shop-section" aria-labelledby="faq">
         <div class="section-head">
           <div>
@@ -376,13 +384,6 @@
             <summary>How many players do I need?</summary>
             <div class="faq__answer">
               <p>Each case is written for a set number of players between 5 and 12. You'll find the range on every card above – from 5–6 players for The Last Night at Fjell to 8–12 for The Comet Vintage. Use the filter to see the cases that fit your group.</p>
-            </div>
-          </details>
-          <details class="faq__item" hidden>
-            <!-- TODO: Antwort von Murdernight – wie viel Vorbereitung braucht der Gastgeber, und wie lange vorher? -->
-            <summary>Does anyone need to prepare?</summary>
-            <div class="faq__answer">
-              <p>TODO</p>
             </div>
           </details>
           <details class="faq__item">
@@ -410,19 +411,17 @@
               <p>Pick a case and pay at Murdernight, the shop I co-own – card, PayPal, Apple Pay and more. The PDF is ready to download right after payment.</p>
             </div>
           </details>
-          <details class="faq__item" hidden>
-            <!-- TODO: Wohin wenden sich Käufer, wenn der Download nicht klappt? Support-Adresse von Murdernight eintragen. -->
+          <details class="faq__item">
+            <!-- Quelle: murdernight.store/en/faq und /en/contact (29.10.2026) -->
             <summary>What if the download doesn't work?</summary>
             <div class="faq__answer">
-              <p>TODO</p>
+              <p>Right after payment you get straight to your downloads, and Murdernight also emails you a secure link that stays valid for 7 days. If something still doesn't work, write to <a class="link-brand" href="mailto:info@murdernight.store">info@murdernight.store</a> – they usually reply within 1–2 business days.</p>
             </div>
           </details>
         </div>
       </section>
 
-      <!-- h) Vertrauen: wer dahintersteht. Kundenstimmen und Fotos von
-           Spieleabenden erscheinen erst, wenn KRIMI_SOCIAL in
-           krimi-dinner-data.js echte Einträge hat – nie erfundene. -->
+      <!-- h) Vertrauen: wer dahintersteht. -->
       <section class="shop-section" aria-labelledby="from-me">
         <div class="panel krimi-me">
           <picture>
@@ -446,7 +445,6 @@
             </p>
           </div>
         </div>
-        <div data-krimi-social hidden></div>
       </section>
 
       <!-- i) Abschluss: alle Fälle bei Murdernight. -->

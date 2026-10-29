@@ -791,11 +791,6 @@ var KRIMI_CASES = [
 ];
 
 var KRIMI_PREVIEWS = [];
-
-var KRIMI_SOCIAL = {
-  "reviews": [],
-  "photos": []
-};
 /* /Daten */
 /** Sichtbare Beschriftungen je Sprache – passend zu KRIMI_SITE.lang. */
 var KRIMI_LABELS = {
@@ -829,7 +824,6 @@ var KRIMI_LABELS = {
       return { short: title + " · seasonal pick", long: title + " – the murder mystery for your " + occasion };
     },
     menuFor: "Cook for",
-    reviewsHeading: "From your murder mystery nights",
     occasions: {
       christmas: "Christmas party",
       halloween: "Halloween party",
@@ -884,7 +878,6 @@ var KRIMI_LABELS = {
       return { short: title + " · passt zur Saison", long: title + " – der Krimi für deine " + occasion };
     },
     menuFor: "Menü für",
-    reviewsHeading: "Von euren Krimiabenden",
     occasions: {
       christmas: "Weihnachtsfeier",
       halloween: "Halloween",

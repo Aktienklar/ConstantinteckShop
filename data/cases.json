@@ -3,8 +3,7 @@
     "EINZIGE Quelle für die Krimi-Dinner-Fälle. Nach jeder Änderung: python3 tools/cases.py",
     "(macht deploy.sh automatisch). Das Skript schreibt daraus Karten, Fallseiten murder-mystery/<id>.html,",
     "Footer, Ankündigungsleiste, Rezept-Boxen und den Datenblock in assets/js/krimi-dinner-data.js.",
-    "Leere Felder (teaser, roles, menu.starter) erscheinen auf der Seite nicht und stehen als <!-- TODO --> im HTML.",
-    "Nichts erfinden: Bewertungen/Fotos (social) nur echte, mit Zustimmung."
+    "Leere Felder (teaser, roles, menu.starter) erscheinen auf der Seite nicht und stehen als <!-- TODO --> im HTML."
   ],
   "_fields": {
     "id": "Kennung = Dateiname der Fallseite murder-mystery/<id>.html",
@@ -806,11 +805,6 @@
     }
   ],
   "previews": [],
-  "social": {
-    "reviews": [],
-    "photos": []
-  },
-  "_social": "reviews: {quote, by, caseId}; photos: {image, alt, by}. Nur echte Einsendungen.",
   "_previews": "{image, alt, caption} – 1–2 von Murdernight freigegebene PDF-Seiten",
   "_quelle": "Teaser (gekürzt) und Figuren: murdernight.store/en/mysteries/<id>, Abruf 29.10.2026"
 }

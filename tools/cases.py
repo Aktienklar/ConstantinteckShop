@@ -15,8 +15,7 @@ schreibt daraus:
   2. murder-mystery/<id>.html – eine Seite je Fall (Teaser, Figuren, Menü,
      Kurz-FAQ, Kauf-Knopf). Kopf und Schema schreibt seo.py gleich mit.
   3. Die Fallkarten auf krimi-dinner.html, die Abschnitte der Startseite
-     (Hero-Cover, "Pick your evening", Beispielmenü, neue Rezepte,
-     Kundenstimmen) und die Box "Hosting a dinner?" auf jeder Rezeptseite.
+     (Hero-Cover, "Pick your evening", Beispielmenü, neue Rezepte) und die Box "Hosting a dinner?" auf jeder Rezeptseite.
   4. Den Datenblock in assets/js/krimi-dinner-data.js (für Filter und die
      Karte im Rezept-Raster).
 
@@ -754,29 +753,7 @@ def home():
     }
     src = fill(src, "Beispielmenue", example, "        ")
     src = fill(src, "Neue Rezepte", '        <div class="grid grid--3 mt-6">\n%s\n        </div>' % latest_recipes(), "        ")
-    src = fill(src, "Stimmen", social_block(""), "    ")
     return write("index.html", apply_global("index.html", src))
-
-
-def social_block(root):
-    social = DATA.get("social") or {}
-    reviews = [r for r in social.get("reviews", []) if r.get("quote")]
-    photos = [p for p in social.get("photos", []) if p.get("image")]
-    if not reviews and not photos:
-        return ("    <!-- TODO: Echte Kundenstimmen/Fotos in data/cases.json unter social eintragen. "
-                "Solange die Listen leer sind, erscheint dieser Abschnitt nicht. -->")
-    quotes = "".join(
-        '<figure class="panel krimi-review"><blockquote>%s</blockquote><figcaption>%s%s</figcaption></figure>'
-        % (esc(r["quote"]), esc(r.get("by", "")), (" · " + esc(t(BY_ID[r["caseId"]])["title"])) if r.get("caseId") in BY_ID else "")
-        for r in reviews)
-    pics = "".join('<li><figure><img src="%s%s" alt="%s" loading="lazy">%s</figure></li>'
-                   % (root, esc(p["image"]), esc(p.get("alt", "")), ("<figcaption>%s</figcaption>" % esc(p["by"])) if p.get("by") else "")
-                   for p in photos)
-    return """    <section class="container section" aria-labelledby="voices">
-      <h2 id="voices">From your murder mystery nights</h2>
-      %s%s
-    </section>""" % (('<div class="grid grid--3 mt-6">%s</div>' % quotes) if quotes else "",
-                     ('<ul class="customer-photos no-scrollbar mt-6">%s</ul>' % pics) if pics else "")
 
 
 def recipe_box(case, slug):
@@ -858,9 +835,9 @@ def js_data():
     site = {k: v for k, v in SITE_CFG.items() if not k.startswith("_")}
     cases = [{k: v for k, v in c.items() if not k.startswith("_")} for c in DATA["cases"]]
     body = ("/* Daten (geschrieben von tools/cases.py aus data/cases.json) – NICHT hier ändern. */\n"
-            "var KRIMI_SITE = %s;\n\nvar KRIMI_CASES = %s;\n\nvar KRIMI_PREVIEWS = %s;\n\nvar KRIMI_SOCIAL = %s;\n"
+            "var KRIMI_SITE = %s;\n\nvar KRIMI_CASES = %s;\n\nvar KRIMI_PREVIEWS = %s;\n"
             "/* /Daten */" % tuple(json.dumps(x, ensure_ascii=False, indent=2)
-                                  for x in (site, cases, DATA.get("previews", []), DATA.get("social", {}))))
+                                  for x in (site, cases, DATA.get("previews", []))))
     new = replace_between(src, "/* Daten (geschrieben", "/* /Daten */", body)
     return write(path, new)
 

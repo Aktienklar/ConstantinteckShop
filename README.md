@@ -192,7 +192,7 @@ tools/cases.py                       Writes everything below from it (deploy.sh 
 murder-mystery/<id>.html             One page per case (generated – do not edit)
 krimi-dinner.html                    Overview; the case cards between <!-- Fallkarten --> markers
 assets/js/krimi-dinner-data.js       Data block for the filters (generated) + labels
-assets/js/krimi-dinner.js            Filters, preview pages, reviews (browser only)
+assets/js/krimi-dinner.js            Filters and preview pages (browser only)
 tools/krimi-images.py                Cover WebPs and share images (og) – run once per new cover
 ```
 
@@ -200,8 +200,7 @@ tools/krimi-images.py                Cover WebPs and share images (og) – run o
 `python3 tools/cases.py` (or just `./deploy.sh`). It rewrites, on every page:
 navigation (Murder Mystery first), the announcement bar, the footer column
 with all cases; plus the cards on `krimi-dinner.html`, the start page blocks
-(hero covers, *Pick your evening*, example menu, *New from the videos*,
-reviews), the box *Hosting a dinner?* on every recipe page, the case pages
+(hero covers, *Pick your evening*, example menu, *New from the videos*), the box *Hosting a dinner?* on every recipe page, the case pages
 and the strips on `recipes.html` / `shop.html`. Anything between
 `<!-- … (geschrieben von tools/cases.py …) -->` markers is overwritten.
 
@@ -218,8 +217,6 @@ Teasers (shortened) and characters come from the case pages on murdernight.store
   `assets/js/site.js`) the announcement bar advertises that case, it moves to
   the front on `krimi-dinner.html` and joins *Pick your evening*.
 - **Start page:** `home.picks`, `home.exampleMenu`, `home.heroCovers`.
-- **Reviews / photos:** `social` – only real ones, with consent. Empty = no
-  section.
 
 ### Links to Murdernight and utm_content
 

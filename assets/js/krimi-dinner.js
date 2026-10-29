@@ -1,5 +1,5 @@
 /**
- * KRIMI-DINNER – FILTER, VORSCHAUSEITEN, KUNDENSTIMMEN
+ * KRIMI-DINNER – FILTER UND VORSCHAUSEITEN
  *
  * Karten, Fallseiten, Menüs und Rezept-Boxen stehen fertig im HTML –
  * geschrieben von tools/cases.py aus data/cases.json. Was nur im Browser
@@ -11,9 +11,9 @@
  *       .krimi-cases__item[data-krimi-case="<id>"]. Nur im Browser, ohne Adresse.
  *       data-krimi-empty / data-krimi-reset: Hinweis, wenn nichts passt.
  *
- *   <div data-krimi-previews hidden></div>    <div data-krimi-social hidden></div>
- *       Vorschauseiten und Kundenstimmen. Bleiben unsichtbar, solange die
- *       Listen in data/cases.json leer sind.
+ *   <div data-krimi-previews hidden></div>
+ *       Vorschauseiten. Bleiben unsichtbar, solange die Liste in
+ *       data/cases.json leer ist.
  *
  * Saison (Fall nach vorn, Abzeichen) und die Herkunft für utm_content
  * erledigt assets/js/site.js.
@@ -38,7 +38,6 @@
 
     document.querySelectorAll("[data-krimi-filters]").forEach(renderFilters);
     document.querySelectorAll("[data-krimi-previews]").forEach(renderPreviews);
-    document.querySelectorAll("[data-krimi-social]").forEach(renderSocial);
 
   });
 
@@ -201,52 +200,4 @@
       .join("");
     box.hidden = false;
   }
-
-  /* --- Kundenstimmen und Fotos --------------------------------------------- */
-  function renderSocial(box) {
-    var social = window.KRIMI_SOCIAL || {};
-    var reviews = (social.reviews || []).filter(function (entry) {
-      return entry && entry.quote;
-    });
-    var photos = (social.photos || []).filter(function (entry) {
-      return entry && entry.image;
-    });
-    if (!reviews.length && !photos.length) return;
-
-    box.innerHTML =
-      '<h3 class="krimi-social__title">' + escapeHtml(labels().reviewsHeading) + "</h3>" +
-      (reviews.length
-        ? '<div class="grid grid--3 mt-6">' +
-          reviews
-            .map(function (entry) {
-              var item = krimiCases().filter(function (c) { return c.id === entry.caseId; })[0];
-              return (
-                '<figure class="panel krimi-review">' +
-                "<blockquote>" + escapeHtml(entry.quote) + "</blockquote>" +
-                "<figcaption>" + escapeHtml(entry.by || "") +
-                (item ? " · " + escapeHtml(item[KRIMI_SITE.lang].title) : "") +
-                "</figcaption>" +
-                "</figure>"
-              );
-            })
-            .join("") +
-          "</div>"
-        : "") +
-      (photos.length
-        ? '<ul class="customer-photos no-scrollbar mt-6">' +
-          photos
-            .map(function (photo) {
-              return (
-                "<li><figure>" +
-                '<img src="' + escapeHtml(root + photo.image) + '" alt="' + escapeHtml(photo.alt || "") + '" loading="lazy">' +
-                (photo.by ? "<figcaption>" + escapeHtml(photo.by) + "</figcaption>" : "") +
-                "</figure></li>"
-              );
-            })
-            .join("") +
-          "</ul>"
-        : "");
-    box.hidden = false;
-  }
-
 })();
