@@ -23,48 +23,130 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Waffle apron »Dough Love«",
-  "image": [
-    "https://constantinteck.com/assets/img/apron-adult.jpg",
-    "https://constantinteck.com/assets/img/apron-detail-pocket.jpg",
-    "https://constantinteck.com/assets/img/apron-detail-strap.jpg"
-  ],
-  "description": "The apron from my videos – waffle piqué, sewn by hand in Germany, soft on the skin and softer with every wash.",
-  "brand": {
-    "@type": "Brand",
-    "name": "Constantinteck"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "https://constantinteck.com/shop/linen-apron.html",
-    "price": "49.90",
-    "priceCurrency": "EUR",
-    "availability": "https://schema.org/InStock",
-    "shippingDetails": {
-      "@type": "OfferShippingDetails",
-      "shippingRate": {
-        "@type": "MonetaryAmount",
-        "value": "4.90",
-        "currency": "EUR"
+  "@graph": [
+    {
+      "@type": "Product",
+      "@id": "https://constantinteck.com/shop/linen-apron.html#product",
+      "name": "Waffle apron »Dough Love«",
+      "description": "The apron from my videos – waffle piqué, sewn by hand in Germany, soft on the skin and softer with every wash.",
+      "image": [
+        "https://constantinteck.com/assets/img/apron-adult.jpg",
+        "https://constantinteck.com/assets/img/apron-detail-pocket.jpg",
+        "https://constantinteck.com/assets/img/apron-detail-strap.jpg",
+        "https://constantinteck.com/assets/img/apron-grey.jpg",
+        "https://constantinteck.com/assets/img/apron-grey-pocket.jpg",
+        "https://constantinteck.com/assets/img/apron-grey-strap.jpg",
+        "https://constantinteck.com/assets/img/apron-mauve.jpg",
+        "https://constantinteck.com/assets/img/apron-mauve-pocket.jpg",
+        "https://constantinteck.com/assets/img/apron-mauve-strap.jpg"
+      ],
+      "sku": "linen-apron",
+      "brand": {
+        "@type": "Brand",
+        "name": "Constantinteck"
+      },
+      "material": "Waffle piqué",
+      "color": "Sand, Mauve, Grey",
+      "countryOfOrigin": "DE",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://constantinteck.com/shop/linen-apron.html",
+        "price": "49.90",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@id": "https://constantinteck.com/#organization"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "4.90",
+            "currency": "EUR"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "DE"
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": [
+            "DE",
+            "AT"
+          ],
+          "returnPolicyCountry": "DE",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        }
       }
     },
-    "hasMerchantReturnPolicy": {
-      "@type": "MerchantReturnPolicy",
-      "applicableCountry": [
-        "DE",
-        "AT"
-      ],
-      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-      "merchantReturnDays": 14,
-      "returnMethod": "https://schema.org/ReturnByMail",
-      "returnFees": "https://schema.org/FreeReturn"
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Shop",
+          "item": "https://constantinteck.com/shop.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Waffle apron »Dough Love«",
+          "item": "https://constantinteck.com/shop/linen-apron.html"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  }
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->

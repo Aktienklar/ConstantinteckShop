@@ -23,48 +23,129 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Apron set »Dough Love« (adult + kids)",
-  "image": [
-    "https://constantinteck.com/assets/img/apron-set.jpg",
-    "https://constantinteck.com/assets/img/apron-detail-pocket.jpg",
-    "https://constantinteck.com/assets/img/apron-detail-strap.jpg"
-  ],
-  "description": "Both aprons from my videos in one parcel – the grown-up one and the small one – for €9.90 less than buying them apart.",
-  "brand": {
-    "@type": "Brand",
-    "name": "Constantinteck"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "https://constantinteck.com/shop/apron-set.html",
-    "price": "69.90",
-    "priceCurrency": "EUR",
-    "availability": "https://schema.org/InStock",
-    "shippingDetails": {
-      "@type": "OfferShippingDetails",
-      "shippingRate": {
-        "@type": "MonetaryAmount",
-        "value": "4.90",
-        "currency": "EUR"
-      }
-    },
-    "hasMerchantReturnPolicy": {
-      "@type": "MerchantReturnPolicy",
-      "applicableCountry": [
-        "DE",
-        "AT"
+  "@graph": [
+    {
+      "@type": "Product",
+      "@id": "https://constantinteck.com/shop/apron-set.html#product",
+      "name": "Apron set »Dough Love« (adult + kids)",
+      "description": "Both aprons from my videos in one parcel – the grown-up one and the small one – for €9.90 less than buying them apart.",
+      "image": [
+        "https://constantinteck.com/assets/img/apron-set.jpg",
+        "https://constantinteck.com/assets/img/apron-detail-pocket.jpg",
+        "https://constantinteck.com/assets/img/apron-detail-strap.jpg",
+        "https://constantinteck.com/assets/img/apron-grey-pocket.jpg",
+        "https://constantinteck.com/assets/img/apron-grey-strap.jpg",
+        "https://constantinteck.com/assets/img/apron-mauve-pocket.jpg",
+        "https://constantinteck.com/assets/img/apron-mauve-strap.jpg"
       ],
-      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-      "merchantReturnDays": 14,
-      "returnMethod": "https://schema.org/ReturnByMail",
-      "returnFees": "https://schema.org/FreeReturn"
+      "sku": "apron-set",
+      "brand": {
+        "@type": "Brand",
+        "name": "Constantinteck"
+      },
+      "material": "Waffle piqué",
+      "color": "Sand, Mauve, Grey",
+      "countryOfOrigin": "DE",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://constantinteck.com/shop/apron-set.html",
+        "price": "69.90",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@id": "https://constantinteck.com/#organization"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "4.90",
+            "currency": "EUR"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "DE"
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": [
+            "DE",
+            "AT"
+          ],
+          "returnPolicyCountry": "DE",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 14,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        }
+      },
+      "size": "From 4 years, From 8 years, From 12 years"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Shop",
+          "item": "https://constantinteck.com/shop.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Apron set »Dough Love« (adult + kids)",
+          "item": "https://constantinteck.com/shop/apron-set.html"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  }
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->
