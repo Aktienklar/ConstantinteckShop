@@ -87,6 +87,7 @@
           <li><a href="terms.html">Terms</a></li>
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="imprint.html">Imprint</a></li>
+          <li><a href="withdraw.html">Withdraw from contract · Vertrag widerrufen</a></li>
           </ul>
         </nav>
 
@@ -136,15 +137,11 @@
             <h2>§ 3 Vertragssprache und Vertragstext</h2>
             <div>
               <p>Der Vertrag kann in deutscher oder englischer Sprache geschlossen werden. Maßgeblich für die Auslegung dieser Bedingungen ist die deutsche Fassung.</p>
-              <!-- TODO (rechtlich prüfen): Die E-Mail von Stripe enthält weder
-                   diese AGB noch die Widerrufsbelehrung. § 312f Abs. 2 BGB
-                   verlangt eine Vertragsbestätigung mit diesen Angaben auf
-                   einem dauerhaften Datenträger. Vorschlag: eigene
-                   Bestätigungsmail aus dem Worker-Webhook (Resend) mit AGB und
-                   Widerrufsbelehrung als Text oder PDF. Bis dahin nichts
-                   behaupten, was nicht verschickt wird. -->
-              <p>Der Anbieter speichert den Vertragstext nicht in einer für dich abrufbaren Form. Die Bestelldaten erhältst du nach der Bestellung per E-Mail von Stripe. Diese Bedingungen und die Widerrufsbelehrung kannst du vor und nach der Bestellung auf dieser Website jederzeit abrufen, ausdrucken oder als Datei sichern.</p>
-              <p class="legal__en" lang="en">The contract may be concluded in German or English; the German version of these terms prevails for their interpretation. The seller does not store the contract text in a form you can retrieve. You receive the order details by email from Stripe after ordering. You can view, print or save these terms and the withdrawal instructions on this website at any time, before and after ordering.</p>
+              <!-- Die Bestellbestätigung verschickt worker/src/webhook.js
+                   (confirmOrder) – erst wenn Webhook und RESEND_API_KEY
+                   eingerichtet sind. Vorher stimmt der zweite Satz nicht! -->
+              <p>Der Anbieter speichert den Vertragstext nicht in einer für dich abrufbaren Form. Nach der Bestellung erhältst du eine Bestellbestätigung per E-Mail mit den Bestelldaten, diesen Bedingungen und der Widerrufsbelehrung samt Muster-Widerrufsformular. Diese Bedingungen und die Widerrufsbelehrung kannst du außerdem auf dieser Website jederzeit abrufen, ausdrucken oder als Datei sichern.</p>
+              <p class="legal__en" lang="en">The contract may be concluded in German or English; the German version of these terms prevails for their interpretation. The seller does not store the contract text in a form you can retrieve. After ordering, you receive an order confirmation by email with the order details, these terms and the withdrawal instructions including the model withdrawal form. You can also view, print or save these terms and the withdrawal instructions on this website at any time.</p>
             </div>
           </section>
 
@@ -207,7 +204,8 @@
                    Widerrufsrechts bei PDF-Rezeptsammlungen. Es werden keine
                    PDFs verkauft – Absatz entfernt. Kommen PDFs zurück, gehört
                    § 356 Abs. 5 BGB wieder hierher und in die Belehrung. -->
-              <p class="legal__en" lang="en">Consumers have a statutory 14-day right of withdrawal. The full withdrawal instructions and the model withdrawal form are on the <a class="link-brand" href="shipping-returns.html#widerruf">shipping and returns page</a>; they form part of these terms.</p>
+              <p>Den Widerruf kannst du auch online über die <a class="link-brand" href="withdraw.html">Widerrufsfunktion</a> erklären; du erhältst dann sofort eine Eingangsbestätigung per E-Mail.</p>
+              <p class="legal__en" lang="en">Consumers have a statutory 14-day right of withdrawal. The full withdrawal instructions and the model withdrawal form are on the <a class="link-brand" href="shipping-returns.html#widerruf">shipping and returns page</a>; they form part of these terms. You can also declare your withdrawal online using the <a class="link-brand" href="withdraw.html">withdrawal function</a>; you then immediately receive a confirmation of receipt by email.</p>
             </div>
           </section>
 
@@ -294,6 +292,7 @@
           <li><a href="terms.html">Terms</a></li>
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="imprint.html">Imprint</a></li>
+          <li><a href="withdraw.html">Withdraw from contract · Vertrag widerrufen</a></li>
         </ul>
       </div>
 

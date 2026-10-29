@@ -10,12 +10,14 @@
  *   POST /api/webhook    Stripe     ->  Auslieferung der PDFs
  *   GET  /api/session    Erfolgsseite fragt, ob wirklich bezahlt wurde
  *   GET  /api/download   Signierter PDF-Download
+ *   POST /api/withdraw   Widerrufsfunktion -> Eingangsbestätigung per Mail
  */
 
 import Stripe from "stripe";
 import { createCheckoutSession } from "./checkout.js";
 import { handleWebhook } from "./webhook.js";
 import { serveDownload } from "./download.js";
+import { handleWithdrawal } from "./withdraw.js";
 
 export default {
   async fetch(request, env) {
@@ -47,6 +49,13 @@ export default {
         const denied = rejectForeignOrigin(request, env);
         if (denied) return denied;
         const response = await createCheckoutSession(request, env, stripe);
+        return withCors(response, request, env);
+      }
+
+      if (path === "/api/withdraw" && request.method === "POST") {
+        const denied = rejectForeignOrigin(request, env);
+        if (denied) return denied;
+        const response = await handleWithdrawal(request, env);
         return withCors(response, request, env);
       }
 
@@ -87,6 +96,7 @@ async function describeSession(url, env, stripe) {
     paid,
     pending: session.payment_status === "unpaid" && session.status === "complete",
     email: (session.customer_details && session.customer_details.email) || null,
+    orderNumber: (session.metadata && session.metadata.order_number) || null,
     amountTotal: session.amount_total,
     currency: session.currency,
     hasDigital: Boolean(session.metadata && session.metadata.digital_slugs),

@@ -10,6 +10,7 @@
 
 import { PRODUCTS } from "./catalog.js";
 import { signDownloadUrl, downloadValidityDays } from "./download.js";
+import { sendMail, legalTexts, escapeHtml, SELLER } from "./mail.js";
 
 export async function handleWebhook(request, env, stripe, cryptoProvider) {
   const signature = request.headers.get("stripe-signature");
@@ -47,10 +48,12 @@ export async function handleWebhook(request, env, stripe, cryptoProvider) {
   }
 
   try {
-    if (event.type === "checkout.session.completed") {
-      await fulfil(event.data.object, env, stripe);
-    } else if (event.type === "checkout.session.async_payment_succeeded") {
-      // SEPA-Lastschrift und Klarna bestätigen teils erst Tage später.
+    if (
+      event.type === "checkout.session.completed" ||
+      // Manche Zahlungsarten bestätigen erst Tage später.
+      event.type === "checkout.session.async_payment_succeeded"
+    ) {
+      await confirmOrder(event.data.object, env, stripe);
       await fulfil(event.data.object, env, stripe);
     }
   } catch (error) {
@@ -64,6 +67,90 @@ export async function handleWebhook(request, env, stripe, cryptoProvider) {
     await env.ORDERS.put(seenKey, "1", { expirationTtl: 60 * 60 * 24 * 30 });
   }
   return new Response("ok", { status: 200 });
+}
+
+/**
+ * BESTELLBESTÄTIGUNG (§ 312f Abs. 2 BGB)
+ *
+ * Die Quittung von Stripe nennt Artikel und Betrag, aber weder AGB noch
+ * Widerrufsbelehrung. Diese Mail schließt die Lücke: Bestellnummer, Artikel,
+ * Versand, Anbieterangaben – und AGB und Widerrufsbelehrung samt
+ * Muster-Formular als Textanhang, geholt von der Website.
+ *
+ * Der Idempotency-Key bei Resend verhindert eine zweite Mail, wenn Stripe
+ * dasselbe Ereignis noch einmal zustellt (es gibt kein KV, das sich
+ * erledigte Ereignisse merkt).
+ */
+async function confirmOrder(session, env, stripe) {
+  if (session.payment_status !== "paid") return;
+
+  const email =
+    (session.customer_details && session.customer_details.email) || session.customer_email;
+  if (!email) throw new Error("Bestellung " + session.id + " hat keine E-Mail-Adresse.");
+
+  const orderNumber = (session.metadata && session.metadata.order_number) || session.id;
+  const items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+  const money = (cents) =>
+    new Intl.NumberFormat("de-DE", { style: "currency", currency: (session.currency || "eur").toUpperCase() }).format(cents / 100);
+
+  const lines = items.data.map((item) => [item.quantity + " × " + item.description, money(item.amount_total)]);
+  const shippingCents = (session.shipping_cost && session.shipping_cost.amount_total) || 0;
+  if (shippingCents) lines.push(["Versand / Shipping", money(shippingCents)]);
+  lines.push(["Gesamt / Total", money(session.amount_total)]);
+
+  const ship = (session.collected_information && session.collected_information.shipping_details) ||
+    session.shipping_details || null;
+  const address = ship && ship.address
+    ? [ship.name, ship.address.line1, ship.address.line2,
+       [ship.address.postal_code, ship.address.city].filter(Boolean).join(" "),
+       ship.address.country].filter(Boolean).join(", ")
+    : "";
+
+  const placed = new Date(session.created * 1000).toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin", dateStyle: "long", timeStyle: "short"
+  });
+  const site = env.SITE_BASE.replace(/\/$/, "");
+  const name = (session.customer_details && session.customer_details.name) || "";
+  const greeting = name ? "Hallo " + name.split(" ")[0] + " / Hi " + name.split(" ")[0] + "," : "Hallo / Hi,";
+
+  const intro =
+    "vielen Dank für deine Bestellung! Hiermit bestätigen wir den Vertrag. " +
+    "Thank you for your order! This email confirms your contract.";
+  const legal =
+    "Im Anhang findest du unsere AGB und die Widerrufsbelehrung mit Muster-Widerrufsformular. " +
+    "Widerrufen kannst du auch online: " + site + "/withdraw.html – dafür brauchst du die Bestellnummer oben. " +
+    "Attached are our terms and the withdrawal instructions with the model withdrawal form. " +
+    "You can also withdraw online at " + site + "/withdraw.html using the order number above.";
+  const vat = "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. / No VAT is charged under § 19 UStG.";
+  const seller = SELLER.name + ", " + SELLER.address + " · Tel. " + SELLER.phone + " · " + SELLER.email;
+
+  const html =
+    "<p>" + escapeHtml(greeting) + "</p><p>" + escapeHtml(intro) + "</p>" +
+    "<p><b>Bestellnummer / Order number: " + escapeHtml(orderNumber) + "</b><br>" +
+    "Bestellt am / Ordered on: " + escapeHtml(placed) + "</p>" +
+    "<table cellpadding='4'>" +
+    lines.map(([a, b]) => "<tr><td>" + escapeHtml(a) + "</td><td align='right'>" + escapeHtml(b) + "</td></tr>").join("") +
+    "</table>" +
+    (address ? "<p>Lieferadresse / Delivery address: " + escapeHtml(address) + "</p>" : "") +
+    "<p>" + escapeHtml(vat) + "</p><p>" + escapeHtml(legal) + "</p>" +
+    "<p>Constantin<br>" + escapeHtml(seller) + "</p>";
+
+  const text =
+    greeting + "\n\n" + intro + "\n\n" +
+    "Bestellnummer / Order number: " + orderNumber + "\nBestellt am / Ordered on: " + placed + "\n\n" +
+    lines.map(([a, b]) => a + "  " + b).join("\n") + "\n\n" +
+    (address ? "Lieferadresse / Delivery address: " + address + "\n\n" : "") +
+    vat + "\n\n" + legal + "\n\nConstantin\n" + seller + "\n";
+
+  await sendMail(env, {
+    to: email,
+    replyTo: SELLER.email,
+    subject: "Bestellbestätigung / Order confirmation " + orderNumber + " – Constantinteck",
+    html,
+    text,
+    attachments: await legalTexts(env),
+    idempotencyKey: "order-confirmation-" + session.id
+  });
 }
 
 async function fulfil(session, env, stripe) {
@@ -158,12 +245,4 @@ async function sendDownloadEmail(env, email, downloads, session) {
       "Resend antwortete mit " + response.status + ": " + (await response.text())
     );
   }
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 }

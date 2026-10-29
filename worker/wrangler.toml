@@ -16,6 +16,9 @@ WORKER_BASE = "https://constantinteck-checkout.constantinteck-checkout.workers.d
 # Absender der Download-Mails. Muss zur Adresse im Impressum passen und die
 # Domain muss bei Resend verifiziert sein, sonst kommen die Mails nie an.
 MAIL_FROM = "Constantinteck <info@constantinteck.com>"
+# Empfänger der Kopie jedes Widerrufs aus der Widerrufsfunktion
+# (worker/src/withdraw.js).
+SHOP_EMAIL = "info@constantinteck.com"
 # Bleibt aus. Der Betreiber ist Kleinunternehmer nach § 19 UStG und weist keine
 # Umsatzsteuer aus – Stripe Tax hätte nichts zu berechnen und würde auf den
 # Belegen Steuer ausweisen, die nicht erhoben wird. Das ist keine offene
@@ -49,7 +52,9 @@ TOS_CONSENT = "true"
 # id = "HIER_DIE_KV_ID_EINTRAGEN"
 
 # Geheim, deshalb nicht hier, sondern per "wrangler secret put":
-#   STRIPE_SECRET_KEY       (jetzt nötig)
-#   STRIPE_WEBHOOK_SECRET   (nur falls du den Webhook einrichtest)
+#   STRIPE_SECRET_KEY       (nötig)
+#   STRIPE_WEBHOOK_SECRET   (nötig seit 29.10.2026: Bestellbestätigung mit AGB
+#                            und Widerrufsbelehrung, worker/src/webhook.js)
+#   RESEND_API_KEY          (nötig seit 29.10.2026: Bestellbestätigung und
+#                            Widerrufsfunktion; Domain bei Resend verifizieren)
 #   DOWNLOAD_SECRET         (erst mit den PDFs)
-#   RESEND_API_KEY          (erst mit den PDFs)

@@ -63,6 +63,14 @@
   function showPaid(root, order) {
     var lines = ["<p>Thank you! Your payment went through."];
 
+    if (order.orderNumber) {
+      lines.push(
+        "</p><p>Your order number is <b>" + escapeHtml(order.orderNumber) + "</b>. " +
+          "The order confirmation with our terms and the withdrawal instructions is on its way to " +
+          (order.email ? "<b>" + escapeHtml(order.email) + "</b>" : "your inbox") + "."
+      );
+    }
+
     if (order.hasDigital) {
       lines.push(
         "</p><p>Your download link is on its way to " +

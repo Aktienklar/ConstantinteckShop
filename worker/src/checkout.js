@@ -46,6 +46,12 @@ export async function createCheckoutSession(request, env, stripe) {
 
   const siteBase = env.SITE_BASE.replace(/\/$/, "");
 
+  /* Eigene, kurze Bestellnummer. Sie steht in der Bestellbestätigung und auf
+     der Erfolgsseite, und der Kunde gibt sie bei einem Widerruf an. Im
+     Stripe-Dashboard findet man die Zahlung über die Suche nach ihr
+     (Beschreibung und Metadaten der Zahlung). */
+  const orderNumber = newOrderNumber();
+
   const params = {
     mode: "payment",
     line_items: cart.lines.map((line) => ({
@@ -77,7 +83,12 @@ export async function createCheckoutSession(request, env, stripe) {
     // Stripe zeigt die Kasse in der Sprache des Browsers; Preise werden
     // dadurch auch richtig formatiert (19,90 € statt €19.90).
     locale: "auto",
+    payment_intent_data: {
+      description: "Order " + orderNumber,
+      metadata: { order_number: orderNumber }
+    },
     metadata: {
+      order_number: orderNumber,
       // Was ausgeliefert werden muss, steht an der Bestellung selbst. Der
       // Webhook soll sich nicht darauf verlassen, dass es diesen Warenkorb
       // im Browser noch gibt.
@@ -171,6 +182,15 @@ export async function createCheckoutSession(request, env, stripe) {
   });
 
   return Response.json({ url: session.url });
+}
+
+/** "CT-7K3QX9MD" – ohne leicht verwechselbare Zeichen (0/O, 1/I/L). */
+function newOrderNumber() {
+  const alphabet = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+  const bytes = crypto.getRandomValues(new Uint8Array(8));
+  let code = "";
+  for (const byte of bytes) code += alphabet[byte % alphabet.length];
+  return "CT-" + code;
 }
 
 function jsonError(message, status) {

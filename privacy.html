@@ -88,6 +88,7 @@
           <li><a href="terms.html">Terms</a></li>
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="imprint.html">Imprint</a></li>
+          <li><a href="withdraw.html">Withdraw from contract · Vertrag widerrufen</a></li>
           </ul>
         </nav>
 
@@ -202,12 +203,14 @@
                    Stripe. PDFs werden nicht verkauft – der frühere Absatz zu
                    Resend ist deshalb entfallen. Kommt Resend wieder zum Einsatz,
                    muss er hier zurück. -->
-              <p>Die Bestellbestätigung und den Zahlungsbeleg verschickt Stripe an die E-Mail-Adresse, die du an der Kasse angibst (siehe Abschnitt 4). Rückfragen zu deiner Bestellung, Widerrufe und sonstige Anfragen laufen über die oben genannte E-Mail-Adresse. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
-              <!-- TODO: Bei welchem Anbieter liegt das Postfach info@constantinteck.com
-                   (z. B. IONOS, Strato, Google Workspace, iCloud)? Der Anbieter
-                   ist Auftragsverarbeiter und muss hier mit Name, Sitz und ggf.
-                   Drittlandübermittlung genannt werden. -->
-              <p class="legal__en" lang="en">The order confirmation and the payment receipt are sent by Stripe to the email address you enter at checkout (see section 4). Questions about your order, withdrawals and other enquiries go through the email address given above. The legal basis is Art. 6 (1) (b) GDPR.</p>
+              <!-- Stand 29.10.2026: Stripe schickt den Zahlungsbeleg, unser Worker
+                   über Resend die Bestellbestätigung (mit AGB und
+                   Widerrufsbelehrung) und die Eingangsbestätigung eines
+                   Widerrufs. Postfach info@ liegt bei united-domains. -->
+              <p>Nach der Bestellung erhältst du zwei E-Mails: den Zahlungsbeleg von Stripe (siehe Abschnitt 4) und unsere Bestellbestätigung mit AGB und Widerrufsbelehrung. Erklärst du einen Widerruf über unsere <a class="link-brand" href="withdraw.html">Widerrufsfunktion</a>, verarbeiten wir die dort eingegebenen Angaben (Name, Bestellnummer, E-Mail-Adresse und, falls angegeben, betroffene Waren und Nachricht) und schicken dir eine Eingangsbestätigung und uns eine Kopie. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, für die Bestell- und Widerrufsbestätigung zusätzlich Art. 6 Abs. 1 lit. c DSGVO (gesetzliche Pflicht zur Bestätigung).</p>
+              <p>Diese beiden E-Mails versendet in unserem Auftrag die Resend, Inc., 2261 Market Street, San Francisco, CA 94114, USA; sie verarbeitet dafür deine E-Mail-Adresse und den Inhalt der Nachricht. Die Formulardaten gelangen über unsere Kassenfunktion bei Cloudflare (Abschnitt 4) zu Resend; dort wird nichts gespeichert. Grundlage ist ein Auftragsverarbeitungsvertrag mit Standardvertragsklauseln für die Übermittlung in die USA.</p>
+              <p>Rückfragen zu deiner Bestellung, Widerrufe per E-Mail und sonstige Anfragen laufen über die oben genannte E-Mail-Adresse. Das Postfach liegt bei der united-domains AG, Gautinger Straße 10, 82319 Starnberg, als Auftragsverarbeiter (Art. 28 DSGVO). Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
+              <p class="legal__en" lang="en">After ordering you receive two emails: the payment receipt from Stripe (see section 4) and our order confirmation with the terms and the withdrawal instructions. If you declare a withdrawal using our <a class="link-brand" href="withdraw.html">withdrawal function</a>, we process the details entered there (name, order number, email address and, if given, the goods concerned and a message) and send a confirmation of receipt to you and a copy to us. The legal basis is Art. 6 (1) (b) GDPR, and for the order and withdrawal confirmations additionally Art. 6 (1) (c) GDPR (statutory duty to confirm). These two emails are sent on our behalf by Resend, Inc., 2261 Market Street, San Francisco, CA 94114, USA, which processes your email address and the content of the message for this purpose. The form data reaches Resend through our checkout function at Cloudflare (section 4); nothing is stored there. This is based on a data processing agreement with standard contractual clauses for the transfer to the USA. Questions about your order, withdrawals by email and other enquiries go through the email address given above. The mailbox is hosted by united-domains AG, Gautinger Straße 10, 82319 Starnberg, Germany, as a processor (Art. 28 GDPR). The legal basis is Art. 6 (1) (b) GDPR.</p>
             </div>
           </section>
 
@@ -255,8 +258,9 @@
                 <li><strong>Kassenfunktion bei Cloudflare:</strong> keine dauerhafte Protokollierung durch uns (Abschnitt 4).</li>
                 <li><strong>Bestell- und Zahlungsdaten in unserem Stripe-Konto:</strong> nach den oben genannten Aufbewahrungsfristen; die eigene Aufbewahrung durch Stripe richtet sich nach der Datenschutzerklärung von Stripe (Abschnitt 4).</li>
                 <li><strong>Versanddaten:</strong> bei uns als Teil der Bestelldaten; bei DHL nach dessen Datenschutzerklärung (Abschnitt 5).</li>
+                <li><strong>Bestellbestätigungen und Widerrufe:</strong> als Teil der Bestellunterlagen nach den oben genannten Fristen; in der Kassenfunktion selbst werden sie nicht gespeichert (Abschnitt 6).</li>
               </ul>
-              <p class="legal__en" lang="en">Order data is kept for as long as tax and commercial law require: invoices and accounting records for ten years under § 147 AO, other business correspondence for six years under § 257 HGB, each counted from the end of the calendar year in which the order was placed. Until then, processing is restricted to keeping the data. Email enquiries unrelated to an order are deleted once dealt with, unless we are obliged to keep them. At a glance: <strong>cart in your browser</strong> – until you empty it or delete the site data (section 2); <strong>server logs at GitHub</strong> – as determined by GitHub, which does not state a fixed period (section 3); <strong>checkout function at Cloudflare</strong> – no permanent logging by us (section 4); <strong>order and payment data in our Stripe account</strong> – for the retention periods above, while Stripe’s own retention follows Stripe’s privacy policy (section 4); <strong>shipping data</strong> – with us as part of the order data, at DHL according to its privacy policy (section 5).</p>
+              <p class="legal__en" lang="en">Order data is kept for as long as tax and commercial law require: invoices and accounting records for ten years under § 147 AO, other business correspondence for six years under § 257 HGB, each counted from the end of the calendar year in which the order was placed. Until then, processing is restricted to keeping the data. Email enquiries unrelated to an order are deleted once dealt with, unless we are obliged to keep them. At a glance: <strong>cart in your browser</strong> – until you empty it or delete the site data (section 2); <strong>server logs at GitHub</strong> – as determined by GitHub, which does not state a fixed period (section 3); <strong>checkout function at Cloudflare</strong> – no permanent logging by us (section 4); <strong>order and payment data in our Stripe account</strong> – for the retention periods above, while Stripe’s own retention follows Stripe’s privacy policy (section 4); <strong>shipping data</strong> – with us as part of the order data, at DHL according to its privacy policy (section 5); <strong>order confirmations and withdrawals</strong> – as part of the order records for the periods above; they are not stored in the checkout function itself (section 6).</p>
             </div>
           </section>
 
@@ -331,6 +335,7 @@
           <li><a href="terms.html">Terms</a></li>
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="imprint.html">Imprint</a></li>
+          <li><a href="withdraw.html">Withdraw from contract · Vertrag widerrufen</a></li>
         </ul>
       </div>
 
