@@ -106,11 +106,11 @@ file say what each field does and what has to happen in `privacy.html` before
 switching it on.
 
 **Product card on a recipe page.** Without `featuredProduct`, sweet recipes of
-15 minutes or less show the apron set ("make it with your kids"), everything
+15 minutes or less show the kids' apron ("make it together"), everything
 else the adult apron. The rule lives in `assets/js/recipe-product.js`.
 
 **Shop cards in the recipe list.** `assets/js/recipes-overview.js` inserts one
-after every sixth recipe (set, apron, murder mystery in turn) and hides them
+after every sixth recipe (apron and murder mystery in turn) and hides them
 while a search or filter is active.
 
 **Customer photos.** Put the image into `assets/img/customers/` and add its file

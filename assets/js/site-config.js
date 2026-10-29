@@ -26,7 +26,7 @@ var SITE_CONFIG = {
     text: "The gift for everyone who loves to cook – order by {orderBy} for delivery before Christmas",
     textShort: "The gift for cooks · order by {orderBy}",
     orderBy: "", // TODO: letzter Bestelltag vor Weihnachten, z. B. "18 December"
-    href: "shop/apron-set.html",
+    href: "shop/linen-apron.html",
     start: "2026-11-01",
     end: "2026-12-24"
   },

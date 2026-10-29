@@ -10,7 +10,8 @@
  *      gilt das:   featuredProduct: "kids-apron"
  *      Erlaubt: "linen-apron" (Erwachsene), "kids-apron", "apron-set".
  *   2. Sonst entscheidet die Kategorie:
- *        süß und höchstens 15 Minuten  -> apron-set   (mit Kindern kochen)
+ *        süß und höchstens 15 Minuten  -> kids-apron  (mit Kindern kochen;
+ *                                        das Set steht seit 29.10.2026 nur im Shop)
  *        alles andere                  -> linen-apron (die aus den Videos)
  *
  * WELCHER SATZ?
@@ -51,7 +52,7 @@
     var recipe = (window.RECIPES || {})[slug] || {};
 
     var withKids = category === "backen" && minutes <= KIDS_MAX_MINUTES;
-    var productSlug = recipe.featuredProduct || (withKids ? "apron-set" : "linen-apron");
+    var productSlug = recipe.featuredProduct || (withKids ? "kids-apron" : "linen-apron");
     var product = SHOP_PRODUCTS[productSlug];
 
     // Tippfehler im Feld featuredProduct: lieber der Rückfall aus dem HTML.

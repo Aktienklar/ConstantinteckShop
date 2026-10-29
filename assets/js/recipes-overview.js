@@ -8,7 +8,7 @@
  *      aus dem Raster darunter kopiert; Titel und Bild stehen also weiter nur
  *      an einer Stelle.
  *
- *   2. Nach jeder 6. Rezeptkarte eine Shop-Karte (Set, Schürze, Krimi-Dinner
+ *   2. Nach jeder 6. Rezeptkarte eine Shop-Karte (Schürze und Krimi-Dinner
  *      im Wechsel). recipe-filter.js blendet sie aus, sobald gesucht oder
  *      gefiltert wird – dann soll nur stehen, was zur Suche passt.
  *
@@ -32,12 +32,6 @@
   /* Die Shop-Karten in der Reihenfolge, in der sie im Raster auftauchen. Nach
      der letzten geht es wieder von vorn los. */
   var SHOP_CARDS = [
-    {
-      id: "apron-set",
-      href: "shop/apron-set.html",
-      title: "One apron for you, one for your little helper",
-      text: "Both aprons in one parcel – designed by my mom, sewn by hand in Germany."
-    },
     {
       id: "linen-apron",
       href: "shop/linen-apron.html",
