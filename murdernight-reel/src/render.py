@@ -179,8 +179,9 @@ def light_global(t):
         g = 0.0
     else:
         u = (t - T.RELIGHT) / T.RELIGHT_DUR
-        match = 0.45 * np.exp(-max(0, t - T.RELIGHT) * 5) * (1 + 0.3 * np.sin(t * 90))
-        g = min(1.0, 0.25 + 0.75 * ease_in_out(u) + match)
+        ramp = smoothstep(0.0, 0.07, t - T.RELIGHT)  # Streichholz flammt ueber ~4 Frames auf
+        match = 0.40 * np.exp(-max(0, t - T.RELIGHT - 0.07) * 5) * (1 + 0.2 * np.sin(t * 90))
+        g = min(1.0, (0.12 + 0.75 * ease_in_out(u) + match) * (0.15 + 0.85 * ramp))
     return g
 
 
@@ -457,9 +458,9 @@ def _hud():
         dict(runs=(("Einer von euch", C),), size=120, y=330, t_in=T.HOOK_TEXT_IN, t_out=T.HOOK_TEXT_OUT),
         dict(runs=(("lügt.", R),), size=150, y=480, t_in=T.HOOK_TEXT_IN + 0.08, t_out=T.HOOK_TEXT_OUT),
         dict(runs=(("9 ", R), ("Fälle.", C)), size=150, y=330, t_in=T.NINE_CASES_IN, t_out=T.NINE_CASES_OUT),
-        dict(runs=((T.NUMBERS[0][0], C),), size=130, y=720, t_in=T.NUMBERS[0][1], t_out=T.NUMBERS_OUT),
-        dict(runs=((T.NUMBERS[1][0], C),), size=130, y=880, t_in=T.NUMBERS[1][1], t_out=T.NUMBERS_OUT),
-        dict(runs=(("1 ", C), ("Täter.", R)), size=130, y=1040, t_in=T.NUMBERS[2][1], t_out=T.NUMBERS_OUT),
+        dict(runs=((T.NUMBERS[0][0], C),), size=130, y=720, scrim=0.9, t_in=T.NUMBERS[0][1], t_out=T.NUMBERS_OUT),
+        dict(runs=((T.NUMBERS[1][0], C),), size=130, y=880, scrim=0.9, t_in=T.NUMBERS[1][1], t_out=T.NUMBERS_OUT),
+        dict(runs=(("1 ", C), ("Täter.", R)), size=130, y=1040, scrim=0.9, t_in=T.NUMBERS[2][1], t_out=T.NUMBERS_OUT),
         dict(runs=(("Wer ", C), ("war's?", R)), size=150, y=1290, t_in=T.WHO_TEXT_IN, t_out=T.WHO_TEXT_OUT),
         dict(runs=((T.PLAY_WORDS[0][0], C),), size=110, y=300, t_in=T.PLAY_WORDS[0][1], t_out=T.PLAY_TEXT_OUT),
         dict(runs=((T.PLAY_WORDS[1][0], C),), size=110, y=420, t_in=T.PLAY_WORDS[1][1], t_out=T.PLAY_TEXT_OUT),
@@ -517,20 +518,28 @@ def scrim_sprite():
     s = np.zeros((200, 400, 4), np.float32)
     yy, xx = np.mgrid[0:200, 0:400].astype(np.float32)
     d = np.sqrt(((xx - 200) / 200) ** 2 + ((yy - 100) / 100) ** 2)
-    s[..., 3] = np.clip(1 - d, 0, 1) ** 1.2
+    s[..., 3] = np.clip((1 - d) / 0.45, 0, 1) ** 1.5  # flaches Plateau, weicher Rand
     return Sprite(s)
 
 
 def draw_hud(canvas, t):
+    # S3: gemeinsame dunkle Flaeche hinter dem Zahlen-Stapel (Lesbarkeit ueber den Akten)
+    nums = [hud_state(it, t) for it in HUD if it.get("scrim", 0) >= 0.9]
+    pa = max([s[6] for s in nums if s is not None] or [0])
+    if pa > 0:
+        sc = scrim_sprite()
+        Mp = affine(TEXT_CX, 880, 1.0, 0, ox=sc.w / 2, oy=sc.h / 2, sx=1000 / sc.w, sy=640 / sc.h)
+        blit(canvas, sc, Mp, alpha=pa * 0.82)
     for it in HUD:
         st = hud_state(it, t)
         if st is None:
             continue
         spr, pad, tw, th, scale, dy, alpha = st
         sc = scrim_sprite()
-        Ms = affine(TEXT_CX, it["y"] + dy, 1.0, 0, ox=sc.w / 2, oy=sc.h / 2, sx=(tw + it["size"] * 1.2) / sc.w,
-                    sy=(th + it["size"] * 0.5) / sc.h)
-        blit(canvas, sc, Ms, alpha=alpha * 0.65)
+        strong = it.get("scrim", 0.65)
+        Ms = affine(TEXT_CX, it["y"] + dy, 1.0, 0, ox=sc.w / 2, oy=sc.h / 2, sx=(tw + it["size"] * 1.6) / sc.w,
+                    sy=(th + it["size"] * 0.7) / sc.h)
+        blit(canvas, sc, Ms, alpha=alpha * strong)
         M = affine(TEXT_CX, it["y"] + dy, scale, 0, ox=pad + tw / 2, oy=pad + th / 2)
         blit(canvas, spr, M, alpha=alpha)
 

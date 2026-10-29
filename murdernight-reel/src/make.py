@@ -9,6 +9,7 @@ import cv2
 import timeline as T
 from common import BUILD, OUT
 
+PREVIEW_NAME = os.environ.get("PREVIEW_NAME", "preview_v1.mp4")
 STYLEFRAMES = [("S1", 0.42), ("S2", 2.62), ("S3", 6.05), ("S4", 7.95), ("S5", 11.30), ("S6", 12.70)]
 
 
@@ -62,7 +63,7 @@ def preview():
              "-vf", f"fps={T.PREVIEW_FPS},scale={T.PREVIEW_W}:{T.PREVIEW_H}:flags=lanczos",
              "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
              "-c:a", "aac", "-ar", "48000", "-b:a", "256k", "-movflags", "+faststart", "-shortest",
-             os.path.join(OUT, "preview_v1.mp4")])
+             os.path.join(OUT, PREVIEW_NAME)])
 
 
 def final(name="murdernight_reel_v1"):

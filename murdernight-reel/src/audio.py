@@ -363,8 +363,9 @@ def s_match():
     n = int(d * SR)
     scratch = bp(noise(0.12, 71), 1500, 8000) * adsr(int(0.12 * SR), 0.005, 0.03, 0.7, 0.06)
     flare = bp(noise(d, 72), 200, 3000) * adsr(n, 0.02, 0.15, 0.25, 0.4)
-    crackle = (np.random.default_rng(73).random(n) > 0.996) * expdec(n, 0.3)
-    crackle = hp(crackle.astype(float), 3000)
+    imp = (np.random.default_rng(73).random(n) > 0.997) * expdec(n, 0.3)
+    grain = np.random.default_rng(74).standard_normal(int(0.003 * SR)) * np.hanning(int(0.003 * SR))
+    crackle = hp(np.convolve(imp.astype(float), grain)[:n], 2500) * 0.35  # weiche Knister-Koerner statt Einzelsample-Klicks
     out = flare * 0.45 + crackle * 0.8
     out[: len(scratch)] += scratch * 0.9
     return out

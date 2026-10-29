@@ -130,3 +130,20 @@ src/make.py       styleframes | preview | final | check
 - Wand reicht oberhalb des Logos weiter (kein schwarzer Rand im Logo-Shot); Handy + PDF-Seiten liegen tiefer, damit „Kaufen. / Rollen verteilen. / Ermitteln.“ freie Fläche hat.
 - Lesbarkeit: weicher dunkler Schatten hinter jeder Headline; in S3 wird die Szene um 65 % abgedunkelt.
 - Beim Logo-Hit wechselt das Führungslicht von Amber zu Cremeweiß.
+
+---
+
+## 12. Korrekturrunde (Phase 4)
+
+| # | Prüfung | Befund | Maßnahme |
+|---|---|---|---|
+| 1 | Loop F899 ↔ F0 | Mittlere Abweichung 6,4/255 (praktisch nur Filmkorn); Faden, Nadel und Kamera in identischer Pose; Ton: Naht < 0,001, letzte 20 ms stumm | – |
+| 2 | Ruckler Kamera | S1→S2 war ein Reißschwenk (1,20→1,55 s) | Fahrt beginnt jetzt bei 1,00 s, endet 1,70 s; max. Bilddifferenz 15,9 → 13,2 |
+| 3 | Ruckler Kamera | Hochschießen zum Logo startete aus dem Stand (Beschl. 165 px/Frame²) | Zwischen-Key bei 11,68 s → 105 px/Frame²; Rest ist gewollter Reißschwenk mit 5-fach-Motion-Blur |
+| 4 | Licht-Pop | F404 sprang nach dem Schwarz von 4,8 auf 41,6 (Helligkeit/255) | Streichholz flammt über 4 Frames auf: 4,8 → 17 → 18 → 22 → 30 |
+| 5 | Audio-Pops | 2 Klicks (7,087 s / 7,394 s) im Streichholz-Knistern (Einzel-Sample-Impulse) | Knistern aus weichen 3-ms-Körnern; Scan danach: 0 Klicks |
+| 6 | Lesbarkeit S3 | „1 Täter.“ lag auf dem Etikett „Hollywood, 1934“ | Gemeinsame dunkle Fläche hinter dem Zahlen-Stapel + flacherer Schatten hinter allen Headlines |
+| 7 | Safe Zones | HUD-Text: 0 Verstöße. Etiketten: 68 Meldungen, alle während Kamerafahrten (9,3–9,9 s Etikett 4 als ≤ 15-px-Streifen am oberen Rand; 11,6–11,9 s Reißschwenk bei Zoom 0,36 → Text 18 px, unlesbar) | S5-Kamera 40 px nach rechts versetzt (rechter Rand max. 965 → während Fahrt); kein stehender Text in UI-Zonen |
+| 8 | Abgeschnittener Text | Kein stehender Text angeschnitten; nur Wandobjekte, die bei Fahrten aus dem Bild laufen | – |
+| 9 | 60-ms-Regel | Nicht-Hits ≥ 60 ms auseinander; 22 von 67 Tipp-Ticks entfallen dort, wo Faden-Sounds liegen | – |
+| 10 | Lautheit (pyloudnorm) | Mix −14,1 LUFS / −1,3 dBTP; ohne Musik −14,1 LUFS / −1,3 dBTP; Musik 13 dB unter jeder VO-Zeile | finale ffmpeg-Messung in Phase 5 |
