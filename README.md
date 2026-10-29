@@ -239,6 +239,28 @@ visitors – the visible labels next to them are English.
 Prices are written as `€44.90`. The cart formats the same way, via
 `formatPrice()` in `assets/js/shop-data.js`.
 
+## Shipping zones, order confirmation and withdrawal (since 29.10.2026)
+
+- **Shipping costs depend on the destination.** The buyer picks a zone in the
+  cart (Germany, EU, Switzerland & UK, rest of Europe, rest of the world);
+  the worker then only allows delivery addresses from that zone at Stripe.
+  Zones, prices and working days live in `SHIPPING.zones`
+  (`worker/src/catalog.js`) and `SHOP_SHIPPING_ZONES`
+  (`assets/js/shop-data.js`); the same values are written out in `terms.html`
+  § 4/§ 6 and `shipping-returns.html`. Change all four together.
+- **Order confirmation:** `worker/src/webhook.js` (`confirmOrder`) emails every
+  paid order with order number, items, shipping and the terms and withdrawal
+  instructions as text attachments (fetched from the live pages). Needs a
+  Stripe webhook to `<worker>/api/webhook` (events
+  `checkout.session.completed`, `checkout.session.async_payment_succeeded`),
+  `STRIPE_WEBHOOK_SECRET` and `RESEND_API_KEY`.
+- **Withdrawal function:** `withdraw.html` posts to `<worker>/api/withdraw`
+  (`worker/src/withdraw.js`), which emails a confirmation of receipt to the
+  customer and a copy to `SHOP_EMAIL`. Linked from every footer.
+- **Deploy order:** worker first (`cd worker && npx wrangler deploy`), then
+  the website. The other way round, the cart shows zone prices that the old
+  worker does not charge.
+
 ## Shop terms
 
 `SHOP_TERMS` in `assets/js/shop-data.js` holds shipping cost, free-shipping
