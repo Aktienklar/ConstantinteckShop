@@ -10,7 +10,9 @@ Aufruf (macht deploy.sh automatisch, vor images.py und seo.py):
      <!-- /Autor -->, direkt vor "More from …". Text steht unten in AUTHOR_BOX.
   2. Rezeptsammlungen collections/<slug>.html aus tools/collections.json.
      Die Karten werden aus recipes.html übernommen, Kopf und Fuß aus einer
-     Rezeptseite. Dazu die Leiste mit den Sammlungen auf recipes.html.
+     Rezeptseite. Dazu die Leiste mit den Sammlungen auf recipes.html und
+     unter jedem Rezept drei thematisch passende Rezepte mit Link zur
+     Sammlung (zwischen <!-- Verwandt --> und <!-- /Verwandt -->).
   3. llms.txt im Hauptordner: Kurzbeschreibung und Inhaltsverzeichnis der
      Seite für KI-Assistenten (https://llmstxt.org).
 
@@ -72,7 +74,7 @@ def author_boxes():
     for page in sorted(glob.glob(os.path.join(ROOT, "recipes", "*.html"))):
         rel = os.path.relpath(page, ROOT)
         src = read(rel)
-        anchor = re.search(r'[ \t]*<section class="mt-12">\s*<h2[^>]*>More from', src)
+        anchor = re.search(r'[ \t]*(<!-- Verwandt|<section class="mt-12">\s*<h2[^>]*>More from)', src)
         new = replace_between(src, "<!-- Autor", "<!-- /Autor -->", "      " + AUTHOR_BOX,
                               anchor.group(0) if anchor else "</article>")
         changed += write(rel, new)
@@ -169,6 +171,53 @@ def collections():
     return changed, result
 
 
+# --- 2b. Passende Rezepte unter jedem Rezept ---------------------------------
+
+def related_recipes(result):
+    """Drei thematisch passende Rezepte statt "More from <Grobkategorie>".
+
+    Punkte: gleiche Sammlung 3, gleiches Wort im Namen ("sorbet", "mango")
+    je 1, gleicher Tag 1, gleiche Grobkategorie (süß/herzhaft) 1. Bei Gleichstand gewinnt die Reihenfolge in recipes.html,
+    also das neuere Rezept."""
+    cards = recipe_cards()
+    order = list(cards)
+    member = {s: [c for c, (_, slugs) in result.items() if s in slugs] for s in cards}
+    sweet = {s: "badge--sweet" in cards[s][2] for s in cards}
+
+    def words(slug):
+        return set(re.findall(r"[a-z]{4,}", cards[slug][0].lower())) - {"thick", "creamy", "easy", "healthy"}
+
+    def score(a, b):
+        return (3 * len(set(member[a]) & set(member[b]))
+                + len(words(a) & words(b))
+                + len(set(t.lower() for t in cards[a][1]) & set(t.lower() for t in cards[b][1]))
+                + (sweet[a] == sweet[b]))
+
+    changed = 0
+    for slug in cards:
+        picks = sorted((s for s in cards if s != slug), key=lambda s: (-score(slug, s), order.index(s)))[:3]
+        head = '<h2 id="more-recipes" style="font-size:1.5rem">More like this</h2>'
+        if member[slug]:
+            c, slugs = result[member[slug][0]]
+            head += ('\n          <a class="link-brand" href="../collections/%s.html">All %d in “%s” →</a>'
+                     % (member[slug][0], len(slugs), html.escape(c["label"], quote=False)))
+        block = ("<!-- Verwandt (geschrieben von tools/blocks.py) -->\n"
+                 '      <section class="mt-12" aria-labelledby="more-recipes">\n'
+                 '        <div class="section-head">\n          %s\n        </div>\n'
+                 '        <div class="grid grid--3 mt-6">\n%s\n        </div>\n'
+                 "      </section>\n      <!-- /Verwandt -->"
+                 % (head, "\n".join("        " + cards[p][2] for p in picks)))
+        path = "recipes/%s.html" % slug
+        src = read(path)
+        if "<!-- Verwandt" in src:
+            new = replace_between(src, "<!-- Verwandt", "<!-- /Verwandt -->", "      " + block, "")
+        else:
+            new = re.sub(r'[ \t]*<section class="mt-12">\s*<h2[^>]*>More from.*?</section>',
+                         lambda _: "      " + block, src, count=1, flags=re.S)
+        changed += write(path, new)
+    return changed
+
+
 # --- 3. llms.txt -------------------------------------------------------------
 
 def llms_txt(result):
@@ -220,9 +269,10 @@ def llms_txt(result):
 def main():
     a = author_boxes()
     c, result = collections()
+    r = related_recipes(result)
     l = llms_txt(result)
-    print("  Autorenbox: %d Seiten, Sammlungen: %d Dateien, llms.txt: %s."
-          % (a, c, "neu" if l else "unverändert"))
+    print("  Autorenbox: %d Seiten, Sammlungen: %d Dateien, passende Rezepte: %d Seiten, llms.txt: %s."
+          % (a, c, r, "neu" if l else "unverändert"))
 
 
 if __name__ == "__main__":
