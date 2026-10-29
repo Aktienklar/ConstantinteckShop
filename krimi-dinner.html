@@ -46,6 +46,44 @@
       ]
     },
     {
+      "@type": "FAQPage",
+      "@id": "https://constantinteck.com/krimi-dinner.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many players do I need?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each case is written for a set number of players between 5 and 12. You'll find the range on every card above – from 5–6 players for The Last Night at Fjell to 8–12 for The Comet Vintage. Use the filter to see the cases that fit your group."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I have to print anything?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You can print the PDF at home or play straight from your phones."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which language are the games in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The cases on this page are in English. All nine are also available in German at murdernight.de."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get the PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pick a case and pay at our partner shop Murdernight – card, PayPal, Apple Pay and more. The PDF is ready to download right after payment."
+          }
+        }
+      ]
+    },
+    {
       "@type": "Organization",
       "@id": "https://constantinteck.com/#organization",
       "name": "Constantinteck",
@@ -88,18 +126,20 @@
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
 
-  <!-- Ankündigungsleiste: das Erste, was ein Besucher sieht. Sie trägt das
-       Angebot, das den größten Warenkorb macht, und die zwei Bedingungen,
-       die über den ersten Kauf entscheiden: Versand und Rückgabe. -->
+  <!-- Ankündigungsleiste: Auf dieser Seite wirbt sie für die Fälle, nicht für
+       die Schürze. data-banner-fixed hält die Leiste aus site-config.js
+       (Schürzen-Aktion) hier heraus. Von November bis Dezember tauscht
+       krimi-dinner.js Text und Ziel gegen den Fall mit Saison
+       (Feld "seasonal" in krimi-dinner-data.js). -->
   <div class="announcement">
     <div class="container announcement__inner">
-      <a class="announcement__deal" href="shop/linen-apron.html">
+      <a class="announcement__deal" href="#cases" data-banner-fixed data-krimi-banner>
         <span class="announcement__dot" aria-hidden="true"></span>
-        <span class="only-narrow">The apron from the videos · €49.90</span>
-        <span class="only-wide">The apron from my videos – waffle piqué, sewn by hand in Germany · €49.90</span>
+        <span class="only-narrow">9 murder mystery games · €8.99 each</span>
+        <span class="only-wide">9 murder mystery dinner games for 5–12 players – instant PDF, €8.99 each</span>
         <span aria-hidden="true">→</span>
       </a>
-      <p class="announcement__terms">Fast shipping · 14-day returns</p>
+      <p class="announcement__terms">Instant PDF download</p>
     </div>
   </div>
 
@@ -137,48 +177,84 @@
   </header>
 
   <main id="content">
-    <!-- Farbiges Band wie auf shop.html, damit die Seite nicht mit einer
-         Überschrift auf leerem Grund beginnt. -->
+    <!-- a) Hero: Versprechen, drei Vorteile, ein Knopf zum Raster. -->
     <section class="band--dough">
-      <div class="container" style="padding-block:2.5rem">
+      <div class="container krimi-hero">
         <p class="eyebrow rise">Murder mystery dinner</p>
-        <h1 class="rise" style="animation-delay:60ms;margin-top:.5rem;font-size:1.875rem;max-width:48rem">
-          Dinner is served – and one of you did it.
-        </h1>
+        <h1 class="rise" style="animation-delay:60ms">Dinner is served – and one of you did it.</h1>
         <p class="lede rise" style="animation-delay:120ms">
-          Nine murder mystery games for 5 to 12 players, €8.99 each – as a PDF
-          to print at home or play from your phones. They fit an evening of
-          cooking and eating together: everyone gets a role, and the case is
-          solved between the courses. Ready to download right after purchase.
+          Murder mystery games for an evening of cooking and eating together:
+          everyone gets a role, and the case is solved between the courses.
+          €8.99 per case.
         </p>
+        <ul class="krimi-benefits rise" style="animation-delay:160ms">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span><b>Instant PDF</b> ready right after payment</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19.2a6.2 6.2 0 0 1 12.4 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 5.6"/><path d="M18.2 14.4a6.2 6.2 0 0 1 3 4.8"/></svg><span><b>5–12 players</b> depending on the case</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h9l3 3v3"/><rect x="3" y="9" width="14" height="8" rx="2"/><path d="M6 14h8v7H6z"/><rect x="18" y="11" width="4" height="10" rx="1"/></svg><span><b>Print or play on phones</b> – your choice</span></li>
+        </ul>
+        <a class="btn btn--primary lift krimi-hero__cta rise" style="animation-delay:200ms" href="#cases">
+          Find your case <span aria-hidden="true">↓</span>
+        </a>
       </div>
     </section>
 
     <div class="container section">
-      <!-- Die Fälle. Die Karten baut assets/js/krimi-dinner.js aus
-           assets/js/krimi-dinner-data.js – Namen, Preise und Adressen stehen
-           nur dort. Jeder Knopf führt zur Produktseite bei Murdernight. -->
-      <section class="shop-section" aria-labelledby="cases">
+      <!-- b) + c) Filter und Fälle. Die Karten und die Filter baut
+           assets/js/krimi-dinner.js aus assets/js/krimi-dinner-data.js –
+           Namen, Preise und Adressen stehen nur dort. Jeder Knopf führt zur
+           Produktseite bei Murdernight. -->
+      <section class="shop-section krimi-cases" aria-labelledby="cases">
         <div class="shop-section__head">
           <span class="shop-section__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span>
           <div>
             <h2 id="cases">The cases</h2>
-            <p class="shop-section__hint">Sold and delivered by Murdernight – each button takes you there.</p>
+            <p class="shop-section__hint">Secure payment and instant download via our partner shop Murdernight.</p>
           </div>
         </div>
 
+        <div class="krimi-filters" data-krimi-filters hidden></div>
+
         <div class="grid grid--cases" data-krimi-cases></div>
+
+        <div class="empty-state mt-6" data-krimi-empty hidden>
+          <p>No case matches all of these.</p>
+          <p class="muted">Try fewer filters – or have a look at all nine.</p>
+          <button type="button" class="btn btn--secondary mt-6" data-krimi-reset>Show all cases</button>
+        </div>
         <noscript>
           <p class="muted mt-6">The cases are listed at murdernight.store/en/shop.</p>
         </noscript>
       </section>
 
-      <!-- So funktioniert's: dieselben vier Schritte wie bei Murdernight. -->
+      <!-- d) Was im PDF steckt. TODO: Liste mit Murdernight abgleichen und
+           ergänzen (Seitenzahl, Menüvorschläge, Namensschilder …?). Die
+           Vorschauseiten erscheinen erst, wenn KRIMI_PREVIEWS in
+           krimi-dinner-data.js Bilder enthält. -->
+      <section class="shop-section krimi-inside" aria-labelledby="inside">
+        <div class="section-head">
+          <div>
+            <h2 id="inside">What's inside the PDF</h2>
+            <p>Everything the host needs for the evening, in one download.</p>
+          </div>
+        </div>
+        <div class="krimi-inside__grid">
+          <ul class="krimi-inside__list">
+            <!-- TODO: jeden Punkt bestätigen -->
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A role booklet for every player</b> – who they are, what they know, what they'd rather hide</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Invitations</b> to send to your guests before the evening</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A run sheet for the host</b> that walks you through the rounds</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Clues</b> that come into play as the evening goes on</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>The solution</b> – for the big reveal at the end</span></li>
+          </ul>
+          <div class="krimi-previews" data-krimi-previews hidden></div>
+        </div>
+      </section>
+
+      <!-- e) So funktioniert's: dieselben vier Schritte wie bei Murdernight. -->
       <section class="shop-section" aria-labelledby="how">
         <div class="section-head">
           <div>
             <h2 id="how">How it works</h2>
-            <p>Four steps from the purchase to the evening itself.</p>
           </div>
         </div>
 
@@ -186,50 +262,136 @@
           <li>
             <span class="steps__num" aria-hidden="true">1</span>
             <h3>Buy</h3>
-            <p>Pick a case and pay at Murdernight – card, PayPal, Apple Pay and more.</p>
+            <p>Card, PayPal, Apple Pay and more.</p>
           </li>
           <li>
             <span class="steps__num" aria-hidden="true">2</span>
             <h3>Download</h3>
-            <p>The PDF is ready to download right after payment.</p>
+            <p>The PDF is ready right after payment.</p>
           </li>
           <li>
             <span class="steps__num" aria-hidden="true">3</span>
             <h3>Print</h3>
-            <p>Print it at home or play it from your phones, and hand out the roles.</p>
+            <p>Or play from your phones.</p>
           </li>
           <li>
             <span class="steps__num" aria-hidden="true">4</span>
             <h3>Play</h3>
-            <p>Cook, eat, and solve the case at your own table.</p>
+            <p>Cook, eat and solve the case.</p>
           </li>
         </ol>
       </section>
 
-      <!-- Wo gekauft wird. Der Satz muss wahr bleiben: Auf dieser Website gibt
-           es für die Krimi-Dinner weder Warenkorb noch Kasse. -->
-      <aside class="panel panel--outline krimi-hint mt-12" aria-labelledby="where">
-        <div class="krimi-hint__text">
-          <h2 id="where" style="font-size:1.25rem">Purchase and download run through Murdernight</h2>
-          <p class="muted">
-            I make these games together with friends, and they are sold on
-            their own site. Checkout, the download and all terms are handled
-            there – nothing is sold or charged for them on this website.
-          </p>
+      <!-- f) Rezepte zum Fall. Welche Rezepte zu welchem Fall passen, steht im
+           Feld "recipes" in krimi-dinner-data.js (TODO: befüllen). Solange
+           dort nichts steht, zeigt der Abschnitt nur den Weg zu allen
+           Rezepten. -->
+      <section class="shop-section" aria-labelledby="menu">
+        <div class="section-head">
+          <div>
+            <h2 id="menu">Cook the menu, solve the case</h2>
+            <p>Every recipe on this site is free. Pick a few courses for the evening.</p>
+          </div>
+          <a class="btn btn--secondary" href="recipes.html">Browse the recipes</a>
         </div>
-        <a class="btn btn--secondary" data-krimi-link="shop">All cases at Murdernight <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
-      </aside>
+        <div class="grid krimi-menus" data-krimi-menus hidden></div>
+      </section>
 
-      <!-- Weg zurück zu den Rezepten: Das Essen gehört zum Abend dazu. -->
+      <!-- g) Fragen. Die strukturierten Daten (FAQPage) schreibt tools/seo.py
+           aus genau diesen Einträgen – Fragen mit "hidden" zählen nicht mit.
+           TODO: Die versteckten Fragen beantworten und "hidden" entfernen. -->
+      <section class="shop-section" aria-labelledby="faq">
+        <div class="section-head">
+          <div>
+            <h2 id="faq">Questions</h2>
+          </div>
+        </div>
+
+        <div class="faq" data-faq>
+          <details class="faq__item">
+            <summary>How many players do I need?</summary>
+            <div class="faq__answer">
+              <p>Each case is written for a set number of players between 5 and 12. You'll find the range on every card above – from 5–6 players for The Last Night at Fjell to 8–12 for The Comet Vintage. Use the filter to see the cases that fit your group.</p>
+            </div>
+          </details>
+          <details class="faq__item" hidden>
+            <!-- TODO: Antwort von Murdernight – wie viel Vorbereitung braucht der Gastgeber, und wie lange vorher? -->
+            <summary>Does anyone need to prepare?</summary>
+            <div class="faq__answer">
+              <p>TODO</p>
+            </div>
+          </details>
+          <details class="faq__item" hidden>
+            <!-- TODO: Antwort von Murdernight – kann der Gastgeber mitspielen, ohne die Lösung zu kennen? -->
+            <summary>Can the host play along?</summary>
+            <div class="faq__answer">
+              <p>TODO</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>Do I have to print anything?</summary>
+            <div class="faq__answer">
+              <p>No. You can print the PDF at home or play straight from your phones.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>Which language are the games in?</summary>
+            <div class="faq__answer">
+              <p>The cases on this page are in English. All nine are also available in German at murdernight.de.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>How do I get the PDF?</summary>
+            <div class="faq__answer">
+              <p>Pick a case and pay at our partner shop Murdernight – card, PayPal, Apple Pay and more. The PDF is ready to download right after payment.</p>
+            </div>
+          </details>
+          <details class="faq__item" hidden>
+            <!-- TODO: Wohin wenden sich Käufer, wenn der Download nicht klappt? Support-Adresse von Murdernight eintragen. -->
+            <summary>What if the download doesn't work?</summary>
+            <div class="faq__answer">
+              <p>TODO</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- h) Vertrauen: wer dahintersteht. Kundenstimmen und Fotos von
+           Spieleabenden erscheinen erst, wenn KRIMI_SOCIAL in
+           krimi-dinner-data.js echte Einträge hat – nie erfundene. -->
+      <section class="shop-section" aria-labelledby="from-me">
+        <div class="panel krimi-me">
+          <picture>
+            <source type="image/avif" srcset="assets/img/constantin-avatar.avif">
+            <img class="krimi-me__photo" src="assets/img/constantin-avatar.jpg" width="96" height="96" alt="Constantin" loading="lazy">
+          </picture>
+          <div>
+            <h2 id="from-me">Why murder mysteries on a food site?</h2>
+            <!-- TODO: Absatz in deinen eigenen Worten prüfen/anpassen. -->
+            <p class="muted">
+              I'm Constantin – you might know me from my cooking videos. I make
+              these games together with friends, for exactly the kind of
+              evening I love to cook for: a full table, good food, and this
+              time a mystery to solve between the courses.
+            </p>
+          </div>
+        </div>
+        <div data-krimi-social hidden></div>
+      </section>
+
+      <!-- i) Abschluss: alle Fälle bei Murdernight. -->
       <section class="feature feature--split mt-12">
         <div>
-          <h2>Still need a menu?</h2>
+          <h2>Ready for your murder mystery night?</h2>
           <p class="feature__text">
-            Every recipe on this site is free. Pick a few courses for the
-            evening.
+            Pick your case and download it in minutes – secure payment via our
+            partner shop Murdernight.
           </p>
         </div>
-        <a class="btn btn--primary lift" href="recipes.html">Browse the recipes</a>
+        <div class="feature__actions">
+          <a class="btn btn--primary lift" data-krimi-link="shop" data-krimi-content="closing-cta" data-track="krimi-click/closing-cta/all-cases">All cases at Murdernight <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <a href="#cases">Back to the cases</a>
+        </div>
       </section>
     </div>
   </main>
@@ -281,7 +443,7 @@
 
     <div class="container site-footer__legal">
       <div class="site-footer__legal-row">
-        <p>No VAT is charged (small-business rule, § 19 UStG). Plus €4.90 shipping per order.</p>
+        <p>The murder mystery games are digital downloads sold by Murdernight – no shipping. Aprons from this shop: no VAT is charged (small-business rule, § 19 UStG), plus €4.90 shipping per order.</p>
         <p>© 2026 Constantinteck</p>
       </div>
     </div>

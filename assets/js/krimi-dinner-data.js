@@ -84,8 +84,8 @@ var KRIMI_SITE = {
  *             900 px verkleinert) – als eigene Kopie, nichts von Murdernight
  *             direkt einbinden. Leer = neutraler Platzhalter.
  *             Hochformat 675 × 900 (3:4), Titel im Bild – wird nie
- *             beschnitten. Neben jedem JPEG liegen <name>-400.webp und
- *             <name>-675.webp; bei einem neuen Cover einmal
+ *             beschnitten. Neben jedem JPEG liegen <name>-240.webp,
+ *             -400.webp und -675.webp; bei einem neuen Cover einmal
  *             python3 tools/krimi-images.py laufen lassen.
  * moods       Stimmung für die Filter auf krimi-dinner.html, Schlüssel aus
  *             KRIMI_LABELS.<lang>.moods ("cosy", "spooky", "glamorous", "scifi")
@@ -331,6 +331,38 @@ var KRIMI_CASES = [
   }
 ];
 
+/**
+ * VORSCHAUSEITEN – "What's inside the PDF" auf krimi-dinner.html.
+ *
+ * 1–2 Seiten aus einem PDF als Bild (z. B. eine Seite aus einem Rollenheft),
+ * die auf der Seite unscharf gezeigt werden. Leere Liste = kein Platz dafür.
+ * Bild ab dem Hauptordner, am besten Hochformat; nur Seiten zeigen, die
+ * Murdernight freigegeben hat.
+ *
+ *   { image: "assets/img/krimi/preview-role-booklet.jpg", alt: "A page from a role booklet", caption: "Role booklet" },
+ */
+var KRIMI_PREVIEWS = [
+  // TODO: 1–2 Vorschauseiten eintragen
+];
+
+/**
+ * KUNDENSTIMMEN UND FOTOS – unter "Why murder mysteries on a food site?".
+ *
+ * Nur echte Stimmen und Fotos mit Zustimmung der Absender. Leere Listen =
+ * der Bereich erscheint nicht. Nichts erfinden, nichts umformulieren.
+ *
+ *   reviews: { quote: "…", by: "Anna, Hamburg", caseId: "the-comet-vintage" }
+ *   photos:  { image: "assets/img/krimi/evening-anna.jpg", alt: "…", by: "Anna, Hamburg" }
+ */
+var KRIMI_SOCIAL = {
+  reviews: [
+    // TODO: echte Kundenstimmen
+  ],
+  photos: [
+    // TODO: echte Fotos von Spieleabenden
+  ]
+};
+
 /** Sichtbare Beschriftungen je Sprache – passend zu KRIMI_SITE.lang. */
 var KRIMI_LABELS = {
   en: {
@@ -349,6 +381,21 @@ var KRIMI_LABELS = {
       tricky: "Tricky: the decisive clues are well hidden – for groups who like a real puzzle."
     },
     moods: { cosy: "Cosy", spooky: "Spooky", glamorous: "Glamorous", scifi: "Sci-fi" },
+    filters: {
+      players: "Players",
+      mood: "Mood",
+      occasion: "Occasion",
+      count: function (shown, all) {
+        return shown === all ? "All " + all + " cases" : shown + " of " + all + " cases";
+      },
+      reset: "Reset"
+    },
+    playerBuckets: [[5, 6], [7, 9], [10, 12]],
+    seasonalBanner: function (title, occasion) {
+      return { short: title + " · seasonal pick", long: title + " – the murder mystery for your " + occasion };
+    },
+    menuFor: "Cook for",
+    reviewsHeading: "From your murder mystery nights",
     occasions: {
       christmas: "Christmas party",
       halloween: "Halloween party",
@@ -359,6 +406,7 @@ var KRIMI_LABELS = {
     },
     toGame: "To the game",
     toCases: "See the cases",
+    allCases: function (count) { return "See all " + count + " cases"; },
     newTab: "opens Murdernight in a new tab",
     hintEyebrow: "Murder mystery dinner",
     hintText: "This dish is part of a murder mystery dinner menu.",
@@ -388,6 +436,21 @@ var KRIMI_LABELS = {
       tricky: "Knifflig: Die entscheidenden Hinweise sind gut versteckt – für Gruppen, die gern rätseln."
     },
     moods: { cosy: "Gemütlich", spooky: "Gruselig", glamorous: "Glamourös", scifi: "Sci-Fi" },
+    filters: {
+      players: "Personen",
+      mood: "Stimmung",
+      occasion: "Anlass",
+      count: function (shown, all) {
+        return shown === all ? "Alle " + all + " Fälle" : shown + " von " + all + " Fällen";
+      },
+      reset: "Zurücksetzen"
+    },
+    playerBuckets: [[5, 6], [7, 9], [10, 12]],
+    seasonalBanner: function (title, occasion) {
+      return { short: title + " · passt zur Saison", long: title + " – der Krimi für deine " + occasion };
+    },
+    menuFor: "Menü für",
+    reviewsHeading: "Von euren Krimiabenden",
     occasions: {
       christmas: "Weihnachtsfeier",
       halloween: "Halloween",
@@ -398,6 +461,7 @@ var KRIMI_LABELS = {
     },
     toGame: "Zum Spiel",
     toCases: "Zu den Fällen",
+    allCases: function (count) { return "Alle " + count + " Fälle ansehen"; },
     newTab: "öffnet Murdernight in neuem Tab",
     hintEyebrow: "Krimi-Dinner",
     hintText: "Dieses Gericht ist Teil eines Krimi-Dinner-Menüs.",

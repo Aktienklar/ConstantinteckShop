@@ -41,7 +41,7 @@
     {
       id: "krimi-dinner",
       href: "krimi-dinner.html",
-      image: "assets/img/krimi/death-at-studio-7.jpg",
+      covers: 3,
       title: "Dinner's sorted. Now: who did it?",
       text: "Murder mystery games as a PDF to print at home – for an evening of cooking together."
     }
@@ -134,6 +134,31 @@
     }
   }
 
+  /* Die Krimi-Karte zeigt drei Cover im Hochformat nebeneinander statt
+     eines beschnittenen Fotos – Fälle mit Saison zuerst. */
+  function miniCovers(count) {
+    if (!window.KRIMI_CASES) return "";
+    var items = krimiCasesBySeason()
+      .filter(function (item) { return item.image; })
+      .slice(0, count);
+    if (!items.length) return "";
+    // Die Mitte ist die größte: der erste Fall dorthin.
+    if (items.length === 3) items = [items[1], items[0], items[2]];
+    return (
+      '<div class="shop-card__covers">' +
+      items
+        .map(function (item) {
+          var base = item.image.replace(/\.jpg$/, "");
+          return (
+            '<img src="' + base + '-240.webp" srcset="' + base + "-240.webp 240w, " + base + '-400.webp 400w"' +
+            ' sizes="(min-width: 1024px) 110px, (min-width: 640px) 15vw, 34vw" width="240" height="320" alt="" loading="lazy" decoding="async">'
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
   function shopCard(entry) {
     var price = priceHtml(entry.id);
     var product = (window.SHOP_PRODUCTS || {})[entry.id];
@@ -145,11 +170,15 @@
     link.href = entry.href;
     link.setAttribute("data-shop-card", "");
     link.setAttribute("data-track", "product-click/overview-grid/" + entry.id);
-    link.innerHTML =
-      '<div class="recipe-card__media">' +
+    var media =
+      (entry.covers && miniCovers(entry.covers)) ||
       (product || entry.image
         ? '<img src="' + (product ? product.image : entry.image) + '" alt="" loading="lazy">'
-        : '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>") +
+        : '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>");
+
+    link.innerHTML =
+      '<div class="recipe-card__media">' +
+      media +
       '<span class="shop-card__badge">From the shop</span>' +
       "</div>" +
       '<div class="recipe-card__stripe shop-card__stripe" aria-hidden="true"></div>' +

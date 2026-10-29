@@ -55,7 +55,9 @@
       short = short.replace("{orderBy}", banner.orderBy);
     }
 
-    document.querySelectorAll(".announcement__deal").forEach(function (link) {
+    /* data-banner-fixed: Diese Seite hat ihre eigene Leiste (krimi-dinner.html
+       wirbt für die Fälle) und bleibt von der Aktion hier unberührt. */
+    document.querySelectorAll(".announcement__deal:not([data-banner-fixed])").forEach(function (link) {
       var narrow = link.querySelector(".only-narrow");
       var wide = link.querySelector(".only-wide");
       if (!narrow || !wide) return;

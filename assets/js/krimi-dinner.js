@@ -16,6 +16,23 @@
  *   <span data-krimi-from-price></span>   <span data-krimi-count></span>
  *       Niedrigster Preis bzw. Anzahl der Fälle – für Teaser-Texte.
  *
+ *   <div data-krimi-filters hidden></div>
+ *       Filter-Chips (Spielerzahl, Stimmung, Anlass) für das Raster
+ *       data-krimi-cases auf derselben Seite. Nur im Browser, ohne Adresse.
+ *       data-krimi-empty / data-krimi-reset: Hinweis, wenn nichts passt.
+ *
+ *   <a data-krimi-banner>…</a>
+ *       Ankündigungsleiste: Hat ein Fall Saison, wirbt sie für ihn.
+ *
+ *   <div data-krimi-menus hidden></div>    <div data-krimi-previews hidden></div>
+ *   <div data-krimi-social hidden></div>
+ *       Rezepte je Fall, Vorschauseiten und Kundenstimmen. Bleiben
+ *       unsichtbar, solange die Daten dazu leer sind.
+ *
+ *   <div data-krimi-teaser></div>
+ *       Teaser für die Startseite: ein Fall (der mit Saison, sonst
+ *       KRIMI_SITE.featured) mit Cover, dazu Mini-Cover der übrigen.
+ *
  *   <div data-krimi-hint="the-teatime-caper"></div>
  *       Der Hinweis-Block für eine Rezeptseite. Der Wert ist die id des Falls
  *       aus KRIMI_CASES; ohne Wert wirbt der Block allgemein und führt zur
@@ -58,6 +75,12 @@
       el.textContent = krimiCases().length;
     });
     document.querySelectorAll("[data-krimi-hint]").forEach(renderHint);
+    document.querySelectorAll("[data-krimi-filters]").forEach(renderFilters);
+    document.querySelectorAll("[data-krimi-banner]").forEach(seasonalBanner);
+    document.querySelectorAll("[data-krimi-menus]").forEach(renderMenus);
+    document.querySelectorAll("[data-krimi-previews]").forEach(renderPreviews);
+    document.querySelectorAll("[data-krimi-social]").forEach(renderSocial);
+    document.querySelectorAll("[data-krimi-teaser]").forEach(renderTeaser);
 
     /* Zeilen, die nur mit eingesetzten Zahlen Sinn ergeben, stehen im HTML
        auf "hidden" und werden erst jetzt gezeigt. */
@@ -141,12 +164,12 @@
   }
 
   /* Wie breit ein Cover ungefähr angezeigt wird – der Browser wählt damit
-     zwischen der 400er und der 675er WebP-Fassung. Muss zu .grid--cases und
+     zwischen der 240er, 400er und 675er WebP-Fassung. Muss zu .grid--cases und
      .krimi-card in styles.css passen: mobil steht das Cover links neben dem
      Text (rund 40 % der Breite), ab 640 px zwei, ab 1024 px drei Spalten. */
   var SIZES_CARD = "(min-width: 1024px) 330px, (min-width: 640px) 45vw, 40vw";
 
-  /* Das Cover als <picture>: WebP in zwei Breiten (erzeugt von
+  /* Das Cover als <picture>: WebP in drei Breiten (erzeugt von
      tools/krimi-images.py), das JPEG als Rückfall. width/height halten den
      Platz frei, bevor das Bild geladen ist. Die ersten Karten laden sofort
      (eager), alle weiteren erst, wenn sie in die Nähe kommen. */
@@ -160,6 +183,7 @@
       "<picture>" +
       (base !== src
         ? '<source type="image/webp" srcset="' +
+          escapeHtml(base + "-240.webp") + " 240w, " +
           escapeHtml(base + "-400.webp") + " 400w, " +
           escapeHtml(base + "-675.webp") + ' 675w" sizes="' + escapeHtml(options.sizes) + '">'
         : "") +
@@ -230,6 +254,310 @@
       .join("");
 
     box.innerHTML = html;
+  }
+
+  /* --- Filter ------------------------------------------------------------
+     Drei Gruppen, je höchstens ein Chip aktiv; ein zweiter Klick auf den
+     aktiven Chip hebt ihn wieder auf. Gefiltert wird nur das Raster auf
+     dieser Seite – die Adresse bleibt, wie sie ist. */
+  function renderFilters(box) {
+    var grid = document.querySelector("[data-krimi-cases]");
+    if (!grid) return;
+
+    var cases = krimiCases();
+    var f = labels().filters;
+    var state = { players: null, mood: null, occasion: null };
+
+    function used(field) {
+      var keys = [];
+      cases.forEach(function (item) {
+        (item[field] || []).forEach(function (key) {
+          if (keys.indexOf(key) === -1) keys.push(key);
+        });
+      });
+      return keys;
+    }
+
+    var groups = [
+      {
+        name: "players",
+        label: f.players,
+        options: labels().playerBuckets.map(function (range) {
+          return { value: range.join("-"), text: range[0] + "–" + range[1] };
+        })
+      },
+      {
+        name: "mood",
+        label: f.mood,
+        options: Object.keys(labels().moods)
+          .filter(function (key) { return used("moods").indexOf(key) !== -1; })
+          .map(function (key) { return { value: key, text: labels().moods[key] }; })
+      },
+      {
+        name: "occasion",
+        label: f.occasion,
+        options: Object.keys(labels().occasions)
+          .filter(function (key) { return used("occasions").indexOf(key) !== -1; })
+          .map(function (key) { return { value: key, text: labels().occasions[key] }; })
+      }
+    ];
+
+    box.innerHTML =
+      groups
+        .map(function (group) {
+          var id = "krimi-filter-" + group.name;
+          return (
+            '<div class="krimi-filters__group" role="group" aria-labelledby="' + id + '">' +
+            '<span class="krimi-filters__label" id="' + id + '">' + escapeHtml(group.label) + "</span>" +
+            '<div class="krimi-filters__chips">' +
+            group.options
+              .map(function (option) {
+                return (
+                  '<button type="button" class="chip" aria-pressed="false" data-group="' + group.name +
+                  '" data-value="' + escapeHtml(option.value) + '">' + escapeHtml(option.text) + "</button>"
+                );
+              })
+              .join("") +
+            "</div>" +
+            "</div>"
+          );
+        })
+        .join("") +
+      '<div class="krimi-filters__status">' +
+      '<p role="status" data-krimi-count></p>' +
+      '<button type="button" class="krimi-filters__reset" data-krimi-reset hidden>' + escapeHtml(f.reset) + "</button>" +
+      "</div>";
+    box.hidden = false;
+
+    function matches(item) {
+      if (state.players) {
+        var bucket = state.players.split("-").map(Number);
+        var range = krimiPlayerRange(item);
+        if (range[1] < bucket[0] || range[0] > bucket[1]) return false;
+      }
+      if (state.mood && (item.moods || []).indexOf(state.mood) === -1) return false;
+      if (state.occasion && (item.occasions || []).indexOf(state.occasion) === -1) return false;
+      return true;
+    }
+
+    function apply() {
+      var shown = 0;
+      grid.querySelectorAll("[data-krimi-case]").forEach(function (cell) {
+        var item = cases.filter(function (entry) {
+          return entry.id === cell.getAttribute("data-krimi-case");
+        })[0];
+        var visible = Boolean(item) && matches(item);
+        cell.hidden = !visible;
+        if (visible) shown++;
+      });
+
+      box.querySelectorAll("[data-group]").forEach(function (chip) {
+        var active = state[chip.getAttribute("data-group")] === chip.getAttribute("data-value");
+        chip.classList.toggle("is-active", active);
+        chip.setAttribute("aria-pressed", String(active));
+      });
+
+      var filtered = Boolean(state.players || state.mood || state.occasion);
+      box.querySelector("[data-krimi-count]").textContent = f.count(shown, cases.length);
+      box.querySelector("[data-krimi-reset]").hidden = !filtered;
+      var empty = document.querySelector("[data-krimi-empty]");
+      if (empty) empty.hidden = shown > 0;
+    }
+
+    box.addEventListener("click", function (event) {
+      var chip = event.target.closest("[data-group]");
+      if (!chip) return;
+      var group = chip.getAttribute("data-group");
+      var value = chip.getAttribute("data-value");
+      state[group] = state[group] === value ? null : value;
+      apply();
+    });
+
+    document.querySelectorAll("[data-krimi-reset]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        state = { players: null, mood: null, occasion: null };
+        apply();
+      });
+    });
+
+    apply();
+  }
+
+  /* --- Ankündigungsleiste ---------------------------------------------------
+     Ohne Fall mit Saison bleibt der Text aus dem HTML stehen. */
+  function seasonalBanner(link) {
+    var item = krimiCases().filter(function (entry) {
+      return krimiInSeason(entry);
+    })[0];
+    if (!item) return;
+
+    var text = item[KRIMI_SITE.lang];
+    var occasion = labels().occasions[(item.occasions || [])[0]] || "";
+    var copy = labels().seasonalBanner(text.title, occasion || labels().seasonal);
+    var narrow = link.querySelector(".only-narrow");
+    var wide = link.querySelector(".only-wide");
+    if (narrow) narrow.textContent = copy.short;
+    if (wide) wide.textContent = copy.long;
+    link.href = krimiUrl(text.path, null, "banner-" + item.id);
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.setAttribute("data-track", "krimi-click/banner/" + item.id);
+  }
+
+  /* --- Rezepte je Fall ------------------------------------------------------ */
+  function renderMenus(box) {
+    var withRecipes = krimiCases().filter(function (item) {
+      return item.recipes && item.recipes.length;
+    });
+    if (!withRecipes.length) return;
+
+    box.innerHTML = withRecipes
+      .map(function (item) {
+        var text = item[KRIMI_SITE.lang];
+        return (
+          '<div class="krimi-menu">' +
+          (item.image
+            ? '<div class="krimi-menu__cover">' + cover(item, { sizes: "96px", eager: false }) + "</div>"
+            : "") +
+          "<div>" +
+          '<p class="krimi-menu__for">' + escapeHtml(labels().menuFor) + "</p>" +
+          "<h3>" + escapeHtml(text.title) + "</h3>" +
+          "<ul>" +
+          item.recipes
+            .map(function (recipe) {
+              return (
+                '<li><a class="link-brand" href="' + escapeHtml(root + "recipes/" + recipe.slug + ".html") + '">' +
+                escapeHtml(recipe.title) + "</a></li>"
+              );
+            })
+            .join("") +
+          "</ul>" +
+          "</div>" +
+          "</div>"
+        );
+      })
+      .join("");
+    box.hidden = false;
+  }
+
+  /* --- Vorschauseiten (unscharf) ------------------------------------------- */
+  function renderPreviews(box) {
+    var pages = (window.KRIMI_PREVIEWS || []).filter(function (page) {
+      return page && page.image;
+    });
+    if (!pages.length) return;
+
+    box.innerHTML = pages
+      .slice(0, 2)
+      .map(function (page) {
+        return (
+          '<figure class="krimi-preview">' +
+          '<img src="' + escapeHtml(root + page.image) + '" alt="' + escapeHtml(page.alt || "") + '" loading="lazy">' +
+          (page.caption ? "<figcaption>" + escapeHtml(page.caption) + "</figcaption>" : "") +
+          "</figure>"
+        );
+      })
+      .join("");
+    box.hidden = false;
+  }
+
+  /* --- Kundenstimmen und Fotos --------------------------------------------- */
+  function renderSocial(box) {
+    var social = window.KRIMI_SOCIAL || {};
+    var reviews = (social.reviews || []).filter(function (entry) {
+      return entry && entry.quote;
+    });
+    var photos = (social.photos || []).filter(function (entry) {
+      return entry && entry.image;
+    });
+    if (!reviews.length && !photos.length) return;
+
+    box.innerHTML =
+      '<h3 class="krimi-social__title">' + escapeHtml(labels().reviewsHeading) + "</h3>" +
+      (reviews.length
+        ? '<div class="grid grid--3 mt-6">' +
+          reviews
+            .map(function (entry) {
+              var item = krimiCases().filter(function (c) { return c.id === entry.caseId; })[0];
+              return (
+                '<figure class="panel krimi-review">' +
+                "<blockquote>" + escapeHtml(entry.quote) + "</blockquote>" +
+                "<figcaption>" + escapeHtml(entry.by || "") +
+                (item ? " · " + escapeHtml(item[KRIMI_SITE.lang].title) : "") +
+                "</figcaption>" +
+                "</figure>"
+              );
+            })
+            .join("") +
+          "</div>"
+        : "") +
+      (photos.length
+        ? '<ul class="customer-photos no-scrollbar mt-6">' +
+          photos
+            .map(function (photo) {
+              return (
+                "<li><figure>" +
+                '<img src="' + escapeHtml(root + photo.image) + '" alt="' + escapeHtml(photo.alt || "") + '" loading="lazy">' +
+                (photo.by ? "<figcaption>" + escapeHtml(photo.by) + "</figcaption>" : "") +
+                "</figure></li>"
+              );
+            })
+            .join("") +
+          "</ul>"
+        : "");
+    box.hidden = false;
+  }
+
+  /* --- Teaser auf der Startseite --------------------------------------------
+     Ein Fall groß (der mit Saison, sonst KRIMI_SITE.featured, sonst der
+     erste), daneben drei weitere als Mini-Cover. Die Seite selbst nennt den
+     Weg zu allen Fällen (krimi-dinner.html). */
+  function renderTeaser(box) {
+    var cases = krimiCasesBySeason();
+    if (!cases.length) return;
+
+    var main =
+      cases.filter(function (item) { return krimiInSeason(item); })[0] ||
+      cases.filter(function (item) { return item.id === KRIMI_SITE.featured; })[0] ||
+      cases[0];
+    var others = cases.filter(function (item) { return item !== main && item.image; }).slice(0, 3);
+    var text = main[KRIMI_SITE.lang];
+    var href = krimiUrl(text.path, null, "home-" + main.id);
+    var track = ' data-track="krimi-click/home-teaser/' + escapeHtml(main.id) + '"';
+    var seasonal = krimiInSeason(main);
+
+    box.innerHTML =
+      '<article class="krimi-feature">' +
+      '<a class="krimi-feature__cover" tabindex="-1"' + externalAttrs(href) + track + ">" +
+      cover(main, { sizes: "(min-width: 640px) 224px, 40vw", eager: false }) +
+      (seasonal ? '<span class="krimi-card__badge">' + escapeHtml(labels().seasonal) + "</span>" : "") +
+      "</a>" +
+      '<div class="krimi-feature__head">' +
+      '<span class="tag krimi-card__genre">' + escapeHtml(text.genre) + "</span>" +
+      '<h3 class="krimi-feature__title"><a' + externalAttrs(href) + track + ">" + escapeHtml(text.title) + "</a></h3>" +
+      (text.setting ? '<p class="krimi-card__setting">' + escapeHtml(text.setting) + "</p>" : "") +
+      '<div class="recipe-card__meta">' + metaLine(main) + "</div>" +
+      "</div>" +
+      '<div class="krimi-feature__foot">' +
+      (text.teaser ? '<p class="krimi-card__teaser">' + escapeHtml(text.teaser) + "</p>" : "") +
+      perfectFor(main) +
+      '<a class="btn btn--primary krimi-feature__btn"' + externalAttrs(href) + track + ">" +
+      escapeHtml(labels().getCase(krimiPrice(main.price))) + newTabHint() +
+      "</a>" +
+      "</div>" +
+      "</article>" +
+      (others.length
+        ? '<a class="krimi-minis" href="' + escapeHtml(root + "krimi-dinner.html") + '" data-track="krimi-click/home-teaser/all-cases">' +
+          '<span class="krimi-minis__covers" aria-hidden="true">' +
+          others
+            .map(function (item) {
+              return '<span class="krimi-mini">' + cover(item, { sizes: "120px", eager: false }).replace(/alt="[^"]*"/, 'alt=""') + "</span>";
+            })
+            .join("") +
+          "</span>" +
+          '<span class="krimi-minis__text">' + escapeHtml(labels().allCases(cases.length)) + " →</span>" +
+          "</a>"
+        : "");
   }
 
   function setLink(link) {

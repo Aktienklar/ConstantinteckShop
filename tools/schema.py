@@ -254,6 +254,24 @@ def item_list(src, folder):
     }
 
 
+def faq(src, url):
+    """FAQPage aus den sichtbaren Fragen (<details class="faq__item">) der
+    Seite. Einträge mit "hidden" sind noch nicht beantwortet und zählen
+    nicht – das Schema darf nur sagen, was auch auf der Seite steht."""
+    items = []
+    for attrs, body in re.findall(r'<details class="faq__item"([^>]*)>(.*?)</details>', src, re.S):
+        if "hidden" in attrs:
+            continue
+        question = text(first(r"<summary>(.*?)</summary>", body) or "")
+        answer = text(first(r'<div class="faq__answer">(.*?)</div>', body) or "")
+        if question and answer:
+            items.append({"@type": "Question", "name": question,
+                          "acceptedAnswer": {"@type": "Answer", "text": answer}})
+    if not items:
+        return []
+    return [{"@type": "FAQPage", "@id": url + "#faq", "mainEntity": items}]
+
+
 def build(root, page, src, url, image, title):
     """Liste der Knoten für @graph, oder None für Seiten ohne Schema."""
     brand = [ORGANIZATION, PERSON]
@@ -285,7 +303,7 @@ def build(root, page, src, url, image, title):
                  "isPartOf": {"@id": WEBSITE_ID}, "mainEntity": item_list(src, "recipes")},
                 breadcrumbs(("Home", SITE), ("Recipes", SITE + "recipes.html"), (h1, url))] + brand
     if page == "krimi-dinner.html":
-        return [breadcrumbs(("Home", SITE), ("Murder Mystery Dinner", url))] + brand
+        return [breadcrumbs(("Home", SITE), ("Murder Mystery Dinner", url))] + faq(src, url) + brand
     return None
 
 

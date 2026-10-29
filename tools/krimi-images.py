@@ -5,8 +5,9 @@ Krimi-Dinner-Cover für das Web aufbereiten.
 Aufruf (nur nötig, wenn ein Cover in assets/img/krimi/ neu ist oder sich
 geändert hat):   python3 tools/krimi-images.py
 
-  1. Legt neben jedem Cover <slug>.jpg zwei WebP-Fassungen an:
-     <slug>-400.webp und <slug>-675.webp. 675 px ist die Originalbreite
+  1. Legt neben jedem Cover <slug>.jpg drei WebP-Fassungen an:
+     <slug>-240.webp, -400.webp und -675.webp. 240 px reicht für das
+     Cover neben dem Text am Handy, 675 px ist die Originalbreite
      der Cover (675 × 900, 3:4) – größer zu rechnen brächte nur Bytes,
      keine Schärfe. krimi-dinner.js baut daraus srcset/sizes.
   2. Baut das Vorschaubild für geteilte Links von krimi-dinner.html:
@@ -23,7 +24,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(ROOT, "assets", "img", "krimi")
-WIDTHS = (400, 675)
+WIDTHS = (240, 400, 675)
 QUALITY = 78
 
 OG_FILE = os.path.join(DIR, "og-krimi-dinner.jpg")

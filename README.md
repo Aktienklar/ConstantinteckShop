@@ -184,16 +184,33 @@ assets/js/krimi-dinner.js       Builds cards, links and the recipe hint from the
 ```
 
 - **Changing a case or a price:** edit `KRIMI_CASES` in
-  `assets/js/krimi-dinner-data.js`. The page and the teaser in `shop.html`
-  follow.
+  `assets/js/krimi-dinner-data.js`. The page, the teaser on `index.html` and
+  the card in the recipe grid follow.
+- **Per case** the same entry also holds the story `teaser`, `moods` and
+  `occasions` (filters and "Perfect for"), `seasonal` (months in which the
+  case is badged "Seasonal pick" and moved to the front – The Last Sleigh
+  Ride in November and December) and `recipes` (for "Cook the menu, solve
+  the case").
+- **Sections that stay hidden until filled:** `KRIMI_PREVIEWS` (blurred PDF
+  pages) and `KRIMI_SOCIAL` (real reviews and photos only) in the same file.
+- **FAQ:** plain HTML in `krimi-dinner.html`. `tools/seo.py` writes the
+  FAQPage schema from the visible questions; questions marked `hidden` are
+  left out until they have an answer.
+- **Clicks:** every case link carries `utm_content=<case id>` (Murdernight
+  sees which card was clicked) and `data-track="krimi-click/<place>/<id>"`
+  for GoatCounter.
+- **The announcement bar** on `krimi-dinner.html` advertises the cases and
+  ignores the banner in `site-config.js` (`data-banner-fixed`).
 - **Changing the UTM parameters:** `KRIMI_SITE.utm` (and `recipeCampaign`) in
   the same file. Every link to Murdernight is built by `krimiUrl()`; never
   write one by hand.
 - **Language of the target:** `KRIMI_SITE.lang` (`"en"` or `"de"`). Cases
   without an entry for that language are not shown.
-- **Covers:** each case has an empty `image` field and shows a neutral
-  placeholder until a path to a file in `assets/img/` is entered. Do not embed
-  images from Murdernight directly.
+- **Covers:** portrait 675 × 900 (3:4) in `assets/img/krimi/`, shown
+  uncropped. For a new or changed cover run `python3 tools/krimi-images.py`
+  once (needs Pillow): it writes the WebP sizes 240/400/675 next to the JPEG
+  and the share image `og-krimi-dinner.jpg`. Do not embed images from
+  Murdernight directly.
 
 ### The hint on a recipe page
 
