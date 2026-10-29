@@ -325,7 +325,8 @@ def s_flip(seed):
 def s_type(seed):
     r = np.random.default_rng(seed)
     d = 0.05
-    k = hp(noise(d, seed), 1800) * expdec(int(d * SR), 0.004)
+    k = lp(hp(noise(d, seed), 1800), 7000) * expdec(int(d * SR), 0.004)
+    k[: int(0.0006 * SR)] *= np.linspace(0, 1, int(0.0006 * SR))  # 0,6 ms Anstieg statt Rechteck-Klick
     body = np.sin(2 * np.pi * (180 + 40 * r.random()) * tt(d)) * expdec(int(d * SR), 0.008)
     return (k * 0.7 + body * 0.35) * (0.8 + 0.4 * r.random())
 
@@ -584,19 +585,32 @@ def limiter(x, ceiling_db):
     return x * out[:, None]
 
 
-def master(x, name):
+def master(x, name, ceiling=None, target=None):
+    ceiling = T.TARGET_TP - 0.3 if ceiling is None else ceiling
+    target = T.TARGET_LUFS if target is None else target
     meter = pyln.Meter(SR)
-    gain_db = T.TARGET_LUFS - meter.integrated_loudness(x)
+    x = signal.sosfiltfilt(signal.butter(4, 16000, "lowpass", fs=SR, output="sos"), x, axis=0)  # AAC-Ueberschwinger vermeiden
+    gain_db = target - meter.integrated_loudness(x)
     y = x
-    for _ in range(6):
-        y = limiter(x * 10 ** (gain_db / 20), T.TARGET_TP - 0.3)
+    for _ in range(8):
+        y = limiter(x * 10 ** (gain_db / 20), ceiling)
         lufs = meter.integrated_loudness(y)
-        if abs(lufs - T.TARGET_LUFS) < 0.1:
+        if abs(lufs - target) < 0.05:
             break
-        gain_db += T.TARGET_LUFS - lufs
+        gain_db += target - lufs
     tp = true_peak_db(y)
     sf.write(os.path.join(ADIR, name), y.astype(np.float32), SR, subtype="FLOAT")
     return meter.integrated_loudness(y), tp
+
+
+def remaster(which, ceiling, target):
+    """Mastert aus den gespeicherten Stems neu (fuer die AAC-Schleife in make.py final)."""
+    mus = sf.read(os.path.join(ADIR, "music.wav"))[0]
+    sfx = sf.read(os.path.join(ADIR, "sfx.wav"))[0]
+    vo = sf.read(os.path.join(ADIR, "vo.wav"))[0]
+    if which == "mix.wav":
+        return master(mus * 0.55 + sfx * 0.9 + vo, which, ceiling, target)
+    return master(sfx * 0.9 + vo, which, ceiling, target)
 
 
 def main():

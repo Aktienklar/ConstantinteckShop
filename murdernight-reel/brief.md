@@ -146,4 +146,4 @@ src/make.py       styleframes | preview | final | check
 | 7 | Safe Zones | HUD-Text: 0 Verstöße. Etiketten: 68 Meldungen, alle während Kamerafahrten (9,3–9,9 s Etikett 4 als ≤ 15-px-Streifen am oberen Rand; 11,6–11,9 s Reißschwenk bei Zoom 0,36 → Text 18 px, unlesbar) | S5-Kamera 40 px nach rechts versetzt (rechter Rand max. 965 → während Fahrt); kein stehender Text in UI-Zonen |
 | 8 | Abgeschnittener Text | Kein stehender Text angeschnitten; nur Wandobjekte, die bei Fahrten aus dem Bild laufen | – |
 | 9 | 60-ms-Regel | Nicht-Hits ≥ 60 ms auseinander; 22 von 67 Tipp-Ticks entfallen dort, wo Faden-Sounds liegen | – |
-| 10 | Lautheit (pyloudnorm) | Mix −14,1 LUFS / −1,3 dBTP; ohne Musik −14,1 LUFS / −1,3 dBTP; Musik 13 dB unter jeder VO-Zeile | finale ffmpeg-Messung in Phase 5 |
+| 10 | Lautheit | Nach AAC-Kodierung lag der True Peak zunächst bei +1,1 dBTP (WAV war −1,2): Überschwinger an den steilen Tipp-Ticks | Ticks mit 0,6 ms Anstieg, Master oberhalb 16 kHz gefiltert, Mastering-Schleife misst die kodierte AAC-Datei mit ffmpeg loudnorm und regelt nach. Final: −13,95 LUFS / −1,06 dBTP (mit Musik), −14,01 LUFS / −1,21 dBTP (ohne Musik) |

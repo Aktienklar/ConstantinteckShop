@@ -66,8 +66,41 @@ def preview():
              os.path.join(OUT, PREVIEW_NAME)])
 
 
+def measure(path):
+    """Integrierte Lautheit + True Peak mit ffmpeg loudnorm (wie gefordert)."""
+    import json
+    import subprocess
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-vn", "-af",
+                        "loudnorm=I=-14:TP=-1:LRA=11:print_format=json", "-f", "null", "-"],
+                       capture_output=True, text=True)
+    txt = r.stderr[r.stderr.rindex("{"):r.stderr.rindex("}") + 1]
+    j = json.loads(txt)
+    return float(j["input_i"]), float(j["input_tp"]), float(j["input_lra"])
+
+
+def master_for_aac(wav):
+    """Mastern -> AAC kodieren -> messen -> nachregeln, bis die kodierte Datei passt."""
+    import audio
+    ceiling, target = T.TARGET_TP - 0.3, T.TARGET_LUFS
+    test = os.path.join(BUILD, "audio", wav.replace(".wav", "_test.m4a"))
+    for k in range(8):
+        audio.remaster(wav, ceiling, target)
+        _ffmpeg(["-i", os.path.join(BUILD, "audio", wav), "-c:a", "aac", "-ar", "48000", "-b:a", "256k", test])
+        i, tp, lra = measure(test)
+        print(f"  {wav} Runde {k + 1}: Ceiling {ceiling:.2f} -> AAC {i:.2f} LUFS / {tp:.2f} dBTP")
+        ok_i, ok_tp = abs(i - T.TARGET_LUFS) <= 0.2, tp <= T.TARGET_TP
+        if ok_i and ok_tp:
+            return
+        if not ok_tp:
+            ceiling -= 0.5 * (tp - T.TARGET_TP) + 0.15
+        target += T.TARGET_LUFS - i
+    raise SystemExit(f"{wav}: Zielwerte nach AAC nicht erreicht")
+
+
 def final(name="murdernight_reel_v1"):
     fr = os.path.join(BUILD, "frames", "f_%04d.png")
+    for wav in ("mix.wav", "mix_ohne_musik.wav"):
+        master_for_aac(wav)
     for suffix, wav in (("", "mix.wav"), ("_ohne_musik", "mix_ohne_musik.wav")):
         _ffmpeg(["-framerate", str(T.FPS), "-i", fr, "-i", os.path.join(BUILD, "audio", wav),
                  "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p",
@@ -110,3 +143,5 @@ if __name__ == "__main__":
         contact_sheet()
     elif cmd == "final":
         final()
+        for f in ("murdernight_reel_v1.mp4", "murdernight_reel_v1_ohne_musik.mp4"):
+            print(f, "-> %.2f LUFS integriert / %.2f dBTP / LRA %.1f LU" % measure(os.path.join(OUT, f)))
