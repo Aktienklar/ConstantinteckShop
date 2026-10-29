@@ -98,14 +98,41 @@
     );
   }
 
-  /* Solange kein eigenes Cover hinterlegt ist, steht hier eine neutrale Fläche
-     in den Farben der Seite. TODO: echte Cover in krimi-dinner-data.js
-     eintragen (Feld "image"). */
-  function media(item) {
+  /* Wie breit ein Cover ungefähr angezeigt wird – der Browser wählt damit
+     zwischen der 400er und der 675er WebP-Fassung. Muss zu .grid--cases und
+     .krimi-card in styles.css passen: mobil steht das Cover links neben dem
+     Text (rund 40 % der Breite), ab 640 px zwei, ab 1024 px drei Spalten. */
+  var SIZES_CARD = "(min-width: 1024px) 330px, (min-width: 640px) 45vw, 40vw";
+
+  /* Das Cover als <picture>: WebP in zwei Breiten (erzeugt von
+     tools/krimi-images.py), das JPEG als Rückfall. width/height halten den
+     Platz frei, bevor das Bild geladen ist. Die ersten Karten laden sofort
+     (eager), alle weiteren erst, wenn sie in die Nähe kommen. */
+  function cover(item, options) {
+    var text = item[KRIMI_SITE.lang];
+    var src = root + item.image;
+    var base = src.replace(/\.jpg$/, "");
+    var alt = labels().coverAlt(text.title, text.setting);
+
+    return (
+      "<picture>" +
+      (base !== src
+        ? '<source type="image/webp" srcset="' +
+          escapeHtml(base + "-400.webp") + " 400w, " +
+          escapeHtml(base + "-675.webp") + ' 675w" sizes="' + escapeHtml(options.sizes) + '">'
+        : "") +
+      '<img src="' + escapeHtml(src) + '" width="675" height="900" alt="' + escapeHtml(alt) + '"' +
+      (options.eager ? ' loading="eager"' : ' loading="lazy"') +
+      ' decoding="async">' +
+      "</picture>"
+    );
+  }
+
+  /* Ohne eingetragenes Cover steht eine neutrale Fläche in den Farben der
+     Seite – nie ein Bild direkt von Murdernight. */
+  function media(item, index) {
     if (item.image) {
-      return (
-        '<img src="' + escapeHtml(root + item.image) + '" alt="" loading="lazy">'
-      );
+      return cover(item, { sizes: SIZES_CARD, eager: index < 2 });
     }
     return '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>";
   }
@@ -119,17 +146,19 @@
         var href = krimiUrl(text.path);
 
         return (
-          '<div class="rise" style="animation-delay:' + index * 70 + 'ms;height:100%">' +
-          '<article class="card product-card lift-3d" style="height:100%">' +
-          '<a class="krimi-card__media" tabindex="-1" aria-hidden="true"' + externalAttrs(href) + ">" +
-          media(item) +
+          '<div class="rise" style="animation-delay:' + index * 70 + 'ms">' +
+          '<article class="card krimi-card">' +
+          '<a class="krimi-card__media" tabindex="-1"' + externalAttrs(href) + ">" +
+          media(item, index) +
           "</a>" +
-          '<div class="product-card__body">' +
+          '<div class="krimi-card__head">' +
           '<span class="tag krimi-card__genre">' + escapeHtml(text.genre) + "</span>" +
           "<h3><a" + externalAttrs(href) + ">" + escapeHtml(text.title) + "</a></h3>" +
-          (text.setting ? '<p class="product-card__text">' + escapeHtml(text.setting) + "</p>" : "") +
+          (text.setting ? '<p class="krimi-card__setting">' + escapeHtml(text.setting) + "</p>" : "") +
           '<div class="recipe-card__meta">' + metaLine(item) + "</div>" +
-          '<div class="product-card__foot">' +
+          "</div>" +
+          '<div class="krimi-card__body">' +
+          '<div class="krimi-card__foot">' +
           '<span class="product-card__price">' + krimiPrice(item.price) + "</span>" +
           '<a class="btn btn--primary btn--sm"' + externalAttrs(href) + ">" +
           escapeHtml(labels().toCase) + newTabHint() +
