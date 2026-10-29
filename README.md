@@ -209,9 +209,7 @@ and these two lines next to the other scripts at the bottom of that recipe:
 <script src="../assets/js/krimi-dinner.js"></script>
 ```
 
-Its link carries `utm_campaign=krimi-dinner-rezept`. `krimi-hint-preview.html`
-shows the block without touching a real recipe – delete that file before
-publishing.
+Its link carries `utm_campaign=krimi-dinner-rezept`.
 
 ## Language
 
