@@ -74,13 +74,34 @@ def ease(x):
 
 # ---------- Szenen: Funktion(t_local) -> BGR-Frame ----------
 
+def kill_neon_text(img, y0=380, y1=680, x0=200, x1=800):
+    """Veo malt im roten Neon wieder buchstabenartige Röhren: Röhrenkerne finden und
+    durch einen stark weichgezeichneten Glow ersetzen (Haut-Glanzpunkte bleiben, da klein)."""
+    roi = img[y0:y1, x0:x1]
+    hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+    core = (((hsv[..., 0] < 8) | (hsv[..., 0] > 165)) & (hsv[..., 1] > 80) & (hsv[..., 2] > 225)).astype(np.uint8)
+    n, lab, st, _ = cv2.connectedComponentsWithStats(core, 8)
+    keep = np.zeros_like(core)
+    for k in range(1, n):
+        if st[k, 4] > 120 and max(st[k, 2], st[k, 3]) > 25:
+            keep[lab == k] = 255
+    if not keep.any():
+        return img
+    keep = cv2.dilate(keep, np.ones((11, 11), np.uint8), iterations=2)
+    m = cv2.GaussianBlur(keep, (0, 0), 6).astype(np.float32)[..., None] / 255
+    glow = cv2.GaussianBlur(roi, (0, 0), 22)
+    out = img.copy()
+    out[y0:y1, x0:x1] = (roi * (1 - m) + glow * m).astype(np.uint8)
+    return out
+
+
 def s01_hook():
     c = Clip(os.path.join(B, 'clips', 'V1.mp4'))
 
     def src(t):  # Slow-Mo, kurz vor dem Schnitt auf Echtzeit+
         return 0.75 * t if t < 1.3 else 0.975 + 1.6 * (t - 1.3)
 
-    return 1.8, lambda t: zoom(c.at(src(t)), 1.0 + 0.05 * t / 1.8, 0.45, 0.45)
+    return 1.8, lambda t: zoom(kill_neon_text(c.at(src(t))), 1.0 + 0.05 * t / 1.8, 0.45, 0.45)
 
 
 def s02_nichts_bemerkt():
@@ -128,7 +149,7 @@ def s04_dinner():
 
 
 def s05_verdaechtige():
-    imgs = [still(n) for n in ('P5a.png', 'P5b.png', 'P5c.png')]
+    imgs = [still(n) for n in ('P5a_clean.png', 'P5b.png', 'P5c.png')]
     centers = [(0.5, 0.35), (0.45, 0.55), (0.55, 0.6)]
 
     def f(t):
@@ -159,9 +180,61 @@ def s07_licht_an():
     return 2.4, lambda t: zoom(c.at(0.4 + 1.25 * t), 1.0 + 0.04 * t / 2.4, 0.5, 0.45)
 
 
+COVERS = ['geisterstunde-auf-ravenmoor', 'der-kometenjahrgang', 'tod-im-studio-7', 'die-letzte-nacht-in-fjell']
+
+
+def phone_screen(img):
+    """Leuchtendes Handy-Display (hellstes Rechteck in Bildmitte) -> x, y, w, h oder None."""
+    g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    oy, ox = int(H * 0.3), int(W * 0.25)
+    _, th = cv2.threshold(g[oy:int(H * 0.7), ox:int(W * 0.75)], 215, 255, cv2.THRESH_BINARY)
+    cs, _ = cv2.findContours(th, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not cs:
+        return None
+    x, y, w, h = cv2.boundingRect(max(cs, key=cv2.contourArea))
+    return (x + ox, y + oy, w, h) if w * h > 10000 else None
+
+
+def insert_cover(img, cover, rect):
+    """Cover formatfüllend auf das Display setzen (abgerundete Ecken, leichter Glanz)."""
+    x, y, w, h = rect
+    x, y, w, h = x + 2, y + 2, w - 4, h - 4
+    ch, cw = cover.shape[:2]
+    s = max(w / cw, h / ch)
+    rs = cv2.resize(cover, (int(cw * s) + 1, int(ch * s) + 1), interpolation=cv2.INTER_AREA)
+    oy, ox = (rs.shape[0] - h) // 2, (rs.shape[1] - w) // 2
+    rs = rs[oy:oy + h, ox:ox + w].astype(np.float32)
+    rs = rs * 0.92 + 255 * 0.05 * np.linspace(1, 0, h)[:, None, None]  # Displayglanz von oben
+    mask = np.zeros((h, w), np.uint8)
+    r = max(4, w // 9)
+    cv2.rectangle(mask, (r, 0), (w - r, h), 255, -1)
+    cv2.rectangle(mask, (0, r), (w, h - r), 255, -1)
+    for cx, cy in ((r, r), (w - r, r), (r, h - r), (w - r, h - r)):
+        cv2.circle(mask, (cx, cy), r, 255, -1, cv2.LINE_AA)
+    m = cv2.GaussianBlur(mask, (3, 3), 0).astype(np.float32)[..., None] / 255
+    out = img.copy()
+    roi = out[y:y + h, x:x + w].astype(np.float32)
+    out[y:y + h, x:x + w] = (roi * (1 - m) + rs * m).astype(np.uint8)
+    return out
+
+
 def s08_spiel():
     c = Clip(os.path.join(B, 'clips', 'V8.mp4'))
-    return 1.8, lambda t: zoom(c.at(0.3 + 1.5 * t), 1.0 + 0.22 * ease(t / 1.8), 0.5, 0.47)
+    covers = []
+    for s in COVERS:
+        p = os.path.join(B, 'covers', s + '.img')
+        if os.path.exists(p):
+            covers.append(cv2.imread(p))
+    last = [None]
+
+    def f(t):
+        fr = c.at(0.3 + 1.5 * t)
+        rect = phone_screen(fr) or last[0]
+        last[0] = rect
+        if covers and rect:
+            fr = insert_cover(fr, covers[min(int(t / 0.45), len(covers) - 1)], rect)
+        return zoom(fr, 1.0 + 0.22 * ease(t / 1.8), 0.5, 0.47)
+    return 1.8, f
 
 
 def s09_marke():

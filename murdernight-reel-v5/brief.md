@@ -1,6 +1,6 @@
 # Murdernight · Reel v5 · „Club → Dinner → Zuhause"
 
-Status: **Phase 2 – Styleframes** (wartet auf Freigabe)
+Status: **Phase 4 – Final geliefert**
 
 ## Änderungen seit Phase 1 (freigegeben)
 
@@ -172,3 +172,104 @@ Jeweils Styleframe als `start_frame`, Veo 3.1, 9:16, 1080p, 4 s, `generate_audio
 
 `scripts/` (folgt in Phase 3/4): `grade.py` (3 LUTs per numpy, Korn, Vignette, Halation) · `typo.py` (PIL-Overlays, Fade, Blur-zu-Scharf, Scale, 2-Frame-Flash) · `scenes.py` (je Szene eine MP4, Speed Ramps, Whip-Pan-Naht mit 5 Frames Motion Blur) · `mix.py` (Platzierung, Ducking, loudnorm) · `contact_sheet.py`.
 Export: concat demuxer `-c copy`, danach Ton mit `-c:v copy`.
+
+
+---
+
+## Phase 3 – Clips & Voice-over (freigegeben, Shot 3 = Variante A)
+
+**Video:** `veo-3.1-fast-generate-001`, 9:16, 1080p, 4 s, `generate_audio: false`. Negativ-Prompt: *text, letters, words, signage, logos, subtitles, watermark, distorted hands, extra fingers, morphing face, warped glass, static camera*. Startbilder 1–3 sind die retuschierten Fassungen (hochgeladen), 4/7/8 die Styleframe-Nodes.
+
+| Clip | Prompt (gekürzt) | Ergebnis / Verwendung |
+|---|---|---|
+| V1 Hook | Slow-motion push-in; she laughs and turns, hair through red backlight; gloved hand slides the ampoule into the coat pocket and withdraws | ✔ 0–1,8 s, Slow-Mo-Ramp. Veo malte wieder Pseudo-Neonbuchstaben → pro Frame per Maske weichgezeichnet |
+| V2 Nichts bemerkt | Handheld arc left; she lifts the coupe; fedora figure disappears into the crowd; strobes | ✔ 1,5× Tempo + Strobe-Flash auf jedem Beat (122 BPM) |
+| V3 Toast | Slow-motion clink, droplets, whip-pan right | ✖ von Googles Filter blockiert (nicht berechnet) → Standbild 03 mit Push-in + Whip-Pan in der Post |
+| V4 Dinner | Gloved thumb snaps ampoule, three drops into decanter; heiress toasts behind | ✔ nur die ersten 1,3 s (danach morpht Veo den Handschuh in eine Gästehand) |
+| V7 Licht an | Quick dolly-in; pointing, mock outrage, group laughter | ✔ 1,25× Tempo |
+| V8 Das Spiel | Top-down push-in; pages flip; phone glows | ✔ Kamera fast statisch → digitaler Push-in; Cover-Insert aufs Display |
+
+Shots 5, 6, 9 sind wie geplant Standbilder (Push-in, Hit-Flash, Kerzenflackern, Abblende).
+
+**Voice-over** (`eleven_v3`, Vincent Crowe `18X2yBovneA0q06wd8E9`, `de`, je 2 Takes, nie beschleunigt – nur an Pausen geschnitten):
+
+| Text (Prompt) | Take | Timeline |
+|---|---|---|
+| `[deep voice] Einer von euch … [pause] ist ein Mörder.` | B | „Einer von euch …“ 0,25–1,72 · „… ist ein Mörder.“ 1,85–3,31 |
+| `[whispers] Aber wer war's?` | B | 7,70–8,96 |
+| `[warmly] Murdernight. Das Krimidinner für zuhause.` | B | „Murdernight.“ 10,75 · „Das Krimidinner für zuhause.“ 12,05–14,42 |
+
+⚠️ Abweichung: Satz 3 ist 3,6 s lang, ab 12,9 s waren nur 1,6 s frei → Einsatz auf 10,75 s vorgezogen (freigegeben).
+
+## Phase 4 – Final
+
+**Musik** (`eleven_music_v2_5`, instrumental, je 2 Takes; Wahl nach Einsatz/Energie):
+- M1 Club (Take A): *Dark, elegant deep house at 122 BPM, heavy sub-bass drop hitting on the very first beat, four-on-the-floor kick, crisp hi-hats, moody minor synth stab, luxury late-night club energy, instrumental, no vocals.* → 0,15–5,0 (Bass-Drop auf 0,15)
+- M2 Dinner (Take A, ab 0,2 s): *Tense mystery thriller score: low cello and double-bass ostinato like a heartbeat pulse, sparse single dark piano notes, suspenseful and restrained, starting immediately at full tension, instrumental, no vocals.* → 5,0–7,7, dann harte Stille
+- M3 Zuhause (Take B): *Warm, playful jazz groove starting instantly on the downbeat: walking upright bass, brushed drums, bright swinging piano comping, cozy dinner-party mood, medium-up tempo, instrumental, no vocals.* → 8,6–14,5, Ausblende ab 13,4
+
+**SFX** (`eleven_text_to_sound_v2`, prompt_influence 0,5, je 2 Takes, Take A verwendet):
+
+| Zeit | Sound | Prompt |
+|---|---|---|
+| 0,0 | Glas-Glint | Crystal glass ting, bright high ping, close-mic |
+| 0,0–5,0 | Club-Atmo (0–1,8 Tiefpass „hinter Glas“, dann voll) | Busy upscale nightclub crowd ambience, chatter and laughter, distant bass |
+| 2,0 | Champagner | Champagne fizzing in a glass, close-mic bubbles |
+| 3,6 | Gläser Club | Several crystal champagne glasses clinking together in a toast |
+| 4,68 | Whoosh | Fast whip whoosh swish, short and airy |
+| 5,1 | Ampulle knackt | Tiny glass ampoule neck snapping, crisp close-mic crack |
+| 5,4 / 5,55 / 5,7 | Tropfen | Single drop of liquid falling into a glass of wine, small clear plop, close-mic |
+| 5,9 | Gläser Dinner | Wine glasses clinking softly in a large wooden hall, slight reverb |
+| 6,2 / 6,7 / 7,2 | Hits | Deep cinematic impact hit, low boom with short tail |
+| 7,6 | Kerzen aus | Candle flames fluttering in a sudden gust of wind, then snuffed out |
+| 8,2 | Glas zerspringt | Wine glass falling and shattering on a stone floor in a silent room |
+| 8,6 | Lichtschalter + Lachen | Light switch click, crisp, indoor · Group of friends bursting into loud genuine laughter |
+| 8,8–11,8 | Stimmengewirr | Friends chatting and laughing around a dinner table, lively indoor |
+| 11,0 | Papier | Pages of a paper booklet being flipped quickly, close-mic |
+| 12,8 | Kerze ausblasen | Single candle blown out with a soft breath puff |
+| 13,0 | Logo-Hit | Elegant deep cinematic logo hit with shimmering metallic tail |
+
+**Mix** (`scripts/mix.py`): VO auf −16 LUFS; Musik je Teil auf gleiche Lautheit, unter Sprache −8 dB Sidechain-Ducking; SFX unter Sprache −3 dB.
+Gemessen im Sprachbereich: VO −15,6 LUFS · Musik −31,1 LUFS → **Abstand 15,5 dB** (Vorgabe ≥ 12 dB).
+
+**Bild** (`scripts/scenes.py`, `scripts/final.py`):
+- Drei Looks:
+  - Club: Neonrot/Teal, tiefe Schwarztöne.
+  - Dinner: −0,35 Blenden, Gold-Lichter gegen kühle Schatten.
+  - Zuhause: warm und hell.
+- Auf alle Looks: Filmkorn, Vignette, Halation.
+- Typografie:
+  - Playfair Display Bold 130/150/110 px in Elfenbein `#F3EDE2`, ein Wort pro Zeile in Rot `#B3121C`.
+  - 3 px dunkle Kontur und weicher Schatten für Lesbarkeit.
+  - Einblendung über 7 Frames: Fade, Blur→scharf, Scale 1,04→1. 2-Frame-Flash bei den Hits.
+  - Inter SemiBold 72 px für die Labels, Inter Medium 50 px für Preis/URL.
+  - Logo: goldener Schimmer läuft einmal darüber.
+- Safe Zones werden im Code geprüft (x 40–940, y 220–1500).
+- Cover-Insert: Die vier Cover von murdernight.de wechseln alle 0,45 s auf dem automatisch erkannten Handy-Display.
+- Retuschen: Neonschrift (01, 02, 03, V1 pro Frame), Glasreflex 05a, Doppelflamme 09.
+
+**Export:** 1080×1920, 30 fps, H.264 (`-preset veryfast -crf 18 -pix_fmt yuv420p -movflags +faststart`), jede Szene als eigene MP4 → concat demuxer `-c copy` → Ton mit `-c:v copy` (AAC 256 kb/s, 48 kHz).
+
+## Qualitätscheck
+
+| Prüfung | Ergebnis |
+|---|---|
+| Länge | 14,500 s, 435 Frames |
+| Lautheit `murdernight_reel_v5.mp4` (ffmpeg loudnorm) | **−13,9 LUFS integriert · −1,5 dBTP · LRA 4,4** |
+| Lautheit `…_ohne_musik.mp4` | −13,8 LUFS · −1,6 dBTP · LRA 7,0 |
+| Clipping | keins (Peak −1,5 dBTP nach AAC) |
+| Musik unter VO | 15,5 dB |
+| Text | alle Blöcke in den Safe Zones (Assertion im Code), nichts abgeschnitten |
+| KI-Artefakte | behoben bzw. weggeschnitten: Neon-Pseudoschrift, Glasreflex 5a, Doppelflamme 9, Handschuh-Morphing V4 (geschnitten) |
+| Bekannt / offen | Shot 3 ist ein Standbild mit Kamerabewegung, kein echtes Video. In Shot 2 erscheinen Funkenfontänen, die nicht im Brief standen |
+
+## Credits (Starter, 30.000)
+
+| Phase | Credits |
+|---|---|
+| Styleframes (inkl. blockiertem Versuch 609, falls berechnet) | ≈ 10.700 |
+| 5 Clips Veo 3.1 Fast | 12.120 |
+| Voice-over | 258 |
+| Musik | 510 |
+| SFX | ≈ 170 |
+| **Summe** | **≈ 23.760** |
