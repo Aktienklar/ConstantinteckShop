@@ -18,6 +18,12 @@
  *                        Abschnitt 7; eingebettet wird nur Instagram).
  *         Leer = das Rezeptfoto bleibt stehen, ohne Abspielknopf.
  *
+ * uploaded  (optional) Datum, an dem das Video erschienen ist, "JJJJ-MM-TT".
+ *         Erst mit Link UND Datum schreibt tools/seo.py das Video in die
+ *         strukturierten Daten – Google verlangt das Datum und es lässt
+ *         sich nicht raten.
+ *           "peach-sorbet": { order: 12, video: "https://…", uploaded: "2026-07-14" },
+ *
  * featuredProduct  (optional) Welches Produkt auf der Rezeptseite steht:
  *         "linen-apron" (Erwachsene), "kids-apron" oder "apron-set".
  *         Ohne Angabe: süß und höchstens 15 Minuten -> Set, sonst die

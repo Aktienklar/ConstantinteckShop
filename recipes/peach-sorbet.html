@@ -23,37 +23,107 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Recipe",
-  "name": "Peach Sorbet",
-  "description": "Frozen peaches and orange juice, blended until creamy. Four ingredients, no ice cream maker.",
-  "image": [
-    "https://constantinteck.com/assets/img/peach-sorbet.jpg"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "Constantin"
-  },
-  "recipeCategory": "Baking & Sweets",
-  "recipeIngredient": [
-    "400 g Frozen peaches",
-    "120 ml Orange juice",
-    "2–3 tbsp Sugar",
-    "1 tbsp Lemon juice"
-  ],
-  "recipeInstructions": [
+  "@graph": [
     {
-      "@type": "HowToStep",
-      "position": 1,
-      "text": "Blend until creamy and enjoy."
+      "@type": "Recipe",
+      "@id": "https://constantinteck.com/recipes/peach-sorbet.html#recipe",
+      "name": "Peach Sorbet",
+      "description": "Frozen peaches and orange juice, blended until creamy. Four ingredients, no ice cream maker.",
+      "image": [
+        "https://constantinteck.com/assets/img/peach-sorbet.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://constantinteck.com/about.html#constantin",
+        "name": "Constantin",
+        "url": "https://constantinteck.com/about.html"
+      },
+      "publisher": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "datePublished": "2026-08-06",
+      "recipeCategory": "Dessert",
+      "keywords": "peach sorbet, 4 ingredients, no churn",
+      "recipeYield": "2 servings",
+      "recipeIngredient": [
+        "400 g Frozen peaches",
+        "120 ml Orange juice",
+        "2–3 tbsp Sugar",
+        "1 tbsp Lemon juice"
+      ],
+      "recipeInstructions": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "text": "Blend until creamy and enjoy."
+        }
+      ],
+      "inLanguage": "en",
+      "totalTime": "PT5M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Recipes",
+          "item": "https://constantinteck.com/recipes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Peach Sorbet",
+          "item": "https://constantinteck.com/recipes/peach-sorbet.html"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  ],
-  "inLanguage": "en",
-  "recipeYield": "2 servings",
-  "totalTime": "PT5M"
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->

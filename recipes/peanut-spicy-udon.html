@@ -23,62 +23,132 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Recipe",
-  "name": "Peanut Spicy Udon",
-  "description": "Creamy peanut udon noodles – spicy, nutty and packed with flavour. Everything comes together in one pan.",
-  "image": [
-    "https://constantinteck.com/assets/img/peanut-spicy-udon.jpg"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "Constantin"
-  },
-  "recipeCategory": "Savoury & Everyday",
-  "recipeIngredient": [
-    "250 g Udon noodles",
-    "3 tbsp Peanut butter",
-    "1 Small onion, finely chopped",
-    "2 Garlic cloves, minced",
-    "2 tbsp Soy sauce",
-    "1 tsp Chilli flakes",
-    "2 Scallions, sliced",
-    "1 handful Fresh coriander, chopped",
-    "1 tbsp Sesame seeds"
-  ],
-  "recipeInstructions": [
+  "@graph": [
     {
-      "@type": "HowToStep",
-      "position": 1,
-      "text": "Cook the udon noodles according to the package instructions and keep a cup of the cooking water."
+      "@type": "Recipe",
+      "@id": "https://constantinteck.com/recipes/peanut-spicy-udon.html#recipe",
+      "name": "Peanut Spicy Udon",
+      "description": "Creamy peanut udon noodles – spicy, nutty and packed with flavour. Everything comes together in one pan.",
+      "image": [
+        "https://constantinteck.com/assets/img/peanut-spicy-udon.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://constantinteck.com/about.html#constantin",
+        "name": "Constantin",
+        "url": "https://constantinteck.com/about.html"
+      },
+      "publisher": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "datePublished": "2026-08-06",
+      "recipeCategory": "Main course",
+      "keywords": "peanut spicy udon, one pan, weeknight",
+      "recipeYield": "2 servings",
+      "recipeIngredient": [
+        "250 g Udon noodles",
+        "3 tbsp Peanut butter",
+        "1 Small onion, finely chopped",
+        "2 Garlic cloves, minced",
+        "2 tbsp Soy sauce",
+        "1 tsp Chilli flakes",
+        "2 Scallions, sliced",
+        "1 handful Fresh coriander, chopped",
+        "1 tbsp Sesame seeds"
+      ],
+      "recipeInstructions": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "text": "Cook the udon noodles according to the package instructions and keep a cup of the cooking water."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "text": "Fry the onion and garlic in the pan until soft, then add the scallions, chilli flakes and sesame seeds."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "text": "Stir in the peanut butter and the soy sauce, then loosen the sauce with a splash of the noodle water until creamy."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "text": "Add the noodles and toss until every strand is coated."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "text": "Fold in the fresh coriander and serve straight from the pan."
+        }
+      ],
+      "inLanguage": "en",
+      "totalTime": "PT20M"
     },
     {
-      "@type": "HowToStep",
-      "position": 2,
-      "text": "Fry the onion and garlic in the pan until soft, then add the scallions, chilli flakes and sesame seeds."
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Recipes",
+          "item": "https://constantinteck.com/recipes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Peanut Spicy Udon",
+          "item": "https://constantinteck.com/recipes/peanut-spicy-udon.html"
+        }
+      ]
     },
     {
-      "@type": "HowToStep",
-      "position": 3,
-      "text": "Stir in the peanut butter and the soy sauce, then loosen the sauce with a splash of the noodle water until creamy."
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     },
     {
-      "@type": "HowToStep",
-      "position": 4,
-      "text": "Add the noodles and toss until every strand is coated."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 5,
-      "text": "Fold in the fresh coriander and serve straight from the pan."
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  ],
-  "inLanguage": "en",
-  "recipeYield": "2 servings",
-  "totalTime": "PT20M"
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->

@@ -23,39 +23,109 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Recipe",
-  "name": "Mango x Passionfruit Smoothie",
-  "description": "Mango, banana and passion fruit blended with coconut milk into a tropical summer drink.",
-  "image": [
-    "https://constantinteck.com/assets/img/mango-passionfruit-smoothie.jpg"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "Constantin"
-  },
-  "recipeCategory": "Baking & Sweets",
-  "recipeIngredient": [
-    "1 Ripe mango",
-    "1 Banana",
-    "2 Passion fruits",
-    "200 ml Coconut milk",
-    "1–2 tsp Honey",
-    "Ice cubes (optional)"
-  ],
-  "recipeInstructions": [
+  "@graph": [
     {
-      "@type": "HowToStep",
-      "position": 1,
-      "text": "Blend until smooth and enjoy."
+      "@type": "Recipe",
+      "@id": "https://constantinteck.com/recipes/mango-passionfruit-smoothie.html#recipe",
+      "name": "Mango x Passionfruit Smoothie",
+      "description": "Mango, banana and passion fruit blended with coconut milk into a tropical summer drink.",
+      "image": [
+        "https://constantinteck.com/assets/img/mango-passionfruit-smoothie.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://constantinteck.com/about.html#constantin",
+        "name": "Constantin",
+        "url": "https://constantinteck.com/about.html"
+      },
+      "publisher": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "datePublished": "2026-08-06",
+      "recipeCategory": "Drink",
+      "keywords": "mango x passionfruit smoothie, smoothie, tropical",
+      "recipeYield": "2 servings",
+      "recipeIngredient": [
+        "1 Ripe mango",
+        "1 Banana",
+        "2 Passion fruits",
+        "200 ml Coconut milk",
+        "1–2 tsp Honey",
+        "Ice cubes (optional)"
+      ],
+      "recipeInstructions": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "text": "Blend until smooth and enjoy."
+        }
+      ],
+      "inLanguage": "en",
+      "totalTime": "PT5M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Recipes",
+          "item": "https://constantinteck.com/recipes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Mango x Passionfruit Smoothie",
+          "item": "https://constantinteck.com/recipes/mango-passionfruit-smoothie.html"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  ],
-  "inLanguage": "en",
-  "recipeYield": "2 servings",
-  "totalTime": "PT5M"
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->

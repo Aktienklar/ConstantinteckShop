@@ -23,61 +23,131 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Recipe",
-  "name": "Baba Ganoush",
-  "description": "Four simple ingredients. The eggplants roast until the skin chars, then everything goes into the blender.",
-  "image": [
-    "https://constantinteck.com/assets/img/baba-ganoush.jpg"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "Constantin"
-  },
-  "recipeCategory": "Savoury & Everyday",
-  "recipeIngredient": [
-    "2 Large eggplants",
-    "2–3 Garlic cloves",
-    "2 tbsp Tahini",
-    "½ Lemon, juice only",
-    "2 tbsp Olive oil",
-    "Salt, to taste",
-    "Black pepper, to taste",
-    "Optional: chopped parsley, smoked paprika or extra olive oil for serving"
-  ],
-  "recipeInstructions": [
+  "@graph": [
     {
-      "@type": "HowToStep",
-      "position": 1,
-      "text": "Roast the eggplants at 200 °C (400 °F) for 40–50 minutes, until the skin is charred and the inside is soft. Add the garlic cloves (wrapped in foil or left in their skins) during the last 15–20 minutes to roast as well."
+      "@type": "Recipe",
+      "@id": "https://constantinteck.com/recipes/baba-ganoush.html#recipe",
+      "name": "Baba Ganoush",
+      "description": "Four simple ingredients. The eggplants roast until the skin chars, then everything goes into the blender.",
+      "image": [
+        "https://constantinteck.com/assets/img/baba-ganoush.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://constantinteck.com/about.html#constantin",
+        "name": "Constantin",
+        "url": "https://constantinteck.com/about.html"
+      },
+      "publisher": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "datePublished": "2026-08-06",
+      "recipeCategory": "Dip",
+      "keywords": "baba ganoush, dip, vegan",
+      "recipeYield": "4 servings",
+      "recipeIngredient": [
+        "2 Large eggplants",
+        "2–3 Garlic cloves",
+        "2 tbsp Tahini",
+        "½ Lemon, juice only",
+        "2 tbsp Olive oil",
+        "Salt, to taste",
+        "Black pepper, to taste",
+        "Optional: chopped parsley, smoked paprika or extra olive oil for serving"
+      ],
+      "recipeInstructions": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "text": "Roast the eggplants at 200 °C (400 °F) for 40–50 minutes, until the skin is charred and the inside is soft. Add the garlic cloves (wrapped in foil or left in their skins) during the last 15–20 minutes to roast as well."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "text": "Let the eggplants cool slightly, then scoop out the flesh."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "text": "Add the roasted eggplant, roasted garlic, tahini, lemon juice, olive oil, salt and black pepper to a blender or food processor."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "text": "Blend until smooth and creamy. Taste and adjust the seasoning if needed."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "text": "Drizzle with olive oil and enjoy with warm pita, fresh vegetables or crackers."
+        }
+      ],
+      "inLanguage": "en",
+      "totalTime": "PT1H"
     },
     {
-      "@type": "HowToStep",
-      "position": 2,
-      "text": "Let the eggplants cool slightly, then scoop out the flesh."
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Recipes",
+          "item": "https://constantinteck.com/recipes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Baba Ganoush",
+          "item": "https://constantinteck.com/recipes/baba-ganoush.html"
+        }
+      ]
     },
     {
-      "@type": "HowToStep",
-      "position": 3,
-      "text": "Add the roasted eggplant, roasted garlic, tahini, lemon juice, olive oil, salt and black pepper to a blender or food processor."
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     },
     {
-      "@type": "HowToStep",
-      "position": 4,
-      "text": "Blend until smooth and creamy. Taste and adjust the seasoning if needed."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 5,
-      "text": "Drizzle with olive oil and enjoy with warm pita, fresh vegetables or crackers."
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  ],
-  "inLanguage": "en",
-  "recipeYield": "4 servings",
-  "totalTime": "PT1H"
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->

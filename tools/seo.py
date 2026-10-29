@@ -27,6 +27,9 @@ import struct
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import schema  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://constantinteck.com/"
 SKIP_DIRS = {".git", ".github", ".claude", ".wrangler", "node_modules", "worker", "tools"}
@@ -129,6 +132,31 @@ def head_block(page, src, meta):
     return "\n".join("  " + l for l in lines), title, desc, noindex, url
 
 
+SCHEMA_GAPS = {}
+
+
+def structured(page, src, url, noindex):
+    """Ersetzt oder ergänzt den JSON-LD-Block, siehe tools/schema.py."""
+    nodes = None
+    if not noindex:
+        image = first(r'property="og:image" content="([^"]+)"', src)
+        title = re.sub(r"\s*\|.*$", "", first(r"<title>(.*?)</title>", src))
+        nodes = schema.build(ROOT, page, src, url, image, title)
+    pattern = r"[ \t]*<!-- Strukturierte Daten.*?<!-- /Strukturierte Daten -->"
+    if nodes is None:
+        return src
+    missing, optional = schema.check(nodes)
+    if missing:
+        print("  FEHLER %s: Pflichtfelder fehlen im Schema: %s" % (page, ", ".join(missing)))
+        sys.exit(1)
+    for field in optional:
+        SCHEMA_GAPS.setdefault(field, []).append(page)
+    block = schema.block(nodes)
+    if re.search(pattern, src, re.S):
+        return re.sub(pattern, lambda _: block, src, count=1, flags=re.S)
+    return src.replace("</head>", block + "\n</head>", 1)
+
+
 def lastmod(page):
     dirty = subprocess.run(["git", "status", "--porcelain", "--", page], cwd=ROOT,
                            capture_output=True, text=True).stdout.strip()
@@ -160,6 +188,7 @@ def main():
             continue
         block, title, desc, noindex, url = head_block(page, src, data.get(page, {}))
         new = src[:m.start()] + block + src[m.end():]
+        new = structured(page, new, url, noindex)
         if new != src:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(new)
@@ -193,6 +222,8 @@ def main():
           % (len(pages()), len(changed), len(indexable)))
     for w in warnings:
         print("  Hinweis: " + w)
+    for field, where in sorted(SCHEMA_GAPS.items()):
+        print("  Schema: %s fehlt auf %d Seite(n), z. B. %s" % (field, len(where), where[0]))
 
 
 if __name__ == "__main__":

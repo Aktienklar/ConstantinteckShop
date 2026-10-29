@@ -23,57 +23,127 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Recipe",
-  "name": "Strawberry Sorbet",
-  "description": "Frozen strawberries, lemon, sugar and mint – blended into a sorbet in five short steps.",
-  "image": [
-    "https://constantinteck.com/assets/img/strawberry-sorbet.jpg"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "Constantin"
-  },
-  "recipeCategory": "Baking & Sweets",
-  "recipeIngredient": [
-    "300 g Frozen strawberries",
-    "2 tbsp Lemon juice",
-    "3–4 tbsp Sugar (adjust to taste)",
-    "5–6 Fresh mint leaves"
-  ],
-  "recipeInstructions": [
+  "@graph": [
     {
-      "@type": "HowToStep",
-      "position": 1,
-      "text": "Add the frozen strawberries to a blender."
+      "@type": "Recipe",
+      "@id": "https://constantinteck.com/recipes/strawberry-sorbet.html#recipe",
+      "name": "Strawberry Sorbet",
+      "description": "Frozen strawberries, lemon, sugar and mint – blended into a sorbet in five short steps.",
+      "image": [
+        "https://constantinteck.com/assets/img/strawberry-sorbet.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://constantinteck.com/about.html#constantin",
+        "name": "Constantin",
+        "url": "https://constantinteck.com/about.html"
+      },
+      "publisher": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "datePublished": "2026-08-06",
+      "recipeCategory": "Dessert",
+      "keywords": "strawberry sorbet, 4 ingredients, summer",
+      "recipeYield": "2 servings",
+      "recipeIngredient": [
+        "300 g Frozen strawberries",
+        "2 tbsp Lemon juice",
+        "3–4 tbsp Sugar (adjust to taste)",
+        "5–6 Fresh mint leaves"
+      ],
+      "recipeInstructions": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "text": "Add the frozen strawberries to a blender."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "text": "Pour in the lemon juice and add the sugar."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "text": "Blend until smooth and creamy."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "text": "Add the mint leaves and blend briefly."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "text": "Serve immediately, or freeze for 30–60 minutes for a firmer texture."
+        }
+      ],
+      "inLanguage": "en",
+      "totalTime": "PT5M"
     },
     {
-      "@type": "HowToStep",
-      "position": 2,
-      "text": "Pour in the lemon juice and add the sugar."
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://constantinteck.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Recipes",
+          "item": "https://constantinteck.com/recipes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Strawberry Sorbet",
+          "item": "https://constantinteck.com/recipes/strawberry-sorbet.html"
+        }
+      ]
     },
     {
-      "@type": "HowToStep",
-      "position": 3,
-      "text": "Blend until smooth and creamy."
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     },
     {
-      "@type": "HowToStep",
-      "position": 4,
-      "text": "Add the mint leaves and blend briefly."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 5,
-      "text": "Serve immediately, or freeze for 30–60 minutes for a firmer texture."
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
     }
-  ],
-  "inLanguage": "en",
-  "recipeYield": "2 servings",
-  "totalTime": "PT5M"
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->
