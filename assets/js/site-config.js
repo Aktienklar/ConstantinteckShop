@@ -71,6 +71,7 @@ var SITE_CONFIG = {
    *   product-click/overview-kids/<produkt>    Hinweis bei "Cook with kids"
    *   product-click/home-showcase/<produkt>    Schaufenster auf der Startseite
    *   product-click/home-grid/<produkt>        Shop-Karte in "New from the videos"
+   *   krimi-click/<stelle>/<fall>              Fallkarte bzw. Teaser (Murdernight-Link)
    *   banner-click                             Ankündigungsleiste (nur die aus dieser Datei)
    *   newsletter-signup                        abgeschicktes Newsletter-Formular
    *

@@ -5,11 +5,13 @@
  * Krimi-Dinnern zu sehen ist. Im HTML stehen dafür nur Markierungen:
  *
  *   <div data-krimi-cases></div>
- *       Die Karten aller Fälle (krimi-dinner.html). Mit data-krimi-limit="3"
- *       nur die ersten drei (Startseite, about.html).
+ *       Die Karten aller Fälle (krimi-dinner.html), Fälle mit Saison vorn.
+ *       Mit data-krimi-limit="3" nur die ersten drei. data-krimi-context
+ *       ("cases" ohne Angabe) steht im Klick-Event: krimi-click/<context>/<id>.
  *
  *   <a data-krimi-link="shop">…</a>      oder  data-krimi-link="home"
  *       Bekommt die Adresse bei Murdernight samt UTM-Parametern.
+ *       data-krimi-content="closing-cta" setzt utm_content (welcher Knopf).
  *
  *   <span data-krimi-from-price></span>   <span data-krimi-count></span>
  *       Niedrigster Preis bzw. Anzahl der Fälle – für Teaser-Texte.
@@ -40,6 +42,9 @@
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg>';
   var ICON_PLAYERS =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19.2a6.2 6.2 0 0 1 12.4 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 5.6"/><path d="M18.2 14.4a6.2 6.2 0 0 1 3 4.8"/></svg>';
+  var ICON_LENS =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg>';
+  var DIFFICULTY_STEPS = { easy: 1, medium: 2, tricky: 3 };
   var ICON_CLOCK =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
 
@@ -91,10 +96,47 @@
   function metaLine(item) {
     return (
       "<span>" + ICON_PLAYERS + escapeHtml(item.players) + " " + labels().players + "</span>" +
-      "<span>" + ICON_CLOCK + escapeHtml(labels().duration(item.hours)) + "</span>" +
-      (item.difficulty && labels().difficulty[item.difficulty]
-        ? "<span>" + escapeHtml(labels().difficulty[item.difficulty]) + "</span>"
-        : "")
+      "<span>" + ICON_CLOCK + escapeHtml(labels().duration(item.hours)) + "</span>"
+    );
+  }
+
+  /* Schwierigkeit als Skala: ein bis drei Lupen, dazu das Wort. Die
+     Erklärung steht in einem Tooltip, der bei Hover und Fokus erscheint –
+     auf dem Handy also beim Antippen. aria-describedby liest sie auch
+     Screenreadern vor. */
+  function difficultyScale(item) {
+    var level = DIFFICULTY_STEPS[item.difficulty];
+    var name = labels().difficulty[item.difficulty];
+    if (!level || !name) return "";
+
+    var id = "krimi-diff-" + item.id;
+    var icons = "";
+    for (var i = 1; i <= 3; i++) {
+      icons += '<span class="krimi-diff__step' + (i <= level ? " is-on" : "") + '">' + ICON_LENS + "</span>";
+    }
+    return (
+      '<button type="button" class="krimi-diff" aria-describedby="' + id + '">' +
+      '<span class="krimi-diff__icons" aria-hidden="true">' + icons + "</span>" +
+      '<span class="sr-only">' + escapeHtml(labels().difficultyLevel) + ": </span>" +
+      escapeHtml(name) +
+      "</button>" +
+      '<span class="krimi-diff__tip" role="tooltip" id="' + id + '">' +
+      escapeHtml(labels().difficultyHelp[item.difficulty] || "") +
+      "</span>"
+    );
+  }
+
+  function perfectFor(item) {
+    var names = (item.occasions || [])
+      .map(function (key) { return labels().occasions[key]; })
+      .filter(Boolean);
+    if (!names.length) return "";
+    return (
+      '<p class="krimi-card__for"><b>' + escapeHtml(labels().perfectFor) + "</b> " +
+      names.map(function (name) {
+        return '<span class="tag">' + escapeHtml(name) + "</span>";
+      }).join(" ") +
+      "</p>"
     );
   }
 
@@ -137,35 +179,51 @@
     return '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>";
   }
 
+  /* Eine Fallkarte. context landet in data-track ("krimi-click/<context>/<id>"),
+     damit GoatCounter zeigt, wo geklickt wurde; utm_content=<id> sagt es
+     Murdernight. */
+  function caseCard(item, index, context) {
+    var text = item[KRIMI_SITE.lang];
+    var href = krimiUrl(text.path, null, item.id);
+    var track = ' data-track="krimi-click/' + context + "/" + escapeHtml(item.id) + '"';
+    var seasonal = krimiInSeason(item);
+
+    return (
+      '<article class="card krimi-card' + (seasonal ? " is-seasonal" : "") + '">' +
+      '<a class="krimi-card__media" tabindex="-1"' + externalAttrs(href) + track + ">" +
+      media(item, index) +
+      (seasonal ? '<span class="krimi-card__badge">' + escapeHtml(labels().seasonal) + "</span>" : "") +
+      "</a>" +
+      '<div class="krimi-card__head">' +
+      '<span class="tag krimi-card__genre">' + escapeHtml(text.genre) + "</span>" +
+      "<h3><a" + externalAttrs(href) + track + ">" + escapeHtml(text.title) + "</a></h3>" +
+      (text.setting ? '<p class="krimi-card__setting">' + escapeHtml(text.setting) + "</p>" : "") +
+      '<div class="recipe-card__meta">' + metaLine(item) + "</div>" +
+      '<div class="krimi-card__diff">' + difficultyScale(item) + "</div>" +
+      "</div>" +
+      '<div class="krimi-card__body">' +
+      (text.teaser ? '<p class="krimi-card__teaser">' + escapeHtml(text.teaser) + "</p>" : "") +
+      perfectFor(item) +
+      '<div class="krimi-card__foot">' +
+      '<a class="btn btn--primary"' + externalAttrs(href) + track + ">" +
+      escapeHtml(labels().getCase(krimiPrice(item.price))) + newTabHint() +
+      "</a>" +
+      "</div>" +
+      "</div>" +
+      "</article>"
+    );
+  }
+
   function renderCases(box) {
     var limit = Number(box.getAttribute("data-krimi-limit")) || undefined;
-    var html = krimiCases()
+    var context = box.getAttribute("data-krimi-context") || "cases";
+    var html = krimiCasesBySeason()
       .slice(0, limit)
       .map(function (item, index) {
-        var text = item[KRIMI_SITE.lang];
-        var href = krimiUrl(text.path);
-
         return (
-          '<div class="rise" style="animation-delay:' + index * 70 + 'ms">' +
-          '<article class="card krimi-card">' +
-          '<a class="krimi-card__media" tabindex="-1"' + externalAttrs(href) + ">" +
-          media(item, index) +
-          "</a>" +
-          '<div class="krimi-card__head">' +
-          '<span class="tag krimi-card__genre">' + escapeHtml(text.genre) + "</span>" +
-          "<h3><a" + externalAttrs(href) + ">" + escapeHtml(text.title) + "</a></h3>" +
-          (text.setting ? '<p class="krimi-card__setting">' + escapeHtml(text.setting) + "</p>" : "") +
-          '<div class="recipe-card__meta">' + metaLine(item) + "</div>" +
-          "</div>" +
-          '<div class="krimi-card__body">' +
-          '<div class="krimi-card__foot">' +
-          '<span class="product-card__price">' + krimiPrice(item.price) + "</span>" +
-          '<a class="btn btn--primary btn--sm"' + externalAttrs(href) + ">" +
-          escapeHtml(labels().toCase) + newTabHint() +
-          "</a>" +
-          "</div>" +
-          "</div>" +
-          "</article>" +
+          '<div class="krimi-cases__item rise" data-krimi-case="' + escapeHtml(item.id) + '"' +
+          ' style="animation-delay:' + Math.min(index, 5) * 70 + 'ms">' +
+          caseCard(item, index, context) +
           "</div>"
         );
       })
@@ -180,7 +238,8 @@
 
     link.href = krimiUrl(
       paths[target] || paths.shop,
-      link.getAttribute("data-krimi-campaign") || undefined
+      link.getAttribute("data-krimi-campaign") || undefined,
+      link.getAttribute("data-krimi-content") || undefined
     );
     link.target = "_blank";
     link.rel = "noopener";
@@ -243,7 +302,7 @@
       detail +
       "</div>" +
       '<a class="btn btn--secondary"' +
-      externalAttrs(krimiUrl(path, KRIMI_SITE.recipeCampaign)) + ">" +
+      externalAttrs(krimiUrl(path, KRIMI_SITE.recipeCampaign, id || "all-cases")) + ">" +
       escapeHtml(button) + newTabHint() +
       "</a>" +
       "</aside>";

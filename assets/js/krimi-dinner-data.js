@@ -61,7 +61,13 @@ var KRIMI_SITE = {
   },
 
   /** Abweichende Kampagne für den Hinweis-Block auf Rezeptseiten. */
-  recipeCampaign: "krimi-dinner-rezept"
+  recipeCampaign: "krimi-dinner-rezept",
+
+  /**
+   * Fall für den Teaser auf der Startseite, wenn gerade kein Fall Saison hat
+   * (Feld "seasonal"). Leer = der erste Fall der Liste.
+   */
+  featured: ""
 };
 
 /**
@@ -71,7 +77,7 @@ var KRIMI_SITE = {
  * id          Kennung für den Rezept-Hinweis: <div data-krimi-hint="id"></div>
  * players     Spielerzahl, so wie sie im Shop steht ("6" oder "5–7")
  * hours       Dauer in Stunden als Zahl (2.5 = "ca. 2,5 Std.")
- * difficulty  "medium" oder "tricky" – so steht es dort
+ * difficulty  "easy", "medium" oder "tricky" – so steht es dort
  * price       Preis in Euro
  * image       Cover ab dem Hauptordner. Die Dateien in assets/img/krimi/ sind
  *             die englischen Cover von murdernight.store (27.10.2026, auf
@@ -81,7 +87,19 @@ var KRIMI_SITE = {
  *             beschnitten. Neben jedem JPEG liegen <name>-400.webp und
  *             <name>-675.webp; bei einem neuen Cover einmal
  *             python3 tools/krimi-images.py laufen lassen.
- * en / de     Titel, Genre, Schauplatz und Pfad der Produktseite. null = den
+ * moods       Stimmung für die Filter auf krimi-dinner.html, Schlüssel aus
+ *             KRIMI_LABELS.<lang>.moods ("cosy", "spooky", "glamorous", "scifi")
+ * occasions   Anlässe – erscheinen als "Perfect for:" auf der Karte und als
+ *             Filter. Schlüssel aus KRIMI_LABELS.<lang>.occasions.
+ * seasonal    Optional: Monate (1–12), in denen der Fall als "Seasonal pick"
+ *             markiert und im Raster und auf der Startseite nach vorn
+ *             gestellt wird. Entscheidet das Datum im Browser des Besuchers.
+ * recipes     Rezepte von dieser Seite, die zum Fall passen – für "Cook the
+ *             menu, solve the case". { slug: "<datei in recipes/ ohne .html>",
+ *             title: "<sichtbarer Titel>" }. Leer = der Fall erscheint dort
+ *             nicht.
+ * en / de     Titel, Genre, Schauplatz, Pfad der Produktseite und teaser
+ *             (1–2 Sätze Story; leer = keine Zeile auf der Karte). null = den
  *             Fall gibt es in dieser Sprache (noch) nicht.
  */
 var KRIMI_CASES = [
@@ -92,11 +110,16 @@ var KRIMI_CASES = [
     difficulty: "tricky",
     price: 8.99,
     image: "assets/img/krimi/the-comet-vintage.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["glamorous"],
+    occasions: ["birthday", "new-years-eve"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "The Comet Vintage",
       genre: "Country-house classic",
       setting: "An old wine estate on the Moselle",
-      path: "/en/mysteries/the-comet-vintage"
+      path: "/en/mysteries/the-comet-vintage",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Der Kometenjahrgang",
@@ -112,11 +135,17 @@ var KRIMI_CASES = [
     difficulty: "tricky",
     price: 8.99,
     image: "assets/img/krimi/the-last-sleigh-ride.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["cosy"],
+    occasions: ["christmas"],
+    seasonal: [11, 12],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "The Last Sleigh Ride",
       genre: "Fairytale",
       setting: "The Christmas village at the North Pole",
-      path: "/en/mysteries/the-last-sleigh-ride"
+      path: "/en/mysteries/the-last-sleigh-ride",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Die letzte Bescherung",
@@ -132,11 +161,16 @@ var KRIMI_CASES = [
     difficulty: "tricky",
     price: 8.99,
     image: "assets/img/krimi/the-last-night-at-fjell.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["cosy"],
+    occasions: ["game-night", "birthday"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "The Last Night at Fjell",
       genre: "Historical",
       setting: "A Norwegian mountain hotel, 1928",
-      path: "/en/mysteries/the-last-night-at-fjell"
+      path: "/en/mysteries/the-last-night-at-fjell",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Die letzte Nacht in Fjell",
@@ -152,11 +186,16 @@ var KRIMI_CASES = [
     difficulty: "medium",
     price: 8.99,
     image: "assets/img/krimi/radio-silence-on-ares.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["scifi"],
+    occasions: ["game-night", "birthday"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "Radio Silence on Ares",
       genre: "Sci-fi",
       setting: "A Mars station in 2152",
-      path: "/en/mysteries/radio-silence-on-ares"
+      path: "/en/mysteries/radio-silence-on-ares",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Funkstille auf Ares",
@@ -172,11 +211,16 @@ var KRIMI_CASES = [
     difficulty: "medium",
     price: 8.99,
     image: "assets/img/krimi/witching-hour-at-ravenmoor.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["spooky"],
+    occasions: ["halloween"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "Witching Hour at Ravenmoor",
       genre: "Historical",
       setting: "A haunted castle, Halloween 1986",
-      path: "/en/mysteries/witching-hour-at-ravenmoor"
+      path: "/en/mysteries/witching-hour-at-ravenmoor",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Geisterstunde auf Ravenmoor",
@@ -192,11 +236,16 @@ var KRIMI_CASES = [
     difficulty: "medium",
     price: 8.99,
     image: "assets/img/krimi/murder-before-hibernation.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["cosy"],
+    occasions: ["game-night"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "Murder Before Hibernation",
       genre: "Fairytale",
       setting: "An autumn forest of talking animals",
-      path: "/en/mysteries/murder-before-hibernation"
+      path: "/en/mysteries/murder-before-hibernation",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Mord vor dem Winterschlaf",
@@ -212,11 +261,16 @@ var KRIMI_CASES = [
     difficulty: "tricky",
     price: 8.99,
     image: "assets/img/krimi/closing-bell-on-the-24th-floor.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["glamorous"],
+    occasions: ["team-event"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "Closing Bell on the 24th Floor",
       genre: "Modern / Business",
       setting: "The executive floor of a corporation",
-      path: "/en/mysteries/closing-bell-on-the-24th-floor"
+      path: "/en/mysteries/closing-bell-on-the-24th-floor",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Schlusskurs im 24. Stock",
@@ -232,11 +286,16 @@ var KRIMI_CASES = [
     difficulty: "medium",
     price: 8.99,
     image: "assets/img/krimi/death-at-studio-7.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["glamorous"],
+    occasions: ["new-years-eve", "birthday"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "Death at Studio 7",
       genre: "Historical",
       setting: "Hollywood, 1934",
-      path: "/en/mysteries/death-at-studio-7"
+      path: "/en/mysteries/death-at-studio-7",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Tod im Studio 7",
@@ -252,11 +311,16 @@ var KRIMI_CASES = [
     difficulty: "tricky",
     price: 8.99,
     image: "assets/img/krimi/the-night-of-the-waxworks.jpg",
+    // TODO: Stimmung und Anlässe sind mein Vorschlag aus Genre und Schauplatz – bitte prüfen.
+    moods: ["spooky"],
+    occasions: ["halloween", "team-event"],
+    recipes: [], // TODO: 2–3 passende Rezepte, z. B. { slug: "creamy-sucuk-carbonara", title: "Creamy Sucuk Carbonara" }
     en: {
       title: "The Night of the Waxworks",
       genre: "Modern / Business",
       setting: "A Halloween case in a hotel full of wax figures",
-      path: "/en/mysteries/the-night-of-the-waxworks"
+      path: "/en/mysteries/the-night-of-the-waxworks",
+      teaser: "" // TODO: 1–2 Sätze mit Hook – wer ist tot, warum ist jeder verdächtig?
     },
     de: {
       title: "Das Wachsfigurenhotel",
@@ -273,6 +337,26 @@ var KRIMI_LABELS = {
     players: "players",
     duration: function (hours) { return "approx. " + hours + " hrs"; },
     toCase: "View case",
+    getCase: function (price) { return "Get the case – " + price; },
+    seasonal: "Seasonal pick",
+    perfectFor: "Perfect for:",
+    difficultyLevel: "Difficulty",
+    /* TODO: Erklärungen mit Murdernight abgleichen – wie definieren sie
+       "Medium" und "Tricky"? */
+    difficultyHelp: {
+      easy: "Easy: the clues lead fairly directly to the culprit – good for a first murder mystery night.",
+      medium: "Medium: some clues only make sense together – fine for mixed groups.",
+      tricky: "Tricky: the decisive clues are well hidden – for groups who like a real puzzle."
+    },
+    moods: { cosy: "Cosy", spooky: "Spooky", glamorous: "Glamorous", scifi: "Sci-fi" },
+    occasions: {
+      christmas: "Christmas party",
+      halloween: "Halloween party",
+      "new-years-eve": "New Year's Eve",
+      birthday: "Birthday",
+      "game-night": "Game night",
+      "team-event": "Team event"
+    },
     toGame: "To the game",
     toCases: "See the cases",
     newTab: "opens Murdernight in a new tab",
@@ -282,7 +366,7 @@ var KRIMI_LABELS = {
     hintDetailGeneric: function (count, price) {
       return count + " cases to print at home · " + price + " each";
     },
-    difficulty: { medium: "Medium", tricky: "Tricky" },
+    difficulty: { easy: "Easy", medium: "Medium", tricky: "Tricky" },
     coverAlt: function (title, setting) {
       return "Cover of the murder mystery dinner " + title + (setting ? " – " + setting : "");
     },
@@ -294,6 +378,24 @@ var KRIMI_LABELS = {
       return "ca. " + String(hours).replace(".", ",") + " Std.";
     },
     toCase: "Zum Fall",
+    getCase: function (price) { return "Fall holen – " + price; },
+    seasonal: "Passt zur Saison",
+    perfectFor: "Ideal für:",
+    difficultyLevel: "Schwierigkeit",
+    difficultyHelp: {
+      easy: "Leicht: Die Hinweise führen recht direkt zum Täter – gut für den ersten Krimiabend.",
+      medium: "Mittel: Manche Hinweise ergeben erst zusammen Sinn – passt für gemischte Gruppen.",
+      tricky: "Knifflig: Die entscheidenden Hinweise sind gut versteckt – für Gruppen, die gern rätseln."
+    },
+    moods: { cosy: "Gemütlich", spooky: "Gruselig", glamorous: "Glamourös", scifi: "Sci-Fi" },
+    occasions: {
+      christmas: "Weihnachtsfeier",
+      halloween: "Halloween",
+      "new-years-eve": "Silvester",
+      birthday: "Geburtstag",
+      "game-night": "Spieleabend",
+      "team-event": "Teamevent"
+    },
     toGame: "Zum Spiel",
     toCases: "Zu den Fällen",
     newTab: "öffnet Murdernight in neuem Tab",
@@ -303,7 +405,7 @@ var KRIMI_LABELS = {
     hintDetailGeneric: function (count, price) {
       return count + " Fälle zum Ausdrucken · je " + price;
     },
-    difficulty: { medium: "Mittel", tricky: "Knifflig" },
+    difficulty: { easy: "Leicht", medium: "Mittel", tricky: "Knifflig" },
     coverAlt: function (title, setting) {
       return "Cover des Krimi-Dinners " + title + (setting ? " – " + setting : "");
     },
@@ -316,11 +418,15 @@ var KRIMI_LABELS = {
  *
  *   krimiUrl("/en/shop")                          -> … ?utm_campaign=krimi-dinner
  *   krimiUrl("/en/shop", KRIMI_SITE.recipeCampaign) -> … ?utm_campaign=krimi-dinner-rezept
+ *   krimiUrl(path, null, "the-comet-vintage")     -> … &utm_content=the-comet-vintage
+ *
+ * utm_content sagt, welcher Link geklickt wurde: bei Fallkarten die id des
+ * Falls, bei allgemeinen Knöpfen deren Stelle (z. B. "closing-cta").
  *
  * Kein Link zu Murdernight wird irgendwo von Hand geschrieben – nur so
  * lässt sich ein UTM-Parameter später an einer Stelle ändern.
  */
-function krimiUrl(path, campaign) {
+function krimiUrl(path, campaign, content) {
   var params = [];
 
   Object.keys(KRIMI_SITE.utm).forEach(function (key) {
@@ -328,6 +434,7 @@ function krimiUrl(path, campaign) {
       key === "utm_campaign" && campaign ? campaign : KRIMI_SITE.utm[key];
     params.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
   });
+  if (content) params.push("utm_content=" + encodeURIComponent(content));
 
   return (
     KRIMI_SITE.base[KRIMI_SITE.lang] +
@@ -342,6 +449,27 @@ function krimiCases() {
   return KRIMI_CASES.filter(function (item) {
     return Boolean(item[KRIMI_SITE.lang]);
   });
+}
+
+/** Hat der Fall heute Saison (Feld "seasonal")? */
+function krimiInSeason(item, date) {
+  var month = (date || new Date()).getMonth() + 1;
+  return Boolean(item.seasonal && item.seasonal.indexOf(month) !== -1);
+}
+
+/** Wie krimiCases(), aber Fälle mit Saison stehen vorn. */
+function krimiCasesBySeason() {
+  var cases = krimiCases();
+  return cases
+    .filter(function (item) { return krimiInSeason(item); })
+    .concat(cases.filter(function (item) { return !krimiInSeason(item); }));
+}
+
+/** "5–7" -> [5, 7], "6" -> [6, 6] */
+function krimiPlayerRange(item) {
+  var numbers = String(item.players).match(/\d+/g) || [];
+  var low = Number(numbers[0]);
+  return [low, Number(numbers[1] || low)];
 }
 
 /** 16.9 -> "€16.90" (en) bzw. "16,90 €" (de) */
