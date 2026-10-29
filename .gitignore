@@ -27,3 +27,8 @@ out
 # auf eine öffentliche Website, und "git add -A" in deploy.sh würde die Datei
 # sonst mitnehmen.
 NEXT-STEPS.md
+
+# SEO-Audit und offene Fragen bleiben lokal – deploy.sh macht git add -A,
+# und GitHub Pages wuerde sie sonst unter constantinteck.com ausliefern.
+SEO-AUDIT.md
+OFFENE-FRAGEN.md
