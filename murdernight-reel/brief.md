@@ -119,3 +119,14 @@ src/make.py       styleframes | preview | final | check
 - Kein `assets/`-Ordner vorhanden → alles wird im Code gestaltet.
 - „9 Fälle.“ erscheint bei 1,30 (kurz vor der ersten Akte), damit die Aussage steht, bevor die Akten aufklappen.
 - Der Stempel landet auf Akte #001 (Ravenmoor, aktuelles Halloween-Spezial).
+
+---
+
+## 11. Änderungen aus Phase 2 (Styleframes)
+
+- **Etiketten sitzen jetzt auf dem Innenblatt der Akte** (getippter Papierstreifen unter dem Foto) statt unter der Akte – sonst kollidierten sie mit der zweiten Reihe und ragten in die UI-Zonen. Special Elite 50 Welt-px → 45 px auf dem Handy.
+- **Kamera S2–S4** bleibt bei Zoom 0,88–0,92 auf dem 2×2-Raster, so dass alle getippten Etiketten in x 80–940 / y 220–1500 liegen (Renderer prüft das pro Frame und meldet Verstöße).
+- Deckel öffnet auf 108° (statt 118°), damit er die Nachbarakte nicht verdeckt.
+- Wand reicht oberhalb des Logos weiter (kein schwarzer Rand im Logo-Shot); Handy + PDF-Seiten liegen tiefer, damit „Kaufen. / Rollen verteilen. / Ermitteln.“ freie Fläche hat.
+- Lesbarkeit: weicher dunkler Schatten hinter jeder Headline; in S3 wird die Szene um 65 % abgedunkelt.
+- Beim Logo-Hit wechselt das Führungslicht von Amber zu Cremeweiß.

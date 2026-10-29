@@ -138,6 +138,44 @@ TARGET_TP = -1.0
 SFX_MIN_GAP = 0.060                    # Nicht-Hits nie naeher als 60 ms aneinander
 
 
+# --- Faden: Reiseplan des Fadenkopfs (Ziel, Abflug, Ankunft) -------------------
+# Knoten: anchor, hook, folder0..3, phone, logo_l, logo_r
+THREAD_TRAVEL = [
+    ("hook",    -0.06, PIN_HIT),
+    ("folder0",  1.05, 1.30),
+    ("folder1",  1.75, 2.00),
+    ("folder2",  2.45, 2.70),
+    ("folder3",  3.15, 3.40),
+    ("phone",    9.30, THREAD_INTO_PHONE),
+    ("logo_l",  THREAD_SHOOT_UP, 11.90),
+    ("logo_r",  11.90, LOGO_HIT),
+]
+THREAD_WHIP_SPAN = (-0.50, 0.60)       # Wellenbewegung der Peitsche
+
+# --- Kamera-Keyframes (Zeit, x, y, Zoom, Drehung Grad, Halt) ------------------
+CAMERA_KEYS = [
+    (0.00,  1300, 1330, 1.30,  0.0, True),
+    (1.20,  1330, 1650, 1.15, -0.4, False),
+    (1.55,  1450, 2650, 0.90, -0.5, False),
+    (2.30,  1458, 2780, 0.90, -0.3, False),
+    (3.00,  1458, 3150, 0.90,  0.2, False),
+    (3.70,  1458, 3190, 0.90,  0.3, False),
+    (6.55,  1458, 3190, 0.88, -0.1, False),
+    (7.30,  1458, 3185, 0.91, -0.4, False),
+    (9.15,  1456, 3180, 0.92, -0.5, True),
+    (9.75,  1400, 4500, 1.00,  0.6, False),
+    (11.58, 1400, 4480, 1.04,  0.4, True),
+    (11.80, 1420, 2600, 0.36,  0.0, False),
+    (12.00, 1430,  640, 0.95, -0.3, True),
+    (13.00, 1430,  630, 0.97, -0.2, False),
+    (14.50, 1428,  620, 1.00,  0.0, True),
+]
+SHAKES = [  # (Zeit, Staerke px)
+    (PIN_HIT, 16.0), (4.20, 6.0), (5.00, 6.0), (5.80, 8.0), (STAMP_HIT, 13.0), (LOGO_HIT, 9.0),
+]
+S3_DIM = (4.05, 6.55)                  # Szene abdunkeln fuer die Zahlen
+
+
 def f(t):
     """Sekunden -> Frame-Nummer (60 fps)."""
     return int(round(t * FPS))
