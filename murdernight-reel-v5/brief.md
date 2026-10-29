@@ -1,0 +1,148 @@
+# Murdernight · Reel v5 · „Club → Dinner → Zuhause"
+
+Status: **Phase 1 – Brief** (wartet auf Freigabe)
+ElevenLabs-Flow: „Murdernight Reel v5" · `flow_id = Olkv1MRYelvPQoh10PoH`
+https://elevenlabs.io/app/flows/Olkv1MRYelvPQoh10PoH
+
+Format: 9:16 · 1080×1920 · 30 fps · 14,5 s · H.264 / AAC 48 kHz
+
+---
+
+## 1. Fakten (einzige Quelle für Text und VO)
+
+- Marke: **Murdernight** (ein Wort), Website **murdernight.de**
+- 9 Krimidinner-Fälle, verschiedene Genres, für 5 bis 12 Personen
+- Je 8,99 €, Sofort-Download als PDF, Druck- oder Digitalversion (fürs Handy)
+- 3 Runden Ermittlung, 1 Täter unter den Gästen
+- Ablauf: Krimi aussuchen → herunterladen → Rollen verteilen → gemeinsam ermitteln
+
+---
+
+## 2. Modelle
+
+| Aufgabe | Modell | Begründung |
+|---|---|---|
+| Cast-Sheet + Styleframes | **gemini-3-pro-image** (Nano Banana Pro), 9:16, 2K | Laut Guide stark bei Figuren-Konsistenz über mehrere Shots und beim Zusammensetzen mit Referenzbildern. Genau das brauchen wir, weil das Cast-Sheet an jedem Shot hängt. Die Stärke von GPT Image 2.5 (Text im Bild) nützt uns nichts, wir wollen ja gar keinen Text. |
+| Image-to-Video | **veo-3.1-generate-001** (Veo 3.1), 9:16, 1080p, 4 s, `generate_audio: false` | Volle Qualitätsstufe mit hoher Prompt-Treue und Kamerasprache sowie Start-Frame-Steuerung. Für Glas, Flüssigkeit in Slow Motion und Menschenmengen ist es das realistischere Modell. Kling 3 Pro bleibt Plan B, weil es Negativ-Prompts gegen verformte Hände kann. ⚠️ siehe Blocker unten |
+| Voice-over | **eleven_v3**, Sprache `de` | Audio-Tags für Pausen und Ton, kein Speed-Parameter, also auch kein Beschleunigen |
+| Musik | **eleven_music_v2_5**, instrumental | wie vorgegeben |
+| SFX | **eleven_text_to_sound_v2** | wie vorgegeben |
+
+### ⚠️ Blocker für Phase 3
+`creative_get_model_schema` für Veo 3.1 und Kling 3 Pro meldet: *„video generation needs a paid plan"*.
+Bild, Sprache, Musik und SFX funktionieren mit dem aktuellen Plan. Für die Clips (Shots 1, 2, 3, 4, 7, 8, 9) brauchen wir vor Phase 3 einen bezahlten ElevenLabs-Plan.
+Ausweichplan, falls kein Upgrade kommt: Alle Shots entstehen aus Styleframes mit 2.5D-Kamerabewegung, Parallaxe, Licht- und Partikel-Animation in Python. Das funktioniert, sieht aber deutlich weniger nach echtem Film aus, vor allem bei der Ampulle in Shot 1.
+
+### Stimme
+**Vincent Crowe – Dark & Haunting Tales** · `voice_id 18X2yBovneA0q06wd8E9`
+Deutsche Muttersprache, Hochdeutsch, mittleres Alter, tief, warm und ruhig, langsames Tempo. Die Stimme ist ausdrücklich für Krimi und Thriller gemacht.
+Alternative mit mehr „Seriosität" und weniger Grusel: **Günther Ferstl** (`Yuw6Yffvf55x8VEXbIGt`), sonor und souverän.
+
+VO-Texte (eleven_v3):
+1. `[deep voice] [slowly] Einer von euch … [pause] ist ein Mörder.` → Start 0,25 s, die Pause sitzt auf dem Schnitt bei 1,8 s (wird in der Post auf den Frame gesetzt)
+2. `[whispers] Aber wer war's?` → Start 7,8 s
+3. `[warmly] Murdernight. Das Krimidinner für zuhause.` → Start 12,9 s
+
+---
+
+## 3. Shotlist (final)
+
+| # | Zeit | Welt | Bild | Text-Overlay (Post) | Quelle |
+|---|---|---|---|---|---|
+| 1 HOOK | 0,0–1,8 | Club | Erbin lacht, dreht sich weg, Haar im Gegenlicht. Vorne scharf das Champagnerglas, Hand im Lederhandschuh bricht eine Ampulle, 3 Tropfen, Hand weg | „Einer von **euch** …" (ab 0,15) | Video |
+| 2 NICHTS BEMERKT | 1,8–3,4 | Club | Gegenschuss: Sie greift das Glas, die Bläschen steigen, eine Silhouette verschwindet in der Menge, Strobes | „… ist ein **Mörder**." | Video |
+| 3 DER TOAST | 3,4–5,0 | Club | VIP-Nische: Anstoßen mit Gastgeberin, Notar, Partner, Whip-Pan nach rechts | – | Video |
+| 4 MATCH-CUT | 5,0–6,2 | Dinner | Aus dem Whip-Pan: dieselbe Frau hebt das Weinglas an der Kerzentafel, Glas auf derselben Bildposition | „Einer an diesem **Tisch**." | Video (Ref: letztes Frame Shot 3) |
+| 5 VERDÄCHTIGE | 6,2–7,7 | Dinner | 3 × 0,5 s Push-in: Gastgeberin · Notar (Finger) · Partner (Siegelring, Handschuh blitzt) | „Die **Gastgeberin**" · „Der **Notar**" · „Der **Partner**" (Inter-Labels) | 3 Standbilder + Post |
+| 6 BLACKOUT | 7,7–8,6 | Dinner | Kerzen flackern und erlöschen → Schwarz, Glas zerspringt (nur Ton) | „Wer **war's**?" (im Schwarz) | Standbild + Post-Flackern |
+| 7 LICHT AN | 8,6–11,0 | Zuhause | Modernes Esszimmer, 6 Freunde verkleidet, eine zeigt anklagend, einer hebt empört die Hände, Rollenhefte | „Euer Krimidinner. **Zuhause**." | Video |
+| 8 DAS SPIEL | 11,0–12,8 | Zuhause | Top-Shot Push-in: Hände blättern in Heften, Smartphone leuchtet, Wein, Kerze | „9 Fälle · 5–12 Personen · **Sofort**-Download" | Video (+ optional Cover-Insert) |
+| 9 MARKE | 12,8–14,5 | Zuhause → Schwarz | Kerze wird ausgeblasen, Rauch ins Schwarz | Logo „Murdernight" + „8,99 € · murdernight.de" (Inter) | Video |
+
+Rot `#B3121C` = das fett markierte Wort pro Zeile. Alles andere Elfenbein `#F3EDE2`, Playfair Display Bold ≥ 110 px.
+Safe Zone für Text: y 220–1500, x 0–940.
+
+Cover-Insert (Shot 8): murdernight.de ist aus der Session erreichbar (HTTP 200), die Option ist also machbar.
+
+---
+
+## 4. Bild-Prompts (Englisch, gemini-3-pro-image, 9:16, 2K)
+
+Gemeinsamer Abschluss jedes Prompts (**SUFFIX**):
+> Photorealistic still from a high-end crime drama, shot on 35mm film with an anamorphic lens feel, shallow depth of field, fine natural film grain, real skin texture with pores, natural hands with five fingers. Fictional people only, no celebrities. No text, no letters, no logos, no signage, no writing anywhere in the image. Vertical 9:16 frame.
+
+Figuren-Anker (wörtlich in jedem Prompt wiederverwendet):
+- **THE HEIRESS**: a strikingly beautiful, confident woman in her late twenties with dark, glossy, wavy shoulder-length hair, an emerald-green silk slip dress, pearl drop earrings
+- **THE HOSTESS**: an elegant woman around fifty with auburn hair in a sophisticated updo, a deep red velvet gown
+- **THE NOTARY**: a distinguished older gentleman in his sixties with a neatly trimmed silver beard, classic black tuxedo with bow tie
+- **THE PARTNER**: a handsome man in his mid-forties, dark hair, a dark bottle-green velvet dinner jacket, a heavy gold signet ring on his right little finger
+
+### P0 · Cast-Sheet (Format 16:9, 2K – einziges Querformat)
+> Create a professional casting reference sheet for a luxury crime drama, four fictional characters standing side by side against a seamless dark charcoal studio backdrop. For each character show a full-body pose and, above it, a tight head-and-shoulders portrait. From left to right: (1) THE HEIRESS … (2) THE HOSTESS … (3) THE NOTARY … (4) THE PARTNER … [Anker vollständig]. Soft key light from camera left, subtle rim light separating them from the dark background, neutral color, even exposure so faces, fabrics and jewelry read clearly. Editorial fashion-casting look. + SUFFIX
+
+### P1 · Hook (Ref: Cast-Sheet → Identität Heiress)
+> Using the attached reference: it provides the exact face, hair, emerald silk dress and pearl earrings of THE HEIRESS. Create a medium shot at a luxurious black-and-gold-veined marble bar in an upscale cocktail lounge at night. In the sharp foreground, a crystal champagne coupe filled with sparkling champagne sits on the marble. Above it, entering from the right edge of the frame, a hand in a tight black leather glove holds a tiny clear glass ampoule, its neck snapped open by the thumb, a single clear drop falling toward the glass. Behind, softly out of focus, THE HEIRESS laughs and turns away over her shoulder, her wavy dark hair swinging and backlit by deep red neon. Brass details, mirrored back bar, haze, round red and teal bokeh lights. Color: deep blacks, neon red and cool teal. + SUFFIX
+
+### P2 · Nichts bemerkt (Ref: Cast-Sheet + Styleframe 1)
+> Using the attached references: reference 1 provides THE HEIRESS's identity and wardrobe; reference 2 provides the bar, champagne coupe, lighting and color world. Reverse shot from behind the bar: THE HEIRESS, facing camera, turns back with a relaxed, confident smile and picks up the champagne coupe by its stem, fine bubbles rising. Behind her, deep in the background, a dark anonymous silhouette seen only from behind, wearing a dark fedora, slips away into a dancing crowd. Strobe light flares, thick haze, red and teal beams, motion in the crowd. + SUFFIX
+
+### P3 · Der Toast (Ref: Cast-Sheet + Styleframe 1)
+> Using the attached references: reference 1 provides the faces and wardrobe of all four characters; reference 2 provides the club's lighting and color world. Close medium shot in a plush VIP booth with dark velvet seating and brass: THE HEIRESS laughs and raises her champagne coupe to clink glasses with THE HOSTESS, THE NOTARY and THE PARTNER. Four glasses meet in the center of the frame, slightly right of center, a few droplets of champagne suspended in the air. Red neon rim light, teal fill, bokeh, haze. Joyful, elegant, nobody touches the heiress. + SUFFIX
+
+### P4 · Match-Cut Dinner (Ref: Cast-Sheet + Styleframe 3 → Glasposition)
+> Using the attached references: reference 1 provides THE HEIRESS's identity and emerald dress; reference 2 provides the composition: the raised glass must sit at the same position in the frame, slightly right of center, at the same height. Medium shot at a long, festive dinner table in the dining hall of an old country manor at night: THE HEIRESS raises a crystal red-wine glass in a toast, other elegant guests raise theirs along the table. Dozens of tall candles in silver candelabras, warm 2700K candlelight against cool blue moonlight falling through tall leaded windows, dark wood paneling, crystal and silver on white linen. + SUFFIX
+
+### P5a · Die Gastgeberin (Ref: Cast-Sheet + Styleframe 4)
+> Using the attached references: reference 1 provides THE HOSTESS's face, updo and red velvet gown; reference 2 provides the manor dining room and candlelight. Tight close-up: THE HOSTESS looks over the rim of her wine glass straight past camera, eyes sharp and suspicious, the glass edge blurred in the foreground, candle flames as warm bokeh, cool moonlight on one side of her face. + SUFFIX
+
+### P5b · Der Notar (Ref: Cast-Sheet + Styleframe 4)
+> Using the attached references: reference 1 provides THE NOTARY's silver beard and tuxedo; reference 2 provides the manor dining room and candlelight. Tight close-up across the white tablecloth: THE NOTARY's hand with tuxedo cuff and cufflink, fingers drumming impatiently beside a silver fork and crystal glass; his silver-bearded face in soft focus behind, watchful. Warm candlelight, cool moonlit shadows. + SUFFIX
+
+### P5c · Der Partner (Ref: Cast-Sheet + Styleframe 4)
+> Using the attached references: reference 1 provides THE PARTNER's face, green velvet jacket and gold signet ring; reference 2 provides the manor dining room and candlelight. Tight close-up of THE PARTNER's hands resting on the table: he slowly turns the heavy gold signet ring on his little finger; at the edge of his jacket pocket, the fingertip of a black leather glove peeks out. His face half in shadow above, eyes lowered. Warm candlelight, cool moonlight. + SUFFIX
+
+### P6 · Blackout (Ref: Styleframe 4)
+> Using the attached reference: it provides the manor dining table, candelabras and lighting. Low, close angle along the table: a row of tall candle flames bending and flickering hard in a sudden draft, one already extinguished with a thin ribbon of smoke, the room falling into darkness, only a glint of crystal and silver remains. + SUFFIX
+
+### P7 · Licht an (Ref: Styleframe 4 → Tafelform)
+> Using the attached reference: it provides the shape of the long dinner table and camera angle only. Same long-table composition, now in a stylish modern dining room at home in bright, warm evening light: pendant lamps, light oak, linen, plants, candles and wine glasses. Six friends in their late twenties in playful murder-mystery costumes – a woman in a green silk dress, one with a pink feather boa, a man with a bow tie, one in a velvet jacket, one wearing an obviously fake stick-on silver beard – laughing loudly. One woman points accusingly across the table at her neighbor, who throws up his hands in mock outrage. Printed role booklets with plain covers lie in front of them. Genuine joy, candid, warm. + SUFFIX
+
+### P8 · Das Spiel (Ref: Styleframe 7)
+> Using the attached reference: it provides the modern dining table, materials and warm light. Top-down overhead shot onto the table: several hands leafing through printed role booklets with blurred, unreadable pages and plain covers, a smartphone lying face up with a softly glowing blank bright screen, a glass of red wine, a lit candle, linen napkin, scattered crumbs. Warm, cozy, slightly moody. + SUFFIX
+
+### P9 · Marke (Ref: Styleframe 8)
+> Using the attached reference: it provides the table and candle. Close side shot at table level: a single lit candle on the table in front of a dark background; a woman's lips gently blowing it out, the flame bending, a delicate curl of white smoke rising into near-total black. Low-key, elegant, warm last light. + SUFFIX
+
+---
+
+## 5. Video-Prompts (Phase 3 – nur nach Freigabe und Plan-Upgrade)
+
+Jeweils Styleframe als `start_frame`, Veo 3.1, 9:16, 1080p, 4 s, `generate_audio: false`. Pro Shot genau eine Kamerabewegung und eine Aktion.
+
+- **V1** Slow-motion, 120fps feel. Slow push-in toward the champagne coupe. The gloved hand from the right edge snaps the ampoule open with its thumb, three clear drops fall into the champagne one after another, then the hand withdraws out of frame. Behind, the heiress keeps laughing and turning away, hair swinging through red backlight. Bubbles and drops stay crisp and physically real.
+- **V2** Fast handheld tracking shot arcing slightly left. The heiress turns back, lifts the coupe and smiles; behind her the dark figure in the fedora walks away and disappears into the dancing crowd. Strobe flashes and haze.
+- **V3** Slow-motion clink of four glasses in the center, champagne droplets fly; then the camera whip-pans fast to the right along the glass rims into a motion blur.
+- **V4** Starts in fast rightward motion blur that settles quickly, as if finishing a whip-pan to the right, landing on the heiress raising her wine glass at the same position in frame; guests raise glasses along the candlelit table. (Zusätzliche Referenz: letztes Frame V3)
+- **V7** Quick dolly-in toward the table. The woman points accusingly, her neighbor throws up his hands in outrage, everyone bursts out laughing.
+- **V8** Fast top-down push-in. Hands flip pages of the booklets, the phone screen glows, the candle flickers.
+- **V9** Slow push-in. The woman blows out the candle; the flame dies and white smoke curls up into black, frame ends nearly black.
+
+---
+
+## 6. Ton
+
+**Musik** (eleven_music_v2_5, instrumental):
+- M1 Club, 5,5 s: *Dark, elegant deep house / minimal techno at 122 BPM, heavy sub-bass drop hitting immediately at the very start, crisp hi-hats, luxury nightclub, instrumental, no vocals.*
+- M2 Dinner, 3 s: *Tense low cello and double-bass ostinato, heartbeat-like pulse, sparse single dark piano notes, mystery thriller score, instrumental, no vocals.* Hart abgeschnitten bei 7,7 s.
+- M3 Zuhause, 6 s: *Warm playful jazz groove, walking upright bass, brushed drums, bright piano comping, cozy dinner party, instrumental, no vocals.*
+
+**SFX** (eleven_text_to_sound_v2): Ampulle knackt 0,2 · 3 Tropfen 0,4/0,55/0,7 · Club-Atmo gedämpft 0–1,8 (Tiefpass in der Post), voll 1,8–5,0 · Champagner perlt 2,0 · Gläser klirren Club 3,6 · Whoosh 4,8 · Gläser klirren Dinner 5,4 · 3 Hits 6,2/6,7/7,2 · Kerzen flackern und Ausblasen 7,7 · Glas fällt und zerspringt 8,2 · Lichtschalter-Klick + Lachen 8,6 · Stimmengewirr 8,6–11,0 · Papierblättern 11,0–12,8 · Kerze ausblasen 12,8 · Logo-Hit 13,0.
+
+**Mix**: Musik ≥ 12 dB unter dem VO (Sidechain-Ducking), Master −14 LUFS integriert / −1 dBTP.
+
+---
+
+## 7. Post-Pipeline (Python + ffmpeg)
+
+`scripts/` (folgt in Phase 3/4): `grade.py` (3 LUTs per numpy, Korn, Vignette, Halation) · `typo.py` (PIL-Overlays, Fade, Blur-zu-Scharf, Scale, 2-Frame-Flash) · `scenes.py` (je Szene eine MP4, Speed Ramps, Whip-Pan-Naht mit 5 Frames Motion Blur) · `mix.py` (Platzierung, Ducking, loudnorm) · `contact_sheet.py`.
+Export: concat demuxer `-c copy`, danach Ton mit `-c:v copy`.
