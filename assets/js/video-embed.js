@@ -61,7 +61,9 @@
         : "Watch the video on " + outside + " (opens in a new tab)"
     );
 
-    if (poster) trigger.appendChild(poster);
+    /* Das Foto steckt in einem <picture> mit AVIF-Quelle (tools/images.py);
+       ohne die Hülle verlöre es beim Umziehen seine kleinere Fassung. */
+    if (poster) trigger.appendChild(poster.closest("picture") || poster);
     trigger.insertAdjacentHTML(
       "beforeend",
       '<span class="video-embed__play" aria-hidden="true">' +

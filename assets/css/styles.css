@@ -160,6 +160,13 @@ img {
   height: auto;
 }
 
+/* tools/images.py legt um Fotos ein <picture> mit AVIF-Quelle. Für das
+   Layout soll es unsichtbar sein: Das <img> verhält sich, als stünde es
+   direkt im umgebenden Element. */
+picture {
+  display: contents;
+}
+
 a {
   color: inherit;
   text-decoration: none;
