@@ -67,7 +67,7 @@ FOLDER_OPEN_DUR = 0.28                 # Aufklapp-Animation
 THREAD_JUMP_LEAD = 0.10                # Faden erreicht die Akte kurz vor dem Aufklappen
 LABEL_DELAY = 0.10                     # Label startet nach dem Aufklappen
 LABEL_CHAR = 2 / FPS                   # 1 Buchstabe alle 2 Frames
-NINE_CASES_IN = 1.30                   # "9 Faelle."
+NINE_CASES_IN = 1.22                   # "9 Faelle." (80 ms vor dem Faden-Zupfer bei 1.30)
 NINE_CASES_OUT = 4.00
 
 # --- S3 Die Zahlen -----------------------------------------------------------

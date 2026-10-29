@@ -1,0 +1,10 @@
+MURDERNIGHT · REEL „EINER VON EUCH LÜGT.“ · VOICE-OVER
+
+Stimme: ElevenLabs „Vincent Crowe – Dark & Haunting Tales“ (deutsch, tief, ruhig), Modell eleven_v4, normales Tempo (nicht beschleunigt).
+Ein Call mit dem ganzen Skript und Pausen, 2 Takes; verwendet: Take A (Wort-Zeitstempel decken sich mit dem Skript).
+Schnitt: Zeilen an den Pausen getrennt; in Zeile 4 wurde nur die Pause zwischen „Murdernight.“ und „Das“ von 0,38 s auf 0,18 s gekürzt, damit die Stimme vor dem Loop-Punkt endet.
+
+ 0.20 s  (Frame  12)   Einer von euch lügt.    – Musik 13.0 dB unter der Stimme
+ 2.00 s  (Frame 120)   Neun Fälle. Fünf bis zwölf Gäste. Ein Täter.    – Musik 13.0 dB unter der Stimme
+ 7.60 s  (Frame 456)   Aber wer war's?    – Musik 13.0 dB unter der Stimme
+11.70 s  (Frame 702)   Murdernight. Das Krimidinner für zuhause.    – Musik 13.0 dB unter der Stimme
