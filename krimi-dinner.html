@@ -312,25 +312,26 @@
         </noscript>
       </section>
 
-      <!-- d) Was im PDF steckt. TODO: Liste mit Murdernight abgleichen und
-           ergänzen (Seitenzahl, Menüvorschläge, Namensschilder …?). Die
-           Vorschauseiten erscheinen erst, wenn KRIMI_PREVIEWS in
-           krimi-dinner-data.js Bilder enthält. -->
+      <!-- d) Was im PDF steckt – abgeglichen mit Murdernight (29.10.2026). Die
+           Vorschauseiten erscheinen erst, wenn "previews" in data/cases.json
+           Bilder enthält. -->
       <section class="shop-section krimi-inside" aria-labelledby="inside">
         <div class="section-head">
           <div>
             <h2 id="inside">What's inside the PDF</h2>
-            <p>Everything the host needs for the evening, in one download.</p>
+            <p>Everything the host needs for the evening – ready right after payment.</p>
           </div>
         </div>
         <div class="krimi-inside__grid">
           <ul class="krimi-inside__list">
-            <!-- TODO: jeden Punkt bestätigen -->
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A role booklet for every player</b> – who they are, what they know, what they'd rather hide</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Invitations</b> to send to your guests before the evening</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A run sheet for the host</b> that walks you through the rounds</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Clues</b> that come into play as the evening goes on</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>The solution</b> – for the big reveal at the end</span></li>
+            <!-- Quelle: "What's included" auf den Fallseiten von murdernight.store (29.10.2026) –
+                 nur, was für alle bzw. die genannte Zahl der Fälle gilt. -->
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A role booklet for every player</b> with an intro and three rounds</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A host guide without the solution</b> with a prologue and events to read aloud – so the host plays along too</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>A floor plan</b> of the scene of the crime</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Props to examine</b> in eight of the nine cases</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Accusation sheets and a sealed solution</b> for the big reveal at the end</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span><b>Print and phone edition</b> the same case laid out for printing, or every round as its own file to send – both for the same price</span></li>
           </ul>
           <div class="krimi-previews" data-krimi-previews hidden></div>
         </div>
