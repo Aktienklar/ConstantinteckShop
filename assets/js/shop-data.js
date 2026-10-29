@@ -61,7 +61,7 @@ var SHOP_PRODUCTS = {
     title: "Waffle apron »Dough Love«",
     type: "physical",
     price: 49.9,
-    image: "assets/img/apron-adult.jpg",
+    image: "assets/img/apron-grey.jpg",
     /* Eine Frage: die Farbe. Die Erwachsenenschürze hat nur eine Größe. */
     options: [{ id: "colour", legend: "Colour", choices: SHOP_COLOURS }]
   },
