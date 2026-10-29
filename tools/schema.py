@@ -33,10 +33,9 @@ SOCIAL = [
     "https://tiktok.com/@constantinteck",
     "https://youtube.com/@constantinteck",
 ]
-DESCRIPTION = ("Murder mystery dinners and the menu to go with them, by Constantin: "
-               "printable murder mystery games for 5–12 players, free recipes from his "
-               "Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom "
-               "and sewn by hand in Germany.")
+DESCRIPTION = ("Printable murder mystery dinners for 5–12 players, with menu ideas from "
+               "Constantin's free recipes from his Instagram, TikTok and YouTube videos – and "
+               "kitchen aprons designed by his mom and sewn by hand in Germany.")
 
 ORGANIZATION = {
     "@type": "Organization",

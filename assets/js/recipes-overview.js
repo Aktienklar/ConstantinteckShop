@@ -37,7 +37,7 @@
       via: "recipes-grid",
       covers: 3,
       title: "Turn dinner into a mystery",
-      text: "Murder mystery dinners as a PDF – each with a menu from these recipes."
+      text: "Murder mystery dinners as a PDF – with menu ideas from these recipes."
     },
     {
       id: "linen-apron",

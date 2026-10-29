@@ -5175,7 +5175,7 @@ div.legal__en > * + * {
 
 .home-hero__title {
   font-family: var(--font-display);
-  font-size: clamp(2.125rem, 9vw, 3.5rem);
+  font-size: clamp(1.875rem, 7.5vw, 2.75rem);
   line-height: 1.05;
   letter-spacing: -0.01em;
   margin-top: 0.5rem;
@@ -5257,6 +5257,14 @@ div.legal__en > * + * {
 
 .home-hero__cover--3 {
   transform: rotate(3deg);
+}
+
+/* Handy: Cover zuerst, damit sie direkt unter der Rezeptwand zu sehen sind. */
+@media (max-width: 1023px) {
+  .home-hero__covers {
+    order: -1;
+    max-width: 22rem;
+  }
 }
 
 @media (min-width: 1024px) {

@@ -392,9 +392,17 @@ Right now everything points at `https://placehold.co/...` URLs. For real photos:
    `assets/img/babka.jpg` from a root page, `../assets/img/babka.jpg` from a
    page inside `recipes/` or `shop/`
 
-The hero on the start page shows three murder mystery covers
-(`home.heroCovers` in `data/cases.json`). The former recipe wall
-(`assets/img/wall/`, `assets/js/hero-wall.js`) is no longer used.
+The hero on the start page is a slowly moving wall of recipe cards across the
+full width and stands on its own, with one line and a link. Directly below
+it, a band shows three murder mystery covers (`home.heroCovers` in
+`data/cases.json`) with the facts and the way to the cases. The wall's small 3:4 previews
+(400×534) live in `assets/img/wall/`, one per recipe on the wall, named like
+the recipe page. For a new recipe, add a preview there and one `wall-card`
+link to the shortest lane in the hero of `index.html` (from the fifth card of
+a lane on with `loading="lazy"`).
+
+The menus on the site are **suggestions** from the free recipes – they are not
+part of the PDF. Keep the wording that way ("menu idea", "a menu to match").
 
 ## Colours and look
 
