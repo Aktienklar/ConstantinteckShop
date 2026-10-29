@@ -194,7 +194,7 @@ def recipe(root, page, src, url, image):
             breadcrumbs(("Home", SITE), ("Recipes", SITE + "recipes.html"), (name, url))]
 
 
-def product(root, page, src, url):
+def product(root, page, src, url, image):
     slug = os.path.basename(page)[:-5]
     block = js_object(root, "assets/js/shop-data.js", slug)
     price = float(first(r"\bprice:\s*([\d.]+)", block))
@@ -206,7 +206,9 @@ def product(root, page, src, url):
         "@id": url + "#product",
         "name": name,
         "description": text(first(r'<p class="lede">(.*?)</p>', src)),
-        "image": [SITE + g for g in dict.fromkeys(gallery)],
+        # Das Vorschaubild der Seite zuerst: Es zeigt das ganze Produkt, die
+        # Galerie kann mit einer Nahaufnahme beginnen.
+        "image": list(dict.fromkeys([image] + [SITE + g for g in gallery])),
         "sku": slug,
         "brand": {"@type": "Brand", "name": "Constantinteck"},
         "material": "Waffle piqué",
@@ -263,7 +265,7 @@ def build(root, page, src, url, image, title):
     if page.startswith("recipes/"):
         return recipe(root, page, src, url, image) + brand
     if page.startswith("shop/"):
-        return product(root, page, src, url) + brand
+        return product(root, page, src, url, image) + brand
     if page == "recipes.html":
         return [{"@type": "CollectionPage", "@id": url, "name": title, "url": url,
                  "isPartOf": {"@id": WEBSITE_ID}, "mainEntity": item_list(src, "recipes")},
