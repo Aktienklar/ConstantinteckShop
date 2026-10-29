@@ -1,6 +1,32 @@
 # Murdernight · Reel v5 · „Club → Dinner → Zuhause"
 
-Status: **Phase 1 – Brief** (wartet auf Freigabe)
+Status: **Phase 2 – Styleframes** (wartet auf Freigabe)
+
+## Änderungen seit Phase 1 (freigegeben)
+
+1. **Budget (Starter, 30.000 Credits)** – Die ElevenLabs-Schätzung ergab für den ursprünglichen Plan ca. 95.000 Credits. Freigegeben wurde die Variante „Bewegung zuerst“:
+   - Bilder mit **Nano Banana 2** (`gemini-3.1-flash-image`), je 1 Take.
+   - Startbilder für Videos in 1K (Veo rendert ohnehin in 1080p), Standbild-Shots 5a–c und 6 in 2K.
+   - Video mit **Veo 3.1 Fast** (`veo-3.1-fast-generate-001`), 1080p, 4 s, ohne Ton, Negativ-Prompt möglich.
+   - Gemessene Preise: Bild 1K mit Referenz 609–812 · Bild 2K mit Referenz 918–1.224 · Veo 3.1 Fast 4 s = 2.424 · Veo 3.1 voll 4 s = 4.848 · Veo 3.1 Lite 4 s = 1.212 · Kling 3 Pro 3 s = 2.036.
+2. **Die Tat wandert ins Dinner** – ElevenLabs hat Shot 1 in der ursprünglichen Fassung als ToS-Verstoß blockiert („Ampulle ins Glas einer Frau im Club“ = K.O.-Tropfen). Freigegebene Lösung:
+   - Im Club steckt eine Hand im Lederhandschuh nur eine **versiegelte Ampulle in die Manteltasche**.
+   - Die Tat passiert beim Dinner: Die Ampulle wird über der **gemeinsamen Dekantier-Karaffe** aufgebrochen, ein klassisches Agatha-Christie-Motiv. Shot 4 zeigt die Karaffe im Vordergrund und dahinter die Erbin beim Toast.
+   - SFX: Ampulle knackt und Tropfen fallen jetzt bei ca. 5,2–5,7 s statt 0,2–0,7 s. Bei 0,2 s kommt stattdessen ein Glas-Glint mit Bass-Drop.
+3. **Retuschen (lokal, OpenCV, 0 Credits)**:
+   - 01: Neonschild mit Fantasie-Buchstaben entfernt.
+   - 02: Oben zugeschnitten (Neonschrift raus), dabei bleibt es 9:16.
+   - 03: Neonschrift im Hintergrund in Dunst aufgelöst.
+   - 09: Abgelöste, schwebende zweite Flamme entfernt.
+
+Credits Phase 2: ca. 10.700 (Cast 612 · Shots 1–4 609 + 3×812 · 5a–c 3×1.224 · 6 918 · 7–9 3×609 · der blockierte Versuch 609, falls berechnet).
+Rest ca. 19.300 → 7 Clips mit Veo Fast würden 16.968 kosten, damit bleiben nur ca. 2.300 für den Ton. Empfehlung: **Shot 9 nicht als Video**, sondern aus dem Standbild in der Post animieren. Damit bleiben ca. 4.700 für Ton.
+
+Freigegebene Styleframes: `out/styleframes/` (Übersicht: `_uebersicht.jpg`)
+
+---
+
+Status Phase 1: Brief
 ElevenLabs-Flow: „Murdernight Reel v5" · `flow_id = Olkv1MRYelvPQoh10PoH`
 https://elevenlabs.io/app/flows/Olkv1MRYelvPQoh10PoH
 
