@@ -1,0 +1,36 @@
+{
+  "_hinweis": "Rezeptsammlungen (Hubs). tools/blocks.py baut daraus collections/<slug>.html. Ein Rezept gehoert dazu, wenn 'match' (regulaerer Ausdruck, ohne Gross/Klein) auf seinen Namen oder einen seiner Tags in recipes.html passt. Neue Rezepte landen so automatisch in der passenden Sammlung.",
+
+  "sorbet-and-ice-cream": {
+    "label": "Sorbet & ice cream",
+    "h1": "No-churn sorbet & ice cream",
+    "title": "No-Churn Sorbet & Ice Cream Recipes, Ready in 5 Minutes",
+    "description": "Fruit sorbets and nice cream made in the blender: frozen fruit, a few more ingredients, no ice cream maker and no churning. Most take four ingredients.",
+    "intro": "Every sorbet and ice cream here works the same way: frozen fruit goes into the blender with a few other ingredients and comes out creamy – no ice cream maker, no churning. Most need four ingredients and about five minutes.",
+    "match": "sorbet|ice cream|nice cream"
+  },
+  "smoothies": {
+    "label": "Smoothies",
+    "h1": "Smoothies & smoothie bowls",
+    "title": "Easy Smoothie & Smoothie Bowl Recipes | Constantinteck",
+    "description": "Fruit smoothies and smoothie bowls from my videos: frozen fruit, milk or coconut milk, a little honey and one blender. Each one is ready in about 5 minutes.",
+    "intro": "Smoothies and smoothie bowls from my videos – frozen fruit, a splash of milk or coconut milk, a little honey, one blender. Each one is ready in about five minutes.",
+    "match": "smoothie"
+  },
+  "breakfast": {
+    "label": "Breakfast",
+    "h1": "Breakfast",
+    "title": "Easy Breakfast Recipes: Chia Pudding & Bowls | Constantinteck",
+    "description": "Breakfasts to make ahead or blend in minutes: thick chia puddings that set in the fridge, smoothie bowls with granola and a quick strawberry smoothie.",
+    "intro": "Breakfasts you can make ahead or blend in minutes: thick chia puddings that set in the fridge while you sleep, and bowls and smoothies that are done before the kettle boils.",
+    "match": "^breakfast$"
+  },
+  "weeknight-dinners": {
+    "label": "Weeknight dinners",
+    "h1": "Quick weeknight dinners",
+    "title": "Quick Weeknight Dinners in 20–35 Minutes | Constantinteck",
+    "description": "Dinners for busy weekdays: creamy pastas, a cheesy chicken wrap and spicy peanut udon – one pan or one tray, 20 to 35 minutes, nothing complicated.",
+    "intro": "Dinners for the week, when there is no time for anything complicated: one pan or one tray, and on the table in 20 to 35 minutes.",
+    "match": "^weeknight$"
+  }
+}

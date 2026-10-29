@@ -243,7 +243,7 @@ def product(root, page, src, url):
 
 def item_list(src, folder):
     urls = []
-    for href in re.findall(r'<a class="card (?:recipe|product)-card[^"]*" href="(%s/[^"]+\.html)"' % folder, src):
+    for href in re.findall(r'<a class="card (?:recipe|product)-card[^"]*" href="(?:\.\./)?(%s/[^"]+\.html)"' % folder, src):
         if SITE + href not in urls:
             urls.append(SITE + href)
     return {
@@ -276,6 +276,12 @@ def build(root, page, src, url, image, title):
         return [{"@type": "AboutPage", "@id": url, "name": title, "url": url,
                  "isPartOf": {"@id": WEBSITE_ID}, "mainEntity": {"@id": PERSON_ID}},
                 breadcrumbs(("Home", SITE), ("About", url))] + brand
+    if page.startswith("collections/"):
+        h1 = text(first(r"<h1[^>]*>(.*?)</h1>", src))
+        return [{"@type": "CollectionPage", "@id": url, "name": h1, "url": url,
+                 "description": text(first(r'<p class="muted"[^>]*>(.*?)</p>', src)),
+                 "isPartOf": {"@id": WEBSITE_ID}, "mainEntity": item_list(src, "recipes")},
+                breadcrumbs(("Home", SITE), ("Recipes", SITE + "recipes.html"), (h1, url))] + brand
     if page == "krimi-dinner.html":
         return [breadcrumbs(("Home", SITE), ("Murder Mystery Dinner", url))] + brand
     return None
