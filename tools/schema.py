@@ -224,7 +224,7 @@ def product(root, page, src, url, image):
             "seller": {"@id": ORG_ID},
             "shippingDetails": {
                 "@type": "OfferShippingDetails",
-                "shippingRate": {"@type": "MonetaryAmount", "value": "4.90", "currency": "EUR"},
+                "shippingRate": {"@type": "MonetaryAmount", "value": "6.19", "currency": "EUR"},
                 "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "DE"},
             },
             "hasMerchantReturnPolicy": {

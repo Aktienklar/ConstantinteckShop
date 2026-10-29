@@ -126,9 +126,10 @@ export const PRODUCTS = {
  * Adresse in Japan eingibt, kommt nicht durch.
  *
  * Stand 29.10.2026: Preise nach DHL Paket bis 2 kg (Online-Frankierung,
- * Vergleichsseiten, nicht direkt von dhl.de geprüft), auf ,90 gerundet.
- * Deutschland bleibt bewusst bei 4,90 € (DHL-Preis 6,19 €). Lieferzeiten
- * sind geschätzt, mit Puffer. Ändert sich hier etwas, auch AGB § 4 und § 6,
+ * Preisübersicht auf dhl.de geprüft). Deutschland genau zum DHL-Preis
+ * 6,19 €; Ausland auf ,90 aufgerundet (EU 14,49, CH/GB 19,49, übriges
+ * Europa 22,49, Welt bis 27,49 €). Zonen folgen den DHL-Zonen; Monaco
+ * gehört bei DHL zur EU-Zone. Lieferzeiten sind geschätzt, mit Puffer. Ändert sich hier etwas, auch AGB § 4 und § 6,
  * shipping-returns.html und SHOP_SHIPPING_ZONES anpassen.
  *
  * Ländercodes nur aus der Liste, die Stripe für allowed_countries kennt
@@ -145,17 +146,17 @@ export const SHIPPING = {
   zones: {
     de: {
       label: "Germany",
-      cents: 490,
+      cents: 619,
       days: [3, 5],
       countries: ["DE"]
     },
     eu: {
-      label: "European Union",
+      label: "European Union & Monaco",
       cents: 1490,
       days: [5, 8],
       countries: [
         "AT", "BE", "BG", "CY", "CZ", "DK", "EE", "ES", "FI", "FR", "GR",
-        "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
+        "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MC", "MT", "NL", "PL", "PT",
         "RO", "SE", "SI", "SK"
       ]
     },
@@ -171,7 +172,7 @@ export const SHIPPING = {
       days: [6, 10],
       countries: [
         "AD", "AL", "AX", "BA", "FO", "GG", "GI", "IM", "IS", "JE", "LI",
-        "MC", "MD", "ME", "MK", "NO", "RS", "SJ", "SM", "TR", "UA", "VA",
+        "MD", "ME", "MK", "NO", "RS", "SJ", "SM", "TR", "UA", "VA",
         "XK"
       ]
     },

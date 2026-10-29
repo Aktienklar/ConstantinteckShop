@@ -182,8 +182,8 @@ Object.keys(SHOP_PRODUCTS).forEach(function (slug) {
  * Ändert sich etwas: catalog.js, AGB § 4 und § 6, shipping-returns.html.
  */
 var SHOP_SHIPPING_ZONES = [
-  { id: "de", label: "Germany", price: 4.9, days: "3–5" },
-  { id: "eu", label: "European Union", price: 14.9, days: "5–8" },
+  { id: "de", label: "Germany", price: 6.19, days: "3–5" },
+  { id: "eu", label: "EU & Monaco", price: 14.9, days: "5–8" },
   { id: "ch-gb", label: "Switzerland & UK", price: 19.9, days: "6–10" },
   { id: "europe", label: "Rest of Europe", price: 22.9, days: "6–10" },
   { id: "world", label: "Rest of the world", price: 29.9, days: "10–20" }
