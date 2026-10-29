@@ -3849,6 +3849,12 @@ strong {
   margin-top: 0.75rem;
 }
 
+/* Längere englische Fassungen (Belehrung, Formular) bestehen aus mehreren
+   Absätzen in einem gemeinsamen Block. */
+div.legal__en > * + * {
+  margin-top: 0.5rem;
+}
+
 .legal__quote .legal__en {
   border-left-color: var(--crust);
 }
