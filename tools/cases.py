@@ -291,7 +291,7 @@ def case_card(case, root, placement, index, menu=True):
                                     eager=index < 2 and placement == "krimi-card"),
            esc(t(case)["genre"]), page, via, esc(t(case)["title"]), esc(t(case)["setting"]),
            meta_line(case), difficulty(case, placement), teaser(case), perfect_for(case),
-           ('<div class="krimi-card__menu"><p class="krimi-card__menu-title">Menu for this case</p>%s</div>'
+           ('<div class="krimi-card__menu"><p class="krimi-card__menu-title">Menu idea for this case</p>%s</div>'
             % menu_list(case, root, placement)) if menu else "",
            buy_link(case, placement, funnel=placement == "krimi-card",
                     label=None if menu else "Get it – %s" % price(case["price"])), page, via))
@@ -407,7 +407,7 @@ def apply_global(page, src):
         lead = "Turn dinner into a mystery" if page == "recipes.html" else "New: murder mystery dinners"
         strip = ('    <a class="mystery-strip" href="%skrimi-dinner.html" data-via="%s">'
                  '<span class="container mystery-strip__inner"><span class="mystery-strip__icon">%s</span>'
-                 '<span class="mystery-strip__text"><b>%s</b> – %d cases with a menu to cook, %s each</span>'
+                 '<span class="mystery-strip__text"><b>%s</b> – %d cases, %s each, with menu ideas from my recipes</span>'
                  '<span class="mystery-strip__arrow" aria-hidden="true">→</span></span></a>'
                  % (root, via, ICON_CASE, lead, len(CASES), lowest_price()))
         src = replace_between(src, "<!-- Streifen (geschrieben", "<!-- /Streifen -->", block("Streifen", strip, "    "))
@@ -453,9 +453,9 @@ def page_description(case):
     setting = x["setting"][0].lower() + x["setting"][1:] if first in ("A", "An", "The") else x["setting"]
     for pattern in (
         "Printable murder mystery dinner for {p} players: {s}. About {h:g} hours, {d}. "
-        "Instant PDF for {pr} – plus a menu to cook from my recipes.",
-        "Murder mystery dinner for {p} players: {s}. About {h:g} hours. Instant PDF, {pr} – with a menu to cook.",
-        "Murder mystery dinner for {p} players, about {h:g} hours. Instant PDF, {pr} – with a menu to cook.",
+        "Instant PDF for {pr} – plus a menu idea from my free recipes.",
+        "Murder mystery dinner for {p} players: {s}. About {h:g} hours. Instant PDF, {pr} – plus a menu idea.",
+        "Murder mystery dinner for {p} players, about {h:g} hours. Instant PDF, {pr} – plus a menu idea.",
     ):
         text = pattern.format(p=c["players"], s=setting, h=c["hours"], d=LABELS["difficulty"][c["difficulty"]].lower(),
                               pr=price(c["price"]))
@@ -573,8 +573,8 @@ def build_case_page(case, top, bottom):
       <section class="shop-section" aria-labelledby="menu">
         <div class="section-head">
           <div>
-            <h2 id="menu">Menu for this case</h2>
-            <p>Three courses from my videos – every recipe is free.</p>
+            <h2 id="menu">Menu idea for this case</h2>
+            <p>My suggestion from the recipes in my videos – not part of the PDF, and every recipe is free.</p>
           </div>
           <a class="link-brand" href="../recipes.html">All recipes</a>
         </div>
@@ -586,7 +586,7 @@ def build_case_page(case, top, bottom):
         <div class="section-head"><div><h2 id="how">How the evening works</h2></div></div>
         <ol class="steps steps--3">
           <li><span class="steps__num" aria-hidden="true">1</span><h3>Buy &amp; print</h3><p>Instant PDF after payment – print it or play from your phones.</p></li>
-          <li><span class="steps__num" aria-hidden="true">2</span><h3>Cook the menu</h3><p>Starter, main and dessert from the recipes above.</p></li>
+          <li><span class="steps__num" aria-hidden="true">2</span><h3>Cook the menu</h3><p>Starter, main and dessert – for example the ones above, or your own.</p></li>
           <li><span class="steps__num" aria-hidden="true">3</span><h3>Solve the case</h3><p>Everyone plays a role – the case unfolds between the courses.</p></li>
         </ol>
       </section>

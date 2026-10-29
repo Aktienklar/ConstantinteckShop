@@ -5267,6 +5267,70 @@ div.legal__en > * + * {
   }
 }
 
+/* Rezeptwand + Cover: Die Wand aus dem bisherigen Hero (.hero, oben in
+   Abschnitt 6) bleibt, darauf liegen die drei Cover. Am Handy ist die Wand
+   niedriger, damit Überschrift und Knöpfe noch in den ersten Bildschirm
+   passen. */
+.hero--mystery .hero__media {
+  height: 46vh;
+  height: 46svh;
+  min-height: 19rem;
+}
+
+.hero--mystery .home-hero__covers {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: min(90vw, 25rem);
+  transform: translate(-50%, -54%);
+  pointer-events: none;
+}
+
+/* Weicher dunkler Hof hinter den Covern – hebt sie von den bunten Fotos ab. */
+.hero--mystery .home-hero__covers::before {
+  content: "";
+  position: absolute;
+  inset: -22% -14%;
+  z-index: -1;
+  background-image: radial-gradient(closest-side, rgba(31, 20, 14, 0.55), rgba(31, 20, 14, 0));
+}
+
+.hero--mystery .home-hero__cover picture {
+  box-shadow: 0 2px 6px rgba(59, 42, 32, 0.25), 0 24px 44px -14px rgba(31, 20, 14, 0.75);
+}
+
+.hero--mystery .hero__body .lede {
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .hero--mystery .hero__media {
+    height: auto;
+    min-height: 0;
+  }
+
+  .hero--mystery .home-hero__covers {
+    top: 46%;
+    left: auto;
+    right: max(2rem, calc((100vw - 80rem) / 2 + 2rem));
+    width: clamp(24rem, 36vw, 33rem);
+    transform: translateY(-50%);
+  }
+
+  .hero--mystery .hero__body {
+    padding-block: 0 3rem;
+  }
+
+  .hero--mystery .hero__inner {
+    max-width: 34rem;
+  }
+
+  .hero--mystery .home-hero__title {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+  }
+}
+
 /* --- Startseite: Auswahl, Ablauf, Beispielmenü ---------------------------- */
 
 @media (min-width: 1024px) {
