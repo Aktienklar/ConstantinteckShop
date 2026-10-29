@@ -13,6 +13,11 @@
 
   var root;
 
+  /* Gewählte Versandzone. Bewusst nur im Speicher und nicht im localStorage:
+     Die Datenschutzerklärung nennt den Warenkorb als einzigen gespeicherten
+     Wert. Nach einem Neuladen steht die Auswahl wieder auf Deutschland. */
+  var zoneId = "de";
+
   document.addEventListener("DOMContentLoaded", function () {
     root = document.querySelector("[data-cart-root]");
     if (!root) return;
@@ -58,8 +63,9 @@
        falls je wieder eine eingeführt wird. */
     var qualifiesForFreeShipping =
       SHOP_TERMS.freeShippingFrom !== null && total >= SHOP_TERMS.freeShippingFrom;
+    var zone = shippingZone();
     var shipping =
-      hasPhysical && !qualifiesForFreeShipping ? SHOP_TERMS.shippingFlatRate : 0;
+      hasPhysical && !qualifiesForFreeShipping ? zone.price : 0;
     var missingForFreeShipping =
       SHOP_TERMS.freeShippingFrom !== null && hasPhysical && !qualifiesForFreeShipping
         ? SHOP_TERMS.freeShippingFrom - total
@@ -112,6 +118,7 @@
       ) +
       row("Shipping", shippingLabel) +
       "</dl>" +
+      (hasPhysical ? zoneMarkup(zone) : "") +
       (missingForFreeShipping > 0
         ? '<p class="cart-summary__hint">' +
           formatPrice(missingForFreeShipping) +
@@ -147,11 +154,16 @@
       '<ul class="cart-summary__terms">' +
       term(
         "truck",
-        SHOP_TERMS.deliveryPromise + ", " + SHOP_TERMS.shipsTo
+        SHOP_TERMS.shipsTo
       ) +
       term("return", SHOP_TERMS.returnDays + " days to return") +
       term("shield", SHOP_TERMS.paymentMethods.join(" · ")) +
       "</ul>" +
+      /* Vor dem Kauf erreichbar: AGB, Widerrufsbelehrung, Datenschutz. An
+         der Stripe-Kasse stehen dieselben Links noch einmal am Häkchen. */
+      '<p class="cart-summary__legal">You place the binding order on the next page. ' +
+      '<a href="terms.html">Terms</a> · <a href="shipping-returns.html#widerruf">Right of withdrawal</a> · ' +
+      '<a href="privacy.html">Privacy</a></p>' +
       (SHOP_TERMS.isPrototype
         ? '<p class="notice" style="margin-top:.75rem">Test mode: a real Stripe checkout opens, but no money moves and nothing ships.</p>'
         : "") +
@@ -253,6 +265,40 @@
     );
   }
 
+  function shippingZone() {
+    return (
+      SHOP_SHIPPING_ZONES.filter(function (zone) {
+        return zone.id === zoneId;
+      })[0] || SHOP_SHIPPING_ZONES[0]
+    );
+  }
+
+  /* Auswahl der Versandzone. Die Stripe-Kasse lässt danach nur Adressen aus
+     dieser Zone zu (worker/src/checkout.js) – wer die falsche wählt, merkt
+     es dort an der Länderliste. */
+  function zoneMarkup(zone) {
+    return (
+      '<div class="cart-summary__zone">' +
+      '<label for="ship-zone">Ship to</label>' +
+      '<select id="ship-zone" data-zone>' +
+      SHOP_SHIPPING_ZONES.map(function (option) {
+        return (
+          '<option value="' + option.id + '"' + (option.id === zone.id ? " selected" : "") + ">" +
+          escapeHtml(option.label) + " – " + formatPrice(option.price) +
+          "</option>"
+        );
+      }).join("") +
+      "</select>" +
+      '<p class="cart-summary__zone-note">Delivery in ' + escapeHtml(zone.days) +
+      ' working days. <a class="link-brand" href="shipping-returns.html">Countries &amp; details</a>' +
+      (zone.id !== "de" && zone.id !== "eu"
+        ? " · Customs duties may apply on arrival."
+        : "") +
+      "</p>" +
+      "</div>"
+    );
+  }
+
   function row(label, value) {
     return "<div><dt>" + label + "</dt><dd>" + value + "</dd></div>";
   }
@@ -315,6 +361,16 @@
       });
     }
 
+    var zoneSelect = root.querySelector("[data-zone]");
+    if (zoneSelect) {
+      zoneSelect.addEventListener("change", function () {
+        zoneId = zoneSelect.value;
+        render();
+        var again = root.querySelector("[data-zone]");
+        if (again) again.focus();
+      });
+    }
+
     var checkout = root.querySelector("[data-checkout]");
     if (checkout) {
       checkout.addEventListener("click", function () {
@@ -365,6 +421,7 @@
             quantity: line.quantity
           };
         }),
+        shippingZone: zoneId,
         waivesWithdrawal: Boolean(waiver && waiver.checked),
         // Ein Doppelklick soll keine zweite Bestellung anlegen.
         idempotencyKey: checkoutKey(lines)

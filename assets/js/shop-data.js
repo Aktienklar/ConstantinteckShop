@@ -172,17 +172,28 @@ Object.keys(SHOP_PRODUCTS).forEach(function (slug) {
   product.variants = product.options ? buildVariants(product.options) : [];
 });
 
+/**
+ * VERSANDZONEN – was der Käufer im Warenkorb wählt.
+ *
+ * Gleiche Kennungen, Preise und Werktage wie SHIPPING.zones in
+ * worker/src/catalog.js. Berechnet wird dort; hier steht es nur, damit der
+ * Warenkorb die Summe vorher richtig anzeigt. Welche Länder zu einer Zone
+ * gehören, steht nur im Worker (und als Liste auf shipping-returns.html).
+ * Ändert sich etwas: catalog.js, AGB § 4 und § 6, shipping-returns.html.
+ */
+var SHOP_SHIPPING_ZONES = [
+  { id: "de", label: "Germany", price: 4.9, days: "3–5" },
+  { id: "eu", label: "European Union", price: 14.9, days: "5–8" },
+  { id: "ch-gb", label: "Switzerland & UK", price: 19.9, days: "6–10" },
+  { id: "europe", label: "Rest of Europe", price: 22.9, days: "6–10" },
+  { id: "world", label: "Rest of the world", price: 29.9, days: "10–20" }
+];
+
 var SHOP_TERMS = {
-  /** Versandpauschale innerhalb Deutschlands, in Euro. */
-  shippingFlatRate: 4.9,
   /** Bestellwert, ab dem der Versand entfällt. null = keine Freigrenze. */
   freeShippingFrom: null,
-  /**
-   * Bewusst ohne Tagesangabe: Es wird schnell verschickt, aber keine konkrete
-   * Laufzeit versprochen, die der Versanddienstleister nicht garantiert.
-   */
-  deliveryPromise: "Fast shipping",
-  shipsTo: "all over the world",
+  /** Kurzzeile unter dem Bezahlknopf. Die Lieferzeit steht je Zone oben. */
+  shipsTo: "Ships worldwide via DHL",
   /** Gesetzliches Minimum in der EU sind 14 Tage. Nicht unterschreiten. */
   returnDays: 14,
   /**

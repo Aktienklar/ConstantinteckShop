@@ -152,12 +152,19 @@
             <h2>§ 4 Preise und Versandkosten</h2>
             <div>
               <p>Es gelten die zum Zeitpunkt der Bestellung im Shop angegebenen Preise. <strong>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</strong></p>
-              <!-- TODO: Versandkosten je Zielland (Zonen und Preise) von
-                   Constantin. Bis dahin gilt die bisherige Pauschale, so wie
-                   sie die Kasse tatsächlich berechnet (worker/src/catalog.js). -->
-              <p>Hinzu kommen Versandkosten von 4,90 € pro Bestellung, unabhängig vom Bestellwert. Die Versandkosten werden dir vor dem Absenden der Bestellung auf der Bezahlseite angezeigt.</p>
+              <!-- Wortgleich mit shipping-returns.html halten (Zonen aus
+                   worker/src/catalog.js). -->
+              <p>Es wird weltweit geliefert, ausgenommen nach Belarus und Russland sowie in einige abgelegene Gebiete ohne regelmäßige Postzustellung. Die Versandkosten richten sich nach dem Lieferland und fallen einmal pro Bestellung an, unabhängig vom Bestellwert. Die Lieferzeit rechnet ab Zahlungseingang.</p>
+              <ul>
+                <li><strong>Deutschland:</strong> 4,90 €, Lieferzeit 3–5 Werktage</li>
+                <li><strong>Europäische Union</strong> (ohne Deutschland): 14,90 €, Lieferzeit 5–8 Werktage</li>
+                <li><strong>Schweiz und Vereinigtes Königreich:</strong> 19,90 €, Lieferzeit 6–10 Werktage</li>
+                <li><strong>Übriges Europa:</strong> 22,90 €, Lieferzeit 6–10 Werktage</li>
+                <li><strong>Übrige Welt:</strong> 29,90 €, Lieferzeit 10–20 Werktage</li>
+              </ul>
+              <p>Welche Länder zu welcher Zone gehören, steht unter <a class="link-brand" href="shipping-returns.html">Versand &amp; Widerruf</a>. Die Versandkosten werden dir vor dem Absenden der Bestellung auf der Bezahlseite angezeigt.</p>
               <p>Bei Lieferungen in Länder außerhalb der Europäischen Union können zusätzlich Zölle, Einfuhrumsatzsteuer und Gebühren des Zustellers anfallen. Sie sind nicht im Preis enthalten und werden vom Empfänger an die Behörden bzw. den Zusteller des Ziellandes gezahlt.</p>
-              <p class="legal__en" lang="en">The prices shown in the shop at the time of ordering apply. <strong>No VAT is charged under § 19 UStG (German small-business rule).</strong> Shipping of €4.90 per order is added, regardless of the order value. The shipping cost is shown to you on the payment page before you submit the order. For deliveries to countries outside the European Union, customs duties, import VAT and carrier fees may also apply. They are not included in the price and are paid by the recipient to the authorities or the carrier of the destination country.</p>
+              <p class="legal__en" lang="en">The prices shown in the shop at the time of ordering apply. <strong>No VAT is charged under § 19 UStG (German small-business rule).</strong> We deliver worldwide, except to Belarus and Russia and to some remote areas without regular postal service. Shipping costs depend on the destination country and are charged once per order, regardless of the order value. The delivery time counts from receipt of payment. <strong>Germany:</strong> €4.90, 3–5 working days. <strong>European Union</strong> (excluding Germany): €14.90, 5–8 working days. <strong>Switzerland and United Kingdom:</strong> €19.90, 6–10 working days. <strong>Rest of Europe:</strong> €22.90, 6–10 working days. <strong>Rest of the world:</strong> €29.90, 10–20 working days. Which countries belong to which zone is listed on the <a class="link-brand" href="shipping-returns.html">shipping and returns page</a>. The shipping cost is shown to you on the payment page before you submit the order. For deliveries to countries outside the European Union, customs duties, import VAT and carrier fees may also apply. They are not included in the price and are paid by the recipient to the authorities or the carrier of the destination country.</p>
             </div>
           </section>
 
@@ -177,14 +184,10 @@
           <section>
             <h2>§ 6 Lieferung</h2>
             <div>
-              <!-- TODO: Lieferzeiten EU und Rest der Welt von Constantin. Bis
-                   dahin bleibt dort die bisherige Höchstfrist von 30 Tagen
-                   stehen. Deutschland: 3–5 Werktage (Angabe 29.10.2026:
-                   "meist 3–5 Werktage" – siehe LEGAL-TODO.md). -->
-              <p>Es wird weltweit geliefert. Die Lieferzeit beträgt innerhalb Deutschlands 3 bis 5 Werktage ab Zahlungseingang. Bei Lieferungen in andere Länder wird die Ware unverzüglich nach Zahlungseingang versandt und kommt spätestens innerhalb von 30 Tagen an.</p>
+              <p>Die Lieferung erfolgt mit DHL. Es gelten die Lieferzeiten je Zone aus § 4, jeweils ab Zahlungseingang.</p>
               <p>Ist ein Artikel nicht verfügbar, wird der Anbieter dich unverzüglich informieren und bereits gezahlte Beträge zurückerstatten.</p>
               <p>Bei Verbrauchern geht die Gefahr des zufälligen Untergangs erst mit Übergabe der Ware über, auch beim Versendungskauf (§ 475 Abs. 2 BGB).</p>
-              <p class="legal__en" lang="en">We deliver worldwide. Delivery within Germany takes 3 to 5 working days from receipt of payment. For deliveries to other countries, the goods are dispatched without undue delay after receipt of payment and arrive within 30 days at the latest. If an item is unavailable, the seller will inform you without undue delay and refund any amounts already paid. For consumers, the risk of accidental loss passes only on handover of the goods, even when they are dispatched by carrier (§ 475 (2) BGB).</p>
+              <p class="legal__en" lang="en">Delivery is made by DHL. The delivery times per zone set out in § 4 apply, each counted from receipt of payment. If an item is unavailable, the seller will inform you without undue delay and refund any amounts already paid. For consumers, the risk of accidental loss passes only on handover of the goods, even when they are dispatched by carrier (§ 475 (2) BGB).</p>
             </div>
           </section>
 
@@ -306,7 +309,7 @@
 
     <div class="container site-footer__legal">
       <div class="site-footer__legal-row">
-        <p>No VAT is charged (small-business rule, § 19 UStG). Plus €4.90 shipping per order.</p>
+        <p>No VAT is charged (small-business rule, § 19 UStG). Plus shipping: €4.90 within Germany, other countries see <a href="shipping-returns.html">Shipping &amp; returns</a>.</p>
         <p>© 2026 Constantinteck</p>
       </div>
     </div>

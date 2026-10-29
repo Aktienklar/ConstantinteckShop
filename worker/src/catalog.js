@@ -119,46 +119,86 @@ export const PRODUCTS = {
 };
 
 /**
- * Versandbedingungen. Gleiche Werte wie SHOP_TERMS in shop-data.js – der
- * Besucher sieht sie im Warenkorb, berechnet werden sie hier.
+ * Versandbedingungen. Gleiche Zonen und Preise wie SHOP_SHIPPING_ZONES in
+ * shop-data.js – der Besucher wählt die Zone im Warenkorb, berechnet und
+ * durchgesetzt wird sie hier: Die Stripe-Kasse lässt nur Lieferadressen aus
+ * den Ländern der gewählten Zone zu. Wer "Deutschland" wählt und eine
+ * Adresse in Japan eingibt, kommt nicht durch.
+ *
+ * Stand 29.10.2026: Preise nach DHL Paket bis 2 kg (Online-Frankierung,
+ * Vergleichsseiten, nicht direkt von dhl.de geprüft), auf ,90 gerundet.
+ * Deutschland bleibt bewusst bei 4,90 € (DHL-Preis 6,19 €). Lieferzeiten
+ * sind geschätzt, mit Puffer. Ändert sich hier etwas, auch AGB § 4 und § 6,
+ * shipping-returns.html und SHOP_SHIPPING_ZONES anpassen.
+ *
+ * Ländercodes nur aus der Liste, die Stripe für allowed_countries kennt
+ * (docs.stripe.com/api/checkout/sessions/create). Nicht aus dem Kopf
+ * ergänzen: Ein einziger Code, den Stripe nicht kennt, lässt jede Kasse mit
+ * einem Fehler auflaufen. Bewusst in keiner Zone: Belarus und Russland
+ * (Sanktionen, DHL liefert nicht) sowie unbewohnte oder kaum erreichbare
+ * Gebiete (AQ, BV, GS, TF, AC, TA, PN, IO).
  */
 export const SHIPPING = {
-  flatRateCents: 490,
-  /* null = keine Freigrenze. Die Pauschale fällt bei jeder Warensendung an,
-     egal wie hoch der Bestellwert ist – so steht es auch in den AGB. */
+  /* null = keine Freigrenze. Die Versandkosten fallen bei jeder
+     Warensendung an, egal wie hoch der Bestellwert ist. */
   freeFromCents: null,
-  /* Es wird weltweit verschickt. Stripe kennt für allowed_countries keinen
-     Platzhalter "überall", sondern nur diese feste Aufzählung – Wortlaut aus
-     der API-Referenz (docs.stripe.com/api/checkout/sessions/create, Parameter
-     shipping_address_collection.allowed_countries). Länder wie Kuba, Iran,
-     Nordkorea oder Syrien stehen dort nicht drin und fehlen deshalb auch
-     hier. Nicht aus dem Kopf ergänzen: Ein einziger Code, den Stripe nicht
-     kennt, lässt jede Kasse mit einem Fehler auflaufen. ZZ aus dem Enum ist
-     bewusst weggelassen, das ist kein Lieferziel. */
-  countries: [
-    "AC", "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR",
-    "AT", "AU", "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG",
-    "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS", "BT",
-    "BV", "BW", "BY", "BZ", "CA", "CD", "CF", "CG", "CH", "CI", "CK",
-    "CL", "CM", "CN", "CO", "CR", "CV", "CW", "CY", "CZ", "DE", "DJ",
-    "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES", "ET",
-    "FI", "FJ", "FK", "FO", "FR", "GA", "GB", "GD", "GE", "GF", "GG",
-    "GH", "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU",
-    "GW", "GY", "HK", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IM",
-    "IN", "IO", "IQ", "IS", "IT", "JE", "JM", "JO", "JP", "KE", "KG",
-    "KH", "KI", "KM", "KN", "KR", "KW", "KY", "KZ", "LA", "LB", "LC",
-    "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD",
-    "ME", "MF", "MG", "MK", "ML", "MM", "MN", "MO", "MQ", "MR", "MS",
-    "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NG",
-    "NI", "NL", "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF",
-    "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PY", "QA",
-    "RE", "RO", "RS", "RU", "RW", "SA", "SB", "SC", "SD", "SE", "SG",
-    "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS", "ST",
-    "SV", "SX", "SZ", "TA", "TC", "TD", "TF", "TG", "TH", "TJ", "TK",
-    "TL", "TM", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG",
-    "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VN", "VU", "WF", "WS",
-    "XK", "YE", "YT", "ZA", "ZM", "ZW"
-  ]
+  zones: {
+    de: {
+      label: "Germany",
+      cents: 490,
+      days: [3, 5],
+      countries: ["DE"]
+    },
+    eu: {
+      label: "European Union",
+      cents: 1490,
+      days: [5, 8],
+      countries: [
+        "AT", "BE", "BG", "CY", "CZ", "DK", "EE", "ES", "FI", "FR", "GR",
+        "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT",
+        "RO", "SE", "SI", "SK"
+      ]
+    },
+    "ch-gb": {
+      label: "Switzerland & United Kingdom",
+      cents: 1990,
+      days: [6, 10],
+      countries: ["CH", "GB"]
+    },
+    europe: {
+      label: "Rest of Europe",
+      cents: 2290,
+      days: [6, 10],
+      countries: [
+        "AD", "AL", "AX", "BA", "FO", "GG", "GI", "IM", "IS", "JE", "LI",
+        "MC", "MD", "ME", "MK", "NO", "RS", "SJ", "SM", "TR", "UA", "VA",
+        "XK"
+      ]
+    },
+    world: {
+      label: "Rest of the world",
+      cents: 2990,
+      days: [10, 20],
+      countries: [
+        "AE", "AF", "AG", "AI", "AM", "AO", "AR", "AU", "AW", "AZ", "BB",
+        "BD", "BF", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR",
+        "BS", "BT", "BW", "BZ", "CA", "CD", "CF", "CG", "CI", "CK", "CL",
+        "CM", "CN", "CO", "CR", "CV", "CW", "DJ", "DM", "DO", "DZ", "EC",
+        "EG", "EH", "ER", "ET", "FJ", "FK", "GA", "GD", "GE", "GF", "GH",
+        "GL", "GM", "GN", "GP", "GQ", "GT", "GU", "GW", "GY", "HK", "HN",
+        "HT", "ID", "IL", "IN", "IQ", "JM", "JO", "JP", "KE", "KG", "KH",
+        "KI", "KM", "KN", "KR", "KW", "KY", "KZ", "LA", "LB", "LC", "LK",
+        "LR", "LS", "LY", "MA", "MF", "MG", "ML", "MM", "MN", "MO", "MQ",
+        "MR", "MS", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE",
+        "NG", "NI", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF", "PG",
+        "PH", "PK", "PM", "PR", "PS", "PY", "QA", "RE", "RW", "SA", "SB",
+        "SC", "SD", "SG", "SH", "SL", "SN", "SO", "SR", "SS", "ST", "SV",
+        "SX", "SZ", "TC", "TD", "TG", "TH", "TJ", "TK", "TL", "TM", "TN",
+        "TO", "TT", "TV", "TW", "TZ", "UG", "US", "UY", "UZ", "VC", "VE",
+        "VG", "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"
+      ]
+    }
+  }
 };
 
 /** Höchstmenge je Position – bremst Unfug und Tippfehler. */
@@ -169,7 +209,7 @@ const MAX_QUANTITY = 20;
  * Preisen aus diesem Katalog. Wirft bei allem, was nicht zusammenpasst –
  * lieber gar keine Kasse als eine mit falschen Beträgen.
  */
-export function resolveCart(rawLines) {
+export function resolveCart(rawLines, zoneId) {
   if (!Array.isArray(rawLines) || rawLines.length === 0) {
     throw new BadCart("Your cart is empty.");
   }
@@ -223,9 +263,16 @@ export function resolveCart(rawLines) {
      eingeführt wird – genau wie es cart-page.js dem Kunden vorrechnet. */
   const shippingFree =
     SHIPPING.freeFromCents !== null && subtotal >= SHIPPING.freeFromCents;
-  const shippingCents = hasPhysical && !shippingFree ? SHIPPING.flatRateCents : 0;
 
-  return { lines, subtotal, hasPhysical, hasDigital, shippingCents };
+  // Ohne Angabe Deutschland – so verhielt sich die Kasse vor den Zonen, und
+  // ein alter Warenkorb im Browser schickt noch keine Zone mit.
+  const zone = SHIPPING.zones[zoneId || "de"];
+  if (hasPhysical && !zone) {
+    throw new BadCart("Please choose where the order should be shipped.");
+  }
+  const shippingCents = hasPhysical && !shippingFree ? zone.cents : 0;
+
+  return { lines, subtotal, hasPhysical, hasDigital, shippingCents, zone };
 }
 
 export class BadCart extends Error {}
