@@ -80,7 +80,9 @@ def image_size(path):
 
 def head_block(page, src, meta):
     depth = page.count("/")
-    rel = "../" * depth
+    # 404.html erscheint unter jeder unbekannten Adresse, auch unter
+    # /recipes/tippfehler – relative Pfade fänden dort nichts.
+    rel = "/" if page == "404.html" else "../" * depth
     url = SITE + ("" if page == "index.html" else page)
 
     title = meta.get("title") or first(r"<title>(.*?)</title>", src)

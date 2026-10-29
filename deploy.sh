@@ -41,7 +41,9 @@ for page in pages:
         if value.startswith(("http://", "https://", "mailto:", "#", "data:")):
             continue
         target = urllib.parse.unquote(value.split("?")[0].split("#")[0])
-        if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(page), target))):
+        # Absolute Pfade (/assets/...) gelten ab dem Wurzelverzeichnis der Seite.
+        base = "." if target.startswith("/") else os.path.dirname(page)
+        if not os.path.exists(os.path.normpath(os.path.join(base, target.lstrip("/")))):
             broken.append("%s  ->  %s" % (page, value))
 
 if broken:
