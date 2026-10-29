@@ -120,9 +120,11 @@ name to `customerPhotos` in `site-config.js`. Empty list = no section.
 
 1. Copy an existing recipe file, e.g.
    `cp recipes/bananenbrot-saftig.html recipes/mein-rezept.html`
-2. Edit the text in the new file: title (three places – `<title>`, the
-   `og:title` meta tag and the `<h1>`), teaser, time, servings, ingredients,
-   steps.
+2. Edit the text in the new file: the `<h1>`, teaser, time, servings,
+   ingredients, steps. The search-engine title and description go into
+   `tools/seo-pages.json` (one entry per page, title 50–60 characters,
+   description 140–160); `deploy.sh` writes them into the page head, together
+   with canonical and share preview, and adds the page to `sitemap.xml`.
 3. Add a card for it in `recipes.html`. Copy an existing
    `<a class="card recipe-card …>` block and adjust it. The four `data-`
    attributes on that card drive the search and the filters:
@@ -321,6 +323,23 @@ withdrawal instruction) in an orange box that is visible to visitors. Fill those
 in – and have the withdrawal policy and terms checked by someone qualified –
 before taking real orders. Delete the `<aside class="legal__missing">` block to
 remove the box.
+
+## Search engines (generated, not hand-edited)
+
+`deploy.sh` runs two scripts before it checks the links:
+
+- `tools/seo.py` rewrites the block from `<title>` to `<!-- /Vorschau -->` in
+  every page (title and description from `tools/seo-pages.json`, canonical,
+  Open Graph) and regenerates `sitemap.xml`, with `lastmod` taken from Git.
+  Edit the JSON, not the page head – the next deploy would overwrite it.
+- `tools/images.py` creates an `.avif` next to every JPEG in `assets/img/`
+  (plus a `-480.avif` for photos 800 px and wider), wraps the `<img>` tags in
+  `<picture>` and adds `width`/`height`. The JPEG stays the original and the
+  fallback. The product gallery is left alone because `gallery.js` swaps its
+  `src`. Needs macOS (`sips`).
+
+Both can be run by hand (`python3 tools/seo.py`) and change nothing when run
+twice.
 
 ## Swapping images
 

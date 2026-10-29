@@ -19,7 +19,15 @@ echo "→ Geänderte Dateien:"
 git status -s
 echo
 
-# Es gibt nichts zu bauen. Der eine Fehler, der bei handgeschriebenem HTML
+# Kopfbereich (Titel, Beschreibung, Vorschau), sitemap.xml und die
+# AVIF-Fassungen der Fotos werden aus den Seiten erzeugt, nicht von Hand
+# gepflegt – siehe tools/seo.py und tools/images.py.
+echo "→ SEO-Kopf, Sitemap und Bilder werden aktualisiert ..."
+python3 tools/images.py
+python3 tools/seo.py
+echo
+
+# Sonst gibt es nichts zu bauen. Der eine Fehler, der bei handgeschriebenem HTML
 # regelmäßig passiert, ist ein Link auf eine Datei, die es nicht (mehr) gibt –
 # genau darauf prüft dieser Schritt.
 echo "→ Links werden geprüft ..."
