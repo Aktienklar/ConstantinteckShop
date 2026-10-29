@@ -1,0 +1,63 @@
+# Constantinteck
+
+> Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.
+
+Every recipe on this site is the written version of one of Constantin's videos (Instagram, TikTok and YouTube: @constantinteck): ingredients with quantities, numbered steps, time and servings, as plain text. The site is in English. Prices are in euros; no VAT is charged (small-business rule, § 19 UStG). Contact: info@constantinteck.com
+
+## Main pages
+
+- [All recipes](https://constantinteck.com/recipes.html): Every recipe from my videos: no-churn sorbets, smoothies, chia puddings and quick pasta dinners. Search by ingredient, filter by time and difficulty.
+- [Shop](https://constantinteck.com/shop.html): The waffle piqué aprons from my videos – one grown-up, one for kids, or both as a set for €69.90. Sewn by hand in Germany, shipped all over the world.
+- [About Constantin](https://constantinteck.com/about.html): Constantin, 23, cooks for anyone who'll sit at the table and films it as @constantinteck. The aprons in the shop are designed by his mom and sewn in Germany.
+
+## Recipe collections
+
+- [No-churn sorbet & ice cream](https://constantinteck.com/collections/sorbet-and-ice-cream.html): Fruit sorbets and nice cream made in the blender: frozen fruit, a few more ingredients, no ice cream maker and no churning. Most take four ingredients.
+- [Smoothies & smoothie bowls](https://constantinteck.com/collections/smoothies.html): Fruit smoothies and smoothie bowls from my videos: frozen fruit, milk or coconut milk, a little honey and one blender. Each one is ready in about 5 minutes.
+- [Breakfast](https://constantinteck.com/collections/breakfast.html): Breakfasts to make ahead or blend in minutes: thick chia puddings that set in the fridge, smoothie bowls with granola and a quick strawberry smoothie.
+- [Quick weeknight dinners](https://constantinteck.com/collections/weeknight-dinners.html): Dinners for busy weekdays: creamy pastas, a cheesy chicken wrap and spicy peanut udon – one pan or one tray, 20 to 35 minutes, nothing complicated.
+
+## Recipes
+
+- [Avocado Ice Cream](https://constantinteck.com/recipes/avocado-ice-cream.html): Avocado ice cream with fresh mint, honey and lemon juice: four ingredients, naturally sweet and creamy. Ready in 5 minutes in the blender, no churning.
+- [Baba Ganoush](https://constantinteck.com/recipes/baba-ganoush.html): Baba ganoush from roasted eggplant: char the skin, then blend the flesh with garlic, tahini, lemon and olive oil. An easy vegan dip for 4, ready in 1 hour.
+- [Blueberry Sorbet](https://constantinteck.com/recipes/blueberry-sorbet.html): Blueberry sorbet from frozen blueberries and banana with a little sugar and lemon juice. Four ingredients, 5 minutes in the blender, a summer treat for 2.
+- [Cheesy Roasted Chicken Wrap](https://constantinteck.com/recipes/cheesy-roasted-chicken-wrap.html): Chicken and peppers roast on one tray, then go into tortillas with melted cheese and a garlic yogurt sauce. An easy weeknight wrap for 2 in 35 minutes.
+- [Chocolate Banana Ice Cream](https://constantinteck.com/recipes/chocolate-banana-ice-cream.html): Chocolate banana ice cream from frozen bananas, dark chocolate, yogurt and honey. Four ingredients, naturally sweet, ready in 5 minutes without churning.
+- [Coconut Mango Sorbet](https://constantinteck.com/recipes/coconut-mango-sorbet.html): Coconut mango sorbet: frozen mango and frozen coconut milk blended with lemon juice and honey. Only four ingredients and 5 minutes for a tropical dessert.
+- [Creamy One-Pan Salmon Pasta](https://constantinteck.com/recipes/creamy-one-pan-salmon-pasta.html): Salmon, feta and cherry tomatoes bake in one dish until the feta melts into a creamy sauce, then the pasta goes in. An easy dinner for 2 in 35 minutes.
+- [Creamy Roasted Red Pepper & Tomato Pasta](https://constantinteck.com/recipes/creamy-roasted-red-pepper-tomato-pasta.html): Peppers, cherry tomatoes and a whole garlic bulb roast on one tray, then blend with mozzarella into a creamy sauce. An easy pasta for 4 in 40 minutes.
+- [Creamy Sucuk Carbonara](https://constantinteck.com/recipes/creamy-sucuk-carbonara.html): Carbonara with crispy sucuk: egg yolks, parmesan and the sucuk's own oil make the creamy sauce. Six ingredients, ready in 25 minutes, serves 4.
+- [Dragon Fruit Smoothie](https://constantinteck.com/recipes/dragon-fruit-smoothie.html): Dragon fruit smoothie with frozen mango, coconut milk and a little honey. Four ingredients, one blender and 5 minutes for a bright tropical drink for 2.
+- [Dragonfruit Mango Sorbet](https://constantinteck.com/recipes/dragonfruit-mango-sorbet.html): Dragonfruit mango sorbet from four ingredients: frozen dragonfruit and mango, lemon juice and honey. Naturally sweet, straight from the blender in 5 minutes.
+- [Fudgy Chocolate Raspberry Banana Bread](https://constantinteck.com/recipes/fudgy-chocolate-raspberry-banana-bread.html): Fudgy banana bread with dark chocolate and fresh raspberries, made with whole spelt flour and mixed in a single bowl. 10 servings, about 65 minutes in all.
+- [Granola Berry Smoothie Bowl](https://constantinteck.com/recipes/granola-berry-smoothie-bowl.html): Smoothie bowl from frozen blueberries and strawberries, topped with fresh berries and crunchy granola. Creamy, fruity and ready in 5 minutes for 2 bowls.
+- [Grape Sorbet](https://constantinteck.com/recipes/grape-sorbet.html): Grape sorbet from frozen grapes, sugar and lemon juice, finished with fresh mint. Freeze the grapes overnight, then blend in three steps – 5 minutes' work.
+- [Healthy Raspberry Chocolate Nice Cream](https://constantinteck.com/recipes/healthy-raspberry-chocolate-nice-cream.html): Raspberry chocolate nice cream from frozen banana, raspberries, dark chocolate and lemon juice. Creamy, naturally sweet, 5 minutes, no ice cream maker.
+- [Kiwi Sorbet](https://constantinteck.com/recipes/kiwi-sorbet.html): Kiwi sorbet from frozen kiwis and fresh passionfruit with a little sugar and lemon juice. Four ingredients, five quick steps, ready in 5 minutes for 2.
+- [Lemon Sorbet](https://constantinteck.com/recipes/lemon-sorbet.html): Lemon sorbet in seconds: frozen lemon, coconut milk, sugar and fresh mint in the blender. No churn, no fuss – four ingredients and 5 minutes for 2.
+- [Mango Raspberry Sorbet](https://constantinteck.com/recipes/mango-raspberry-sorbet.html): Mango raspberry sorbet from frozen mango and raspberries with lemon juice and honey. Four ingredients, naturally sweet and about a minute of actual work.
+- [Mango x Passionfruit Smoothie](https://constantinteck.com/recipes/mango-passionfruit-smoothie.html): Mango passionfruit smoothie with banana and coconut milk, sweetened with a little honey. A tropical summer drink for 2, blended in 5 minutes.
+- [Peach Sorbet](https://constantinteck.com/recipes/peach-sorbet.html): Peach sorbet from frozen peaches and orange juice with a little sugar and lemon, blended until creamy. Four ingredients, 5 minutes, no ice cream maker.
+- [Peanut Spicy Udon](https://constantinteck.com/recipes/peanut-spicy-udon.html): Spicy peanut udon: noodles in a creamy peanut butter, soy and chilli sauce with garlic, scallions and coriander. One pan, 20 minutes, serves 2.
+- [Pineapple Sorbet](https://constantinteck.com/recipes/pineapple-sorbet.html): Pineapple sorbet with frozen mango, sugar and fresh lemon juice. Everything goes into the blender for about 30 seconds – a tropical treat in 5 minutes.
+- [Strawberry Passion Fruit Smoothie](https://constantinteck.com/recipes/strawberry-passion-fruit-smoothie.html): Strawberry passion fruit smoothie from frozen strawberries, passion fruit pulp, milk and honey. No added sugar, four ingredients, 5 minutes for 2.
+- [Strawberry Pineapple Sorbet](https://constantinteck.com/recipes/strawberry-pineapple-sorbet.html): Strawberry pineapple sorbet from frozen strawberries and pineapple with lemon juice and a little sugar. Four ingredients, fruity, ready in 5 minutes.
+- [Strawberry Smoothie](https://constantinteck.com/recipes/strawberry-smoothie.html): Creamy strawberry smoothie with banana, milk and a little honey. Four ingredients and 5 minutes – perfect for breakfast or as a sweet snack for 2.
+- [Strawberry Sorbet](https://constantinteck.com/recipes/strawberry-sorbet.html): Strawberry sorbet from frozen strawberries, lemon juice, sugar and fresh mint, blended in five short steps. Four ingredients and 5 minutes for 2.
+- [Thick Blueberry Chia Pudding](https://constantinteck.com/recipes/thick-blueberry-chia-pudding.html): Thick blueberry chia pudding with yogurt, milk and honey: blended in 10 minutes, then set in the fridge for 4 hours. For breakfast, dessert or a snack.
+- [Thick Mango Chia Pudding](https://constantinteck.com/recipes/thick-mango-chia-pudding.html): Thick mango chia pudding from one ripe mango, coconut milk, yogurt and honey. 10 minutes in the blender, 4 hours in the fridge – serves 2.
+- [Thick Raspberry Chia Pudding](https://constantinteck.com/recipes/thick-raspberry-chia-pudding.html): Thick raspberry chia pudding with coconut milk, yogurt and honey. Fresh or frozen raspberries, 10 minutes of work and 4 hours in the fridge, serves 2.
+- [Yellow Watermelon Sorbet](https://constantinteck.com/recipes/yellow-watermelon-sorbet.html): Yellow watermelon sorbet with honey, lemon and fresh mint. An easy four-ingredient summer dessert straight from the blender in 5 minutes, serves 2.
+
+## Shop
+
+- [Waffle apron »Dough Love«](https://constantinteck.com/shop/linen-apron.html): The waffle piqué apron from my videos, designed by my mom and sewn by hand in Germany. One size, adjustable neck strap, large front pocket, three colours.
+- [Kids' waffle apron »Little Dough Love«](https://constantinteck.com/shop/kids-apron.html): The small version of the apron from my videos – same waffle piqué, same seams, sewn by hand in Germany. Three sizes from 4 years, three colours.
+- [Apron set »Dough Love« (adult + kids)](https://constantinteck.com/shop/apron-set.html): Both aprons from my videos in one parcel – the grown-up one and the small one – for €9.90 less than buying them apart. Waffle piqué, sewn in Germany.
+
+## Optional
+
+- [Murder mystery dinner games](https://constantinteck.com/krimi-dinner.html): Murder mystery dinner games as a PDF to print at home, made for an evening of cooking together. Nine cases for 5–12 players, €8.99 each, sold by Murdernight.
+- [Shipping & returns](https://constantinteck.com/shipping-returns.html): Shipping costs, delivery and the 14-day return policy.
+- [Imprint (German)](https://constantinteck.com/imprint.html): Legal notice: who runs this site.

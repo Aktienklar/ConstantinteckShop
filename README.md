@@ -338,8 +338,13 @@ remove the box.
   fallback. The product gallery is left alone because `gallery.js` swaps its
   `src`. Needs macOS (`sips`).
 
-Both can be run by hand (`python3 tools/seo.py`) and change nothing when run
-twice.
+- `tools/blocks.py` runs first. It writes the author box onto every recipe
+  page, builds the recipe collections `collections/<slug>.html` from
+  `tools/collections.json` (a recipe joins a collection when the `match`
+  pattern fits its name or one of its tags in `recipes.html`), puts the row
+  of collection links on `recipes.html` and writes `llms.txt`.
+
+All three can be run by hand (`python3 tools/seo.py`) and change nothing when run twice.
 
 ## Swapping images
 

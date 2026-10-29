@@ -23,6 +23,7 @@ echo
 # AVIF-Fassungen der Fotos werden aus den Seiten erzeugt, nicht von Hand
 # gepflegt – siehe tools/seo.py und tools/images.py.
 echo "→ SEO-Kopf, Sitemap und Bilder werden aktualisiert ..."
+python3 tools/blocks.py
 python3 tools/images.py
 python3 tools/seo.py
 echo
