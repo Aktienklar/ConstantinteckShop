@@ -2990,6 +2990,52 @@ strong {
 
 /* --- Rezeptseite -------------------------------------------------------- */
 
+/* Autorenbox unter dem Rezept (tools/blocks.py). Ein ruhiger Absender, kein
+   Werbeblock: Foto, ein Satz, ein Link. */
+.author-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.author-box__photo {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.author-box__name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+}
+
+.author-box__text {
+  margin-top: 0.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.author-box__link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Leiste mit den Rezeptsammlungen auf recipes.html */
+.collections-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.collections-nav .chip {
+  flex-shrink: 0;
+}
+
+
 .recipe-header {
   margin-top: 0.25rem;
 }
@@ -3583,6 +3629,20 @@ strong {
   font-size: 1.125rem;
   line-height: 1.7;
   color: var(--mocha);
+}
+
+/* "In brief" – die Fakten zur Marke in einer Liste, zum Zitieren */
+.about__facts {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0;
+  list-style: none;
+  color: var(--mocha);
+}
+
+.about__facts b {
+  color: var(--cocoa);
 }
 
 .about__socials {

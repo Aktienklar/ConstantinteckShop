@@ -157,6 +157,17 @@ def structured(page, src, url, noindex):
     return src.replace("</head>", block + "\n</head>", 1)
 
 
+def render(page, src, meta=None):
+    """Kopf und Schema einer Seite neu – auch für tools/blocks.py, damit
+    erzeugte Seiten gleich im fertigen Zustand geschrieben werden."""
+    m = re.search(r"[ \t]*<title>.*?<!-- /Vorschau -->", src, re.S)
+    if not m:
+        return None
+    block, title, desc, noindex, url = head_block(page, src, meta or {})
+    new = src[:m.start()] + block + src[m.end():]
+    return structured(page, new, url, noindex), title, desc, noindex, url
+
+
 def lastmod(page):
     dirty = subprocess.run(["git", "status", "--porcelain", "--", page], cwd=ROOT,
                            capture_output=True, text=True).stdout.strip()
@@ -182,13 +193,11 @@ def main():
         path = os.path.join(ROOT, page)
         with open(path, encoding="utf-8") as f:
             src = f.read()
-        m = re.search(r"[ \t]*<title>.*?<!-- /Vorschau -->", src, re.S)
-        if not m:
+        rendered = render(page, src, data.get(page, {}))
+        if not rendered:
             warnings.append("%s: kein Block <title> … <!-- /Vorschau --> gefunden" % page)
             continue
-        block, title, desc, noindex, url = head_block(page, src, data.get(page, {}))
-        new = src[:m.start()] + block + src[m.end():]
-        new = structured(page, new, url, noindex)
+        new, title, desc, noindex, url = rendered
         if new != src:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(new)
