@@ -1,0 +1,158 @@
+{
+  "_hinweis": "Titel und Beschreibung fuer Suchmaschinen und geteilte Links. tools/seo.py schreibt sie in den Kopf der jeweiligen Seite (title, description, og:title, og:description). Seiten, die hier fehlen, behalten, was in ihrem HTML steht. Richtwerte: Titel 50-60 Zeichen, Beschreibung 140-160 Zeichen.",
+
+  "index.html": {
+    "title": "Constantinteck – Easy Recipes From My Reels & TikToks",
+    "description": "Every recipe from my reels and TikToks: ingredients up top, steps below, no life story in between. No-churn sorbets, smoothies and quick weeknight dinners."
+  },
+  "recipes.html": {
+    "title": "All Recipes: Sorbets, Smoothies & Pasta | Constantinteck",
+    "description": "Every recipe from my videos: no-churn sorbets, smoothies, chia puddings and quick pasta dinners. Search by ingredient, filter by time and difficulty."
+  },
+  "shop.html": {
+    "title": "Handmade Aprons, Sewn in Germany | Constantinteck Shop",
+    "description": "The waffle piqué aprons from my videos – one grown-up, one for kids, or both as a set for €69.90. Sewn by hand in Germany, shipped all over the world."
+  },
+  "about.html": {
+    "title": "About Constantin – the Cook Behind Constantinteck",
+    "description": "Constantin, 23, cooks for anyone who'll sit at the table and films it as @constantinteck. The aprons in the shop are designed by his mom and sewn in Germany."
+  },
+  "krimi-dinner.html": {
+    "title": "Murder Mystery Dinner Games to Print | Constantinteck",
+    "description": "Murder mystery dinner games as a PDF to print at home, made for an evening of cooking together. Nine cases for 5–12 players, €8.99 each, sold by Murdernight."
+  },
+
+  "shop/linen-apron.html": {
+    "title": "Waffle Apron »Dough Love« – Sewn in Germany | Constantinteck",
+    "description": "The waffle piqué apron from my videos, designed by my mom and sewn by hand in Germany. One size, adjustable neck strap, large front pocket, three colours."
+  },
+  "shop/kids-apron.html": {
+    "title": "Kids' Waffle Apron »Little Dough Love« | Constantinteck",
+    "description": "The small version of the apron from my videos – same waffle piqué, same seams, sewn by hand in Germany. Three sizes from 4 years, three colours."
+  },
+  "shop/apron-set.html": {
+    "title": "Apron Set for Adult & Kid »Dough Love« | Constantinteck",
+    "description": "Both aprons from my videos in one parcel – the grown-up one and the small one – for €9.90 less than buying them apart. Waffle piqué, sewn in Germany."
+  },
+
+  "recipes/avocado-ice-cream.html": {
+    "title": "Avocado Ice Cream – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Avocado ice cream with fresh mint, honey and lemon juice: four ingredients, naturally sweet and creamy. Ready in 5 minutes in the blender, no churning."
+  },
+  "recipes/baba-ganoush.html": {
+    "title": "Baba Ganoush – Easy Roasted Eggplant Dip | Constantinteck",
+    "description": "Baba ganoush from roasted eggplant: char the skin, then blend the flesh with garlic, tahini, lemon and olive oil. An easy vegan dip for 4, ready in 1 hour."
+  },
+  "recipes/blueberry-sorbet.html": {
+    "title": "Blueberry Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Blueberry sorbet from frozen blueberries and banana with a little sugar and lemon juice. Four ingredients, 5 minutes in the blender, a summer treat for 2."
+  },
+  "recipes/cheesy-roasted-chicken-wrap.html": {
+    "title": "Cheesy Roasted Chicken Wrap – Easy 35-Minute Recipe",
+    "description": "Chicken and peppers roast on one tray, then go into tortillas with melted cheese and a garlic yogurt sauce. An easy weeknight wrap for 2 in 35 minutes."
+  },
+  "recipes/chocolate-banana-ice-cream.html": {
+    "title": "Chocolate Banana Ice Cream – Easy 5-Minute Recipe",
+    "description": "Chocolate banana ice cream from frozen bananas, dark chocolate, yogurt and honey. Four ingredients, naturally sweet, ready in 5 minutes without churning."
+  },
+  "recipes/coconut-mango-sorbet.html": {
+    "title": "Coconut Mango Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Coconut mango sorbet: frozen mango and frozen coconut milk blended with lemon juice and honey. Only four ingredients and 5 minutes for a tropical dessert."
+  },
+  "recipes/creamy-one-pan-salmon-pasta.html": {
+    "title": "Creamy One-Pan Salmon Pasta – Easy 35-Minute Recipe",
+    "description": "Salmon, feta and cherry tomatoes bake in one dish until the feta melts into a creamy sauce, then the pasta goes in. An easy dinner for 2 in 35 minutes."
+  },
+  "recipes/creamy-roasted-red-pepper-tomato-pasta.html": {
+    "title": "Roasted Red Pepper & Tomato Pasta – Easy 40-Minute Recipe",
+    "description": "Peppers, cherry tomatoes and a whole garlic bulb roast on one tray, then blend with mozzarella into a creamy sauce. An easy pasta for 4 in 40 minutes."
+  },
+  "recipes/creamy-sucuk-carbonara.html": {
+    "title": "Creamy Sucuk Carbonara – Easy 25-Minute Recipe | Constantinteck",
+    "description": "Carbonara with crispy sucuk: egg yolks, parmesan and the sucuk's own oil make the creamy sauce. Six ingredients, ready in 25 minutes, serves 4."
+  },
+  "recipes/dragon-fruit-smoothie.html": {
+    "title": "Dragon Fruit Smoothie – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Dragon fruit smoothie with frozen mango, coconut milk and a little honey. Four ingredients, one blender and 5 minutes for a bright tropical drink for 2."
+  },
+  "recipes/dragonfruit-mango-sorbet.html": {
+    "title": "Dragonfruit Mango Sorbet – Easy 5-Minute Recipe",
+    "description": "Dragonfruit mango sorbet from four ingredients: frozen dragonfruit and mango, lemon juice and honey. Naturally sweet, straight from the blender in 5 minutes."
+  },
+  "recipes/fudgy-chocolate-raspberry-banana-bread.html": {
+    "title": "Chocolate Raspberry Banana Bread – Easy One-Bowl Recipe",
+    "description": "Fudgy banana bread with dark chocolate and fresh raspberries, made with whole spelt flour and mixed in a single bowl. 10 servings, about 65 minutes in all."
+  },
+  "recipes/granola-berry-smoothie-bowl.html": {
+    "title": "Granola Berry Smoothie Bowl – Easy 5-Minute Recipe",
+    "description": "Smoothie bowl from frozen blueberries and strawberries, topped with fresh berries and crunchy granola. Creamy, fruity and ready in 5 minutes for 2 bowls."
+  },
+  "recipes/grape-sorbet.html": {
+    "title": "Grape Sorbet – 4 Ingredients, 5 Minutes' Work | Constantinteck",
+    "description": "Grape sorbet from frozen grapes, sugar and lemon juice, finished with fresh mint. Freeze the grapes overnight, then blend in three steps – 5 minutes' work."
+  },
+  "recipes/healthy-raspberry-chocolate-nice-cream.html": {
+    "title": "Raspberry Chocolate Nice Cream – Easy 5-Minute Recipe",
+    "description": "Raspberry chocolate nice cream from frozen banana, raspberries, dark chocolate and lemon juice. Creamy, naturally sweet, 5 minutes, no ice cream maker."
+  },
+  "recipes/kiwi-sorbet.html": {
+    "title": "Kiwi Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Kiwi sorbet from frozen kiwis and fresh passionfruit with a little sugar and lemon juice. Four ingredients, five quick steps, ready in 5 minutes for 2."
+  },
+  "recipes/lemon-sorbet.html": {
+    "title": "Lemon Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Lemon sorbet in seconds: frozen lemon, coconut milk, sugar and fresh mint in the blender. No churn, no fuss – four ingredients and 5 minutes for 2."
+  },
+  "recipes/mango-passionfruit-smoothie.html": {
+    "title": "Mango Passionfruit Smoothie – Easy 5-Minute Recipe",
+    "description": "Mango passionfruit smoothie with banana and coconut milk, sweetened with a little honey. A tropical summer drink for 2, blended in 5 minutes."
+  },
+  "recipes/mango-raspberry-sorbet.html": {
+    "title": "Mango Raspberry Sorbet – Easy 5-Minute Recipe",
+    "description": "Mango raspberry sorbet from frozen mango and raspberries with lemon juice and honey. Four ingredients, naturally sweet and about a minute of actual work."
+  },
+  "recipes/peach-sorbet.html": {
+    "title": "Peach Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Peach sorbet from frozen peaches and orange juice with a little sugar and lemon, blended until creamy. Four ingredients, 5 minutes, no ice cream maker."
+  },
+  "recipes/peanut-spicy-udon.html": {
+    "title": "Spicy Peanut Udon – Easy 20-Minute Recipe | Constantinteck",
+    "description": "Spicy peanut udon: noodles in a creamy peanut butter, soy and chilli sauce with garlic, scallions and coriander. One pan, 20 minutes, serves 2."
+  },
+  "recipes/pineapple-sorbet.html": {
+    "title": "Pineapple Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Pineapple sorbet with frozen mango, sugar and fresh lemon juice. Everything goes into the blender for about 30 seconds – a tropical treat in 5 minutes."
+  },
+  "recipes/strawberry-passion-fruit-smoothie.html": {
+    "title": "Strawberry Passion Fruit Smoothie – Easy 5-Minute Recipe",
+    "description": "Strawberry passion fruit smoothie from frozen strawberries, passion fruit pulp, milk and honey. No added sugar, four ingredients, 5 minutes for 2."
+  },
+  "recipes/strawberry-pineapple-sorbet.html": {
+    "title": "Strawberry Pineapple Sorbet – Easy 5-Minute Recipe",
+    "description": "Strawberry pineapple sorbet from frozen strawberries and pineapple with lemon juice and a little sugar. Four ingredients, fruity, ready in 5 minutes."
+  },
+  "recipes/strawberry-smoothie.html": {
+    "title": "Strawberry Smoothie – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Creamy strawberry smoothie with banana, milk and a little honey. Four ingredients and 5 minutes – perfect for breakfast or as a sweet snack for 2."
+  },
+  "recipes/strawberry-sorbet.html": {
+    "title": "Strawberry Sorbet – Easy 5-Minute Recipe | Constantinteck",
+    "description": "Strawberry sorbet from frozen strawberries, lemon juice, sugar and fresh mint, blended in five short steps. Four ingredients and 5 minutes for 2."
+  },
+  "recipes/thick-blueberry-chia-pudding.html": {
+    "title": "Thick Blueberry Chia Pudding – 10 Minutes' Prep | Constantinteck",
+    "description": "Thick blueberry chia pudding with yogurt, milk and honey: blended in 10 minutes, then set in the fridge for 4 hours. For breakfast, dessert or a snack."
+  },
+  "recipes/thick-mango-chia-pudding.html": {
+    "title": "Thick Mango Chia Pudding – 10 Minutes' Prep | Constantinteck",
+    "description": "Thick mango chia pudding from one ripe mango, coconut milk, yogurt and honey. 10 minutes in the blender, 4 hours in the fridge – serves 2."
+  },
+  "recipes/thick-raspberry-chia-pudding.html": {
+    "title": "Thick Raspberry Chia Pudding – 10 Minutes' Prep | Constantinteck",
+    "description": "Thick raspberry chia pudding with coconut milk, yogurt and honey. Fresh or frozen raspberries, 10 minutes of work and 4 hours in the fridge, serves 2."
+  },
+  "recipes/yellow-watermelon-sorbet.html": {
+    "title": "Yellow Watermelon Sorbet – Easy 5-Minute Recipe",
+    "description": "Yellow watermelon sorbet with honey, lemon and fresh mint. An easy four-ingredient summer dessert straight from the blender in 5 minutes, serves 2."
+  }
+}
