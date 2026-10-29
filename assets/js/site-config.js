@@ -5,31 +5,12 @@
  * wird von jeder Seite geladen; assets/js/site.js setzt die Werte um.
  */
 var SITE_CONFIG = {
-  /**
-   * ANKÜNDIGUNGSLEISTE – der dunkle Streifen ganz oben auf jeder Seite.
-   *
-   * Solange "enabled" false ist oder das heutige Datum außerhalb von
-   * start/end liegt, steht dort der Text aus dem HTML (das Set-Angebot).
-   * Eingeschaltet ersetzt dieser Eintrag Text und Link auf allen Seiten.
-   *
-   * text       Text ab Tablet-Breite. {orderBy} wird durch das Datum ersetzt.
-   * textShort  Kurzfassung fürs Handy – muss in eine Zeile passen (ca. 40 Zeichen).
-   * orderBy    Letzter Bestelltag, so wie er dastehen soll: "18 December".
-   *            Kommt {orderBy} im Text vor und ist dieses Feld leer, bleibt
-   *            die Leiste beim Standardtext – nie ein Versprechen ohne Datum.
-   * href       Ziel des Links, ab dem Hauptordner.
-   * start/end  Erster und letzter Tag (einschließlich), "JJJJ-MM-TT".
-   *            Leer = keine Grenze.
+  /*
+   * ANKÜNDIGUNGSLEISTE: steht seit 29.10.2026 nicht mehr hier. Sie wirbt auf
+   * allen Seiten für die Krimi-Dinner und kommt aus data/cases.json
+   * (tools/cases.py; im Zeitraum "seasonal" eines Falls wirbt sie für ihn).
+   * Schürzen werden in der Leiste nicht mehr beworben.
    */
-  banner: {
-    enabled: false,
-    text: "The gift for everyone who loves to cook – order by {orderBy} for delivery before Christmas",
-    textShort: "The gift for cooks · order by {orderBy}",
-    orderBy: "", // TODO: letzter Bestelltag vor Weihnachten, z. B. "18 December"
-    href: "shop/linen-apron.html",
-    start: "2026-11-01",
-    end: "2026-12-24"
-  },
 
   /**
    * NEWSLETTER-BOX – auf den Rezeptseiten (nach der Zubereitung) und auf
@@ -71,8 +52,9 @@ var SITE_CONFIG = {
    *   product-click/overview-kids/<produkt>    Hinweis bei "Cook with kids"
    *   product-click/home-showcase/<produkt>    Schaufenster auf der Startseite
    *   product-click/home-grid/<produkt>        Shop-Karte in "New from the videos"
-   *   krimi-click/<stelle>/<fall>              Fallkarte bzw. Teaser (Murdernight-Link)
-   *   banner-click                             Ankündigungsleiste (nur die aus dieser Datei)
+   *   krimi-click/<stelle>/<fall>              Kaufknopf (Murdernight-Link), Stelle = utm_content
+   *   krimi-menu/<stelle>/<rezept>             Rezept aus einem Fall-Menü
+   *   banner-click/<fall|all-cases>            Ankündigungsleiste
    *   newsletter-signup                        abgeschicktes Newsletter-Formular
    *
    * VOR DEM EINTRAGEN: privacy.html ergänzen – dort steht heute, dass die

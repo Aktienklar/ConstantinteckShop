@@ -28,45 +28,88 @@
       .replace(/"/g, "&quot;");
   }
 
-  /* --- Ankündigungsleiste -------------------------------------------------- */
+  /* --- Saison (Krimi-Dinner) ----------------------------------------------
+     Eine statische Seite kennt das heutige Datum nicht – deshalb entscheidet
+     hier der Browser des Besuchers. Alle Werte schreibt tools/cases.py aus
+     data/cases.json in die Seite (Feld "seasonal" eines Falls):
 
-  /** "2026-11-01" -> lokales Datum um Mitternacht; leer oder kaputt -> null */
-  function day(value) {
-    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || "");
-    return match ? new Date(+match[1], +match[2] - 1, +match[3]) : null;
+       Leiste      data-season-months="11,12" + data-season-href/-short/-long:
+                   im Zeitraum wirbt sie für diesen Fall statt für alle.
+       Karten      .krimi-cases__item[data-seasonal="11,12"]: rückt nach vorn,
+                   bekommt das Abzeichen "Seasonal pick".
+       Startseite  [data-season-only] erscheint nur im Zeitraum,
+                   [data-off-season-only] nur außerhalb. */
+
+  function inSeason(list) {
+    var month = new Date().getMonth() + 1;
+    return String(list || "").split(",").map(Number).indexOf(month) !== -1;
   }
 
-  function applyBanner() {
-    var banner = config.banner;
-    if (!banner || !banner.enabled || !banner.text) return;
-
-    var now = new Date();
-    var start = day(banner.start);
-    var end = day(banner.end);
-    if (start && now < start) return;
-    // Der Endtag zählt ganz mit.
-    if (end && now >= new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1)) return;
-
-    var long = banner.text;
-    var short = banner.textShort || banner.text;
-    if ((long + short).indexOf("{orderBy}") !== -1) {
-      if (!banner.orderBy) return;
-      long = long.replace("{orderBy}", banner.orderBy);
-      short = short.replace("{orderBy}", banner.orderBy);
-    }
-
-    /* data-banner-fixed: Diese Seite hat ihre eigene Leiste (krimi-dinner.html
-       wirbt für die Fälle) und bleibt von der Aktion hier unberührt. */
-    document.querySelectorAll(".announcement__deal:not([data-banner-fixed])").forEach(function (link) {
+  function applySeason() {
+    document.querySelectorAll(".announcement__deal[data-season-months]").forEach(function (link) {
+      if (!inSeason(link.getAttribute("data-season-months"))) return;
       var narrow = link.querySelector(".only-narrow");
       var wide = link.querySelector(".only-wide");
-      if (!narrow || !wide) return;
-
-      narrow.textContent = short;
-      wide.textContent = long;
-      if (banner.href) link.setAttribute("href", root + banner.href);
-      link.setAttribute("data-track", "banner-click");
+      if (narrow) narrow.textContent = link.getAttribute("data-season-short");
+      if (wide) wide.textContent = link.getAttribute("data-season-long");
+      link.setAttribute("href", link.getAttribute("data-season-href"));
+      link.setAttribute("data-track", link.getAttribute("data-season-track"));
     });
+
+    document.querySelectorAll(".krimi-cases__item[data-seasonal]").forEach(function (cell) {
+      if (!inSeason(cell.getAttribute("data-seasonal"))) return;
+      var card = cell.querySelector(".krimi-card");
+      var badge = cell.querySelector("[data-season-badge]");
+      if (card) card.classList.add("is-seasonal");
+      if (badge) badge.hidden = false;
+      cell.parentNode.insertBefore(cell, cell.parentNode.firstElementChild);
+    });
+
+    document.querySelectorAll("[data-season-only]").forEach(function (el) {
+      if (!inSeason(el.getAttribute("data-season-only"))) return;
+      el.hidden = false;
+      var badge = el.querySelector("[data-season-badge]");
+      var card = el.querySelector(".krimi-card");
+      if (badge) badge.hidden = false;
+      if (card) card.classList.add("is-seasonal");
+    });
+    document.querySelectorAll("[data-off-season-only]").forEach(function (el) {
+      if (inSeason(el.getAttribute("data-off-season-only"))) el.hidden = true;
+    });
+  }
+
+  /* --- Herkunft eines Kaufs (utm_content) -----------------------------------
+     Kaufknöpfe tragen utm_content = ihre Stelle (z. B. "krimi-card"). Kam der
+     Besucher über einen Link mit data-via="nav" (Navigation, Leiste, Fuß,
+     Rezept-Box …) auf die Krimi- oder Fallseite, hängt diese Stelle sich an:
+     utm_content=krimi-card--from-nav. Gemerkt wird nur der letzte Weg, nur
+     für diesen Tab (sessionStorage) und ohne die Adresse zu verändern. */
+
+  var VIA_KEY = "ct-via";
+
+  function setupVia() {
+    document.addEventListener(
+      "click",
+      function (event) {
+        var link = event.target.closest ? event.target.closest("a") : null;
+        if (!link) return;
+
+        var via = link.getAttribute("data-via");
+        if (via) {
+          try { sessionStorage.setItem(VIA_KEY, via); } catch (e) { /* privat: dann eben ohne */ }
+          return;
+        }
+
+        if (!link.hasAttribute("data-mn-funnel")) return;
+        var from = "";
+        try { from = sessionStorage.getItem(VIA_KEY) || ""; } catch (e) { /* ohne */ }
+        if (!/^[a-z0-9-]+$/.test(from)) return;
+        link.href = link.href.replace(/([?&]utm_content=)([^&#]*)/, function (all, key, value) {
+          return key + value.replace(/--from-[a-z0-9-]+$/, "") + "--from-" + from;
+        });
+      },
+      true
+    );
   }
 
   /* --- Newsletter ----------------------------------------------------------- */
@@ -166,7 +209,8 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    applyBanner();
+    applySeason();
+    setupVia();
     renderNewsletter();
     renderCustomerPhotos();
     setupTracking();

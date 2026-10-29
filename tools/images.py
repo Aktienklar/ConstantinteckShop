@@ -63,6 +63,10 @@ def convert():
         for name in sorted(filenames):
             if not name.lower().endswith(".jpg"):
                 continue
+            # Vorschaubilder für geteilte Links (tools/krimi-images.py) liest
+            # nur WhatsApp & Co. – dafür braucht es kein AVIF.
+            if os.path.basename(dirpath) == "og" or name.startswith("og-"):
+                continue
             jpg = os.path.join(dirpath, name)
             base = jpg[:-4]
             if stale(jpg, base + ".avif"):

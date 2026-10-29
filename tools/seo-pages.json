@@ -1,9 +1,9 @@
 {
   "_hinweis": "Titel und Beschreibung fuer Suchmaschinen und geteilte Links. tools/seo.py schreibt sie in den Kopf der jeweiligen Seite (title, description, og:title, og:description). Seiten, die hier fehlen, behalten, was in ihrem HTML steht. Richtwerte: Titel 50-60 Zeichen, Beschreibung 140-160 Zeichen.",
-
   "index.html": {
-    "title": "Constantinteck – Easy Recipes From My Reels & TikToks",
-    "description": "Every recipe from my reels and TikToks: ingredients up top, steps below, no life story in between. No-churn sorbets, smoothies and quick weeknight dinners."
+    "title": "Murder Mystery Dinners + the Menu to Match | Constantinteck",
+    "description": "Cook the menu, solve the case: 9 printable murder mystery dinners for 5–12 players, €8.99 each – plus a matching menu from my free video recipes.",
+    "imageAlt": "Covers of three murder mystery dinners: Witching Hour at Ravenmoor, The Last Sleigh Ride and Death at Studio 7"
   },
   "recipes.html": {
     "title": "All Recipes: Sorbets, Smoothies & Pasta | Constantinteck",
@@ -18,11 +18,10 @@
     "description": "Constantin, 23, cooks for anyone who'll sit at the table and films it as @constantinteck. The aprons in the shop are designed by his mom and sewn in Germany."
   },
   "krimi-dinner.html": {
-    "title": "Murder Mystery Dinner Games to Print | Constantinteck",
-    "description": "Murder mystery dinner games as a PDF to print at home, made for an evening of cooking together. Nine cases for 5–12 players, €8.99 each, sold by Murdernight.",
+    "title": "Murder Mystery Dinner Party Games – Printable PDF",
+    "description": "9 printable murder mystery dinner party games for 5–12 players, €8.99 each – every case with a menu to cook from my recipes. Instant PDF via Murdernight.",
     "imageAlt": "Covers of three murder mystery dinner games: Witching Hour at Ravenmoor, The Last Sleigh Ride and Death at Studio 7"
   },
-
   "shop/linen-apron.html": {
     "title": "Waffle Apron »Dough Love« – Sewn in Germany | Constantinteck",
     "description": "The waffle piqué apron from my videos, designed by my mom and sewn by hand in Germany. One size, adjustable neck strap, large front pocket, three colours."
@@ -35,7 +34,6 @@
     "title": "Apron Set for Adult & Kid »Dough Love« | Constantinteck",
     "description": "Both aprons from my videos in one parcel – the grown-up one and the small one – for €9.90 less than buying them apart. Waffle piqué, sewn in Germany."
   },
-
   "recipes/avocado-ice-cream.html": {
     "title": "Avocado Ice Cream – Easy 5-Minute Recipe | Constantinteck",
     "description": "Avocado ice cream with fresh mint, honey and lemon juice: four ingredients, naturally sweet and creamy. Ready in 5 minutes in the blender, no churning."

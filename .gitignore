@@ -36,3 +36,6 @@ OFFENE-FRAGEN.md
 # Offene Rechtsfragen und Erinnerungen (Rechtstexte-Überarbeitung Okt. 2026)
 # – bleiben lokal wie OFFENE-FRAGEN.md.
 LEGAL-TODO.md
+
+# Python-Zwischenstände der Skripte in tools/
+__pycache__/

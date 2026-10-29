@@ -1,5 +1,11 @@
 # Constantinteck – website prototype
 
+> **Seit 29.10.2026:** Hauptprodukt sind die 9 Murder-Mystery-Dinner
+> (je €8.99, PDF, Kauf über murdernight.store). Rezepte bleiben kostenlos und
+> sind der Weg dorthin, die Schürzen stehen nachrangig im Shop.
+> Positionierung: „Cook the menu. Solve the case.“ Alles zu den Fällen steht
+> in **`data/cases.json`** – siehe „Murder mystery dinners“ unten.
+
 > **Stand seit 28.10.2026:** Schürzen und Krimi-Dinner sind wieder beide auf
 > der Seite. Die Schürzen-Fotos sind die finalen (Sand, Grey, Mauve); die
 > Galerie einer Produktseite zeigt die Fotos der gewählten Farbe
@@ -99,7 +105,7 @@ Two files hold everything that can be changed without touching a page:
 | File | What it controls |
 | --- | --- |
 | `assets/js/recipe-data.js` | Per recipe: `order` (the three highest appear under "From the latest videos"), `video`, and optionally `featuredProduct` / `productNote` for the product card on the recipe page |
-| `assets/js/site-config.js` | Announcement bar (text, link, start/end date), newsletter box, GoatCounter code, customer photos |
+| `assets/js/site-config.js` | Newsletter box, GoatCounter code, customer photos (the announcement bar now comes from `data/cases.json`) |
 
 Everything in `site-config.js` ships switched off or empty; the comments in the
 file say what each field does and what has to happen in `privacy.html` before
@@ -110,8 +116,12 @@ switching it on.
 else the adult apron. The rule lives in `assets/js/recipe-product.js`.
 
 **Shop cards in the recipe list.** `assets/js/recipes-overview.js` inserts one
-after every sixth recipe (apron and murder mystery in turn) and hides them
-while a search or filter is active.
+after every sixth recipe (murder mystery and apron in turn) and hides them
+while a search or filter is active. The row *From the latest videos* on
+`recipes.html` is written by `tools/cases.py` (highest `order`).
+
+**Product card on a recipe page** now sits below the method; directly after
+the ingredients comes the murder mystery box (see below).
 
 **Customer photos.** Put the image into `assets/img/customers/` and add its file
 name to `customerPhotos` in `site-config.js`. Empty list = no section.
@@ -139,8 +149,9 @@ name to `customerPhotos` in `site-config.js`. Empty list = no section.
 4. Add a line for it in `assets/js/recipe-data.js` with the next higher
    `order`, and set `data-slug`, `data-category` and `data-minutes` on the
    `data-recipe-product` block in the new recipe file.
-5. Optionally link it from the start page (`index.html`) and update the recipe
-   counts on the two tiles there.
+5. Add its slug to the `recipes` list of one case in `data/cases.json` (the
+   box after the ingredients points there), optionally use it in a `menu`.
+   The start page picks it up under *New from the videos* by its `order`.
 
 ### Adding a product
 
@@ -171,64 +182,73 @@ nine, and the buy box would need two separate choices instead of one list.
 
 ## Murder mystery dinners (Krimi-Dinner)
 
-Live and linked from the navigation since 3 October 2026.
-
-The games are sold at Murdernight (formerly krimiabend24.de), **not here**. This site only advertises
-them and links out – no cart, no checkout, nothing in `shop-data.js` or
-`worker/`.
+The main product since 29 October 2026. The games are sold at Murdernight,
+**not here** – this site advertises them and links out. No cart, no checkout,
+nothing in `shop-data.js` or `worker/`.
 
 ```
-krimi-dinner.html               The page with the case cards
-assets/js/krimi-dinner-data.js  Cases, prices, URLs, UTM parameters – the only place
-assets/js/krimi-dinner.js       Builds cards, links and the recipe hint from the data
+data/cases.json                      THE source: cases, prices, URLs, UTM, menus, recipe → case
+tools/cases.py                       Writes everything below from it (deploy.sh runs it first)
+murder-mystery/<id>.html             One page per case (generated – do not edit)
+krimi-dinner.html                    Overview; the case cards between <!-- Fallkarten --> markers
+assets/js/krimi-dinner-data.js       Data block for the filters (generated) + labels
+assets/js/krimi-dinner.js            Filters and preview pages (browser only)
+tools/krimi-images.py                Cover WebPs and share images (og) – run once per new cover
 ```
 
-- **Changing a case or a price:** edit `KRIMI_CASES` in
-  `assets/js/krimi-dinner-data.js`. The page, the teaser on `index.html` and
-  the card in the recipe grid follow.
-- **Per case** the same entry also holds the story `teaser`, `moods` and
-  `occasions` (filters and "Perfect for"), `seasonal` (months in which the
-  case is badged "Seasonal pick" and moved to the front – The Last Sleigh
-  Ride in November and December) and `recipes` (for "Cook the menu, solve
-  the case").
-- **Sections that stay hidden until filled:** `KRIMI_PREVIEWS` (blurred PDF
-  pages) and `KRIMI_SOCIAL` (real reviews and photos only) in the same file.
-- **FAQ:** plain HTML in `krimi-dinner.html`. `tools/seo.py` writes the
-  FAQPage schema from the visible questions; questions marked `hidden` are
-  left out until they have an answer.
-- **Clicks:** every case link carries `utm_content=<case id>` (Murdernight
-  sees which card was clicked) and `data-track="krimi-click/<place>/<id>"`
-  for GoatCounter.
-- **The announcement bar** on `krimi-dinner.html` advertises the cases and
-  ignores the banner in `site-config.js` (`data-banner-fixed`).
-- **Changing the UTM parameters:** `KRIMI_SITE.utm` (and `recipeCampaign`) in
-  the same file. Every link to Murdernight is built by `krimiUrl()`; never
-  write one by hand.
-- **Language of the target:** `KRIMI_SITE.lang` (`"en"` or `"de"`). Cases
-  without an entry for that language are not shown.
-- **Covers:** portrait 675 × 900 (3:4) in `assets/img/krimi/`, shown
-  uncropped. For a new or changed cover run `python3 tools/krimi-images.py`
-  once (needs Pillow): it writes the WebP sizes 240/400/675 next to the JPEG
-  and the share image `og-krimi-dinner.jpg`. Do not embed images from
-  Murdernight directly.
+**Change a case, a price, a teaser or a menu:** edit `data/cases.json`, then
+`python3 tools/cases.py` (or just `./deploy.sh`). It rewrites, on every page:
+navigation (Murder Mystery first), the announcement bar, the footer column
+with all cases; plus the cards on `krimi-dinner.html`, the start page blocks
+(hero covers, *Pick your evening*, example menu, *New from the videos*), the box *Hosting a dinner?* on every recipe page, the case pages
+and the strips on `recipes.html` / `shop.html`. Anything between
+`<!-- … (geschrieben von tools/cases.py …) -->` markers is overwritten.
 
-### The hint on a recipe page
+Teasers (shortened) and characters come from the case pages on murdernight.store
+(29 Oct 2026). Fields per case are explained in `_fields` at the top of the JSON. Empty
+`teaser`, `roles` or `menu` courses don't show on the page; they appear as
+`<!-- TODO … -->` in the HTML and the script lists them.
 
-To mark a recipe as part of a murder mystery menu, add one line where the block
-should appear (e.g. below the method), using the case's `id`:
+- **Recipe → case:** every recipe slug sits in exactly one case's `recipes`
+  list – that case is shown in the box after the ingredients. The script
+  stops with an error if a recipe is listed twice or does not exist, and
+  warns about recipes that aren't assigned.
+- **Seasonal:** `seasonal: [11, 12]` – in those months (visitor's date,
+  `assets/js/site.js`) the announcement bar advertises that case, it moves to
+  the front on `krimi-dinner.html` and joins *Pick your evening*.
+- **Start page:** `home.picks`, `home.exampleMenu`, `home.heroCovers`.
 
-```html
-<div class="mt-6" data-krimi-hint="the-teatime-caper"></div>
-```
+### Links to Murdernight and utm_content
 
-and these two lines next to the other scripts at the bottom of that recipe:
+Every link to Murdernight is built by `mn_url()` in `tools/cases.py`:
+`utm_source=constantinteck` (must never be missing – agreed with
+Murdernight), `utm_medium=website`, `utm_campaign=krimi-dinner`
+(`krimi-dinner-rezept` from recipe pages) and **`utm_content` = where the
+button sits**:
 
-```html
-<script src="../assets/js/krimi-dinner-data.js"></script>
-<script src="../assets/js/krimi-dinner.js"></script>
-```
+| utm_content | Button |
+| --- | --- |
+| `home-pick` | *Pick your evening* on the start page |
+| `home-menu` | Example menu on the start page |
+| `krimi-card` | Case card on `krimi-dinner.html` |
+| `closing-cta` | *All cases at Murdernight* on `krimi-dinner.html` |
+| `case-page-hero` / `case-page-bottom` | Case page, top / bottom |
+| `recipe-box` | *Hosting a dinner?* box on a recipe page |
+| `schema` | Offer URL in the Product schema |
 
-Its link carries `utm_campaign=krimi-dinner-rezept`.
+Navigation, announcement bar, footer, strips and the recipe grid card lead to
+the site's own pages first. They carry `data-via="nav"` (`banner`, `footer`,
+`recipes-strip`, `shop-strip`, `recipes-grid`, `home-hero`, …); `site.js`
+remembers the last one for this tab and appends it to the buy buttons on the
+overview and case pages: `utm_content=case-page-hero--from-footer`. So
+Murdernight's stats show both the button and the way in.
+
+### Share images
+
+`python3 tools/krimi-images.py` writes the WebP sizes for every cover, the
+collage `og-krimi-dinner.jpg` (start page and overview) and one
+`assets/img/krimi/og/<id>.jpg` per case (1200 × 630, cover uncropped on a
+blurred version of itself). Needs Pillow; only needed for new covers.
 
 ## Language
 
@@ -372,12 +392,9 @@ Right now everything points at `https://placehold.co/...` URLs. For real photos:
    `assets/img/babka.jpg` from a root page, `../assets/img/babka.jpg` from a
    page inside `recipes/` or `shop/`
 
-The hero on the start page is a slowly moving wall of recipe cards across the
-full width, with one quiet line of text and a link on top. Its small 3:4
-previews (400×534) live in `assets/img/wall/`, one per recipe on the wall, named like the
-recipe page. For a new recipe, add a preview there and one `wall-card` link to
-the shortest lane in the hero of `index.html`. `assets/img/hero-kitchen.jpg` is
-no longer shown on the page; it stays as the preview image for shared links.
+The hero on the start page shows three murder mystery covers
+(`home.heroCovers` in `data/cases.json`). The former recipe wall
+(`assets/img/wall/`, `assets/js/hero-wall.js`) is no longer used.
 
 ## Colours and look
 

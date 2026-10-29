@@ -100,7 +100,7 @@
         "@type": "ImageObject",
         "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
       },
-      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "description": "Murder mystery dinners and the menu to go with them, by Constantin: printable murder mystery games for 5–12 players, free recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
       "email": "info@constantinteck.com",
       "founder": {
         "@id": "https://constantinteck.com/about.html#constantin"
@@ -134,18 +134,18 @@
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
 
-  <!-- Ankündigungsleiste: das Erste, was ein Besucher sieht. Sie trägt das
-       Angebot, das den größten Warenkorb macht, und die zwei Bedingungen,
-       die über den ersten Kauf entscheiden: Versand und Rückgabe. -->
+  <!-- Ankündigungsleiste (geschrieben von tools/cases.py aus data/cases.json). Im
+       Zeitraum des Falls mit Saison tauscht assets/js/site.js Text und Ziel
+       (data-season-*). Schürzen werden hier nicht beworben. -->
   <div class="announcement">
     <div class="container announcement__inner">
-      <a class="announcement__deal" href="../shop/linen-apron.html">
+      <a class="announcement__deal" href="../krimi-dinner.html" data-via="banner" data-track="banner-click/all-cases" data-season-months="11,12" data-season-href="../murder-mystery/the-last-sleigh-ride.html" data-season-short="Christmas tip: The Last Sleigh Ride · €8.99" data-season-long="Christmas tip: The Last Sleigh Ride – the murder mystery dinner for your Christmas party, 6–10 players · €8.99" data-season-track="banner-click/the-last-sleigh-ride">
         <span class="announcement__dot" aria-hidden="true"></span>
-        <span class="only-narrow">The apron from the videos · €49.90</span>
-        <span class="only-wide">The apron from my videos – waffle piqué, sewn by hand in Germany · €49.90</span>
+        <span class="only-narrow">9 murder mystery dinners · €8.99 each</span>
+        <span class="only-wide">9 murder mystery dinners – €8.99 each · cook the menu, solve the case</span>
         <span aria-hidden="true">→</span>
       </a>
-      <p class="announcement__terms">Fast shipping · 14-day returns</p>
+      <p class="announcement__terms">Instant PDF · 5–12 players</p>
     </div>
   </div>
 
@@ -158,11 +158,10 @@
 
       <div class="site-header__right">
         <nav class="nav" aria-label="Main">
-        <a class="nav__link" href="../index.html">Home</a>
-        <a class="nav__link is-active" href="../recipes.html">Recipes</a>
+        <a class="nav__link nav__link--feature" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
+        <a class="nav__link is-active" href="../recipes.html" aria-current="page">Recipes</a>
         <a class="nav__link" href="../shop.html">Shop</a>
         <a class="nav__link" href="../about.html">About</a>
-        <a class="nav__link" href="../krimi-dinner.html">Murder Mystery</a>
         </nav>
 
         <a class="cart-link" href="../cart.html" data-cart-link aria-label="Cart, 0 items">
@@ -174,11 +173,10 @@
 
     <!-- Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü -->
     <nav class="nav-mobile no-scrollbar" aria-label="Main">
-      <a class="chip" href="../index.html">Home</a>
-      <a class="chip is-active" href="../recipes.html">Recipes</a>
+      <a class="chip chip--feature" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
+      <a class="chip is-active" href="../recipes.html" aria-current="page">Recipes</a>
       <a class="chip" href="../shop.html">Shop</a>
       <a class="chip" href="../about.html">About</a>
-      <a class="chip" href="../krimi-dinner.html">Murder Mystery</a>
     </nav>
   </header>
 
@@ -289,21 +287,39 @@
     <div class="container site-footer__cols">
       <div>
         <p class="site-footer__brand">Constantinteck</p>
-        <p class="site-footer__claim">The recipes from my videos – without the endless scrolling.</p>
+        <p class="site-footer__claim">Murder mystery dinners – and the recipes from my videos to cook for them.</p>
         <p class="site-footer__contact">
           Questions about an order?<br>
           <a class="link-brand" href="mailto:info@constantinteck.com">info@constantinteck.com</a>
         </p>
       </div>
 
+      <!-- Faelle (geschrieben von tools/cases.py) -->
+      <div>
+        <h2>Murder Mystery</h2>
+        <ul>
+          <li><a href="../murder-mystery/the-comet-vintage.html" data-via="footer">The Comet Vintage</a></li>
+          <li><a href="../murder-mystery/the-last-sleigh-ride.html" data-via="footer">The Last Sleigh Ride</a></li>
+          <li><a href="../murder-mystery/the-last-night-at-fjell.html" data-via="footer">The Last Night at Fjell</a></li>
+          <li><a href="../murder-mystery/radio-silence-on-ares.html" data-via="footer">Radio Silence on Ares</a></li>
+          <li><a href="../murder-mystery/witching-hour-at-ravenmoor.html" data-via="footer">Witching Hour at Ravenmoor</a></li>
+          <li><a href="../murder-mystery/murder-before-hibernation.html" data-via="footer">Murder Before Hibernation</a></li>
+          <li><a href="../murder-mystery/closing-bell-on-the-24th-floor.html" data-via="footer">Closing Bell on the 24th Floor</a></li>
+          <li><a href="../murder-mystery/death-at-studio-7.html" data-via="footer">Death at Studio 7</a></li>
+          <li><a href="../murder-mystery/the-night-of-the-waxworks.html" data-via="footer">The Night of the Waxworks</a></li>
+          <li><a href="../krimi-dinner.html" data-via="footer">All 9 cases →</a></li>
+        </ul>
+      </div>
+      <!-- /Faelle -->
+
       <div>
         <h2>Pages</h2>
         <ul>
           <li><a href="../index.html">Home</a></li>
+          <li><a href="../krimi-dinner.html">Murder Mystery</a></li>
           <li><a href="../recipes.html">Recipes</a></li>
           <li><a href="../shop.html">Shop</a></li>
           <li><a href="../about.html">About</a></li>
-          <li><a href="../krimi-dinner.html">Murder Mystery</a></li>
         </ul>
       </div>
 

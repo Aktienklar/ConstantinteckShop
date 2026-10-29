@@ -10,9 +10,13 @@ geändert hat):   python3 tools/krimi-images.py
      Cover neben dem Text am Handy, 675 px ist die Originalbreite
      der Cover (675 × 900, 3:4) – größer zu rechnen brächte nur Bytes,
      keine Schärfe. krimi-dinner.js baut daraus srcset/sizes.
-  2. Baut das Vorschaubild für geteilte Links von krimi-dinner.html:
-     assets/img/krimi/og-krimi-dinner.jpg (1200 × 630), drei Cover
-     nebeneinander auf dunklem Grund. Welche drei, steht in OG_COVERS.
+  2. Baut das Vorschaubild für geteilte Links von krimi-dinner.html und der
+     Startseite: assets/img/krimi/og-krimi-dinner.jpg (1200 × 630), drei
+     Cover nebeneinander auf dunklem Grund. Welche drei, steht in OG_COVERS.
+  3. Baut je Fall das Vorschaubild seiner Fallseite:
+     assets/img/krimi/og/<slug>.jpg (1200 × 630). Das Cover steht vollständig
+     in der Mitte, dahinter dieselbe Grafik stark unscharf und abgedunkelt –
+     so passt der Grund farblich zu jedem Cover, und nichts wird beschnitten.
 
 Braucht Pillow mit WebP (pip3 install pillow). Anders als tools/images.py
 läuft das Skript nicht bei jedem Deploy – die erzeugten Dateien werden mit
@@ -108,8 +112,36 @@ def og():
     return 1
 
 
+OG_CASE_DIR = os.path.join(DIR, "og")
+
+
+def og_cases():
+    os.makedirs(OG_CASE_DIR, exist_ok=True)
+    made = 0
+    for slug in covers():
+        src = os.path.join(DIR, slug + ".jpg")
+        out = os.path.join(OG_CASE_DIR, slug + ".jpg")
+        if not stale(src, out):
+            continue
+        cover = Image.open(src).convert("RGB")
+
+        # Grund: Cover auf volle Breite, unscharf, abgedunkelt.
+        scale = OG_SIZE[0] / cover.width
+        bg = cover.resize((OG_SIZE[0], round(cover.height * scale)), Image.LANCZOS)
+        top = (bg.height - OG_SIZE[1]) // 2
+        bg = bg.crop((0, top, OG_SIZE[0], top + OG_SIZE[1])).filter(ImageFilter.GaussianBlur(40))
+        bg = Image.blend(bg, Image.new("RGB", OG_SIZE, OG_BACKGROUND), 0.55)
+
+        h = 560
+        w = round(h * cover.width / cover.height)
+        shadowed(bg, cover.resize((w, h), Image.LANCZOS), (OG_SIZE[0] - w) // 2, (OG_SIZE[1] - h) // 2)
+        bg.save(out, "JPEG", quality=84, optimize=True, progressive=True)
+        made += 1
+    return made
+
+
 def main():
-    made = webp() + og()
+    made = webp() + og() + og_cases()
     print("  %d Krimi-Bilder erzeugt." % made)
 
 

@@ -21,8 +21,10 @@ echo
 
 # Kopfbereich (Titel, Beschreibung, Vorschau), sitemap.xml und die
 # AVIF-Fassungen der Fotos werden aus den Seiten erzeugt, nicht von Hand
-# gepflegt – siehe tools/seo.py und tools/images.py.
+# gepflegt – siehe tools/seo.py und tools/images.py. Alles zu den
+# Krimi-Dinnern kommt aus data/cases.json (tools/cases.py).
 echo "→ SEO-Kopf, Sitemap und Bilder werden aktualisiert ..."
+python3 tools/cases.py
 python3 tools/blocks.py
 python3 tools/images.py
 python3 tools/seo.py

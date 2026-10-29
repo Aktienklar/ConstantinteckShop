@@ -86,8 +86,12 @@ def author_boxes():
 def recipe_cards():
     """{slug: (name, tags, Karten-HTML)} aus recipes.html, in dessen Reihenfolge."""
     cards = {}
+    grid = read("recipes.html")
+    # Nur das Raster – die Reihe "From the latest videos" darüber (tools/cases.py)
+    # trägt Kopien ohne loading="lazy".
+    grid = grid[grid.find("<!-- /Neueste -->"):]
     for m in re.finditer(r'<a class="(card recipe-card[^"]*)" href="recipes/([^"]+)\.html"[^>]*>(.*?)</a>',
-                         read("recipes.html"), re.S):
+                         grid, re.S):
         cls, slug, inner = m.groups()
         if slug in cards:
             continue
@@ -239,9 +243,20 @@ def llms_txt(result):
         "",
         "## Main pages",
         "",
+        line("krimi-dinner.html", "Murder mystery dinners", pages["krimi-dinner.html"]["description"]),
         line("recipes.html", "All recipes", pages["recipes.html"]["description"]),
         line("shop.html", "Shop", pages["shop.html"]["description"]),
         line("about.html", "About Constantin", pages["about.html"]["description"]),
+        "",
+        "## Murder mystery dinners (sold by Murdernight, PDF)",
+        "",
+    ]
+    for path in sorted(glob.glob(os.path.join(ROOT, "murder-mystery", "*.html"))):
+        src = read(os.path.relpath(path, ROOT))
+        name = html.unescape(re.search(r"<h1[^>]*>(.*?)</h1>", src, re.S).group(1))
+        desc = html.unescape(re.search(r'<meta name="description" content="([^"]*)"', src).group(1))
+        out.append(line(os.path.relpath(path, ROOT), name, desc))
+    out += [
         "",
         "## Recipe collections",
         "",
@@ -258,7 +273,6 @@ def llms_txt(result):
         "",
         "## Optional",
         "",
-        line("krimi-dinner.html", "Murder mystery dinner games", pages["krimi-dinner.html"]["description"]),
         line("shipping-returns.html", "Shipping & returns", "Shipping costs, delivery and the 14-day return policy."),
         line("imprint.html", "Imprint (German)", "Legal notice: who runs this site."),
         "",
