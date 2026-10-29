@@ -23,20 +23,58 @@
   <meta name="twitter:card" content="summary_large_image">
   <!-- /Vorschau -->
   <link rel="stylesheet" href="assets/css/styles.css?v=8">
-  <!-- Strukturierte Daten fuer Suchmaschinen -->
+  <!-- Strukturierte Daten fuer Suchmaschinen (geschrieben von tools/seo.py) -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Constantinteck",
-  "url": "https://constantinteck.com/",
-  "description": "The recipes from my videos – without the endless scrolling.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "Constantinteck",
-    "url": "https://constantinteck.com/",
-    "logo": "https://constantinteck.com/assets/img/apple-touch-icon.png"
-  }
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://constantinteck.com/#organization",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://constantinteck.com/assets/img/apple-touch-icon.png"
+      },
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "email": "info@constantinteck.com",
+      "founder": {
+        "@id": "https://constantinteck.com/about.html#constantin"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://constantinteck.com/about.html#constantin",
+      "name": "Constantin",
+      "url": "https://constantinteck.com/about.html",
+      "image": "https://constantinteck.com/assets/img/about-constantin.jpg",
+      "worksFor": {
+        "@id": "https://constantinteck.com/#organization"
+      },
+      "sameAs": [
+        "https://instagram.com/constantinteck",
+        "https://tiktok.com/@constantinteck",
+        "https://youtube.com/@constantinteck"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://constantinteck.com/#website",
+      "name": "Constantinteck",
+      "url": "https://constantinteck.com/",
+      "description": "Food brand by Constantin: easy recipes from his Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom and sewn by hand in Germany.",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://constantinteck.com/#organization"
+      }
+    }
+  ]
 }
   </script>
   <!-- /Strukturierte Daten -->
