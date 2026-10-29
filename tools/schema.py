@@ -33,9 +33,10 @@ SOCIAL = [
     "https://tiktok.com/@constantinteck",
     "https://youtube.com/@constantinteck",
 ]
-DESCRIPTION = ("Food brand by Constantin: easy recipes from his Instagram, TikTok and "
-               "YouTube videos, and kitchen aprons designed by his mom and sewn by hand "
-               "in Germany.")
+DESCRIPTION = ("Murder mystery dinners and the menu to go with them, by Constantin: "
+               "printable murder mystery games for 5–12 players, free recipes from his "
+               "Instagram, TikTok and YouTube videos, and kitchen aprons designed by his mom "
+               "and sewn by hand in Germany.")
 
 ORGANIZATION = {
     "@type": "Organization",
@@ -243,6 +244,53 @@ def product(root, page, src, url, image):
     return [data, breadcrumbs(("Home", SITE), ("Shop", SITE + "shop.html"), (name, url))]
 
 
+def cases_data(root):
+    with open(os.path.join(root, "data", "cases.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def case_product(root, page, src, url, image):
+    """Product für eine Fallseite. Angebot = die Produktseite bei Murdernight
+    (mit UTM wie jeder andere Link). Keine aggregateRating: Es gibt (noch)
+    keine echten Bewertungen auf dieser Seite."""
+    import cases  # noqa: E402 – erst hier, cases.py lädt seo.py
+    data = cases_data(root)
+    case = {c["id"]: c for c in data["cases"]}[os.path.basename(page)[:-5]]
+    lang = data["site"]["lang"]
+    t = case[lang]
+    name = t["title"]
+    node = {
+        "@type": "Product",
+        "@id": url + "#product",
+        "name": name,
+        "description": t.get("teaser") or "Printable murder mystery dinner game for %s players: %s. About %g hours, PDF download."
+        % (case["players"], t["setting"], case["hours"]),
+        "image": [image, SITE + case["image"]],
+        "sku": case["id"],
+        "category": "Murder mystery dinner game (PDF download)",
+        "brand": {"@type": "Brand", "name": data["site"]["name"]},
+        "offers": {
+            "@type": "Offer",
+            "url": cases.case_url(case, "schema"),
+            "price": "%.2f" % case["price"],
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock",
+            "seller": {"@type": "Organization", "name": data["site"]["name"],
+                       "url": data["site"]["base"][lang]},
+        },
+    }
+    return [node, breadcrumbs(("Home", SITE), ("Murder Mystery Dinner", SITE + "krimi-dinner.html"), (name, url))]
+
+
+def case_list(root):
+    data = cases_data(root)
+    return {
+        "@type": "ItemList",
+        "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + "murder-mystery/%s.html" % c["id"]}
+                            for i, c in enumerate(data["cases"])],
+    }
+
+
 def item_list(src, folder):
     urls = []
     for href in re.findall(r'<a class="card (?:recipe|product)-card[^"]*" href="(?:\.\./)?(%s/[^"]+\.html)"' % folder, src):
@@ -303,7 +351,11 @@ def build(root, page, src, url, image, title):
                  "isPartOf": {"@id": WEBSITE_ID}, "mainEntity": item_list(src, "recipes")},
                 breadcrumbs(("Home", SITE), ("Recipes", SITE + "recipes.html"), (h1, url))] + brand
     if page == "krimi-dinner.html":
-        return [breadcrumbs(("Home", SITE), ("Murder Mystery Dinner", url))] + faq(src, url) + brand
+        return [{"@type": "CollectionPage", "@id": url, "name": title, "url": url,
+                 "isPartOf": {"@id": WEBSITE_ID}, "mainEntity": case_list(root)},
+                breadcrumbs(("Home", SITE), ("Murder Mystery Dinner", url))] + faq(src, url) + brand
+    if page.startswith("murder-mystery/"):
+        return case_product(root, page, src, url, image) + faq(src, url) + brand
     return None
 
 
