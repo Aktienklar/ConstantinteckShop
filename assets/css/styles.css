@@ -5707,7 +5707,7 @@ div.legal__en > * + * {
 
 .case-roles {
   display: grid;
-  gap: 0.75rem;
+  gap: 0.5rem;
   margin-top: 1.5rem;
   padding: 0;
   list-style: none;
@@ -5716,15 +5716,57 @@ div.legal__en > * + * {
 @media (min-width: 640px) {
   .case-roles {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
   }
 }
 
-.case-role h3 {
-  font-size: 1.0625rem;
+.case-role {
+  border-radius: 0.875rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.case-role summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-height: var(--tap);
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  position: relative;
+  cursor: pointer;
+  list-style: none;
+}
+
+.case-role summary::-webkit-details-marker {
+  display: none;
+}
+
+.case-role summary::after {
+  content: "+";
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-weight: 700;
+  color: var(--brand-ink);
+}
+
+.case-role[open] summary::after {
+  content: "–";
+}
+
+.case-role__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.case-role__role {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brand-ink);
 }
 
 .case-role p {
-  margin-top: 0.25rem;
+  padding: 0 1rem 1rem;
   font-size: 0.9375rem;
 }
 

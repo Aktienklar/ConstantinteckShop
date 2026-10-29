@@ -205,7 +205,8 @@ reviews), the box *Hosting a dinner?* on every recipe page, the case pages
 and the strips on `recipes.html` / `shop.html`. Anything between
 `<!-- … (geschrieben von tools/cases.py …) -->` markers is overwritten.
 
-Fields per case are explained in `_fields` at the top of the JSON. Empty
+Teasers (shortened) and characters come from the case pages on murdernight.store
+(29 Oct 2026). Fields per case are explained in `_fields` at the top of the JSON. Empty
 `teaser`, `roles` or `menu` courses don't show on the page; they appear as
 `<!-- TODO … -->` in the HTML and the script lists them.
 

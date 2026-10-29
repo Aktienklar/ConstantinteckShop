@@ -59,7 +59,7 @@ LABELS = {
     },
     "occasions": {
         "christmas": "Christmas party", "halloween": "Halloween party", "new-years-eve": "New Year's Eve",
-        "birthday": "Birthday", "game-night": "Game night", "team-event": "Team event",
+        "birthday": "Birthday", "game-night": "Game night", "team-event": "Office party",
     },
     "courses": [("starter", "Starter"), ("main", "Main"), ("dessert", "Dessert")],
 }
@@ -469,15 +469,19 @@ def roles_section(case):
     roles = [r for r in t(case).get("roles", []) if r.get("name")]
     if not roles:
         return ("      <!-- TODO: Figuren-Überblick für %s (ohne Spoiler) in data/cases.json unter %s.roles "
-                "eintragen: [{\"name\": \"…\", \"text\": \"…\"}]. Bis dahin erscheint der Abschnitt nicht. -->\n"
+                "eintragen: [{\"name\": \"…\", \"role\": \"…\", \"text\": \"…\"}]. Bis dahin erscheint der Abschnitt nicht. -->\n"
                 % (case["id"], LANG))
-    items = "".join('<li class="panel case-role"><h3>%s</h3><p class="muted">%s</p></li>' % (esc(r["name"]), esc(r.get("text", "")))
-                    for r in roles)
+    # Name und Rolle sichtbar, die Beschreibung zum Aufklappen – zwölf volle
+    # Texte untereinander wären am Handy mehrere Bildschirme lang.
+    items = "".join('<li><details class="case-role"><summary><span class="case-role__name">%s</span>%s</summary>'
+                    '<p class="muted">%s</p></details></li>'
+                    % (esc(r["name"]), ('<span class="case-role__role">%s</span>' % esc(r["role"])) if r.get("role") else "",
+                       esc(r.get("text", ""))) for r in roles)
     return """      <section class="shop-section" aria-labelledby="roles">
-        <div class="section-head"><div><h2 id="roles">Who's at the table</h2><p>The characters – no spoilers.</p></div></div>
+        <div class="section-head"><div><h2 id="roles">Who's at the table</h2><p>%d characters – everyone plays one. Tap a name for more, no spoilers.</p></div></div>
         <ul class="case-roles">%s</ul>
       </section>
-""" % items
+""" % (len(roles), items)
 
 
 def course_cards(case, root, via):
@@ -567,7 +571,6 @@ def build_case_page(case, top, bottom):
     </section>
 
     <div class="container section">
-%(roles)s
       <section class="shop-section" aria-labelledby="menu">
         <div class="section-head">
           <div>
@@ -579,6 +582,7 @@ def build_case_page(case, top, bottom):
         %(courses)s
       </section>
 
+%(roles)s
       <section class="shop-section" aria-labelledby="how">
         <div class="section-head"><div><h2 id="how">How the evening works</h2></div></div>
         <ol class="steps steps--3">
