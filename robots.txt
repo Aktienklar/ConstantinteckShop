@@ -8,4 +8,21 @@ Allow: /
 Disallow: /cart.html
 Disallow: /order-confirmed.html
 
+# KI-Suchmaschinen und -Assistenten ausdrücklich erlaubt (bestätigt am
+# 29.10.2026). Wichtig: Ein Bot, der hier eine eigene Gruppe hat, liest die
+# *-Gruppe oben nicht mehr – deshalb stehen die Disallow-Zeilen hier noch einmal.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /cart.html
+Disallow: /order-confirmed.html
+
 Sitemap: https://constantinteck.com/sitemap.xml
