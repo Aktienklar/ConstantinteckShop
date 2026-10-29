@@ -10,7 +10,7 @@ import numpy as np
 import pyloudnorm as pyln
 import soundfile as sf
 from scipy import signal
-from scipy.ndimage import minimum_filter1d
+from scipy.ndimage import maximum_filter1d, minimum_filter1d
 
 import timeline as T
 from common import BUILD, OUT
@@ -557,6 +557,59 @@ def duck_music(mus, vo, spans):
     return mus, report
 
 
+SPEECH_BAND = (300, 4000)
+
+
+def speech_band_db(x, hop):
+    """Pegel im Sprachband (300-4000 Hz) je hop-Fenster in dB."""
+    sos = signal.butter(4, SPEECH_BAND, "bandpass", fs=SR, output="sos")
+    y = signal.sosfilt(sos, x)
+    n = len(y) // hop * hop
+    return 10 * np.log10(np.mean(y[:n].reshape(-1, hop) ** 2, axis=1) + 1e-12)
+
+
+def band_duck(x, vo, mix_gain, gap_db, keep_low):
+    """Sidechain-Ducking im Sprachband: x liegt mind. gap_db unter der Stimme, solange gesprochen wird.
+
+    Referenz ist die Sprach-Huellkurve ueber 150 ms (haelt durch Silbenpausen), nur der Anteil
+    oberhalb keep_low wird abgesenkt, damit die Tiefen (Wumms der Hits, Drone) bleiben.
+    """
+    hop = int(0.01 * SR)
+    v = speech_band_db(vo.mean(1), hop)
+    active = v > v.max() - 35
+    v_env = maximum_filter1d(np.where(active, v, -200.0), size=15)
+    active = v_env > v.max() - 35
+    s = speech_band_db(x.mean(1) * mix_gain, hop)
+    g = np.where(active, np.minimum(0.0, v_env - gap_db - 1.0 - s), 0.0)
+    g = minimum_filter1d(g, size=7, origin=-3)          # 30 ms Vorausschau
+    rel = np.exp(-1 / 15.0)                               # 150 ms Rueckkehr
+    out = np.empty_like(g)
+    cur = 0.0
+    for i, val in enumerate(g):
+        cur = val if val < cur else val + (cur - val) * rel
+        out[i] = cur
+    t_hop = np.arange(len(out)) * hop + hop / 2
+    gain = np.interp(np.arange(len(x)), t_hop, 10 ** (out / 20))
+    gain_low = np.interp(np.arange(len(x)), t_hop, 10 ** (np.maximum(out / 2, -12.0) / 20))  # Tiefen halb so stark
+    sos = signal.butter(4, keep_low, "lowpass", fs=SR, output="sos")
+    low = signal.sosfiltfilt(sos, x, axis=0)
+    return low * gain_low[:, None] + (x - low) * gain[:, None], float(out.min())
+
+
+def speech_band_report(vo, other):
+    """Wie nah kommt 'other' im Sprachband an die Stimme (Sprach-Huellkurve ueber 150 ms, 10-ms-Raster)?"""
+    hop = int(0.01 * SR)
+    v = speech_band_db(vo.mean(1), hop)
+    act = v > v.max() - 35
+    v_env = maximum_filter1d(np.where(act, v, -200.0), size=15)
+    act = v_env > v.max() - 35
+    o = speech_band_db(other.mean(1), hop)
+    d = o[act] - v_env[act]
+    return dict(naeher_als_12dB_prozent=round(float(np.mean(d > -12)) * 100, 1),
+                naeher_als_6dB_prozent=round(float(np.mean(d > -6)) * 100, 1),
+                kleinster_abstand_db=round(float(-d.max()), 1))
+
+
 # =============================================================================
 # Mastering
 # =============================================================================
@@ -619,15 +672,20 @@ def main():
     sfx, ev, log = build_sfx()
     vo, spans = build_vo()
     duck = []
+    sfx_duck_max = 0.0
     if spans:
         mus, duck = duck_music(mus, vo, spans)
+        mus, _ = band_duck(mus, vo, 0.55, T.VO_MUSIC_GAP_DB, 150.0)
+        sfx, sfx_duck_max = band_duck(sfx, vo, 0.9, T.VO_SFX_GAP_DB, T.SFX_DUCK_KEEP_LOW)
     for nm, x in (("music.wav", mus), ("sfx.wav", sfx), ("vo.wav", vo)):
         sf.write(os.path.join(ADIR, nm), x.astype(np.float32), SR, subtype="FLOAT")
     mix = mus * 0.55 + sfx * 0.9 + vo * 1.0
     r1 = master(mix, "mix.wav")
     r2 = master(sfx * 0.9 + vo, "mix_ohne_musik.wav")
     info = dict(mix_lufs=r1[0], mix_tp=r1[1], dry_lufs=r2[0], dry_tp=r2[1], vo_lines=len(spans),
-                vo_music_gap_db=duck, schedule_log=log,
+                vo_music_gap_db=duck, sfx_duck_max_db=round(sfx_duck_max, 1),
+                sprachband_sfx=speech_band_report(vo, sfx * 0.9),
+                sprachband_musik=speech_band_report(vo, mus * 0.55), schedule_log=log,
                 events=[(round(e[0], 3), e[1]) for e in ev if not e[2].startswith("type")],
                 ticks=sum(1 for e in ev if e[2].startswith("type")))
     json.dump(info, open(os.path.join(ADIR, "audio_report.json"), "w"), indent=1, ensure_ascii=False)

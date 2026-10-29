@@ -147,3 +147,20 @@ src/make.py       styleframes | preview | final | check
 | 8 | Abgeschnittener Text | Kein stehender Text angeschnitten; nur Wandobjekte, die bei Fahrten aus dem Bild laufen | – |
 | 9 | 60-ms-Regel | Nicht-Hits ≥ 60 ms auseinander; 22 von 67 Tipp-Ticks entfallen dort, wo Faden-Sounds liegen | – |
 | 10 | Lautheit | Nach AAC-Kodierung lag der True Peak zunächst bei +1,1 dBTP (WAV war −1,2): Überschwinger an den steilen Tipp-Ticks | Ticks mit 0,6 ms Anstieg, Master oberhalb 16 kHz gefiltert, Mastering-Schleife misst die kodierte AAC-Datei mit ffmpeg loudnorm und regelt nach. Final: −13,95 LUFS / −1,06 dBTP (mit Musik), −14,01 LUFS / −1,21 dBTP (ohne Musik) |
+
+---
+
+## 13. Nachbesserung: Sprachverständlichkeit
+
+Feedback: Soundeffekte teilweise so laut, dass die Stimme nicht zu verstehen war.
+
+**Messung vorher** (Sprachband 300–4000 Hz, nur Momente mit Stimme): SFX lagen in 41 % der Zeit weniger als 6 dB unter der Stimme, an einzelnen Stellen bis zu 30 dB darüber (1,05–1,65 s Faden-Zip/Ticks/Flip, 2,05–4,05 s Flips/Ticks, 5,0 und 5,8 s Zahlen-Hits, 11,75–12,65 s Logo-Hit). Auch die Musik hatte Spitzen unter „Ein Täter.“ (Spannungsaufbau) und „für zuhause“ (tiefer Ton).
+
+**Lösung:** Dynamisches Sidechain-Ducking im Sprachband für SFX und Musik (`band_duck()` in `src/audio.py`):
+- Referenz ist die Sprach-Hüllkurve über 150 ms, damit es zwischen Silben nicht pumpt; 30 ms Vorausschau, 150 ms Rückkehr.
+- SFX und Musik liegen im Sprachband mindestens 12 dB unter der Stimme (`VO_SFX_GAP_DB`, `VO_MUSIC_GAP_DB`).
+- Tiefen unter 150 Hz (Wumms der Hits) werden nur halb so stark und höchstens um 12 dB abgesenkt.
+
+**Messung nachher:** SFX in 99,3 % der Sprechzeit ≥ 12 dB unter der Stimme, nie näher als 7,8 dB; Musik überall ≥ 12,8 dB darunter. Keine Klicks.
+
+**Finale Lautheit (ffmpeg loudnorm, fertige MP4):** mit Musik −14,06 LUFS / −1,27 dBTP; ohne Musik −14,00 LUFS / −1,05 dBTP.

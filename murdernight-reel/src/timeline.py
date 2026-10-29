@@ -130,6 +130,8 @@ VO_LINES = [
     ("Murdernight. Das Krimidinner für zuhause.",     11.70),
 ]
 VO_MUSIC_GAP_DB = 12.0                 # Musik mind. 12 dB unter VO
+VO_SFX_GAP_DB = 12.0                   # SFX im Sprachband mind. 12 dB unter VO
+SFX_DUCK_KEEP_LOW = 150.0              # Tiefen unter 150 Hz (Wumms der Hits) werden nicht geduckt
 
 # --- Audio-Mastering ---------------------------------------------------------
 SR = 48000
