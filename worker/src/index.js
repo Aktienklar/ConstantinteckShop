@@ -17,7 +17,7 @@ import Stripe from "stripe";
 import { createCheckoutSession } from "./checkout.js";
 import { handleWebhook } from "./webhook.js";
 import { serveDownload } from "./download.js";
-import { adminLogin, adminStats, adminRefs, GoatCounterError } from "./admin.js";
+import { adminLogin, adminStats, adminRefs, adminPosthog, GoatCounterError, PosthogError } from "./admin.js";
 
 export default {
   async fetch(request, env) {
@@ -85,10 +85,12 @@ async function routeAdmin(path, url, request, env) {
     if (path === "/api/admin/login" && request.method === "POST") return await adminLogin(request, env);
     if (path === "/api/admin/stats" && request.method === "GET") return await adminStats(request, url, env);
     if (path === "/api/admin/refs" && request.method === "GET") return await adminRefs(request, url, env);
+    if (path === "/api/admin/posthog" && request.method === "GET") return await adminPosthog(request, url, env);
     return new Response("Not found.", { status: 404 });
   } catch (error) {
     console.error(path, error && error.stack);
-    const message = error instanceof GoatCounterError ? error.message : "Die Statistik ist gerade nicht erreichbar.";
+    const known = error instanceof GoatCounterError || error instanceof PosthogError;
+    const message = known ? error.message : "Die Statistik ist gerade nicht erreichbar.";
     return Response.json({ error: message }, { status: 502 });
   }
 }

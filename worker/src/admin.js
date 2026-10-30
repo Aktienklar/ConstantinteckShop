@@ -9,11 +9,16 @@
  *   POST /api/admin/login   Passwort  ->  Sitzungs-Token (12 Stunden gültig)
  *   GET  /api/admin/stats   Token     ->  alle Zahlen für einen Zeitraum
  *   GET  /api/admin/refs    Token     ->  Herkunft der Besucher einer Seite
+ *   GET  /api/admin/posthog Token     ->  Kennzahlen aus PostHog (nur
+ *                                         Besucher mit Einwilligung)
  *
  * Geheim, per "wrangler secret put":
  *   ADMIN_PASSWORD      das Passwort für admin.html
  *   GOATCOUNTER_TOKEN   API-Schlüssel aus GoatCounter (Benutzername oben
  *                       rechts -> API, Haken bei "Read statistics" genügt)
+ *   POSTHOG_API_KEY     optional: persönlicher API-Schlüssel aus PostHog
+ *                       (Settings -> Personal API keys, Bereich "Query:
+ *                       Read"). Fehlt er, zeigt admin.html nur GoatCounter.
  *
  * Das Token ist kein gespeicherter Zustand, sondern Ablaufzeit + Signatur.
  * Der Signaturschlüssel ist das Passwort selbst: Wer das Passwort ändert,
@@ -65,10 +70,10 @@ export async function adminStats(request, url, env) {
   // Bildschirmgrößen kommen ohne Namen ("phone", "tablet" … nur als id)
   // und auch mit 0 Besuchern – beides hier glätten.
   const SIZES = { phone: "Handy", tablet: "Tablet", desktop: "Computer", desktophd: "Großer Bildschirm", unknown: "Unbekannt" };
-  const list = (response) =>
+  const list = (response, names = {}) =>
     (response.stats || [])
       .filter((row) => row.count > 0)
-      .map((row) => ({ id: row.id, name: row.name || SIZES[row.id] || row.id, scheme: row.ref_scheme, count: row.count }));
+      .map((row) => ({ id: row.id, name: row.name || names[row.id] || "", scheme: row.ref_scheme, count: row.count }));
   const all = hits.hits || [];
   const toRow = (hit) => ({ id: hit.path_id, path: hit.path, title: hit.title, count: hit.count });
 
@@ -87,7 +92,7 @@ export async function adminStats(request, url, env) {
     referrers: list(referrers),
     campaigns: list(campaigns),
     countries: list(countries),
-    sizes: list(sizes),
+    sizes: list(sizes, SIZES),
     systems: list(systems),
     browsers: list(browsers)
   });
@@ -106,6 +111,79 @@ export async function adminRefs(request, url, env) {
   return Response.json({
     refs: (response.refs || []).map((row) => ({ name: row.name, scheme: row.ref_scheme, count: row.count }))
   });
+}
+
+/* Die Ereignisnamen kommen aus data-track (site-config.js); site.js schickt
+   den Teil vor dem ersten "/" als Ereignis an PostHog. */
+const POSTHOG_SUMMARY = (days) => `
+  SELECT
+    uniq(distinct_id),
+    countIf(event = '$pageview'),
+    uniq(\`$session_id\`),
+    uniqIf(distinct_id, event = '$pageview' AND properties.$pathname = '/krimi-dinner.html'),
+    uniqIf(distinct_id, event = '$pageview' AND properties.$pathname LIKE '/murder-mystery/%'),
+    uniqIf(distinct_id, event = 'krimi-click'),
+    uniqIf(distinct_id, event = 'product-click')
+  FROM events
+  WHERE timestamp >= toStartOfDay(now()) - INTERVAL ${days - 1} DAY`;
+
+const POSTHOG_SESSIONS = (days) => `
+  SELECT round(avg(\`$session_duration\`)), round(countIf(\`$is_bounce\`) / greatest(count(), 1), 3)
+  FROM sessions
+  WHERE \`$start_timestamp\` >= toStartOfDay(now()) - INTERVAL ${days - 1} DAY`;
+
+export async function adminPosthog(request, url, env) {
+  const denied = await requireSession(request, env);
+  if (denied) return denied;
+  if (!env.POSTHOG_API_KEY) return Response.json({ configured: false });
+
+  const { days } = rangeFrom(url);
+  const [summary, sessions] = [await posthogQuery(env, POSTHOG_SUMMARY(days)), await posthogQuery(env, POSTHOG_SESSIONS(days))];
+  const [visitors, pageviews, sessionCount, krimiOverview, casePages, krimiClicks, productClicks] = summary[0] || [];
+  const [avgDuration, bounceRate] = sessions[0] || [];
+
+  return Response.json({
+    configured: true,
+    dashboard: env.POSTHOG_HOST + "/project/" + env.POSTHOG_PROJECT + "/dashboard",
+    replays: env.POSTHOG_HOST + "/project/" + env.POSTHOG_PROJECT + "/replay/home",
+    visitors: visitors || 0,
+    pageviews: pageviews || 0,
+    sessions: sessionCount || 0,
+    avgDuration: avgDuration || 0,
+    bounceRate: bounceRate || 0,
+    funnel: [
+      { label: "Besucher", count: visitors || 0 },
+      { label: "Krimi-Übersicht angesehen", count: krimiOverview || 0 },
+      { label: "Eine Fallseite angesehen", count: casePages || 0 },
+      { label: "Krimi-Kaufknopf geklickt", count: krimiClicks || 0 }
+    ],
+    productClicks: productClicks || 0
+  });
+}
+
+async function posthogQuery(env, query) {
+  const response = await fetch(env.POSTHOG_HOST + "/api/projects/" + env.POSTHOG_PROJECT + "/query/", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + env.POSTHOG_API_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ query: { kind: "HogQLQuery", query } })
+  });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    console.error("PostHog", response.status, detail.slice(0, 300));
+    throw new PosthogError(response.status);
+  }
+  return (await response.json()).results || [];
+}
+
+export class PosthogError extends Error {
+  constructor(status) {
+    const hints = {
+      401: "PostHog lehnt den API-Schlüssel ab (401). POSTHOG_API_KEY neu setzen.",
+      403: "Dem PostHog-Schlüssel fehlt das Recht \"Query: Read\" für dieses Projekt (403)."
+    };
+    super(hints[status] || "PostHog antwortet mit Fehler " + status + ".");
+    this.status = status;
+  }
 }
 
 /* --- Zeitraum ----------------------------------------------------------- */
