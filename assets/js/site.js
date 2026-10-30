@@ -205,8 +205,13 @@
      localStorage ("ct-consent"); das ist selbst einwilligungsfrei, weil der
      Banner sonst bei jedem Seitenwechsel wiederkäme.
 
-     Beide Knöpfe sehen gleich aus und sind gleich groß: Ein hervorgehobenes
-     "Accept" neben einem blassen "Decline" kippt die Einwilligung. */
+     Erste Ebene kurz: eine Zeile Text, "Essential only" und "Accept all",
+     beide gleich groß. "Essential only" IST das Ablehnen – es lädt nichts
+     von PostHog und setzt keine Cookies. Diese Möglichkeit muss auf der
+     ersten Ebene stehen, so leicht wie Zustimmen: Ein Banner, bei dem man
+     fürs Ablehnen erst aufklappen muss, liefert nach Ansicht der deutschen
+     Aufsichtsbehörden und Gerichte keine wirksame Einwilligung. Die
+     ausführliche Erklärung steht hinter "Details". */
 
   var CONSENT_KEY = "ct-consent";
   var posthogStarted = false;
@@ -314,18 +319,31 @@
     banner.className = "consent";
     banner.setAttribute("aria-label", "Cookie settings");
     banner.innerHTML =
-      '<p class="consent__title">May I see how you use this site?</p>' +
-      '<p class="consent__text">With your consent, PostHog (servers in Frankfurt) records which pages you view, ' +
-      "what you click and a replay of your visit – anything you type is hidden. " +
-      "It sets cookies for this. I use it only to improve the site. Without consent, visits are only " +
-      'counted in total, without cookies. <a href="' + root + 'privacy.html">Privacy policy</a></p>' +
-      (saved ? '<p class="consent__text consent__state">Current choice: ' + (saved.analytics ? "accepted" : "declined") + ".</p>" : "") +
+      '<p class="consent__text"><strong>Cookies for analytics?</strong> They help me see what to improve. ' +
+      '<button type="button" class="consent__more" aria-expanded="false" aria-controls="consent-details">Details</button></p>' +
+      '<div class="consent__details" id="consent-details" hidden>' +
+      "<p>With “Accept all”, PostHog (servers in Frankfurt) records which pages you view, what you click and a " +
+      "replay of your visit – anything you type is hidden. It sets cookies for this. With “Essential only”, " +
+      "nothing is loaded from PostHog and no cookies are set; visits are only counted in total. You can change " +
+      'your choice at any time under “Cookie settings” at the bottom of every page. <a href="' + root +
+      'privacy.html">Privacy policy</a></p>' +
+      "</div>" +
+      (saved ? '<p class="consent__text consent__state">Current choice: ' + (saved.analytics ? "all accepted" : "essential only") + ".</p>" : "") +
       '<div class="consent__actions">' +
-      '<button type="button" class="btn btn--secondary" data-consent="no">Decline</button>' +
-      '<button type="button" class="btn btn--secondary" data-consent="yes">Accept</button>' +
+      '<button type="button" class="btn btn--secondary" data-consent="no">Essential only</button>' +
+      '<button type="button" class="btn btn--primary" data-consent="yes">Accept all</button>' +
       "</div>";
 
     banner.addEventListener("click", function (event) {
+      var more = event.target.closest ? event.target.closest(".consent__more") : null;
+      if (more) {
+        var details = banner.querySelector(".consent__details");
+        details.hidden = !details.hidden;
+        more.setAttribute("aria-expanded", details.hidden ? "false" : "true");
+        more.textContent = details.hidden ? "Details" : "Less";
+        return;
+      }
+
       var button = event.target.closest ? event.target.closest("[data-consent]") : null;
       if (!button) return;
       var granted = button.getAttribute("data-consent") === "yes";
