@@ -62,8 +62,13 @@ export async function adminStats(request, url, env) {
   const systems = await gc("stats/systems", { limit: 10 });
   const browsers = await gc("stats/browsers", { limit: 10 });
 
+  // Bildschirmgrößen kommen ohne Namen ("phone", "tablet" … nur als id)
+  // und auch mit 0 Besuchern – beides hier glätten.
+  const SIZES = { phone: "Handy", tablet: "Tablet", desktop: "Computer", desktophd: "Großer Bildschirm", unknown: "Unbekannt" };
   const list = (response) =>
-    (response.stats || []).map((row) => ({ id: row.id, name: row.name, scheme: row.ref_scheme, count: row.count }));
+    (response.stats || [])
+      .filter((row) => row.count > 0)
+      .map((row) => ({ id: row.id, name: row.name || SIZES[row.id] || row.id, scheme: row.ref_scheme, count: row.count }));
   const all = hits.hits || [];
   const toRow = (hit) => ({ id: hit.path_id, path: hit.path, title: hit.title, count: hit.count });
 
@@ -126,7 +131,11 @@ function rangeFrom(url) {
 
 /* --- GoatCounter ---------------------------------------------------------- */
 
+const GAP_MS = 260;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 function goatcounter(env, range) {
+  let lastCall = 0;
   const base = "https://" + env.GOATCOUNTER_SITE + ".goatcounter.com/api/v0/";
 
   return async function get(endpoint, params = {}) {
@@ -139,12 +148,18 @@ function goatcounter(env, range) {
       }
     };
 
-    let response = await fetch(target, init);
-    if (response.status === 429) {
-      // Ein einziger zweiter Versuch, sobald GoatCounter wieder annimmt.
-      const wait = Math.min(parseFloat(response.headers.get("X-Rate-Limit-Reset") || "1"), 3);
-      await new Promise((resolve) => setTimeout(resolve, wait * 1000));
+    // GoatCounter nimmt höchstens 4 Anfragen pro Sekunde an. Abstand
+    // halten und bei 429 bis zu dreimal nachfassen.
+    const since = Date.now() - lastCall;
+    if (since < GAP_MS) await sleep(GAP_MS - since);
+
+    let response;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      lastCall = Date.now();
       response = await fetch(target, init);
+      if (response.status !== 429) break;
+      const reset = parseFloat(response.headers.get("X-Rate-Limit-Reset") || "0");
+      await sleep(Math.min(Math.max(reset * 1000, 400), 2000));
     }
     if (!response.ok) {
       const detail = await response.text().catch(() => "");
