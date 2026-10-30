@@ -31,6 +31,8 @@ AUTOMATIC_TAX = "false"
 # genau das ist am 03.09.2026 einmal passiert. Wer diese URL im Dashboard
 # löscht, legt damit den ganzen Shop still.
 TOS_CONSENT = "true"
+# Besucherstatistik für admin.html: der Teil vor ".goatcounter.com".
+GOATCOUNTER_SITE = "constantinteck"
 
 # Verkauft wird vorerst nur die Schürze – ein physisches Produkt, das von Hand
 # verschickt wird. Dafür braucht der Worker weder Dateispeicher noch Datenbank.
@@ -53,3 +55,5 @@ TOS_CONSENT = "true"
 #   STRIPE_WEBHOOK_SECRET   (nur falls du den Webhook einrichtest)
 #   DOWNLOAD_SECRET         (erst mit den PDFs)
 #   RESEND_API_KEY          (erst mit den PDFs)
+#   ADMIN_PASSWORD          Passwort für admin.html (lang wählen, mind. 16 Zeichen)
+#   GOATCOUNTER_TOKEN       API-Schlüssel von GoatCounter, Recht "Read statistics"

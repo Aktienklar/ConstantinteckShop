@@ -62,8 +62,10 @@
       <!-- Was hier steht, entscheidet sich erst nach einer Rückfrage beim
            Worker. Diese Adresse lässt sich auch ohne Bezahlung aufrufen –
            "Danke für deine Bestellung" darf deshalb nicht fest im HTML
-           stehen. -->
-      <div data-order-root>
+           stehen.
+           ph-no-capture: Hier steht die E-Mail-Adresse des Käufers – in
+           PostHog-Aufzeichnungen erscheint der Bereich nur als graue Fläche. -->
+      <div data-order-root class="ph-no-capture">
         <p class="muted">Checking your order …</p>
         <noscript>
           <p class="muted">

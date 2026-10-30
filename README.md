@@ -107,9 +107,41 @@ Two files hold everything that can be changed without touching a page:
 | `assets/js/recipe-data.js` | Per recipe: `order` (the three highest appear under "From the latest videos"), `video`, and optionally `featuredProduct` / `productNote` for the product card on the recipe page |
 | `assets/js/site-config.js` | Newsletter box, GoatCounter code, customer photos (the announcement bar now comes from `data/cases.json`) |
 
-Everything in `site-config.js` ships switched off or empty; the comments in the
-file say what each field does and what has to happen in `privacy.html` before
-switching it on.
+Everything in `site-config.js` ships switched off or empty except the
+GoatCounter code; the comments in the file say what each field does and what
+has to happen in `privacy.html` before switching it on.
+
+### Visitor statistics (`admin.html`)
+
+GoatCounter counts page views and clicks on anything with `data-track` – no
+cookies, no profiles, described in section 9 of `privacy.html`. Its `count.js`
+is a copy on our own server (`assets/js/goatcounter-count.js`) because the
+privacy policy promises that every script comes from here.
+
+`admin.html` shows the numbers behind a password. The page itself holds no
+data: it logs in at the worker (`worker/src/admin.js`), which fetches the
+statistics from the GoatCounter API with a key the browser never sees. One-off
+setup in `worker/`:
+
+```bash
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put GOATCOUNTER_TOKEN
+npx wrangler deploy
+```
+
+The token comes from GoatCounter (user menu → API, permission *Read
+statistics*). Changing `ADMIN_PASSWORD` logs out every open session.
+
+### PostHog and the cookie banner
+
+PostHog (EU cloud, project 327043) records paths, funnels and session replays –
+with cookies, so only after consent. `site.js` shows the banner whenever
+`tracking.posthog.key` in `site-config.js` is set; nothing from PostHog loads
+before "Accept". "Cookie settings" in the footer reopens the banner; "Decline"
+there switches PostHog off and deletes its cookies. Raise `consentVersion`
+when what people consent to changes, and everyone is asked again. Section 9 b
+of `privacy.html` lists what has to be true in the PostHog project settings for
+its text to hold (DPA signed, "Discard client IP data" on).
 
 **Product card on a recipe page.** Without `featuredProduct`, sweet recipes of
 15 minutes or less show the kids' apron ("make it together"), everything
