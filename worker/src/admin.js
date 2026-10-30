@@ -119,7 +119,9 @@ function rangeFrom(url) {
   start.setUTCHours(0, 0, 0, 0);
   start.setUTCDate(start.getUTCDate() - (days - 1));
 
-  return { days, start: start.toISOString(), end: end.toISOString() };
+  // Ohne Millisekunden: "2026-10-30T00:00:00Z", wie in der API-Doku.
+  const iso = (date) => date.toISOString().replace(/\.\d{3}Z$/, "Z");
+  return { days, start: iso(start), end: iso(end) };
 }
 
 /* --- GoatCounter ---------------------------------------------------------- */
@@ -145,10 +147,27 @@ function goatcounter(env, range) {
       response = await fetch(target, init);
     }
     if (!response.ok) {
-      throw new Error("GoatCounter " + endpoint + " answered " + response.status);
+      const detail = await response.text().catch(() => "");
+      console.error("GoatCounter", endpoint, response.status, detail.slice(0, 300));
+      throw new GoatCounterError(response.status);
     }
     return response.json();
   };
+}
+
+/** Fehler von GoatCounter, mit einer Meldung, die auf admin.html sagt, was
+    zu tun ist – "nicht erreichbar" allein hilft niemandem weiter. */
+export class GoatCounterError extends Error {
+  constructor(status) {
+    const hints = {
+      401: "GoatCounter lehnt den API-Schlüssel ab (401). GOATCOUNTER_TOKEN neu setzen.",
+      403: "Dem GoatCounter-Schlüssel fehlt das Recht \"Read statistics\" (403). In GoatCounter einen Schlüssel mit diesem Haken anlegen und GOATCOUNTER_TOKEN neu setzen.",
+      404: "GoatCounter kennt die Seite nicht (404). GOATCOUNTER_SITE in wrangler.toml prüfen.",
+      429: "GoatCounter bremst gerade (429). In ein paar Sekunden neu laden."
+    };
+    super(hints[status] || "GoatCounter antwortet mit Fehler " + status + ".");
+    this.status = status;
+  }
 }
 
 /* --- Sitzung -------------------------------------------------------------- */

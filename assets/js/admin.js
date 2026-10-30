@@ -148,6 +148,7 @@
       })
       .catch(function (error) {
         errorBox.textContent = error.message;
+        if (!data) body.innerHTML = "";
       })
       .then(function () {
         body.classList.remove("is-loading");

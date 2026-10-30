@@ -17,7 +17,7 @@ import Stripe from "stripe";
 import { createCheckoutSession } from "./checkout.js";
 import { handleWebhook } from "./webhook.js";
 import { serveDownload } from "./download.js";
-import { adminLogin, adminStats, adminRefs } from "./admin.js";
+import { adminLogin, adminStats, adminRefs, GoatCounterError } from "./admin.js";
 
 export default {
   async fetch(request, env) {
@@ -88,7 +88,8 @@ async function routeAdmin(path, url, request, env) {
     return new Response("Not found.", { status: 404 });
   } catch (error) {
     console.error(path, error && error.stack);
-    return Response.json({ error: "Die Statistik ist gerade nicht erreichbar." }, { status: 502 });
+    const message = error instanceof GoatCounterError ? error.message : "Die Statistik ist gerade nicht erreichbar.";
+    return Response.json({ error: message }, { status: 502 });
   }
 }
 
