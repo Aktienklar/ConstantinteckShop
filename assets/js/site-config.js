@@ -62,7 +62,22 @@ var SITE_CONFIG = {
    * beschreibt den Dienst in Abschnitt 9 – wer hier etwas ändert, prüft dort.
    */
   tracking: {
-    goatcounter: "constantinteck"
+    goatcounter: "constantinteck",
+
+    /*
+     * POSTHOG – Klickwege, Funnels, Sitzungsaufzeichnungen. Setzt Cookies und
+     * lädt deshalb ERST nach "Accept" im Cookie-Banner (site.js). Leerer
+     * Key = kein Banner, kein PostHog. privacy.html beschreibt es in
+     * Abschnitt 9 – wer hier etwas ändert, prüft dort.
+     *
+     * consentVersion hochzählen, wenn sich ändert, wozu eingewilligt wird
+     * (neuer Dienst, neuer Zweck): Dann fragt der Banner alle erneut.
+     */
+    posthog: {
+      key: "phc_s4xZB9gxfa2Z9xNb9eN8nMN35tRkqDKArzZueZiziB9B",
+      host: "https://eu.i.posthog.com",
+      consentVersion: 1
+    }
   },
 
   /**

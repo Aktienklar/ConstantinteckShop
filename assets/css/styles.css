@@ -1058,6 +1058,62 @@ strong {
   color: var(--brand);
 }
 
+/* "Cookie settings" ist ein Knopf (öffnet den Banner), sieht aber aus wie
+   die Links daneben. */
+.site-footer__consent {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.site-footer__consent:hover {
+  color: var(--brand);
+}
+
+/* --- Cookie-Banner (site.js, nur wenn PostHog eingetragen ist) ------------- */
+
+.consent {
+  position: fixed;
+  z-index: 50;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  max-width: 30rem;
+  margin-left: auto;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-lift);
+}
+
+.consent__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.consent__text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--mocha);
+}
+
+.consent__text a {
+  color: var(--brand-ink);
+  text-decoration: underline;
+}
+
+.consent__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
 /* Kanäle als kleine Symbole in einer Reihe statt als Textliste. */
 .site-footer .social {
   display: flex;

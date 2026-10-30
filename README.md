@@ -132,6 +132,17 @@ npx wrangler deploy
 The token comes from GoatCounter (user menu → API, permission *Read
 statistics*). Changing `ADMIN_PASSWORD` logs out every open session.
 
+### PostHog and the cookie banner
+
+PostHog (EU cloud, project 327043) records paths, funnels and session replays –
+with cookies, so only after consent. `site.js` shows the banner whenever
+`tracking.posthog.key` in `site-config.js` is set; nothing from PostHog loads
+before "Accept". "Cookie settings" in the footer reopens the banner; "Decline"
+there switches PostHog off and deletes its cookies. Raise `consentVersion`
+when what people consent to changes, and everyone is asked again. Section 9 b
+of `privacy.html` lists what has to be true in the PostHog project settings for
+its text to hold (DPA signed, "Discard client IP data" on).
+
 **Product card on a recipe page.** Without `featuredProduct`, sweet recipes of
 15 minutes or less show the kids' apron ("make it together"), everything
 else the adult apron. The rule lives in `assets/js/recipe-product.js`.
