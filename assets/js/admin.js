@@ -193,6 +193,7 @@
       tile("Klicks", num(data.clicks), "auf markierte Knöpfe") +
       tile("Top-Quelle", top ? esc(top.name) : "–", top ? num(top.count) + " Besucher" : "") +
       "</div>" +
+      '<section class="admin-panel panel admin-panel--wide" data-posthog hidden></section>' +
       panel("Besucher pro Tag", chart(daily), "admin-panel--wide") +
       panel(
         "Seiten",
@@ -213,6 +214,60 @@
 
     wireChart();
     wirePages();
+    loadPosthog();
+  }
+
+  /* --- PostHog (nur Besucher mit Einwilligung) ---------------------------- */
+
+  function loadPosthog() {
+    var box = body.querySelector("[data-posthog]");
+    var forDays = days;
+
+    api("posthog", { days: days })
+      .then(function (ph) {
+        if (forDays !== days || !box.isConnected) return;
+        box.hidden = false;
+        box.innerHTML = ph.configured ? posthogPanel(ph) : posthogMissing();
+      })
+      .catch(function (error) {
+        if (!error.message || !box.isConnected) return;
+        box.hidden = false;
+        box.innerHTML = "<h2>PostHog</h2>" + '<p class="admin-error">' + esc(error.message) + "</p>";
+      });
+  }
+
+  function posthogPanel(ph) {
+    // Grob, weil beide anders zählen – aber ein brauchbarer Hinweis, wie
+    // viele im Banner "Accept all" wählen.
+    var share = data.visitors ? Math.min(Math.round((ph.visitors / data.visitors) * 100), 100) : null;
+    var minutes = Math.floor(ph.avgDuration / 60);
+    var seconds = Math.round(ph.avgDuration % 60);
+
+    return (
+      '<div class="admin-ph-head"><h2>PostHog – Besucher mit Zustimmung</h2>' +
+      '<p class="admin-ph-links"><a class="link-brand" href="' + esc(ph.dashboard) + '" target="_blank" rel="noreferrer">Dashboard</a>' +
+      ' · <a class="link-brand" href="' + esc(ph.replays) + '" target="_blank" rel="noreferrer">Aufzeichnungen ansehen</a></p></div>' +
+      '<div class="admin-tiles admin-tiles--inner">' +
+      tile("Mit Zustimmung", num(ph.visitors), share === null ? "" : "ca. " + share + " % aller Besucher") +
+      tile("Sitzungen", num(ph.sessions), num(ph.pageviews) + " Seitenaufrufe") +
+      tile("Ø Verweildauer", ph.sessions ? (minutes ? minutes + " min " : "") + seconds + " s" : "–") +
+      tile("Absprungrate", ph.sessions ? Math.round(ph.bounceRate * 100) + " %" : "–", "nur eine Seite angesehen") +
+      "</div>" +
+      '<h3 class="admin-subhead">Weg zu den Krimi-Dinnern</h3>' +
+      bars(ph.funnel, function (row) {
+        return { label: row.label, count: row.count };
+      }, "Noch keine Daten.") +
+      '<p class="muted admin-note">Zählt Besucher, die den jeweiligen Schritt im Zeitraum erreicht haben.</p>'
+    );
+  }
+
+  function posthogMissing() {
+    return (
+      "<h2>PostHog</h2>" +
+      '<p class="muted">Noch nicht verbunden. Dafür im Worker den Schlüssel <code>POSTHOG_API_KEY</code> setzen ' +
+      "(PostHog → Settings → Personal API keys, Bereich „Query: Read“). Bis dahin: " +
+      '<a class="link-brand" href="https://eu.posthog.com/project/327043/dashboard" target="_blank" rel="noreferrer">Dashboard in PostHog</a>.</p>'
+    );
   }
 
   function tile(label, value, sub) {

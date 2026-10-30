@@ -132,6 +132,11 @@ npx wrangler deploy
 The token comes from GoatCounter (user menu → API, permission *Read
 statistics*). Changing `ADMIN_PASSWORD` logs out every open session.
 
+Optionally a third secret, `POSTHOG_API_KEY` (PostHog → Settings → Personal
+API keys, scope *Query: Read*), adds a PostHog section to `admin.html`:
+visitors who consented, sessions, time on site, bounce rate and the path to
+the murder mystery cases. Without it the page shows GoatCounter only.
+
 ### PostHog and the cookie banner
 
 PostHog (EU cloud, project 327043) records paths, funnels and session replays –

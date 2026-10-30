@@ -33,6 +33,9 @@ AUTOMATIC_TAX = "false"
 TOS_CONSENT = "true"
 # Besucherstatistik für admin.html: der Teil vor ".goatcounter.com".
 GOATCOUNTER_SITE = "constantinteck"
+# PostHog-Kennzahlen auf admin.html (EU-Cloud, Projekt constantinteck.com).
+POSTHOG_HOST = "https://eu.posthog.com"
+POSTHOG_PROJECT = "327043"
 
 # Verkauft wird vorerst nur die Schürze – ein physisches Produkt, das von Hand
 # verschickt wird. Dafür braucht der Worker weder Dateispeicher noch Datenbank.
@@ -57,3 +60,4 @@ GOATCOUNTER_SITE = "constantinteck"
 #   RESEND_API_KEY          (erst mit den PDFs)
 #   ADMIN_PASSWORD          Passwort für admin.html (lang wählen, mind. 16 Zeichen)
 #   GOATCOUNTER_TOKEN       API-Schlüssel von GoatCounter, Recht "Read statistics"
+#   POSTHOG_API_KEY         optional: persönlicher PostHog-Schlüssel, Bereich "Query: Read"

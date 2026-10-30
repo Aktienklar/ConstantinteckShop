@@ -6048,6 +6048,29 @@ div.legal__en > * + * {
   grid-column: 1 / -1;
 }
 
+.admin-ph-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.admin-ph-links {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Kacheln innerhalb eines Panels: Kontur statt Schatten. */
+.admin-tiles--inner {
+  margin-bottom: 1rem;
+}
+
+.admin-tiles--inner .admin-tile {
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
 .admin-subhead {
   margin: 1rem 0 0.5rem;
   font-size: 0.9375rem;
