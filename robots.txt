@@ -5,8 +5,10 @@ Allow: /
 # haben in einem Suchindex nichts zu suchen. Dieselben Seiten tragen zusätzlich
 # ein <meta name="robots" content="noindex"> – robots.txt hält Crawler fern,
 # noindex hält die Seite aus dem Index, falls doch jemand darauf verlinkt.
+# admin.html (Statistik) ist nur für den Betreiber.
 Disallow: /cart.html
 Disallow: /order-confirmed.html
+Disallow: /admin.html
 
 # KI-Suchmaschinen und -Assistenten ausdrücklich erlaubt (bestätigt am
 # 29.10.2026). Wichtig: Ein Bot, der hier eine eigene Gruppe hat, liest die
@@ -24,5 +26,6 @@ User-agent: Applebot-Extended
 Allow: /
 Disallow: /cart.html
 Disallow: /order-confirmed.html
+Disallow: /admin.html
 
 Sitemap: https://constantinteck.com/sitemap.xml

@@ -57,11 +57,12 @@ var SITE_CONFIG = {
    *   banner-click/<fall|all-cases>            Ankündigungsleiste
    *   newsletter-signup                        abgeschicktes Newsletter-Formular
    *
-   * VOR DEM EINTRAGEN: privacy.html ergänzen – dort steht heute, dass die
-   * Seite keine Analysedienste einbindet.
+   * Die Zahlen stehen auf admin.html (Login über den Worker, siehe
+   * worker/src/admin.js) und im GoatCounter-Dashboard. privacy.html
+   * beschreibt den Dienst in Abschnitt 9 – wer hier etwas ändert, prüft dort.
    */
   tracking: {
-    goatcounter: "" // TODO: GoatCounter-Code
+    goatcounter: "constantinteck"
   },
 
   /**

@@ -10,12 +10,14 @@
  *   POST /api/webhook    Stripe     ->  Auslieferung der PDFs
  *   GET  /api/session    Erfolgsseite fragt, ob wirklich bezahlt wurde
  *   GET  /api/download   Signierter PDF-Download
+ *   /api/admin/…         Besucherstatistik für admin.html (siehe admin.js)
  */
 
 import Stripe from "stripe";
 import { createCheckoutSession } from "./checkout.js";
 import { handleWebhook } from "./webhook.js";
 import { serveDownload } from "./download.js";
+import { adminLogin, adminStats, adminRefs } from "./admin.js";
 
 export default {
   async fetch(request, env) {
@@ -24,6 +26,12 @@ export default {
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(request, env) });
+    }
+
+    // Vor Stripe: Die Statistik braucht keinen Stripe-Schlüssel und soll auch
+    // laufen, wenn die Kasse gerade streikt.
+    if (path.startsWith("/api/admin/")) {
+      return withCors(await routeAdmin(path, url, request, env), request, env);
     }
 
     const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
@@ -69,6 +77,21 @@ export default {
   }
 };
 
+async function routeAdmin(path, url, request, env) {
+  const denied = rejectForeignOrigin(request, env);
+  if (denied) return denied;
+
+  try {
+    if (path === "/api/admin/login" && request.method === "POST") return await adminLogin(request, env);
+    if (path === "/api/admin/stats" && request.method === "GET") return await adminStats(request, url, env);
+    if (path === "/api/admin/refs" && request.method === "GET") return await adminRefs(request, url, env);
+    return new Response("Not found.", { status: 404 });
+  } catch (error) {
+    console.error(path, error && error.stack);
+    return Response.json({ error: "Die Statistik ist gerade nicht erreichbar." }, { status: 502 });
+  }
+}
+
 /**
  * Die Erfolgsseite darf nichts behaupten, was sie nicht geprüft hat. Sie fragt
  * hier nach, statt einfach "Danke für deine Bestellung" anzuzeigen, weil die
@@ -108,7 +131,7 @@ function corsHeaders(request, env) {
   const origin = request.headers.get("Origin") || "";
   const headers = {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Max-Age": "86400",
     Vary: "Origin"
   };

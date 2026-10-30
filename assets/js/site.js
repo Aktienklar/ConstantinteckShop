@@ -149,7 +149,12 @@
 
     var tag = document.createElement("script");
     tag.async = true;
-    tag.src = "https://gc.zgo.at/count.js";
+    // Von unserem eigenen Server statt von gc.zgo.at – privacy.html sagt zu,
+    // dass alle Skripte von hier kommen. Kopie des offiziellen count.js
+    // (ISC-Lizenz), Stand 30.10.2026; nur bei Bedarf neu holen.
+    // Neben site.js; die Seiten liegen in verschiedenen Ordnern.
+    var self = document.querySelector('script[src$="site.js"]');
+    tag.src = new URL("goatcounter-count.js", self ? self.src : location.href).href;
     tag.setAttribute("data-goatcounter", "https://" + code + ".goatcounter.com/count");
     document.head.appendChild(tag);
 

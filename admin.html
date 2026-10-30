@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FDF8F1">
+  <title>Statistik | Constantinteck</title>
+  <meta name="description" content="Besucherstatistik, nur für den Betreiber.">
+  <!-- Favicon, canonical, Vorschaubild beim Teilen (geschrieben von tools/seo.py) -->
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="robots" content="noindex">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Constantinteck">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="https://constantinteck.com/admin.html">
+  <meta property="og:title" content="Statistik">
+  <meta property="og:description" content="Besucherstatistik, nur für den Betreiber.">
+  <meta property="og:image" content="https://constantinteck.com/assets/img/hero-kitchen.jpg">
+  <meta property="og:image:width" content="1672">
+  <meta property="og:image:height" content="941">
+  <meta property="og:image:alt" content="Statistik">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Vorschau -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="admin">
+  <!-- Nur für den Betreiber. Die Seite selbst ist öffentlich abrufbar, die
+       Zahlen nicht: Sie kommen erst nach dem Login vom Worker
+       (worker/src/admin.js). site.js wird bewusst nicht geladen – Besuche
+       dieser Seite sollen nicht in der Statistik landen. -->
+  <header class="site-header">
+    <div class="container site-header__bar">
+      <a class="brand" href="index.html">
+        <img class="brand__mark" src="assets/img/logo-ct.svg" alt="" width="37" height="36">
+        <span class="brand__name">Constantinteck</span>
+      </a>
+      <button class="btn btn--secondary btn--sm" type="button" data-admin-logout hidden>Abmelden</button>
+    </div>
+  </header>
+
+  <main id="content" class="container section--tight">
+    <noscript><p class="muted">Diese Seite braucht JavaScript.</p></noscript>
+
+    <section class="admin-login panel" data-admin-login hidden>
+      <h1>Statistik</h1>
+      <form data-admin-login-form>
+        <label for="admin-password">Passwort</label>
+        <input id="admin-password" type="password" name="password" autocomplete="current-password" required>
+        <button class="btn btn--primary btn--block" type="submit">Anmelden</button>
+        <p class="admin-error" data-admin-login-error role="alert"></p>
+      </form>
+    </section>
+
+    <section data-admin-dashboard hidden>
+      <div class="admin-head">
+        <h1>Statistik</h1>
+        <div class="admin-range" role="group" aria-label="Zeitraum">
+          <button class="chip" type="button" data-days="1">Heute</button>
+          <button class="chip" type="button" data-days="7">7 Tage</button>
+          <button class="chip" type="button" data-days="30">30 Tage</button>
+          <button class="chip" type="button" data-days="90">90 Tage</button>
+          <button class="chip" type="button" data-days="365">1 Jahr</button>
+        </div>
+      </div>
+
+      <p class="admin-error" data-admin-error role="alert"></p>
+      <div data-admin-body aria-live="polite"><p class="muted">Lade …</p></div>
+
+      <p class="admin-foot muted">
+        <label class="admin-toggle">
+          <input type="checkbox" data-admin-skip>
+          Meine eigenen Besuche auf diesem Gerät nicht mitzählen
+        </label>
+        <br>
+        Besucher heißt: Ein Mensch, der eine Seite in den letzten 8 Stunden zum ersten Mal aufruft.
+        Mehr Details im <a class="link-brand" href="https://constantinteck.goatcounter.com" target="_blank" rel="noreferrer">GoatCounter-Dashboard</a>.
+      </p>
+    </section>
+  </main>
+
+  <script src="assets/js/shop-data.js" defer></script>
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>
