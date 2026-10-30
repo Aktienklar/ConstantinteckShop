@@ -265,7 +265,19 @@
       capture_pageview: true,
       capture_pageleave: true,
       // Eingaben in Formularen erscheinen in Aufzeichnungen nur als ***.
-      session_recording: { maskAllInputs: true }
+      session_recording: { maskAllInputs: true },
+      // Die Bestellbestätigung trägt die Stripe-Session in der Adresse
+      // (?session_id=cs_…). Über sie ließe sich ein Besuch einer Bestellung
+      // und damit einem Namen zuordnen – also raus, bevor etwas gesendet wird.
+      before_send: function (event) {
+        var props = event && event.properties;
+        if (props) {
+          ["$current_url", "$referrer", "$initial_current_url"].forEach(function (key) {
+            if (typeof props[key] === "string") props[key] = props[key].replace(/([?&])session_id=[^&#]*&?/, "$1").replace(/[?&]$/, "");
+          });
+        }
+        return event;
+      }
     });
   }
 
