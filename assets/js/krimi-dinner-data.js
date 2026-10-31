@@ -493,7 +493,8 @@ var KRIMI_CASES = [
       "granola-berry-smoothie-bowl",
       "chocolate-banana-ice-cream",
       "thick-mango-chia-pudding",
-      "crunchy-chocolate-nut-granola"
+      "crunchy-chocolate-nut-granola",
+      "blueberry-chocolate-banana-ice-cream"
     ],
     "en": {
       "title": "Murder Before Hibernation",

@@ -38,6 +38,7 @@
  * Wird ein Rezept umbenannt, gehört diese Zeile mit umbenannt.
  */
 var RECIPES = {
+  "blueberry-chocolate-banana-ice-cream"  : { order: 39, video: "" },  // Blueberry Chocolate Banana Ice Cream
   "creamy-hokkaido-pumpkin-pasta"         : { order: 38, video: "" },  // Creamy Hokkaido Pumpkin Pasta
   "crunchy-chocolate-nut-granola"         : { order: 37, video: "" },  // Crunchy Chocolate Nut Granola
   "fluffy-cinnamon-rolls"                 : { order: 36, video: "" },  // Fluffy Cinnamon Rolls
