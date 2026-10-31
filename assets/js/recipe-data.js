@@ -38,6 +38,14 @@
  * Wird ein Rezept umbenannt, gehört diese Zeile mit umbenannt.
  */
 var RECIPES = {
+  "creamy-hokkaido-pumpkin-pasta"         : { order: 38, video: "" },  // Creamy Hokkaido Pumpkin Pasta
+  "crunchy-chocolate-nut-granola"         : { order: 37, video: "" },  // Crunchy Chocolate Nut Granola
+  "fluffy-cinnamon-rolls"                 : { order: 36, video: "" },  // Fluffy Cinnamon Rolls
+  "creamy-onion-pasta"                    : { order: 35, video: "" },  // Creamy Onion Pasta
+  "granola-mango-berry-smoothie-bowl"     : { order: 34, video: "" },  // Granola Mango & Berry Smoothie Bowl
+  "korean-popcorn-chicken"                : { order: 33, video: "" },  // Korean Popcorn Chicken
+  "steak-loaded-sweet-potato"             : { order: 32, video: "" },  // Steak Loaded Sweet Potato
+  "creamy-baked-salmon-spinach-pasta"     : { order: 31, video: "" },  // Creamy Baked Salmon & Spinach Pasta
   "creamy-sucuk-carbonara"                : { order: 30, video: "" },  // Creamy Sucuk Carbonara
   "cheesy-roasted-chicken-wrap"           : { order: 29, video: "" },  // Cheesy Roasted Chicken Wrap
   "peanut-spicy-udon"                     : { order: 28, video: "" },  // Peanut Spicy Udon

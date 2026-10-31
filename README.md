@@ -39,7 +39,7 @@ Then open http://localhost:4000. `python3` is already installed on macOS.
 ```
 index.html               Start page
 recipes.html             Recipe overview with search and filters
-recipes/<slug>.html      One file per recipe (30)
+recipes/<slug>.html      One file per recipe (38)
 shop.html                Shop overview
 shop/<slug>.html         One file per product (3)
 cart.html                Cart

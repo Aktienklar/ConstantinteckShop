@@ -3329,6 +3329,21 @@ strong {
   border-top: 1px solid var(--line-soft);
 }
 
+/* Zwischenüberschrift, wenn ein Rezept mehrere Teile hat (Teig, Füllung, Guss) */
+.ingredients__group {
+  margin-top: 1.25rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+
+.ingredients__group + ul {
+  margin-top: 0.25rem;
+}
+
 .ingredients__amount {
   flex-shrink: 0;
   width: 5rem;

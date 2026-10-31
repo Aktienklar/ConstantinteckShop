@@ -65,7 +65,8 @@ CATEGORIES = [
     (r"sorbet|ice cream|nice cream", "Dessert"),
     (r"smoothie bowl|chia pudding", "Breakfast"),
     (r"smoothie", "Drink"),
-    (r"banana bread", "Baking"),
+    (r"granola", "Breakfast"),
+    (r"banana bread|cinnamon roll", "Baking"),
     (r"baba ganoush", "Dip"),
     (r".", "Main course"),
 ]
@@ -140,7 +141,8 @@ def recipe(root, page, src, url, image):
     name = text(first(r"<h1[^>]*>(.*?)</h1>", src))
     facts = {text(k): text(v) for k, v in re.findall(r"<dt>(.*?)</dt>\s*<dd>(.*?)</dd>", src, re.S)}
 
-    ingredients_html = first(r'<section class="panel ingredients".*?<ul>(.*?)</ul>', src) or ""
+    # Alle Listen im Zutatenblock – Rezepte mit Teig/Füllung/Guss haben mehrere.
+    ingredients_html = first(r'<section class="panel ingredients"(.*?)</section>', src) or ""
     ingredients = [text(li) for li in re.findall(r"<li>(.*?)</li>", ingredients_html, re.S)]
     method_html = first(r'<section class="panel method.*?<ol>(.*?)</ol>', src) or ""
     steps = [text(p) for p in re.findall(r"<li>.*?<p>(.*?)</p>", method_html, re.S)]

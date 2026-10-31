@@ -68,7 +68,8 @@ var KRIMI_CASES = [
       "grape-sorbet",
       "peach-sorbet",
       "baba-ganoush",
-      "creamy-roasted-red-pepper-tomato-pasta"
+      "creamy-roasted-red-pepper-tomato-pasta",
+      "creamy-onion-pasta"
     ],
     "en": {
       "title": "The Comet Vintage",
@@ -174,7 +175,8 @@ var KRIMI_CASES = [
       "strawberry-smoothie",
       "cheesy-roasted-chicken-wrap",
       "fudgy-chocolate-raspberry-banana-bread",
-      "thick-raspberry-chia-pudding"
+      "thick-raspberry-chia-pudding",
+      "fluffy-cinnamon-rolls"
     ],
     "en": {
       "title": "The Last Sleigh Ride",
@@ -264,7 +266,8 @@ var KRIMI_CASES = [
     "recipes": [
       "creamy-one-pan-salmon-pasta",
       "blueberry-sorbet",
-      "thick-blueberry-chia-pudding"
+      "thick-blueberry-chia-pudding",
+      "steak-loaded-sweet-potato"
     ],
     "en": {
       "title": "The Last Night at Fjell",
@@ -334,7 +337,8 @@ var KRIMI_CASES = [
     "recipes": [
       "dragon-fruit-smoothie",
       "peanut-spicy-udon",
-      "dragonfruit-mango-sorbet"
+      "dragonfruit-mango-sorbet",
+      "korean-popcorn-chicken"
     ],
     "en": {
       "title": "Radio Silence on Ares",
@@ -412,7 +416,8 @@ var KRIMI_CASES = [
     },
     "recipes": [
       "creamy-sucuk-carbonara",
-      "healthy-raspberry-chocolate-nice-cream"
+      "healthy-raspberry-chocolate-nice-cream",
+      "creamy-hokkaido-pumpkin-pasta"
     ],
     "en": {
       "title": "Witching Hour at Ravenmoor",
@@ -487,7 +492,8 @@ var KRIMI_CASES = [
     "recipes": [
       "granola-berry-smoothie-bowl",
       "chocolate-banana-ice-cream",
-      "thick-mango-chia-pudding"
+      "thick-mango-chia-pudding",
+      "crunchy-chocolate-nut-granola"
     ],
     "en": {
       "title": "Murder Before Hibernation",
@@ -562,7 +568,8 @@ var KRIMI_CASES = [
     "recipes": [
       "mango-passionfruit-smoothie",
       "lemon-sorbet",
-      "kiwi-sorbet"
+      "kiwi-sorbet",
+      "granola-mango-berry-smoothie-bowl"
     ],
     "en": {
       "title": "Closing Bell on the 24th Floor",
@@ -639,7 +646,8 @@ var KRIMI_CASES = [
       "strawberry-passion-fruit-smoothie",
       "strawberry-sorbet",
       "coconut-mango-sorbet",
-      "pineapple-sorbet"
+      "pineapple-sorbet",
+      "creamy-baked-salmon-spinach-pasta"
     ],
     "en": {
       "title": "Death at Studio 7",
