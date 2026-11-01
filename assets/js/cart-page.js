@@ -354,6 +354,15 @@
       return Boolean(SHOP_PRODUCTS[line.productSlug]);
     });
 
+    // Nur ein Messpunkt für die Statistik (site.js); an der Kasse selbst
+    // ändert er nichts.
+    if (window.ctTrack) {
+      window.ctTrack("checkout-start", {
+        items: lines.reduce(function (sum, line) { return sum + line.quantity; }, 0),
+        products: lines.map(function (line) { return line.productSlug; }).join(",")
+      });
+    }
+
     fetch(SHOP_CHECKOUT.endpoint.replace(/\/$/, "") + "/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

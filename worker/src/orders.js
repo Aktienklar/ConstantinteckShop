@@ -2,6 +2,8 @@
  * ADMIN: BESTELLUNGEN UND UMSATZ AUS STRIPE
  *
  *   GET /api/admin/orders?days=N   Token  ->  Bestellungen, Umsatz, Kasse
+ *                                            (gestartet/abgeschlossen/
+ *                                            abgelaufen, Ø Warenkorb)
  *
  * Liest nur. Am Bezahlablauf (checkout.js, webhook.js, download.js) ändert
  * diese Datei nichts – sie fragt Stripe dieselben Checkout-Sessions ab, die
@@ -67,6 +69,13 @@ export function summarize(sessions) {
 
   const revenue = paid.reduce((sum, s) => sum + s.amount, 0);
 
+  // Kasse: jede Session ist ein Klick auf "Pay securely". "open" läuft noch
+  // (bis zu 24 h), zählt deshalb nicht in die Quote.
+  const complete = live.filter((s) => s.status === "complete");
+  const expired = live.filter((s) => s.status === "expired").length;
+  const decided = complete.length + expired;
+  const itemCount = (s) => s.items.reduce((sum, i) => sum + i.quantity, 0);
+
   return {
     currency: (paid[0] && paid[0].currency) || "eur",
     orders: paid.length,
@@ -76,6 +85,17 @@ export function summarize(sessions) {
     revenuePhysical: physical,
     // Versand und Rundung: Gesamtbetrag minus Positionen.
     revenueShipping: revenue - digital - physical,
+    checkout: {
+      started: live.length,
+      completed: complete.length,
+      expired,
+      open: live.length - decided,
+      rate: decided ? complete.length / decided : null,
+      avgValue: complete.length ? Math.round(complete.reduce((sum, s) => sum + s.amount, 0) / complete.length) : null,
+      avgItems: complete.length ? complete.reduce((sum, s) => sum + itemCount(s), 0) / complete.length : null,
+      // Was abgebrochene Kassen im Schnitt enthielten.
+      avgAbandonedValue: expired ? Math.round(live.filter((s) => s.status === "expired").reduce((sum, s) => sum + s.amount, 0) / expired) : null
+    },
     products: Object.values(products).sort((a, b) => b.revenue - a.revenue),
     recent: [...paid, ...pending]
       .sort((a, b) => b.created - a.created)

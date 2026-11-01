@@ -77,6 +77,9 @@
       }
 
       write(lines);
+
+      // Messpunkt "add-to-cart" (site.js). Zählt nur, wo Zähler laufen.
+      if (window.ctTrack) window.ctTrack("add-to-cart", { product: slug, variant: variantId || null, quantity: qty });
     },
 
     setQuantity: function (slug, variantId, quantity) {

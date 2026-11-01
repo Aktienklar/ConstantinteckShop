@@ -29,6 +29,7 @@
 
   var days = parseInt(read(sessionStorage, DAYS_KEY) || "30", 10);
   var data = null;
+  var shopData = null;
 
   /* Klick-Ereignisse aus site-config.js, für Menschen übersetzt. */
   var EVENT_GROUPS = {
@@ -36,6 +37,8 @@
     "krimi-menu": "Rezept aus einem Krimi-Menü",
     "product-click": "Produktkarte",
     "banner-click": "Ankündigungsleiste",
+    "add-to-cart": "In den Warenkorb gelegt",
+    "checkout-start": "Kasse geöffnet",
     "newsletter-signup": "Newsletter-Anmeldung"
   };
 
@@ -149,6 +152,7 @@
       .then(function (json) {
         data = json;
         render();
+        renderShopFunnel();
       })
       .catch(function (error) {
         errorBox.textContent = error.message;
@@ -233,7 +237,10 @@
 
     api("orders", { days: days })
       .then(function (shop) {
-        if (forDays === days) shopBox.innerHTML = renderShop(shop);
+        if (forDays !== days) return;
+        shopData = shop;
+        shopBox.innerHTML = renderShop(shop);
+        renderShopFunnel();
       })
       .catch(function (error) {
         if (!error.message || forDays !== days) return;
@@ -253,6 +260,20 @@
       tile("Davon Ware", money(shop.revenuePhysical, cur), shop.revenueDigital ? money(shop.revenueDigital, cur) + " digital (PDF)" : "keine digitalen Produkte") +
       tile("Ø Bestellwert", shop.orders ? money(Math.round(shop.revenue / shop.orders), cur) : "–") +
       "</div>";
+
+    var co = shop.checkout;
+    html += panel(
+      "Kasse",
+      '<div class="admin-tiles admin-tiles--inner">' +
+        tile("Kasse geöffnet", num(co.started), co.open ? num(co.open) + " noch offen" : "Klicks auf „Pay securely“") +
+        tile("Abgeschlossen", num(co.completed), co.rate === null ? "–" : Math.round(co.rate * 100) + " % Abschlussquote") +
+        tile("Abgebrochen", num(co.expired), co.avgAbandonedValue ? "Ø " + money(co.avgAbandonedValue, cur) + " im Korb" : "abgelaufen ohne Zahlung") +
+        tile("Ø Warenkorb", co.avgValue === null ? "–" : money(co.avgValue, cur), co.avgItems === null ? "" : "Ø " + co.avgItems.toLocaleString("de-DE", { maximumFractionDigits: 1 }) + " Artikel") +
+        "</div>" +
+        '<h3 class="admin-subhead">Vom Produkt bis zur Zahlung</h3>' +
+        '<div data-shop-funnel><p class="muted">Wartet auf die Besucherzahlen …</p></div>',
+      "admin-panel--wide"
+    );
 
     html += panel(
       "Umsatz pro Produkt",
@@ -288,6 +309,34 @@
     );
 
     return html;
+  }
+
+  /* Trichter Produktseite → Warenkorb → Kasse → bezahlt. Die ersten beiden
+     Schritte zählt GoatCounter (alle Besucher, ohne Cookies; Ereignisse aus
+     cart.js), die letzten beiden kommen aus Stripe. Erscheint, sobald beide
+     Abrufe da sind – in welcher Reihenfolge auch immer. */
+  function renderShopFunnel() {
+    var box = shopBox.querySelector("[data-shop-funnel]");
+    if (!box || !shopData) return;
+    if (!data) {
+      box.innerHTML = '<p class="muted">Ohne Besucherzahlen nur die Kasse oben.</p>';
+      return;
+    }
+
+    function sum(rows, test) {
+      return (rows || []).reduce(function (total, row) { return total + (test(row.path) ? row.count : 0); }, 0);
+    }
+
+    var steps = [
+      { label: "Produktseite angesehen", count: sum(data.pages, function (p) { return /^\/shop\//.test(p); }) },
+      { label: "In den Warenkorb gelegt", count: sum(data.events, function (p) { return /^add-to-cart(\/|$)/.test(p); }) },
+      { label: "Zur Kasse gegangen", count: shopData.checkout.started },
+      { label: "Bezahlt", count: shopData.orders }
+    ];
+
+    box.innerHTML =
+      bars(steps, function (row) { return { label: row.label, count: row.count }; }, "") +
+      '<p class="muted admin-note">Produktseite und Warenkorb: Besucher laut GoatCounter (Warenkorb erst seit Einbau der Messung). Kasse und Zahlung: Stripe.</p>';
   }
 
   /* --- PostHog (nur Besucher mit Einwilligung) ---------------------------- */

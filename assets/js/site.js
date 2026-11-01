@@ -63,6 +63,19 @@
     }
   }
 
+  /* Messpunkte aus anderen Skripten (cart.js: "add-to-cart", cart-page.js:
+     "checkout-start"). GoatCounter zählt sie ohne Cookies bei allen
+     Besuchern, PostHog nur nach "Accept all". Auf ausgeschlossenen Geräten
+     und ohne geladene Zähler passiert nichts. */
+  window.ctTrack = function (name, props) {
+    if (deviceExcluded()) return;
+    props = props || {};
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: name + (props.product ? "/" + props.product : ""), title: location.pathname, event: true });
+    }
+    if (posthogStarted && window.posthog) window.posthog.capture(name, props);
+  };
+
   /* constantinteck.com/#nicht-zaehlen schaltet um und sagt, was jetzt gilt. */
   function handleExcludeHash() {
     if (location.hash !== "#nicht-zaehlen") return false;
