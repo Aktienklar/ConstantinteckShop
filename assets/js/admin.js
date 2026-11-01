@@ -19,6 +19,7 @@
   var loginError = document.querySelector("[data-admin-login-error]");
   var dashboard = document.querySelector("[data-admin-dashboard]");
   var body = document.querySelector("[data-admin-body]");
+  var shopBox = document.querySelector("[data-admin-shop]");
   var errorBox = document.querySelector("[data-admin-error]");
   var logout = document.querySelector("[data-admin-logout]");
   var deviceState = document.querySelector("[data-admin-device-state]");
@@ -142,6 +143,7 @@
     });
     errorBox.textContent = "";
     body.classList.add("is-loading");
+    loadShop();
 
     api("stats", { days: days })
       .then(function (json) {
@@ -217,6 +219,75 @@
     wireChart();
     wirePages();
     loadPosthog();
+  }
+
+  /* --- Shop (Stripe) ------------------------------------------------------ */
+
+  function money(cents, currency) {
+    return ((cents || 0) / 100).toLocaleString("de-DE", { style: "currency", currency: (currency || "eur").toUpperCase() });
+  }
+
+  function loadShop() {
+    var forDays = days;
+    shopBox.classList.add("is-loading");
+
+    api("orders", { days: days })
+      .then(function (shop) {
+        if (forDays === days) shopBox.innerHTML = renderShop(shop);
+      })
+      .catch(function (error) {
+        if (!error.message || forDays !== days) return;
+        shopBox.innerHTML = '<section class="admin-panel panel admin-panel--wide"><p class="admin-error">' + esc(error.message) + "</p></section>";
+      })
+      .then(function () {
+        shopBox.classList.remove("is-loading");
+      });
+  }
+
+  function renderShop(shop) {
+    var cur = shop.currency;
+    var html =
+      '<div class="admin-tiles">' +
+      tile("Bestellungen", num(shop.orders), shop.pending ? num(shop.pending) + " Zahlung ausstehend" : "bezahlt") +
+      tile("Umsatz", money(shop.revenue, cur), "inkl. " + money(shop.revenueShipping, cur) + " Versand") +
+      tile("Davon Ware", money(shop.revenuePhysical, cur), shop.revenueDigital ? money(shop.revenueDigital, cur) + " digital (PDF)" : "keine digitalen Produkte") +
+      tile("Ø Bestellwert", shop.orders ? money(Math.round(shop.revenue / shop.orders), cur) : "–") +
+      "</div>";
+
+    html += panel(
+      "Umsatz pro Produkt",
+      bars(shop.products, function (row) {
+        return {
+          label: row.name,
+          sub: num(row.quantity) + " Stück · " + (row.type === "digital" ? "digital" : "physisch"),
+          count: row.revenue,
+          display: money(row.revenue, cur)
+        };
+      }, "Im Zeitraum noch nichts verkauft.")
+    );
+
+    html += panel(
+      "Letzte Bestellungen",
+      shop.recent.length
+        ? '<div class="admin-orders">' +
+            shop.recent
+              .map(function (order) {
+                return (
+                  '<div class="admin-order">' +
+                  '<p class="admin-order__top"><span>' + esc(new Date(order.created * 1000).toLocaleString("de-DE", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })) + "</span>" +
+                  "<strong>" + money(order.amount, order.currency) + "</strong></p>" +
+                  '<p class="admin-order__items">' + esc(order.items.join(", ")) + "</p>" +
+                  '<p class="admin-order__meta">' + esc([order.country, order.email].filter(Boolean).join(" · ")) +
+                  ' <span class="admin-badge' + (order.paid ? "" : " admin-badge--pending") + '">' + (order.paid ? "bezahlt" : "ausstehend") + "</span></p>" +
+                  "</div>"
+                );
+              })
+              .join("") +
+            "</div>"
+        : '<p class="muted">Noch keine Bestellungen im Zeitraum.</p>'
+    );
+
+    return html;
   }
 
   /* --- PostHog (nur Besucher mit Einwilligung) ---------------------------- */
@@ -311,7 +382,7 @@
             '<span class="admin-bars__text"><span class="admin-bars__label">' + esc(row.label) + "</span>" +
             (row.sub ? '<span class="admin-bars__sub">' + esc(row.sub) + "</span>" : "") +
             "</span>" +
-            '<span class="admin-bars__count">' + num(row.count) + "</span>" +
+            '<span class="admin-bars__count">' + (row.display || num(row.count)) + "</span>" +
             '<span class="admin-bars__track"><span class="admin-bars__fill" style="width:' +
             Math.max((row.count / max) * 100, 1.5).toFixed(1) + '%"></span></span>';
           return clickable

@@ -190,7 +190,7 @@ export class PosthogError extends Error {
 
 /** Die letzten N Tage einschließlich heute, auf volle Stunden gerundet – so
     verlangt es die GoatCounter-API. */
-function rangeFrom(url) {
+export function rangeFrom(url) {
   const asked = parseInt(url.searchParams.get("days") || "7", 10);
   const days = Math.min(Math.max(Number.isFinite(asked) ? asked : 7, 1), MAX_DAYS);
 
@@ -267,6 +267,13 @@ export class GoatCounterError extends Error {
 
 async function requireSession(request, env) {
   if (!env.ADMIN_PASSWORD || !env.GOATCOUNTER_TOKEN || !env.GOATCOUNTER_SITE) return notConfigured();
+  return requireLogin(request, env);
+}
+
+/** Nur der Login, ohne GoatCounter – für Bereiche, die GoatCounter nicht
+    brauchen (Bestellungen aus Stripe). */
+export async function requireLogin(request, env) {
+  if (!env.ADMIN_PASSWORD) return notConfigured();
 
   const header = request.headers.get("Authorization") || "";
   const [expires, signature] = header.replace(/^Bearer\s+/i, "").split(".");

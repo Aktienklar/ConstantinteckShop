@@ -75,8 +75,14 @@
         </div>
       </div>
 
+      <!-- Jeder Bereich lädt für sich: Fällt Stripe aus, bleiben die
+           Besucherzahlen sichtbar und umgekehrt. -->
+      <h2 class="admin-section-title">Shop</h2>
+      <div class="admin-grid" data-admin-shop aria-live="polite"><p class="muted">Lade …</p></div>
+
+      <h2 class="admin-section-title">Besucher</h2>
       <p class="admin-error" data-admin-error role="alert"></p>
-      <div data-admin-body aria-live="polite"><p class="muted">Lade …</p></div>
+      <div class="admin-grid" data-admin-body aria-live="polite"><p class="muted">Lade …</p></div>
 
       <p class="admin-foot muted">
         Besucher heißt: Ein Mensch, der eine Seite in den letzten 8 Stunden zum ersten Mal aufruft.
