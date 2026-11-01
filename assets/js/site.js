@@ -28,6 +28,74 @@
       .replace(/"/g, "&quot;");
   }
 
+  /* --- Eigene Geräte nicht mitzählen ---------------------------------------
+     Steht "ct-exclude" = "1" in localStorage, lädt diese Datei weder
+     GoatCounter noch PostHog – nicht einmal den Cookie-Banner. Gesetzt wird
+     das auf admin.html (Schalter "Dieses Gerät nicht mitzählen") oder ohne
+     Login über constantinteck.com/#nicht-zaehlen, etwa im In-App-Browser von
+     Instagram, der einen eigenen Speicher hat. "skipgc" ist das Gegenstück,
+     das count.js von GoatCounter selbst versteht; es wird mitgesetzt.
+
+     localStorage gilt pro Browser und pro Adresse. www.constantinteck.com
+     leitet auf constantinteck.com um, es gibt also nur die eine. */
+
+  var EXCLUDE_KEY = "ct-exclude";
+
+  function deviceExcluded() {
+    try {
+      return localStorage.getItem(EXCLUDE_KEY) === "1" || localStorage.getItem("skipgc") === "t";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setDeviceExcluded(on) {
+    try {
+      if (on) {
+        localStorage.setItem(EXCLUDE_KEY, "1");
+        localStorage.setItem("skipgc", "t");
+      } else {
+        localStorage.removeItem(EXCLUDE_KEY);
+        localStorage.removeItem("skipgc");
+      }
+    } catch (e) {
+      /* Ohne Speicher (privates Fenster) lässt sich nichts merken. */
+    }
+  }
+
+  /* Messpunkte aus anderen Skripten (cart.js: "add-to-cart", cart-page.js:
+     "checkout-start"). GoatCounter zählt sie ohne Cookies bei allen
+     Besuchern, PostHog nur nach "Accept all". Auf ausgeschlossenen Geräten
+     und ohne geladene Zähler passiert nichts. */
+  window.ctTrack = function (name, props) {
+    if (deviceExcluded()) return;
+    props = props || {};
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: name + (props.product ? "/" + props.product : ""), title: location.pathname, event: true });
+    }
+    if (posthogStarted && window.posthog) window.posthog.capture(name, props);
+  };
+
+  /* constantinteck.com/#nicht-zaehlen schaltet um und sagt, was jetzt gilt. */
+  function handleExcludeHash() {
+    if (location.hash !== "#nicht-zaehlen") return false;
+    var on = !deviceExcluded();
+    setDeviceExcluded(on);
+    history.replaceState(null, "", location.pathname + location.search);
+
+    var note = document.createElement("p");
+    note.className = "device-note";
+    note.setAttribute("role", "status");
+    note.textContent = deviceExcluded()
+      ? "Dieses Gerät wird nicht mehr gezählt (gilt nur für diesen Browser)."
+      : on
+        ? "Konnte nicht gespeichert werden – privates Fenster?"
+        : "Dieses Gerät wird wieder gezählt.";
+    document.body.appendChild(note);
+    setTimeout(function () { note.remove(); }, 6000);
+    return true;
+  }
+
   /* --- Saison (Krimi-Dinner) ----------------------------------------------
      Eine statische Seite kennt das heutige Datum nicht – deshalb entscheidet
      hier der Browser des Besuchers. Alle Werte schreibt tools/cases.py aus
@@ -414,7 +482,17 @@
     setupVia();
     renderNewsletter();
     renderCustomerPhotos();
+    handleExcludeHash();
+    // Vor allem anderen: Auf ausgeschlossenen Geräten wird nichts geladen,
+    // also auch kein erster Seitenaufruf gezählt.
+    if (deviceExcluded()) return;
     setupConsent();
     setupTracking();
+  });
+
+  /* Hash auf einer schon offenen Seite geändert: umschalten und neu laden,
+     damit bereits geladene Zähler verschwinden bzw. starten. */
+  window.addEventListener("hashchange", function () {
+    if (handleExcludeHash()) setTimeout(function () { location.reload(); }, 1500);
   });
 })();

@@ -53,6 +53,13 @@ POSTHOG_PROJECT = "327043"
 # binding = "ORDERS"
 # id = "HIER_DIE_KV_ID_EINTRAGEN"
 
+# Zwischenspeicher der Admin-Seite (Stripe-Abfragen, 5 Minuten). Angelegt am
+# 01.11.2026. Absichtlich nicht "ORDERS": Das würde in webhook.js die
+# Doppelzustellungs-Sperre einschalten.
+[[kv_namespaces]]
+binding = "ADMIN_CACHE"
+id = "2f24a0b08a1448f6a113eb3559300b17"
+
 # Geheim, deshalb nicht hier, sondern per "wrangler secret put":
 #   STRIPE_SECRET_KEY       (jetzt nötig)
 #   STRIPE_WEBHOOK_SECRET   (nur falls du den Webhook einrichtest)

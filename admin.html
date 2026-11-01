@@ -42,6 +42,17 @@
   <main id="content" class="container section--tight">
     <noscript><p class="muted">Diese Seite braucht JavaScript.</p></noscript>
 
+    <!-- Steht absichtlich vor dem Login: Umschalten soll auch in einem
+         Browser gehen, in dem man nicht angemeldet ist. -->
+    <section class="admin-device" data-admin-device>
+      <div>
+        <p class="admin-device__label">Dieses Gerät</p>
+        <p class="admin-device__state" data-admin-device-state>…</p>
+        <p class="admin-device__hint">Gilt nur für diesen Browser. Ohne Login: <code>constantinteck.com/#nicht-zaehlen</code> öffnen.</p>
+      </div>
+      <button class="btn btn--secondary btn--sm" type="button" data-admin-device-toggle aria-pressed="false">Nicht mitzählen</button>
+    </section>
+
     <section class="admin-login panel" data-admin-login hidden>
       <h1>Statistik</h1>
       <form data-admin-login-form>
@@ -64,15 +75,19 @@
         </div>
       </div>
 
+      <!-- Jeder Bereich lädt für sich: Fällt Stripe aus, bleiben die
+           Besucherzahlen sichtbar und umgekehrt. -->
+      <h2 class="admin-section-title">Shop</h2>
+      <div class="admin-grid" data-admin-shop aria-live="polite"><p class="muted">Lade …</p></div>
+
+      <h2 class="admin-section-title">Murder Night</h2>
+      <div class="admin-grid" data-admin-mn aria-live="polite"><p class="muted">Lade …</p></div>
+
+      <h2 class="admin-section-title">Besucher</h2>
       <p class="admin-error" data-admin-error role="alert"></p>
-      <div data-admin-body aria-live="polite"><p class="muted">Lade …</p></div>
+      <div class="admin-grid" data-admin-body aria-live="polite"><p class="muted">Lade …</p></div>
 
       <p class="admin-foot muted">
-        <label class="admin-toggle">
-          <input type="checkbox" data-admin-skip>
-          Meine eigenen Besuche auf diesem Gerät nicht mitzählen
-        </label>
-        <br>
         Besucher heißt: Ein Mensch, der eine Seite in den letzten 8 Stunden zum ersten Mal aufruft.
         Mehr Details im <a class="link-brand" href="https://constantinteck.goatcounter.com" target="_blank" rel="noreferrer">GoatCounter-Dashboard</a>.
         Klickwege, Funnels und Aufzeichnungen (nur Besucher, die im Banner zugestimmt haben) in

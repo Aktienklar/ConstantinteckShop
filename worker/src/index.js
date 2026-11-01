@@ -17,7 +17,8 @@ import Stripe from "stripe";
 import { createCheckoutSession } from "./checkout.js";
 import { handleWebhook } from "./webhook.js";
 import { serveDownload } from "./download.js";
-import { adminLogin, adminStats, adminRefs, adminPosthog, GoatCounterError, PosthogError } from "./admin.js";
+import { adminLogin, adminStats, adminRefs, adminPosthog, adminMurderNight, GoatCounterError, PosthogError } from "./admin.js";
+import { adminOrders, StripeReadError } from "./orders.js";
 
 export default {
   async fetch(request, env) {
@@ -86,10 +87,12 @@ async function routeAdmin(path, url, request, env) {
     if (path === "/api/admin/stats" && request.method === "GET") return await adminStats(request, url, env);
     if (path === "/api/admin/refs" && request.method === "GET") return await adminRefs(request, url, env);
     if (path === "/api/admin/posthog" && request.method === "GET") return await adminPosthog(request, url, env);
+    if (path === "/api/admin/orders" && request.method === "GET") return await adminOrders(request, url, env);
+    if (path === "/api/admin/murdernight" && request.method === "GET") return await adminMurderNight(request, url, env);
     return new Response("Not found.", { status: 404 });
   } catch (error) {
     console.error(path, error && error.stack);
-    const known = error instanceof GoatCounterError || error instanceof PosthogError;
+    const known = error instanceof GoatCounterError || error instanceof PosthogError || error instanceof StripeReadError;
     const message = known ? error.message : "Die Statistik ist gerade nicht erreichbar.";
     return Response.json({ error: message }, { status: 502 });
   }

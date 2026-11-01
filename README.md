@@ -137,6 +137,31 @@ API keys, scope *Query: Read*), adds a PostHog section to `admin.html`:
 visitors who consented, sessions, time on site, bounce rate and the path to
 the murder mystery cases. Without it the page shows GoatCounter only.
 
+### Admin dashboard: shop, Murder Night, visitors
+
+`admin.html` has three sections, each loaded on its own so one failing
+service only blanks its own section:
+
+- **Shop** – `/api/admin/orders` (`worker/src/orders.js`): paid orders,
+  revenue per product, checkout started/completed/expired, average basket,
+  and the funnel product page → cart → checkout → paid. Reads Stripe checkout
+  sessions (live mode only), cached for 5 minutes in the KV namespace
+  `ADMIN_CACHE`. E-mails are shown shortened, no names or addresses.
+- **Murder Night** – `/api/admin/murdernight`: clicks on links to
+  murdernight (`krimi-click/<placement>/<case>`) per day, case and placement
+  from GoatCounter; source page from PostHog. Sales on Murder Night itself are
+  not visible here – they do not go through this Stripe account.
+- **Besucher** – GoatCounter and PostHog as before.
+
+Cart measuring points: `cart.js` sends `add-to-cart`, `cart-page.js` sends
+`checkout-start`, both through `window.ctTrack()` in `site.js`.
+
+**Not counting your own devices:** the switch "Dieses Gerät" at the top of
+`admin.html`, or `constantinteck.com/#nicht-zaehlen` without logging in (for
+in-app browsers). It stores `ct-exclude` in that browser's local storage;
+`site.js` then loads neither GoatCounter nor PostHog. It is per browser, and
+Safari drops it after 7 days without a visit to the site.
+
 ### PostHog and the cookie banner
 
 PostHog (EU cloud, project 327043) records paths, funnels and session replays –

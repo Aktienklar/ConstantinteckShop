@@ -19,13 +19,18 @@
   var loginError = document.querySelector("[data-admin-login-error]");
   var dashboard = document.querySelector("[data-admin-dashboard]");
   var body = document.querySelector("[data-admin-body]");
+  var shopBox = document.querySelector("[data-admin-shop]");
+  var mnBox = document.querySelector("[data-admin-mn]");
   var errorBox = document.querySelector("[data-admin-error]");
   var logout = document.querySelector("[data-admin-logout]");
-  var skip = document.querySelector("[data-admin-skip]");
+  var deviceState = document.querySelector("[data-admin-device-state]");
+  var deviceToggle = document.querySelector("[data-admin-device-toggle]");
+  var deviceBox = document.querySelector("[data-admin-device]");
   var rangeButtons = document.querySelectorAll("[data-days]");
 
   var days = parseInt(read(sessionStorage, DAYS_KEY) || "30", 10);
   var data = null;
+  var shopData = null;
 
   /* Klick-Ereignisse aus site-config.js, für Menschen übersetzt. */
   var EVENT_GROUPS = {
@@ -33,6 +38,8 @@
     "krimi-menu": "Rezept aus einem Krimi-Menü",
     "product-click": "Produktkarte",
     "banner-click": "Ankündigungsleiste",
+    "add-to-cart": "In den Warenkorb gelegt",
+    "checkout-start": "Kasse geöffnet",
     "newsletter-signup": "Newsletter-Anmeldung"
   };
 
@@ -140,11 +147,14 @@
     });
     errorBox.textContent = "";
     body.classList.add("is-loading");
+    loadShop();
+    loadMurderNight();
 
     api("stats", { days: days })
       .then(function (json) {
         data = json;
         render();
+        renderShopFunnel();
       })
       .catch(function (error) {
         errorBox.textContent = error.message;
@@ -212,9 +222,189 @@
       panel("Systeme", bars(data.systems, plainRow, "Noch keine Daten.")) +
       panel("Browser", bars(data.browsers, plainRow, "Noch keine Daten."));
 
-    wireChart();
+    wireChart(body, daily, "Besucher");
     wirePages();
     loadPosthog();
+  }
+
+  /* --- Shop (Stripe) ------------------------------------------------------ */
+
+  function money(cents, currency) {
+    return ((cents || 0) / 100).toLocaleString("de-DE", { style: "currency", currency: (currency || "eur").toUpperCase() });
+  }
+
+  function loadShop() {
+    var forDays = days;
+    shopBox.classList.add("is-loading");
+
+    api("orders", { days: days })
+      .then(function (shop) {
+        if (forDays !== days) return;
+        shopData = shop;
+        shopBox.innerHTML = renderShop(shop);
+        renderShopFunnel();
+      })
+      .catch(function (error) {
+        if (!error.message || forDays !== days) return;
+        shopBox.innerHTML = '<section class="admin-panel panel admin-panel--wide"><p class="admin-error">' + esc(error.message) + "</p></section>";
+      })
+      .then(function () {
+        shopBox.classList.remove("is-loading");
+      });
+  }
+
+  function renderShop(shop) {
+    var cur = shop.currency;
+    var html =
+      '<div class="admin-tiles">' +
+      tile("Bestellungen", num(shop.orders), shop.pending ? num(shop.pending) + " Zahlung ausstehend" : "bezahlt") +
+      tile("Umsatz", money(shop.revenue, cur), "inkl. " + money(shop.revenueShipping, cur) + " Versand") +
+      tile("Davon Ware", money(shop.revenuePhysical, cur), shop.revenueDigital ? money(shop.revenueDigital, cur) + " digital (PDF)" : "keine digitalen Produkte") +
+      tile("Ø Bestellwert", shop.orders ? money(Math.round(shop.revenue / shop.orders), cur) : "–") +
+      "</div>";
+
+    var co = shop.checkout;
+    html += panel(
+      "Kasse",
+      '<div class="admin-tiles admin-tiles--inner">' +
+        tile("Kasse geöffnet", num(co.started), co.open ? num(co.open) + " noch offen" : "Klicks auf „Pay securely“") +
+        tile("Abgeschlossen", num(co.completed), co.rate === null ? "–" : Math.round(co.rate * 100) + " % Abschlussquote") +
+        tile("Abgebrochen", num(co.expired), co.avgAbandonedValue ? "Ø " + money(co.avgAbandonedValue, cur) + " im Korb" : "abgelaufen ohne Zahlung") +
+        tile("Ø Warenkorb", co.avgValue === null ? "–" : money(co.avgValue, cur), co.avgItems === null ? "" : "Ø " + co.avgItems.toLocaleString("de-DE", { maximumFractionDigits: 1 }) + " Artikel") +
+        "</div>" +
+        '<h3 class="admin-subhead">Vom Produkt bis zur Zahlung</h3>' +
+        '<div data-shop-funnel><p class="muted">Wartet auf die Besucherzahlen …</p></div>',
+      "admin-panel--wide"
+    );
+
+    html += panel(
+      "Umsatz pro Produkt",
+      bars(shop.products, function (row) {
+        return {
+          label: row.name,
+          sub: num(row.quantity) + " Stück · " + (row.type === "digital" ? "digital" : "physisch"),
+          count: row.revenue,
+          display: money(row.revenue, cur)
+        };
+      }, "Im Zeitraum noch nichts verkauft.")
+    );
+
+    html += panel(
+      "Letzte Bestellungen",
+      shop.recent.length
+        ? '<div class="admin-orders">' +
+            shop.recent
+              .map(function (order) {
+                return (
+                  '<div class="admin-order">' +
+                  '<p class="admin-order__top"><span>' + esc(new Date(order.created * 1000).toLocaleString("de-DE", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })) + "</span>" +
+                  "<strong>" + money(order.amount, order.currency) + "</strong></p>" +
+                  '<p class="admin-order__items">' + esc(order.items.join(", ")) + "</p>" +
+                  '<p class="admin-order__meta">' + esc([order.country, order.email].filter(Boolean).join(" · ")) +
+                  ' <span class="admin-badge' + (order.paid ? "" : " admin-badge--pending") + '">' + (order.paid ? "bezahlt" : "ausstehend") + "</span></p>" +
+                  "</div>"
+                );
+              })
+              .join("") +
+            "</div>"
+        : '<p class="muted">Noch keine Bestellungen im Zeitraum.</p>'
+    );
+
+    return html;
+  }
+
+  /* Trichter Produktseite → Warenkorb → Kasse → bezahlt. Die ersten beiden
+     Schritte zählt GoatCounter (alle Besucher, ohne Cookies; Ereignisse aus
+     cart.js), die letzten beiden kommen aus Stripe. Erscheint, sobald beide
+     Abrufe da sind – in welcher Reihenfolge auch immer. */
+  function renderShopFunnel() {
+    var box = shopBox.querySelector("[data-shop-funnel]");
+    if (!box || !shopData) return;
+    if (!data) {
+      box.innerHTML = '<p class="muted">Ohne Besucherzahlen nur die Kasse oben.</p>';
+      return;
+    }
+
+    function sum(rows, test) {
+      return (rows || []).reduce(function (total, row) { return total + (test(row.path) ? row.count : 0); }, 0);
+    }
+
+    var steps = [
+      { label: "Produktseite angesehen", count: sum(data.pages, function (p) { return /^\/shop\//.test(p); }) },
+      { label: "In den Warenkorb gelegt", count: sum(data.events, function (p) { return /^add-to-cart(\/|$)/.test(p); }) },
+      { label: "Zur Kasse gegangen", count: shopData.checkout.started },
+      { label: "Bezahlt", count: shopData.orders }
+    ];
+
+    box.innerHTML =
+      bars(steps, function (row) { return { label: row.label, count: row.count }; }, "") +
+      '<p class="muted admin-note">Produktseite und Warenkorb: Besucher laut GoatCounter (Warenkorb erst seit Einbau der Messung). Kasse und Zahlung: Stripe.</p>';
+  }
+
+  /* --- Murder Night: Weiterleitungen --------------------------------------- */
+
+  var PLACEMENTS = {
+    "recipe-box": "Rezeptseite (Krimi-Box)",
+    "krimi-card": "Krimi-Übersicht (Karte)",
+    "case-page-hero": "Fallseite oben",
+    "case-page-bottom": "Fallseite unten",
+    "home-pick": "Startseite (Auswahl)",
+    "home-menu": "Startseite (Menü)",
+    "closing-cta": "Startseite (Schluss)"
+  };
+
+  // "the-last-sleigh-ride" -> "The Last Sleigh Ride"
+  function caseTitle(slug) {
+    return slug.split("-").map(function (word) { return word.charAt(0).toUpperCase() + word.slice(1); }).join(" ");
+  }
+
+  function loadMurderNight() {
+    var forDays = days;
+    mnBox.classList.add("is-loading");
+
+    api("murdernight", { days: days })
+      .then(function (mn) {
+        if (forDays !== days) return;
+        mnBox.innerHTML = renderMurderNight(mn);
+        wireChart(mnBox, mn.daily, "Weiterleitungen");
+      })
+      .catch(function (error) {
+        if (!error.message || forDays !== days) return;
+        mnBox.innerHTML = '<section class="admin-panel panel admin-panel--wide"><p class="admin-error">' + esc(error.message) + "</p></section>";
+      })
+      .then(function () {
+        mnBox.classList.remove("is-loading");
+      });
+  }
+
+  function renderMurderNight(mn) {
+    var topCase = mn.cases[0];
+    var topPlace = mn.placements[0];
+    var perDay = mn.daily.length ? mn.total / mn.daily.length : 0;
+
+    var pages;
+    if (mn.pages) {
+      pages = bars(mn.pages, function (row) { return { label: row.name || "(unbekannt)", count: row.count }; }, "Noch keine Klicks von Besuchern mit Zustimmung.");
+    } else {
+      pages = '<p class="muted">' + esc(mn.pagesError || "Braucht PostHog (POSTHOG_API_KEY im Worker).") + "</p>";
+    }
+
+    return (
+      '<div class="admin-tiles">' +
+      tile("Weiterleitungen", num(mn.total), "Besucher, die rübergeklickt haben") +
+      tile("Ø pro Tag", perDay.toLocaleString("de-DE", { maximumFractionDigits: 1 })) +
+      tile("Top-Fall", topCase ? esc(caseTitle(topCase.name)) : "–", topCase ? num(topCase.count) + " Klicks" : "") +
+      tile("Top-Stelle", topPlace ? esc(PLACEMENTS[topPlace.name] || topPlace.name) : "–", topPlace ? num(topPlace.count) + " Klicks" : "") +
+      "</div>" +
+      panel("Weiterleitungen pro Tag", chart(mn.daily, "Weiterleitungen"), "admin-panel--wide") +
+      panel("Nach Fall", bars(mn.cases, function (row) { return { label: caseTitle(row.name), count: row.count }; }, "Noch keine Weiterleitungen.")) +
+      panel("Nach Stelle", bars(mn.placements, function (row) { return { label: PLACEMENTS[row.name] || row.name, sub: row.name, count: row.count }; }, "Noch keine Weiterleitungen.")) +
+      panel(
+        "Von welcher Seite",
+        pages + '<p class="muted admin-note">Nur Besucher mit Zustimmung (PostHog). Käufe auf Murder Night selbst sind hier nicht zu sehen.</p>',
+        "admin-panel--wide"
+      )
+    );
   }
 
   /* --- PostHog (nur Besucher mit Einwilligung) ---------------------------- */
@@ -309,7 +499,7 @@
             '<span class="admin-bars__text"><span class="admin-bars__label">' + esc(row.label) + "</span>" +
             (row.sub ? '<span class="admin-bars__sub">' + esc(row.sub) + "</span>" : "") +
             "</span>" +
-            '<span class="admin-bars__count">' + num(row.count) + "</span>" +
+            '<span class="admin-bars__count">' + (row.display || num(row.count)) + "</span>" +
             '<span class="admin-bars__track"><span class="admin-bars__fill" style="width:' +
             Math.max((row.count / max) * 100, 1.5).toFixed(1) + '%"></span></span>';
           return clickable
@@ -347,7 +537,8 @@
 
   /* --- Tagesdiagramm ----------------------------------------------------- */
 
-  function chart(daily) {
+  function chart(daily, unit) {
+    unit = unit || "Besucher";
     if (!daily.length) return '<p class="muted">Noch keine Daten.</p>';
 
     // Am Handy schmaler gezeichnet statt nur verkleinert – sonst wird die
@@ -411,7 +602,7 @@
 
     return (
       '<div class="admin-chart">' +
-      '<svg viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="Besucher pro Tag, höchster Wert ' + num(max) + '">' +
+      '<svg viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="' + unit + ' pro Tag, höchster Wert ' + num(max) + '">' +
       grid + marks + ticks +
       '<line class="admin-chart__base" x1="' + pad.left + '" x2="' + (width - pad.right) + '" y1="' + (pad.top + innerH) + '" y2="' + (pad.top + innerH) + '"/>' +
       "</svg>" +
@@ -431,16 +622,16 @@
     return 10 * magnitude;
   }
 
-  function wireChart() {
-    var box = body.querySelector(".admin-chart");
+  function wireChart(container, daily, unit) {
+    var box = container.querySelector(".admin-chart");
     if (!box) return;
     var tip = box.querySelector(".admin-chart__tip");
 
     function show(group) {
-      var d = data.daily[parseInt(group.getAttribute("data-index"), 10)];
+      var d = daily[parseInt(group.getAttribute("data-index"), 10)];
       box.querySelectorAll(".is-hover").forEach(function (el) { el.classList.remove("is-hover"); });
       group.classList.add("is-hover");
-      tip.innerHTML = "<strong>" + num(d.count) + "</strong> Besucher<br>" + dayLabel(d.day, true);
+      tip.innerHTML = "<strong>" + num(d.count) + "</strong> " + unit + "<br>" + dayLabel(d.day, true);
       tip.hidden = false;
 
       var boxRect = box.getBoundingClientRect();
@@ -489,12 +680,31 @@
 
   /* --- Eigene Besuche ausblenden ------------------------------------------ */
 
-  /* count.js von GoatCounter zählt nicht, solange "skipgc" = "t" in
-     localStorage steht. Gilt nur für diesen Browser auf diesem Gerät. */
-  skip.checked = read(localStorage, "skipgc") === "t";
-  skip.addEventListener("change", function () {
-    write(localStorage, "skipgc", skip.checked ? "t" : null);
+  /* Dieselben Schlüssel, die site.js vor dem Laden der Zähler prüft:
+     "ct-exclude" sperrt GoatCounter und PostHog, "skipgc" versteht
+     GoatCounters count.js zusätzlich selbst. admin.html liegt auf derselben
+     Adresse wie die Website, der Eintrag gilt also dort. */
+  function deviceExcluded() {
+    return read(localStorage, "ct-exclude") === "1" || read(localStorage, "skipgc") === "t";
+  }
+
+  function showDevice() {
+    var off = deviceExcluded();
+    deviceBox.classList.toggle("is-excluded", off);
+    deviceState.textContent = off ? "Wird nicht mitgezählt" : "Wird mitgezählt";
+    deviceToggle.textContent = off ? "Wieder mitzählen" : "Nicht mitzählen";
+    deviceToggle.setAttribute("aria-pressed", off ? "true" : "false");
+  }
+
+  deviceToggle.addEventListener("click", function () {
+    var off = !deviceExcluded();
+    write(localStorage, "ct-exclude", off ? "1" : null);
+    write(localStorage, "skipgc", off ? "t" : null);
+    showDevice();
+    if (deviceExcluded() !== off) deviceState.textContent = "Konnte nicht gespeichert werden – privates Fenster?";
   });
+
+  showDevice();
 
   /* --- Start ------------------------------------------------------------- */
 

@@ -1073,6 +1073,22 @@ strong {
   color: var(--brand);
 }
 
+/* Rückmeldung zu constantinteck.com/#nicht-zaehlen (site.js). */
+.device-note {
+  position: fixed;
+  z-index: 60;
+  top: 1rem;
+  left: 50%;
+  max-width: calc(100% - 2rem);
+  transform: translateX(-50%);
+  padding: 0.625rem 1rem;
+  border-radius: 999px;
+  background-color: var(--cocoa);
+  color: var(--cream);
+  font-size: 0.875rem;
+  box-shadow: var(--shadow-lift);
+}
+
 /* --- Cookie-Banner (site.js, nur wenn PostHog eingetragen ist) ------------- */
 
 .consent {
@@ -5956,6 +5972,45 @@ div.legal__en > * + * {
   margin-bottom: 0.75rem;
 }
 
+/* "Dieses Gerät" – steht über allem, auch vor dem Login. */
+.admin-device {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  padding: 0.875rem 1.125rem;
+  border: 2px solid var(--sweet);
+  border-radius: 1rem;
+  background-color: var(--sweet-soft);
+}
+
+.admin-device.is-excluded {
+  border-color: var(--savory);
+  background-color: var(--savory-soft);
+}
+
+.admin-device__label {
+  font-size: 0.8125rem;
+  color: var(--mocha);
+}
+
+.admin-device__state {
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+.admin-device__hint {
+  margin-top: 0.125rem;
+  font-size: 0.8125rem;
+  color: var(--mocha);
+}
+
+.admin-device__hint code {
+  overflow-wrap: anywhere;
+}
+
 .admin-login {
   max-width: 24rem;
   margin: 2rem auto;
@@ -6003,20 +6058,78 @@ div.legal__en > * + * {
   gap: 0.5rem;
 }
 
-[data-admin-body] {
+.admin-grid {
   display: grid;
   gap: 1rem;
   transition: opacity 0.2s;
 }
 
-[data-admin-body].is-loading {
+.admin-grid.is-loading {
   opacity: 0.5;
 }
 
 @media (min-width: 860px) {
-  [data-admin-body] {
+  .admin-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Überschrift je Bereich: Shop, Murder Night, Besucher. */
+.admin .admin-section-title {
+  margin: 2rem 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+}
+
+.admin .admin-head + .admin-section-title {
+  margin-top: 0.5rem;
+}
+
+.admin-orders {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.admin-order {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.admin-order:last-child {
+  border-bottom: 0;
+}
+
+.admin-order__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-order__items {
+  margin-top: 0.125rem;
+}
+
+.admin-order__meta {
+  font-size: 0.8125rem;
+  color: var(--mocha);
+}
+
+.admin-badge {
+  display: inline-block;
+  margin-left: 0.25rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background-color: var(--savory-soft);
+  color: var(--savory);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.admin-badge--pending {
+  background-color: var(--brand-soft);
+  color: var(--brand-ink);
 }
 
 .admin-tiles {
@@ -6262,10 +6375,3 @@ button.admin-bars__row[aria-expanded="true"] {
   font-size: 0.875rem;
 }
 
-.admin-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: var(--tap);
-  cursor: pointer;
-}

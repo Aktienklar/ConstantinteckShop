@@ -11,6 +11,8 @@
  *   GET  /api/admin/refs    Token     ->  Herkunft der Besucher einer Seite
  *   GET  /api/admin/posthog Token     ->  Kennzahlen aus PostHog (nur
  *                                         Besucher mit Einwilligung)
+ *   GET  /api/admin/murdernight Token ->  Weiterleitungen zu Murder Night
+ *                                         (Klicks "krimi-click/<Stelle>/<Fall>")
  *
  * Geheim, per "wrangler secret put":
  *   ADMIN_PASSWORD      das Passwort für admin.html
@@ -186,11 +188,84 @@ export class PosthogError extends Error {
   }
 }
 
+/* --- Murder Night: Weiterleitungen ---------------------------------------- */
+
+/* Jeder Link zu murdernight.de/.store trägt data-track="krimi-click/<Stelle>/
+   <Fall>" (site.js). GoatCounter zählt diese Klicks bei allen Besuchern ohne
+   Cookies – daraus Summe, Verlauf, Fall und Stelle. Von welcher Seite der
+   Klick kam, weiß nur PostHog ($pathname), also nur für Besucher mit
+   Zustimmung. Ein Kauf auf Murder Night selbst ist hier nicht zu sehen. */
+export async function adminMurderNight(request, url, env) {
+  const denied = await requireSession(request, env);
+  if (denied) return denied;
+
+  const range = rangeFrom(url);
+  const gc = goatcounter(env, range);
+
+  // Alle Klick-Pfade suchen (Liste ohne Zahlen, nach ID sortiert) …
+  const ids = [];
+  let after = 0;
+  for (let page = 0; page < 10; page++) {
+    const list = await gc("paths", { limit: 200, ...(after ? { after } : {}) }, false);
+    for (const p of list.paths || []) {
+      if (p.event && p.path.startsWith("krimi-click/")) ids.push(p.id);
+    }
+    if (!list.more || !(list.paths || []).length) break;
+    after = list.paths[list.paths.length - 1].id;
+  }
+
+  // … und nur für diese die Zahlen holen, damit sie nicht hinter den
+  // meistbesuchten Seiten aus der Liste fallen.
+  const hits = [];
+  for (let i = 0; i < ids.length; i += 100) {
+    const chunk = await gc("stats/hits", { limit: 100, include_paths: ids.slice(i, i + 100).join(",") });
+    hits.push(...(chunk.hits || []));
+  }
+
+  const daily = {};
+  const cases = {};
+  const placements = {};
+  let total = 0;
+  for (const hit of hits) {
+    const [, placement = "?", item = "?"] = hit.path.split("/");
+    total += hit.count;
+    cases[item] = (cases[item] || 0) + hit.count;
+    placements[placement] = (placements[placement] || 0) + hit.count;
+    for (const day of hit.stats || []) daily[day.day] = (daily[day.day] || 0) + (day.daily || 0);
+  }
+
+  const sorted = (map) => Object.entries(map).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
+
+  let pages = null;
+  let pagesError = null;
+  if (env.POSTHOG_API_KEY) {
+    try {
+      const rows = await posthogQuery(env, `
+        SELECT properties.$pathname AS page, uniq(distinct_id)
+        FROM events
+        WHERE event = 'krimi-click' AND timestamp >= toStartOfDay(now()) - INTERVAL ${range.days - 1} DAY
+        GROUP BY page ORDER BY 2 DESC LIMIT 15`);
+      pages = rows.map(([name, count]) => ({ name, count }));
+    } catch (error) {
+      pagesError = error.message;
+    }
+  }
+
+  return Response.json({
+    total,
+    daily: Object.entries(daily).sort().map(([day, count]) => ({ day, count })),
+    cases: sorted(cases),
+    placements: sorted(placements),
+    pages,
+    pagesError
+  });
+}
+
 /* --- Zeitraum ----------------------------------------------------------- */
 
 /** Die letzten N Tage einschließlich heute, auf volle Stunden gerundet – so
     verlangt es die GoatCounter-API. */
-function rangeFrom(url) {
+export function rangeFrom(url) {
   const asked = parseInt(url.searchParams.get("days") || "7", 10);
   const days = Math.min(Math.max(Number.isFinite(asked) ? asked : 7, 1), MAX_DAYS);
 
@@ -216,8 +291,8 @@ function goatcounter(env, range) {
   let lastCall = 0;
   const base = "https://" + env.GOATCOUNTER_SITE + ".goatcounter.com/api/v0/";
 
-  return async function get(endpoint, params = {}) {
-    const query = new URLSearchParams({ start: range.start, end: range.end, ...params });
+  return async function get(endpoint, params = {}, withRange = true) {
+    const query = new URLSearchParams({ ...(withRange ? { start: range.start, end: range.end } : {}), ...params });
     const target = base + endpoint + "?" + query;
     const init = {
       headers: {
@@ -267,6 +342,13 @@ export class GoatCounterError extends Error {
 
 async function requireSession(request, env) {
   if (!env.ADMIN_PASSWORD || !env.GOATCOUNTER_TOKEN || !env.GOATCOUNTER_SITE) return notConfigured();
+  return requireLogin(request, env);
+}
+
+/** Nur der Login, ohne GoatCounter – für Bereiche, die GoatCounter nicht
+    brauchen (Bestellungen aus Stripe). */
+export async function requireLogin(request, env) {
+  if (!env.ADMIN_PASSWORD) return notConfigured();
 
   const header = request.headers.get("Authorization") || "";
   const [expires, signature] = header.replace(/^Bearer\s+/i, "").split(".");
