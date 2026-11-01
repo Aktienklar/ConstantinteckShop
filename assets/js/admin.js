@@ -21,7 +21,9 @@
   var body = document.querySelector("[data-admin-body]");
   var errorBox = document.querySelector("[data-admin-error]");
   var logout = document.querySelector("[data-admin-logout]");
-  var skip = document.querySelector("[data-admin-skip]");
+  var deviceState = document.querySelector("[data-admin-device-state]");
+  var deviceToggle = document.querySelector("[data-admin-device-toggle]");
+  var deviceBox = document.querySelector("[data-admin-device]");
   var rangeButtons = document.querySelectorAll("[data-days]");
 
   var days = parseInt(read(sessionStorage, DAYS_KEY) || "30", 10);
@@ -489,12 +491,31 @@
 
   /* --- Eigene Besuche ausblenden ------------------------------------------ */
 
-  /* count.js von GoatCounter zählt nicht, solange "skipgc" = "t" in
-     localStorage steht. Gilt nur für diesen Browser auf diesem Gerät. */
-  skip.checked = read(localStorage, "skipgc") === "t";
-  skip.addEventListener("change", function () {
-    write(localStorage, "skipgc", skip.checked ? "t" : null);
+  /* Dieselben Schlüssel, die site.js vor dem Laden der Zähler prüft:
+     "ct-exclude" sperrt GoatCounter und PostHog, "skipgc" versteht
+     GoatCounters count.js zusätzlich selbst. admin.html liegt auf derselben
+     Adresse wie die Website, der Eintrag gilt also dort. */
+  function deviceExcluded() {
+    return read(localStorage, "ct-exclude") === "1" || read(localStorage, "skipgc") === "t";
+  }
+
+  function showDevice() {
+    var off = deviceExcluded();
+    deviceBox.classList.toggle("is-excluded", off);
+    deviceState.textContent = off ? "Wird nicht mitgezählt" : "Wird mitgezählt";
+    deviceToggle.textContent = off ? "Wieder mitzählen" : "Nicht mitzählen";
+    deviceToggle.setAttribute("aria-pressed", off ? "true" : "false");
+  }
+
+  deviceToggle.addEventListener("click", function () {
+    var off = !deviceExcluded();
+    write(localStorage, "ct-exclude", off ? "1" : null);
+    write(localStorage, "skipgc", off ? "t" : null);
+    showDevice();
+    if (deviceExcluded() !== off) deviceState.textContent = "Konnte nicht gespeichert werden – privates Fenster?";
   });
+
+  showDevice();
 
   /* --- Start ------------------------------------------------------------- */
 
