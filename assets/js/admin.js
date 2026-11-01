@@ -20,6 +20,7 @@
   var dashboard = document.querySelector("[data-admin-dashboard]");
   var body = document.querySelector("[data-admin-body]");
   var shopBox = document.querySelector("[data-admin-shop]");
+  var mnBox = document.querySelector("[data-admin-mn]");
   var errorBox = document.querySelector("[data-admin-error]");
   var logout = document.querySelector("[data-admin-logout]");
   var deviceState = document.querySelector("[data-admin-device-state]");
@@ -147,6 +148,7 @@
     errorBox.textContent = "";
     body.classList.add("is-loading");
     loadShop();
+    loadMurderNight();
 
     api("stats", { days: days })
       .then(function (json) {
@@ -220,7 +222,7 @@
       panel("Systeme", bars(data.systems, plainRow, "Noch keine Daten.")) +
       panel("Browser", bars(data.browsers, plainRow, "Noch keine Daten."));
 
-    wireChart();
+    wireChart(body, daily, "Besucher");
     wirePages();
     loadPosthog();
   }
@@ -337,6 +339,72 @@
     box.innerHTML =
       bars(steps, function (row) { return { label: row.label, count: row.count }; }, "") +
       '<p class="muted admin-note">Produktseite und Warenkorb: Besucher laut GoatCounter (Warenkorb erst seit Einbau der Messung). Kasse und Zahlung: Stripe.</p>';
+  }
+
+  /* --- Murder Night: Weiterleitungen --------------------------------------- */
+
+  var PLACEMENTS = {
+    "recipe-box": "Rezeptseite (Krimi-Box)",
+    "krimi-card": "Krimi-Übersicht (Karte)",
+    "case-page-hero": "Fallseite oben",
+    "case-page-bottom": "Fallseite unten",
+    "home-pick": "Startseite (Auswahl)",
+    "home-menu": "Startseite (Menü)",
+    "closing-cta": "Startseite (Schluss)"
+  };
+
+  // "the-last-sleigh-ride" -> "The Last Sleigh Ride"
+  function caseTitle(slug) {
+    return slug.split("-").map(function (word) { return word.charAt(0).toUpperCase() + word.slice(1); }).join(" ");
+  }
+
+  function loadMurderNight() {
+    var forDays = days;
+    mnBox.classList.add("is-loading");
+
+    api("murdernight", { days: days })
+      .then(function (mn) {
+        if (forDays !== days) return;
+        mnBox.innerHTML = renderMurderNight(mn);
+        wireChart(mnBox, mn.daily, "Weiterleitungen");
+      })
+      .catch(function (error) {
+        if (!error.message || forDays !== days) return;
+        mnBox.innerHTML = '<section class="admin-panel panel admin-panel--wide"><p class="admin-error">' + esc(error.message) + "</p></section>";
+      })
+      .then(function () {
+        mnBox.classList.remove("is-loading");
+      });
+  }
+
+  function renderMurderNight(mn) {
+    var topCase = mn.cases[0];
+    var topPlace = mn.placements[0];
+    var perDay = mn.daily.length ? mn.total / mn.daily.length : 0;
+
+    var pages;
+    if (mn.pages) {
+      pages = bars(mn.pages, function (row) { return { label: row.name || "(unbekannt)", count: row.count }; }, "Noch keine Klicks von Besuchern mit Zustimmung.");
+    } else {
+      pages = '<p class="muted">' + esc(mn.pagesError || "Braucht PostHog (POSTHOG_API_KEY im Worker).") + "</p>";
+    }
+
+    return (
+      '<div class="admin-tiles">' +
+      tile("Weiterleitungen", num(mn.total), "Besucher, die rübergeklickt haben") +
+      tile("Ø pro Tag", perDay.toLocaleString("de-DE", { maximumFractionDigits: 1 })) +
+      tile("Top-Fall", topCase ? esc(caseTitle(topCase.name)) : "–", topCase ? num(topCase.count) + " Klicks" : "") +
+      tile("Top-Stelle", topPlace ? esc(PLACEMENTS[topPlace.name] || topPlace.name) : "–", topPlace ? num(topPlace.count) + " Klicks" : "") +
+      "</div>" +
+      panel("Weiterleitungen pro Tag", chart(mn.daily, "Weiterleitungen"), "admin-panel--wide") +
+      panel("Nach Fall", bars(mn.cases, function (row) { return { label: caseTitle(row.name), count: row.count }; }, "Noch keine Weiterleitungen.")) +
+      panel("Nach Stelle", bars(mn.placements, function (row) { return { label: PLACEMENTS[row.name] || row.name, sub: row.name, count: row.count }; }, "Noch keine Weiterleitungen.")) +
+      panel(
+        "Von welcher Seite",
+        pages + '<p class="muted admin-note">Nur Besucher mit Zustimmung (PostHog). Käufe auf Murder Night selbst sind hier nicht zu sehen.</p>',
+        "admin-panel--wide"
+      )
+    );
   }
 
   /* --- PostHog (nur Besucher mit Einwilligung) ---------------------------- */
@@ -469,7 +537,8 @@
 
   /* --- Tagesdiagramm ----------------------------------------------------- */
 
-  function chart(daily) {
+  function chart(daily, unit) {
+    unit = unit || "Besucher";
     if (!daily.length) return '<p class="muted">Noch keine Daten.</p>';
 
     // Am Handy schmaler gezeichnet statt nur verkleinert – sonst wird die
@@ -533,7 +602,7 @@
 
     return (
       '<div class="admin-chart">' +
-      '<svg viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="Besucher pro Tag, höchster Wert ' + num(max) + '">' +
+      '<svg viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="' + unit + ' pro Tag, höchster Wert ' + num(max) + '">' +
       grid + marks + ticks +
       '<line class="admin-chart__base" x1="' + pad.left + '" x2="' + (width - pad.right) + '" y1="' + (pad.top + innerH) + '" y2="' + (pad.top + innerH) + '"/>' +
       "</svg>" +
@@ -553,16 +622,16 @@
     return 10 * magnitude;
   }
 
-  function wireChart() {
-    var box = body.querySelector(".admin-chart");
+  function wireChart(container, daily, unit) {
+    var box = container.querySelector(".admin-chart");
     if (!box) return;
     var tip = box.querySelector(".admin-chart__tip");
 
     function show(group) {
-      var d = data.daily[parseInt(group.getAttribute("data-index"), 10)];
+      var d = daily[parseInt(group.getAttribute("data-index"), 10)];
       box.querySelectorAll(".is-hover").forEach(function (el) { el.classList.remove("is-hover"); });
       group.classList.add("is-hover");
-      tip.innerHTML = "<strong>" + num(d.count) + "</strong> Besucher<br>" + dayLabel(d.day, true);
+      tip.innerHTML = "<strong>" + num(d.count) + "</strong> " + unit + "<br>" + dayLabel(d.day, true);
       tip.hidden = false;
 
       var boxRect = box.getBoundingClientRect();
