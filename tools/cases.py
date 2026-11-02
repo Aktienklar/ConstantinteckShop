@@ -202,9 +202,14 @@ def case_url(case, content, campaign=None):
     return mn_url(t(case)["path"], content, campaign)
 
 
+# Test-Redesign v1: eine Zeile vor jedem Link nach Murdernight, damit
+# niemand vom fremden Shop überrascht wird.
+MN_NOTE = '<p class="mn-note">Checkout via my partner store Murdernight – instant PDF, secure payment.</p>'
+
+
 def buy_link(case, content, cls="btn btn--primary", label=None, campaign=None, funnel=False):
     label = label or "Get the case – %s" % price(case["price"])
-    return ('<a class="%s" href="%s" target="_blank" rel="noopener" data-track="krimi-click/%s/%s"%s>%s%s</a>'
+    return MN_NOTE + ('<a class="%s" href="%s" target="_blank" rel="noopener" data-track="krimi-click/%s/%s"%s>%s%s</a>'
             % (cls, esc(case_url(case, content, campaign)), content, case["id"],
                " data-mn-funnel" if funnel else "", esc(label), NEW_TAB))
 

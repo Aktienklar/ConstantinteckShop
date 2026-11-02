@@ -3059,6 +3059,14 @@ body.has-buybar {
 @media (min-width: 1024px) {
   .product-layout {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  /* Test-Redesign v1: Die Galerie läuft unter der festen Kopfzeile mit,
+     damit die linke Spalte neben der langen Kaufbox nicht leer steht. */
+  .product-layout > [data-gallery] {
+    position: sticky;
+    top: 5.5rem;
   }
 }
 
@@ -4715,6 +4723,13 @@ div.legal__en > * + * {
 
 .product-card__foot .btn {
   margin-left: 0.75rem;
+}
+
+/* Sichtbarer Knopf auf jeder Produktkarte im Shop (Test-Redesign v1). Die
+   ganze Karte ist der Link, der Knopf ist nur ein <span> darin. */
+.product-card__cta {
+  margin-top: 1rem;
+  align-self: flex-start;
 }
 
 /* Kleinerer Knopf für Kartenfüße – bleibt über dem 44px-Touch-Target. */
@@ -7172,4 +7187,13 @@ button.admin-bars__row[aria-expanded="true"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
   }
+}
+
+/* Zeile vor jedem Link nach Murdernight (Test-Redesign v1). Steht in
+   Knopfreihen mit flex-wrap und nimmt dort eine ganze Zeile ein. */
+.mn-note {
+  flex-basis: 100%;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--mocha);
 }
