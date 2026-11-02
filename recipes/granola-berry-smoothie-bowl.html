@@ -217,20 +217,24 @@
            assets/js/recipe-data.js; ohne Eintrag bleibt das Foto ohne
            Abspielknopf stehen. Diese Stelle hier muss dafür nie geändert
            werden. -->
-      <div class="recipe-video">
-        <div class="video-embed" data-video-embed data-slug="granola-berry-smoothie-bowl">
-          <picture><source type="image/avif" srcset="../assets/img/granola-berry-smoothie-bowl-480.avif 480w, ../assets/img/granola-berry-smoothie-bowl.avif 900w" sizes="100vw"><img fetchpriority="high" width="900" height="1600" class="video-embed__poster" src="../assets/img/granola-berry-smoothie-bowl.jpg" alt="Granola Berry Smoothie Bowl"></picture>
-        </div>
-      </div>
-
-      <div class="share">
-        <span class="share__label">Share:</span>
-        <button type="button" class="chip" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg> Share</button>
-        <a class="chip" href="https://wa.me/?text=Granola%20Berry%20Smoothie%20Bowl%20https%3A%2F%2Fconstantinteck.com%2Frecipes%2Fgranola-berry-smoothie-bowl.html" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
-        <button type="button" class="chip" data-copy>Copy link</button>
-      </div>
 
       <div class="recipe-body">
+        <!-- Bild/Video im Hochformat, am Desktop neben den Zutaten (Test-Redesign v1) -->
+        <div class="recipe-body__media">
+          <div class="recipe-video">
+            <div class="video-embed" data-video-embed data-slug="granola-berry-smoothie-bowl">
+              <picture><source type="image/avif" srcset="../assets/img/granola-berry-smoothie-bowl-480.avif 480w, ../assets/img/granola-berry-smoothie-bowl.avif 900w" sizes="(min-width: 1024px) 420px, 100vw"><img fetchpriority="high" width="900" height="1600" class="video-embed__poster" src="../assets/img/granola-berry-smoothie-bowl.jpg" alt="Granola Berry Smoothie Bowl"></picture>
+            </div>
+          </div>
+
+          <div class="share">
+            <span class="share__label">Share:</span>
+            <button type="button" class="chip" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg> Share</button>
+            <a class="chip" href="https://wa.me/?text=Granola%20Berry%20Smoothie%20Bowl%20https%3A%2F%2Fconstantinteck.com%2Frecipes%2Fgranola-berry-smoothie-bowl.html" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
+            <button type="button" class="chip" data-copy>Copy link</button>
+          </div>
+        </div>
+
         <div class="recipe-body__side">
           <section class="panel ingredients" aria-labelledby="ingredients">
             <h2 id="ingredients" style="font-size:1.25rem">Ingredients</h2>

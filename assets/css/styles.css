@@ -3498,11 +3498,15 @@ body.has-buybar {
   background-color: var(--dough);
 }
 
+/* Hochformat 4:5 (Test-Redesign v1): Die Fotos sind 9:16 aus den Reels,
+   ein 16:9-Ausschnitt zeigte fast nur den Schriftzug. Leicht unter der
+   Mitte, dort liegt bei den Fotos das Gericht. */
 .video-embed__poster {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
+  object-position: 50% 58%;
 }
 
 .video-embed__trigger {
@@ -3735,17 +3739,20 @@ body.has-buybar {
   }
 }
 
-@media (min-width: 1024px) {
-  .recipe-video {
-    max-width: 48rem;
-  }
+/* Bild links (höchstens 420 px), Zutaten rechts daneben, die Zubereitung
+   darunter über die ganze Breite. */
+.recipe-body__media .recipe-video {
+  margin-top: 0;
+}
 
+@media (min-width: 1024px) {
   .recipe-body {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 26.25rem) minmax(0, 1fr);
+    align-items: start;
   }
 
   .recipe-body__main {
-    grid-column: span 2;
+    grid-column: 1 / -1;
   }
 }
 
