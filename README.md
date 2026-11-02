@@ -351,6 +351,19 @@ the HTML of the product pages, the trust row and the legal pages.
 These are promises to a paying customer. Make sure each one is something you can
 actually honour, and keep the JavaScript values and the HTML text in agreement.
 
+**Shipping by destination (since 2 Nov 2026).** Per order: Germany €4.90,
+rest of the EU €9.90, United Kingdom €12.90, everywhere else €14.90. Stripe's
+hosted checkout cannot pick a rate from the address the buyer types, so the
+buyer picks the destination in the cart (`Ship to`, pre-selected from the
+browser language, remembered in `localStorage` as `ct-ship-zone`). The cart
+sends only the zone id; the worker takes the rate from `SHIPPING.zones` in
+`worker/src/catalog.js` and lets Stripe accept addresses from that zone
+only. A request without a zone is refused. The same four numbers are written
+in: `SHOP_TERMS.shippingZones`, `SHIPPING.zones` (cents), the buy box of the
+three apron pages, the footer of every page, `shipping-returns.html`,
+`terms.html` § 4 and `SHIPPING_ZONES` in `tools/schema.py`. Change one, change
+all – and `npx wrangler deploy` in `worker/`.
+
 `christmasDeadlines` (`from`, `international`, `germany`, ISO dates) drives
 the line *Christmas delivery: order by …* in the buy box of the three apron
 pages (`assets/js/product.js`, placeholder `<p data-deadline>`). It shows

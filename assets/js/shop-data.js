@@ -173,8 +173,27 @@ Object.keys(SHOP_PRODUCTS).forEach(function (slug) {
 });
 
 var SHOP_TERMS = {
-  /** Versandpauschale innerhalb Deutschlands, in Euro. */
-  shippingFlatRate: 4.9,
+  /**
+   * Versandkosten je Bestellung, gestaffelt nach Zielland (seit 2.11.2026).
+   * Gleiche Zonen und Beträge (dort in Cent) wie SHIPPING.zones in
+   * worker/src/catalog.js – dort wird berechnet, hier nur angezeigt. Der
+   * Kunde wählt die Zone im Warenkorb; die Stripe-Kasse nimmt dann nur
+   * Adressen aus dieser Zone an. Text dazu: Fuß jeder Seite, Kaufbox der
+   * Schürzen, shipping-returns.html, terms.html (§ 4), tools/schema.py.
+   * "countries" (ISO-Codes) dient nur dem Vorschlag im Warenkorb.
+   */
+  shippingZones: [
+    { id: "de", label: "Germany", price: 4.9, countries: ["DE"] },
+    {
+      id: "eu",
+      label: "EU",
+      price: 9.9,
+      countries: ["AT", "BE", "BG", "CY", "CZ", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU",
+        "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+    },
+    { id: "uk", label: "United Kingdom", price: 12.9, countries: ["GB"] },
+    { id: "world", label: "Rest of the world", price: 14.9, countries: [] }
+  ],
   /** Bestellwert, ab dem der Versand entfällt. null = keine Freigrenze. */
   freeShippingFrom: null,
   /**

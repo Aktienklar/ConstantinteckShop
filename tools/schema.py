@@ -224,11 +224,16 @@ def product(root, page, src, url, image):
             "availability": "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": {"@id": ORG_ID},
-            "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": {"@type": "MonetaryAmount", "value": "4.90", "currency": "EUR"},
-                "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "DE"},
-            },
+            # Versandkosten je Zone wie SHOP_TERMS.shippingZones (shop-data.js);
+            # "Rest der Welt" lässt sich als DefinedRegion nicht ausdrücken.
+            "shippingDetails": [
+                {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {"@type": "MonetaryAmount", "value": value, "currency": "EUR"},
+                    "shippingDestination": {"@type": "DefinedRegion", "addressCountry": countries},
+                }
+                for value, countries in SHIPPING_ZONES
+            ],
             "hasMerchantReturnPolicy": {
                 "@type": "MerchantReturnPolicy",
                 "applicableCountry": ["DE", "AT"],
@@ -377,6 +382,13 @@ REQUIRED = {
     "Product": ["name", "image", "offers.price", "offers.priceCurrency", "offers.availability"],
     "BreadcrumbList": ["itemListElement"],
 }
+SHIPPING_ZONES = [
+    ("4.90", "DE"),
+    ("9.90", ["AT", "BE", "BG", "CY", "CZ", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU",
+              "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]),
+    ("12.90", "GB"),
+]
+
 RECOMMENDED = {
     "Recipe": ["author", "datePublished", "description", "keywords", "recipeCategory",
                "recipeIngredient", "recipeInstructions", "recipeYield", "totalTime", "video"],

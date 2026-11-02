@@ -13,6 +13,37 @@
 
   var root;
 
+  /* Gewählte Versandzone (SHOP_TERMS.shippingZones), gemerkt für diesen
+     Browser. Ohne Wahl ein Vorschlag aus der Spracheinstellung ("en-GB" ->
+     United Kingdom) – der Kunde sieht ihn und kann ihn ändern, die Kasse
+     nimmt danach nur Adressen aus dieser Zone an. */
+  var ZONE_KEY = "ct-ship-zone";
+
+  function zoneById(id) {
+    return SHOP_TERMS.shippingZones.filter(function (zone) {
+      return zone.id === id;
+    })[0];
+  }
+
+  function currentZone() {
+    var saved = null;
+    try { saved = localStorage.getItem(ZONE_KEY); } catch (e) { /* privat */ }
+    return zoneById(saved) || guessZone();
+  }
+
+  function guessZone() {
+    var langs = navigator.languages || [navigator.language || ""];
+    for (var i = 0; i < langs.length; i++) {
+      var region = (String(langs[i]).split("-")[1] || "").toUpperCase();
+      if (!region) continue;
+      for (var z = 0; z < SHOP_TERMS.shippingZones.length; z++) {
+        if (SHOP_TERMS.shippingZones[z].countries.indexOf(region) !== -1) return SHOP_TERMS.shippingZones[z];
+      }
+      return zoneById("world");
+    }
+    return zoneById(/^de\b/.test(langs[0] || "") ? "de" : "world");
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     root = document.querySelector("[data-cart-root]");
     if (!root) return;
@@ -58,8 +89,9 @@
        falls je wieder eine eingeführt wird. */
     var qualifiesForFreeShipping =
       SHOP_TERMS.freeShippingFrom !== null && total >= SHOP_TERMS.freeShippingFrom;
+    var zone = currentZone();
     var shipping =
-      hasPhysical && !qualifiesForFreeShipping ? SHOP_TERMS.shippingFlatRate : 0;
+      hasPhysical && !qualifiesForFreeShipping ? zone.price : 0;
     var missingForFreeShipping =
       SHOP_TERMS.freeShippingFrom !== null && hasPhysical && !qualifiesForFreeShipping
         ? SHOP_TERMS.freeShippingFrom - total
@@ -97,6 +129,21 @@
       shippingLabel = formatPrice(shipping);
     }
 
+    /* Auswahl des Lieferziels – nur, wenn etwas verschickt wird. */
+    var zoneChoice = hasPhysical
+      ? '<label class="cart-summary__zone"><span>Ship to</span>' +
+        '<select data-ship-zone>' +
+        SHOP_TERMS.shippingZones
+          .map(function (option) {
+            return (
+              '<option value="' + option.id + '"' + (option.id === zone.id ? " selected" : "") + ">" +
+              escapeHtml(option.label) + " – " + formatPrice(option.price) + "</option>"
+            );
+          })
+          .join("") +
+        "</select></label>"
+      : "";
+
     root.innerHTML =
       '<div class="cart-layout">' +
       '<ul class="cart-lines">' +
@@ -105,12 +152,13 @@
       '<aside class="cart-summary">' +
       '<div class="panel">' +
       "<h2>Summary</h2>" +
+      zoneChoice +
       "<dl>" +
       row(
         "Subtotal (" + itemCount + (itemCount === 1 ? " item" : " items") + ")",
         formatPrice(total)
       ) +
-      row("Shipping", shippingLabel) +
+      row(hasPhysical ? "Shipping (" + escapeHtml(zone.label) + ")" : "Shipping", shippingLabel) +
       "</dl>" +
       (missingForFreeShipping > 0
         ? '<p class="cart-summary__hint">' +
@@ -315,6 +363,14 @@
       });
     }
 
+    var zoneSelect = root.querySelector("[data-ship-zone]");
+    if (zoneSelect) {
+      zoneSelect.addEventListener("change", function () {
+        try { localStorage.setItem(ZONE_KEY, zoneSelect.value); } catch (e) { /* privat */ }
+        render();
+      });
+    }
+
     var checkout = root.querySelector("[data-checkout]");
     if (checkout) {
       checkout.addEventListener("click", function () {
@@ -375,6 +431,8 @@
           };
         }),
         waivesWithdrawal: Boolean(waiver && waiver.checked),
+        // Nur die Zone, nie ein Betrag – den Satz kennt der Worker selbst.
+        shippingZone: currentZone().id,
         // Ein Doppelklick soll keine zweite Bestellung anlegen.
         idempotencyKey: checkoutKey(lines)
       })

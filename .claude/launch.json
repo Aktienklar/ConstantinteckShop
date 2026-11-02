@@ -16,6 +16,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["wrangler", "dev", "--port", "8787", "--cwd", "worker"],
       "port": 8787
+    },
+    {
+      "name": "checkout-test",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["wrangler", "dev", "--port", "8787", "--cwd", "worker", "--var", "TOS_CONSENT:false"],
+      "port": 8787
     }
   ]
 }

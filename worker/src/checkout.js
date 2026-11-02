@@ -6,7 +6,7 @@
  * Besucher wird anschließend auf die von Stripe gehostete Seite geschickt.
  */
 
-import { CURRENCY, SHIPPING, resolveCart, BadCart } from "./catalog.js";
+import { CURRENCY, resolveCart, BadCart } from "./catalog.js";
 
 /**
  * Der Verzicht auf das Widerrufsrecht muss vor dem Kauf ausdrücklich erklärt
@@ -30,7 +30,7 @@ export async function createCheckoutSession(request, env, stripe) {
 
   let cart;
   try {
-    cart = resolveCart(body.lines);
+    cart = resolveCart(body.lines, body.shippingZone);
   } catch (error) {
     if (error instanceof BadCart) return jsonError(error.message, 400);
     throw error;
@@ -94,14 +94,15 @@ export async function createCheckoutSession(request, env, stripe) {
   }
 
   if (cart.hasPhysical) {
-    params.shipping_address_collection = { allowed_countries: SHIPPING.countries };
+    /* Genau ein Satz: der der gewählten Versandzone (catalog.js), und Stripe
+       nimmt nur Adressen aus dieser Zone an. */
+    params.shipping_address_collection = { allowed_countries: cart.zone.countries };
     params.shipping_options = [
       {
         shipping_rate_data: {
           type: "fixed_amount",
-          display_name:
-            cart.shippingCents === 0 ? "Shipping (free)" : "Shipping",
-          fixed_amount: { amount: cart.shippingCents, currency: CURRENCY },
+          display_name: cart.shippingFree ? "Shipping (free)" : "Shipping – " + cart.zone.label,
+          fixed_amount: { amount: cart.shippingFree ? 0 : cart.zone.cents, currency: CURRENCY },
           tax_behavior: "inclusive"
           /* Bewusst kein delivery_estimate: Es wird schnell verschickt, aber
              keine Laufzeit in Tagen zugesagt, die niemand garantiert. */

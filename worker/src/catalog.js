@@ -119,15 +119,32 @@ export const PRODUCTS = {
 };
 
 /**
- * Versandbedingungen. Gleiche Werte wie SHOP_TERMS in shop-data.js – der
- * Besucher sieht sie im Warenkorb, berechnet werden sie hier.
+ * Versandbedingungen. Gleiche Werte wie SHOP_TERMS.shippingZones in
+ * shop-data.js – der Besucher sieht sie im Warenkorb, berechnet werden sie hier.
+ *
+ * Seit 2.11.2026 gestaffelt nach Zielland (Constantin): Deutschland 4,90 €,
+ * übrige EU 9,90 €, Vereinigtes Königreich 12,90 €, Rest der Welt 14,90 €,
+ * je Bestellung. Die gehostete Stripe-Kasse kann einen Satz nicht nach der
+ * eingegebenen Adresse wählen – deshalb wählt der Kunde die Zone im Warenkorb,
+ * und die Session lässt dann nur Adressen aus genau dieser Zone zu. So kann
+ * niemand "Deutschland" bezahlen und nach Kalifornien liefern lassen.
  */
+const EU_OTHER = [
+  "AT", "BE", "BG", "CY", "CZ", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU",
+  "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"
+];
+
 export const SHIPPING = {
-  flatRateCents: 490,
-  /* null = keine Freigrenze. Die Pauschale fällt bei jeder Warensendung an,
-     egal wie hoch der Bestellwert ist – so steht es auch in den AGB. */
+  /* null = keine Freigrenze. Die Versandkosten fallen bei jeder Warensendung
+     an, egal wie hoch der Bestellwert ist – so steht es auch in den AGB. */
   freeFromCents: null,
-  /* Es wird weltweit verschickt. Stripe kennt für allowed_countries keinen
+  zones: {
+    de: { label: "Germany", cents: 490, countries: ["DE"] },
+    eu: { label: "EU", cents: 990, countries: EU_OTHER },
+    uk: { label: "United Kingdom", cents: 1290, countries: ["GB"] },
+    world: { label: "Rest of the world", cents: 1490, countries: null } // = alle übrigen, siehe unten
+  },
+  /* Alle Länder, in die überhaupt geliefert wird. Stripe kennt für allowed_countries keinen
      Platzhalter "überall", sondern nur diese feste Aufzählung – Wortlaut aus
      der API-Referenz (docs.stripe.com/api/checkout/sessions/create, Parameter
      shipping_address_collection.allowed_countries). Länder wie Kuba, Iran,
@@ -161,6 +178,11 @@ export const SHIPPING = {
   ]
 };
 
+// "Rest der Welt" = alle Lieferländer außer Deutschland, übriger EU und UK.
+SHIPPING.zones.world.countries = SHIPPING.countries.filter(
+  (code) => !["de", "eu", "uk"].some((zone) => SHIPPING.zones[zone].countries.includes(code))
+);
+
 /** Höchstmenge je Position – bremst Unfug und Tippfehler. */
 const MAX_QUANTITY = 20;
 
@@ -169,7 +191,7 @@ const MAX_QUANTITY = 20;
  * Preisen aus diesem Katalog. Wirft bei allem, was nicht zusammenpasst –
  * lieber gar keine Kasse als eine mit falschen Beträgen.
  */
-export function resolveCart(rawLines) {
+export function resolveCart(rawLines, zoneId) {
   if (!Array.isArray(rawLines) || rawLines.length === 0) {
     throw new BadCart("Your cart is empty.");
   }
@@ -218,14 +240,21 @@ export function resolveCart(rawLines) {
   const hasPhysical = lines.some((l) => l.product.type === "physical");
   const hasDigital = lines.some((l) => l.product.type === "digital");
 
+  /* Versandzone aus dem Warenkorb. Ohne gültige Zone keine Kasse: Sonst
+     ließe sich mit einer selbst gebauten Anfrage der deutsche Satz für eine
+     Lieferung nach Übersee wählen. */
+  const zone = hasPhysical ? SHIPPING.zones[zoneId] : null;
+  if (hasPhysical && !zone) {
+    throw new BadCart("Please choose where to ship – reload the cart page if you don't see the choice.");
+  }
+
   /* Reine PDF-Bestellungen werden nie versandt. Eine Freigrenze gibt es
      derzeit nicht; der Zweig bleibt für den Fall stehen, dass wieder eine
      eingeführt wird – genau wie es cart-page.js dem Kunden vorrechnet. */
   const shippingFree =
     SHIPPING.freeFromCents !== null && subtotal >= SHIPPING.freeFromCents;
-  const shippingCents = hasPhysical && !shippingFree ? SHIPPING.flatRateCents : 0;
 
-  return { lines, subtotal, hasPhysical, hasDigital, shippingCents };
+  return { lines, subtotal, hasPhysical, hasDigital, shippingFree, zone };
 }
 
 export class BadCart extends Error {}
