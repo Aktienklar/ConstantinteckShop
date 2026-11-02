@@ -229,6 +229,15 @@ name to `customerPhotos` in `site-config.js`. Empty list = no section.
    cart showed them.
 4. Add a card for it in `shop.html`, and wherever else it should appear.
 
+### Buy bar on phones
+
+On the three apron pages `assets/js/product.js` adds a bar fixed to the
+bottom of the screen (below 768 px only) whenever the buy box's *Add to
+cart* button is out of view. While the buy box is still further down it says
+*Choose & buy* and scrolls there – nobody gets a colour they never saw. Once
+the buyer has scrolled past it, it shows the current choice and price and
+presses the real button, so `add-to-cart` is counted exactly as before.
+
 ### Bundles
 
 A bundle is an ordinary product with its own price, not a discount rule – see

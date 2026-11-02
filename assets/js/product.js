@@ -138,6 +138,103 @@
         added.hidden = false;
       }
     });
+
+    setupStickyBar(box, addButton, groups, product);
+  }
+
+  /* Kaufleiste unten am Handy ----------------------------------------------
+     Sichtbar, solange der Kaufknopf nicht im Bild ist. Liegt er noch weiter
+     unten (am Handy unter Galerie und Auswahl), führt die Leiste dorthin –
+     "Choose & buy", ohne ungesehen eine Farbe in den Warenkorb zu legen. Ist
+     er nach oben weggescrollt, zeigt sie die gewählte Farbe/Größe und legt
+     genau das in den Warenkorb, über den echten Kaufknopf (gleiche Zählung
+     "add-to-cart"). Ab 768 px blendet styles.css sie aus. */
+
+  function setupStickyBar(box, addButton, groups, product) {
+    if (!product) return;
+
+    var bar = document.createElement("div");
+    bar.className = "buybar";
+    bar.hidden = true;
+    bar.innerHTML =
+      '<div class="buybar__text"><b>' + formatPrice(product.price) + "</b>" +
+      '<span class="buybar__choice" data-buybar-choice></span></div>' +
+      '<button type="button" class="btn btn--primary" data-buybar-action></button>';
+    document.body.appendChild(bar);
+
+    var choice = bar.querySelector("[data-buybar-choice]");
+    var action = bar.querySelector("[data-buybar-action]");
+    var submit = box.querySelector(".buybox__submit") || addButton;
+    var mode = "";
+    var added = false;
+
+    function describe() {
+      choice.textContent = groups
+        .map(function (group) {
+          var active = group.buttons.filter(function (b) {
+            return b.getAttribute("data-variant-value") === group.value;
+          })[0];
+          return active ? active.textContent.trim() : "";
+        })
+        .filter(Boolean)
+        .join(" · ");
+    }
+
+    function setMode(next) {
+      mode = next;
+      action.className = "btn " + (added ? "btn--secondary" : "btn--primary");
+      action.textContent = added ? "Added ✓ Go to cart" : mode === "below" ? "Choose & buy" : "Add to cart";
+      choice.hidden = mode === "below" && !added;
+    }
+
+    action.addEventListener("click", function () {
+      if (added) {
+        location.href = "../cart.html";
+      } else if (mode === "below") {
+        box.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        addButton.click();
+      }
+    });
+
+    // Gilt auch für den großen Knopf: danach bietet die Leiste den Warenkorb an.
+    addButton.addEventListener("click", function () {
+      added = true;
+      setMode(mode);
+    });
+
+    // Neue Auswahl im Kaufbereich: Leiste zeigt sie, und "Add to cart" gilt wieder.
+    box.addEventListener("click", function (event) {
+      if (event.target.closest && event.target.closest("[data-variant-value]")) {
+        setTimeout(describe, 0);
+        added = false;
+        setMode(mode);
+      }
+    });
+
+    /* Lage beim Scrollen nachrechnen (einmal je Frame). Ein Observer meldet
+       nur Wechsel zwischen sichtbar und unsichtbar – springt die Seite über
+       den Knopf hinweg, bliebe "below"/"above" sonst falsch stehen. */
+    var queued = false;
+    function update() {
+      queued = false;
+      var rect = submit.getBoundingClientRect();
+      var visible = rect.bottom > 0 && rect.top < window.innerHeight;
+      bar.hidden = visible;
+      document.body.classList.toggle("has-buybar", !visible);
+      if (!visible) setMode(rect.top >= window.innerHeight ? "below" : "above");
+    }
+    function schedule() {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    describe();
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
   }
 
   /* Kompakter Button in den Cross-Selling-Blöcken ------------------------- */
