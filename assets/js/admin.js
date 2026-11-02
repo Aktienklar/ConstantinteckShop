@@ -230,13 +230,16 @@
           '<p class="muted admin-note">Auf eine Seite tippen, um zu sehen, woher ihre Besucher kamen.</p>',
         "admin-panel--wide"
       ) +
-      panel("Woher sie kamen", bars(data.referrers, refRow, "Noch keine Daten.")) +
-      panel("Klicks", events(data.events)) +
+      panel("Woher sie kamen", donut(data.referrers, function (row) {
+        return { label: row.name || "Direkt / App", count: row.count };
+      }, "Noch keine Daten.", { unit: "Besucher", label: "Herkunft" }) +
+        '<p class="muted admin-note">„Direkt / App“: Lesezeichen, eingetippt oder Apps wie Instagram und TikTok, die keine Herkunft mitschicken.</p>') +
+      panel("Geräte", donut(data.sizes, plainRow, "Noch keine Daten.", { unit: "Besucher", label: "Geräte" })) +
+      panel("Länder", donut(data.countries, plainRow, "Noch keine Daten.", { unit: "Besucher", label: "Länder" })) +
+      panel("Systeme", donut(data.systems, plainRow, "Noch keine Daten.", { unit: "Besucher", label: "Systeme" })) +
+      panel("Browser", donut(data.browsers, plainRow, "Noch keine Daten.", { unit: "Besucher", label: "Browser" })) +
       panel("Kampagnen (utm / ref)", bars(data.campaigns, plainRow, "Keine Kampagnen-Links benutzt.")) +
-      panel("Länder", bars(data.countries, plainRow, "Noch keine Daten.")) +
-      panel("Geräte (Bildschirm)", bars(data.sizes, plainRow, "Noch keine Daten.")) +
-      panel("Systeme", bars(data.systems, plainRow, "Noch keine Daten.")) +
-      panel("Browser", bars(data.browsers, plainRow, "Noch keine Daten."));
+      panel("Klicks", events(data.events), "admin-panel--wide");
 
     wireChart(body, daily, "Besucher");
     wirePages();
@@ -282,12 +285,22 @@
     var co = shop.checkout;
     html += panel(
       "Kasse",
-      '<div class="admin-tiles admin-tiles--inner">' +
-        tile("Kasse geöffnet", num(co.started), co.open ? num(co.open) + " noch offen" : "Klicks auf „Pay securely“") +
-        tile("Abgeschlossen", num(co.completed), co.rate === null ? "–" : Math.round(co.rate * 100) + " % Abschlussquote") +
-        tile("Abgebrochen", num(co.expired), co.avgAbandonedValue ? "Ø " + money(co.avgAbandonedValue, cur) + " im Korb" : "abgelaufen ohne Zahlung") +
+      '<div class="admin-split">' +
+        ring(co.rate, "Abschlussquote", num(co.completed) + " von " + num(co.completed + co.expired) + " Kassen bezahlt") +
+        donut(
+          [
+            { label: "Abgeschlossen", count: co.completed },
+            { label: "Abgebrochen", count: co.expired },
+            { label: "Noch offen", count: co.open }
+          ],
+          function (row) { return row; },
+          "Noch niemand an der Kasse.",
+          { unit: "Kassen", label: "Kassenvorgänge" }
+        ) +
+        '<div class="admin-mini">' +
         tile("Ø Warenkorb", co.avgValue === null ? "–" : money(co.avgValue, cur), co.avgItems === null ? "" : "Ø " + co.avgItems.toLocaleString("de-DE", { maximumFractionDigits: 1 }) + " Artikel") +
-        "</div>" +
+        tile("Ø abgebrochen", co.avgAbandonedValue ? money(co.avgAbandonedValue, cur) : "–", "Wert im verlassenen Korb") +
+        "</div></div>" +
         '<h3 class="admin-subhead">Vom Produkt bis zur Zahlung</h3>' +
         '<div data-shop-funnel><p class="muted">Wartet auf die Besucherzahlen …</p></div>',
       "admin-panel--wide"
@@ -295,14 +308,9 @@
 
     html += panel(
       "Umsatz pro Produkt",
-      bars(shop.products, function (row) {
-        return {
-          label: row.name,
-          sub: num(row.quantity) + " Stück · " + (row.type === "digital" ? "digital" : "physisch"),
-          count: row.revenue,
-          display: money(row.revenue, cur)
-        };
-      }, "Im Zeitraum noch nichts verkauft.")
+      donut(shop.products, function (row) {
+        return { label: row.name + " (" + num(row.quantity) + "×)", count: row.revenue, display: money(row.revenue, cur) };
+      }, "Im Zeitraum noch nichts verkauft.", { unit: "Umsatz", total: money(shop.revenue - shop.revenueShipping, cur), label: "Umsatz pro Produkt" })
     );
 
     html += panel(
@@ -414,8 +422,8 @@
       tile("Top-Stelle", topPlace ? esc(PLACEMENTS[topPlace.name] || topPlace.name) : "–", topPlace ? num(topPlace.count) + " Klicks" : "") +
       "</div>" +
       panel("Weiterleitungen pro Tag", chart(mn.daily, "Weiterleitungen"), "admin-panel--wide") +
-      panel("Nach Fall", bars(mn.cases, function (row) { return { label: caseTitle(row.name), count: row.count }; }, "Noch keine Weiterleitungen.")) +
-      panel("Nach Stelle", bars(mn.placements, function (row) { return { label: PLACEMENTS[row.name] || row.name, sub: row.name, count: row.count }; }, "Noch keine Weiterleitungen.")) +
+      panel("Nach Fall", donut(mn.cases, function (row) { return { label: caseTitle(row.name), count: row.count }; }, "Noch keine Weiterleitungen.", { unit: "Klicks", label: "Nach Fall" })) +
+      panel("Nach Stelle", donut(mn.placements, function (row) { return { label: PLACEMENTS[row.name] || row.name, count: row.count }; }, "Noch keine Weiterleitungen.", { unit: "Klicks", label: "Nach Stelle" })) +
       panel(
         "Von welcher Seite",
         pages + '<p class="muted admin-note">Nur Besucher mit Zustimmung (PostHog). Käufe auf Murder Night selbst sind hier nicht zu sehen.</p>',
@@ -454,12 +462,13 @@
       '<div class="admin-ph-head"><h2>PostHog – Besucher mit Zustimmung</h2>' +
       '<p class="admin-ph-links"><a class="link-brand" href="' + esc(ph.dashboard) + '" target="_blank" rel="noreferrer">Dashboard</a>' +
       ' · <a class="link-brand" href="' + esc(ph.replays) + '" target="_blank" rel="noreferrer">Aufzeichnungen ansehen</a></p></div>' +
-      '<div class="admin-tiles admin-tiles--inner">' +
-      tile("Mit Zustimmung", num(ph.visitors), share === null ? "" : "ca. " + share + " % aller Besucher") +
+      '<div class="admin-split admin-split--four">' +
+      ring(share === null ? null : share / 100, "Zustimmung", num(ph.visitors) + " von ca. " + num(data.visitors) + " Besuchern") +
+      ring(ph.sessions ? ph.bounceRate : null, "Absprungrate", "nur eine Seite angesehen") +
+      '<div class="admin-mini">' +
       tile("Sitzungen", num(ph.sessions), num(ph.pageviews) + " Seitenaufrufe") +
       tile("Ø Verweildauer", ph.sessions ? (minutes ? minutes + " min " : "") + seconds + " s" : "–") +
-      tile("Absprungrate", ph.sessions ? Math.round(ph.bounceRate * 100) + " %" : "–", "nur eine Seite angesehen") +
-      "</div>" +
+      "</div></div>" +
       '<h3 class="admin-subhead">Weg zu den Krimi-Dinnern</h3>' +
       bars(ph.funnel, function (row) {
         return { label: row.label, count: row.count };
@@ -590,25 +599,37 @@
       })
       .join("");
 
-    var marks = daily
-      .map(function (d, i) {
-        var h = top ? (d.count / top) * innerH : 0;
-        var x = pad.left + slot * i + gap / 2;
-        var y = pad.top + innerH - h;
-        var r = Math.min(4, barW / 2, h);
-        // Oben abgerundet, unten gerade auf der Grundlinie.
-        var bar = h > 0
-          ? '<path class="admin-chart__bar" d="M' + x + "," + (pad.top + innerH) + "V" + (y + r) +
-            "q0,-" + r + " " + r + ",-" + r + "H" + (x + barW - r) + "q" + r + ",0 " + r + "," + r +
-            "V" + (pad.top + innerH) + 'Z"/>'
-          : "";
-        // Trefferfläche über die ganze Höhe – auch kleine Balken sind antippbar.
-        return (
-          '<g class="admin-chart__day" data-index="' + i + '" tabindex="0">' + bar +
-          '<rect class="admin-chart__hit" x="' + (pad.left + slot * i) + '" y="' + pad.top + '" width="' + slot + '" height="' + innerH + '"/></g>'
-        );
-      })
-      .join("");
+    // Weiche Linie durch die Tageswerte (monotone Kurve: schießt nie über
+    // einen Wert hinaus und nie unter null), darunter eine Fläche, die nach
+    // unten ausläuft.
+    var base = pad.top + innerH;
+    var points = daily.map(function (d, i) {
+      return [pad.left + slot * i + slot / 2, base - (top ? (d.count / top) * innerH : 0)];
+    });
+    var line = smoothPath(points);
+    var gradient = "admin-fill-" + (++chartSeq);
+    var area = points.length > 1
+      ? line + "L" + points[points.length - 1][0].toFixed(1) + "," + base + "L" + points[0][0].toFixed(1) + "," + base + "Z"
+      : "";
+
+    var marks =
+      '<defs><linearGradient id="' + gradient + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" class="admin-chart__stop-top"/><stop offset="1" class="admin-chart__stop-bottom"/></linearGradient></defs>' +
+      (area ? '<path class="admin-chart__area" d="' + area + '" fill="url(#' + gradient + ')"/>' : "") +
+      '<path class="admin-chart__line" d="' + line + '"/>' +
+      daily
+        .map(function (d, i) {
+          var x = points[i][0];
+          // Trefferfläche über die ganze Höhe; Fadenkreuz und Punkt
+          // erscheinen erst beim Zeigen.
+          return (
+            '<g class="admin-chart__day" data-index="' + i + '" tabindex="0">' +
+            '<line class="admin-chart__cross" x1="' + x + '" x2="' + x + '" y1="' + pad.top + '" y2="' + base + '"/>' +
+            '<circle class="admin-chart__dot" cx="' + x + '" cy="' + points[i][1] + '" r="5"/>' +
+            '<rect class="admin-chart__hit" x="' + (pad.left + slot * i) + '" y="' + pad.top + '" width="' + slot + '" height="' + innerH + '"/></g>'
+          );
+        })
+        .join("");
 
     var table =
       '<details class="admin-table"><summary>Als Tabelle</summary><table><thead><tr><th>Tag</th><th>Besucher</th></tr></thead><tbody>' +
@@ -626,6 +647,157 @@
       '<div class="admin-chart__tip" hidden></div>' +
       "</div>" +
       table
+    );
+  }
+
+  var chartSeq = 0;
+
+  /** Monotone kubische Kurve (Fritsch-Carlson) als SVG-Pfad. */
+  function smoothPath(pts) {
+    if (!pts.length) return "";
+    if (pts.length < 3) {
+      return pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1); }).join("");
+    }
+    var n = pts.length;
+    var dx = [], dy = [], m = [], t = [];
+    for (var i = 0; i < n - 1; i++) {
+      dx[i] = pts[i + 1][0] - pts[i][0];
+      dy[i] = pts[i + 1][1] - pts[i][1];
+      m[i] = dy[i] / dx[i];
+    }
+    t[0] = m[0];
+    t[n - 1] = m[n - 2];
+    for (i = 1; i < n - 1; i++) t[i] = m[i - 1] * m[i] <= 0 ? 0 : (m[i - 1] + m[i]) / 2;
+    for (i = 0; i < n - 1; i++) {
+      if (m[i] === 0) { t[i] = 0; t[i + 1] = 0; continue; }
+      var a = t[i] / m[i], b = t[i + 1] / m[i], h = a * a + b * b;
+      if (h > 9) { var k = 3 / Math.sqrt(h); t[i] = k * a * m[i]; t[i + 1] = k * b * m[i]; }
+    }
+    var d = "M" + pts[0][0].toFixed(1) + "," + pts[0][1].toFixed(1);
+    for (i = 0; i < n - 1; i++) {
+      var c = dx[i] / 3;
+      d += "C" + (pts[i][0] + c).toFixed(1) + "," + (pts[i][1] + c * t[i]).toFixed(1) + " " +
+        (pts[i + 1][0] - c).toFixed(1) + "," + (pts[i + 1][1] - c * t[i + 1]).toFixed(1) + " " +
+        pts[i + 1][0].toFixed(1) + "," + pts[i + 1][1].toFixed(1);
+    }
+    return d;
+  }
+
+  /* --- Kreisdiagramm (Donut) ---------------------------------------------
+     Für Anteile: höchstens fünf Stücke in fester Farbreihenfolge, der Rest
+     als graues "Andere" – eine sechste, siebte Farbe liest niemand mehr
+     auseinander. Die Legende daneben nennt Wert und Anteil, damit nichts
+     nur an der Farbe hängt. Zeigen auf ein Stück oder eine Legendenzeile
+     hebt beide hervor und schreibt den Wert in die Mitte. */
+
+  var SLICES = 5;
+
+  function donut(rows, map, empty, opts) {
+    opts = opts || {};
+    rows = (rows || []).map(map).filter(function (r) { return r.count > 0; });
+    rows.sort(function (a, b) { return b.count - a.count; });
+    if (!rows.length) return '<p class="muted">' + empty + "</p>";
+
+    var shown = rows.slice(0, SLICES);
+    var rest = rows.slice(SLICES).reduce(function (sum, r) { return sum + r.count; }, 0);
+    if (rest) shown.push({ label: "Andere", count: rest, other: true });
+
+    var total = shown.reduce(function (sum, r) { return sum + r.count; }, 0);
+    var radius = 52;
+    var circ = 2 * Math.PI * radius;
+    var gap = shown.length > 1 ? 3 : 0;
+    var offset = 0;
+    var totalText = opts.total || num(total);
+
+    var segments = shown
+      .map(function (r, i) {
+        var len = (r.count / total) * circ;
+        var dash = Math.max(len - gap, 0.6);
+        var seg =
+          '<circle class="donut__seg donut__seg--' + (r.other ? "other" : i + 1) + '" data-donut-i="' + i + '" r="' + radius + '" cx="64" cy="64"' +
+          ' stroke-dasharray="' + dash.toFixed(2) + " " + (circ - dash).toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '"/>';
+        offset += len;
+        return seg;
+      })
+      .join("");
+
+    var legend = shown
+      .map(function (r, i) {
+        var pct = Math.round((r.count / total) * 100);
+        return (
+          '<li data-donut-i="' + i + '" data-value="' + esc(r.display || num(r.count)) + '" data-label="' + esc(r.label) + '" tabindex="0">' +
+          '<span class="donut__dot donut__dot--' + (r.other ? "other" : i + 1) + '"></span>' +
+          '<span class="donut__name">' + esc(r.label) + "</span>" +
+          '<span class="donut__value">' + esc(r.display || num(r.count)) + '</span><span class="donut__pct">' + pct + " %</span></li>"
+        );
+      })
+      .join("");
+
+    return (
+      '<div class="donut" data-total="' + esc(totalText) + '" data-unit="' + esc(opts.unit || "gesamt") + '">' +
+      '<div class="donut__figure"><svg viewBox="0 0 128 128" role="img" aria-label="' + esc((opts.label || "Anteile") + ": " + shown.map(function (r) { return r.label + " " + (r.display || num(r.count)); }).join(", ")) + '">' +
+      '<circle class="donut__track" r="' + radius + '" cx="64" cy="64"/>' +
+      '<g transform="rotate(-90 64 64)">' + segments + "</g></svg>" +
+      '<div class="donut__center"><strong>' + esc(totalText) + "</strong><span>" + esc(opts.unit || "gesamt") + "</span></div></div>" +
+      '<ul class="donut__legend">' + legend + "</ul></div>"
+    );
+  }
+
+  function highlightDonut(target) {
+    var box = target.closest(".donut");
+    if (!box) return;
+    var i = target.getAttribute("data-donut-i");
+    var item = box.querySelector('li[data-donut-i="' + i + '"]');
+    box.setAttribute("data-active", i);
+    box.querySelectorAll("[data-donut-i]").forEach(function (el) {
+      el.classList.toggle("is-active", el.getAttribute("data-donut-i") === i);
+    });
+    box.querySelector(".donut__center strong").textContent = item.getAttribute("data-value");
+    box.querySelector(".donut__center span").textContent = item.getAttribute("data-label");
+  }
+
+  function resetDonut(box) {
+    box.removeAttribute("data-active");
+    box.querySelectorAll(".is-active").forEach(function (el) { el.classList.remove("is-active"); });
+    box.querySelector(".donut__center strong").textContent = box.getAttribute("data-total");
+    box.querySelector(".donut__center span").textContent = box.getAttribute("data-unit");
+  }
+
+  // Ein Zuhörer für alle Kreisdiagramme, auch die später nachgeladenen.
+  ["mouseover", "focusin"].forEach(function (type) {
+    document.addEventListener(type, function (event) {
+      var target = event.target.closest && event.target.closest("[data-donut-i]");
+      if (target) highlightDonut(target);
+    });
+  });
+  document.addEventListener("mouseout", function (event) {
+    var box = event.target.closest && event.target.closest(".donut");
+    if (box && !box.contains(event.relatedTarget)) resetDonut(box);
+  });
+  document.addEventListener("focusout", function (event) {
+    var box = event.target.closest && event.target.closest(".donut");
+    if (box && !box.contains(event.relatedTarget)) resetDonut(box);
+  });
+
+  /* --- Ringanzeige für eine Quote (0–1) ------------------------------------ */
+
+  function ring(fraction, label, sub) {
+    var radius = 44;
+    var circ = 2 * Math.PI * radius;
+    var known = fraction !== null && fraction !== undefined && isFinite(fraction);
+    var value = known ? Math.max(0, Math.min(1, fraction)) : 0;
+    return (
+      '<div class="ring">' +
+      '<div class="ring__figure"><svg viewBox="0 0 100 100" role="img" aria-label="' + esc(label + ": " + (known ? Math.round(value * 100) + " %" : "keine Daten")) + '">' +
+      '<circle class="ring__track" r="' + radius + '" cx="50" cy="50"/>' +
+      (known && value > 0
+        ? '<circle class="ring__value" r="' + radius + '" cx="50" cy="50" transform="rotate(-90 50 50)" stroke-dasharray="' + (value * circ).toFixed(2) + " " + circ.toFixed(2) + '"/>'
+        : "") +
+      "</svg>" +
+      '<strong class="ring__pct">' + (known ? Math.round(value * 100) + " %" : "–") + "</strong></div>" +
+      '<p class="ring__label">' + esc(label) + "</p>" +
+      (sub ? '<p class="ring__sub">' + esc(sub) + "</p>" : "") +
+      "</div>"
     );
   }
 
