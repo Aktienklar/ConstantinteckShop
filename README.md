@@ -162,6 +162,18 @@ in-app browsers). It stores `ct-exclude` in that browser's local storage;
 `site.js` then loads neither GoatCounter nor PostHog. It is per browser, and
 Safari drops it after 7 days without a visit to the site.
 
+**Shop funnel.** `add-to-cart` (cart.js) and `checkout-start`
+(cart-page.js) exist since 1 Nov 2026. A cart filled before that – or on a
+device where the counter wasn't running – reached the checkout without an
+`add-to-cart`, which is how the analysis of 30 Oct–2 Nov showed one
+`checkout-start` with zero `add-to-cart`. Every cart line now remembers
+whether it was counted (`counted`); at the checkout the missing ones are
+reported first, with `source: "restored"`. There is no other way into the
+cart: the buttons on recipe pages only lead to the product page.
+
+**Ø pro Tag** on `admin.html` (visitors and Murder Night) divides by the
+days from the first day with data, not by the whole selected range.
+
 ### PostHog and the cookie banner
 
 PostHog (EU cloud, project 327043) records paths, funnels and session replays –
@@ -313,8 +325,9 @@ Teasers (shortened) and characters come from the case pages on murdernight.store
 Every link to Murdernight is built by `mn_url()` in `tools/cases.py`:
 `utm_source=constantinteck` (must never be missing – agreed with
 Murdernight), `utm_medium=website`, `utm_campaign=krimi-dinner`
-(`krimi-dinner-rezept` from recipe pages) and **`utm_content` = where the
-button sits**:
+(`krimi-dinner-rezept` from recipe pages), **`utm_content` = where the
+button sits**, and since 2 Nov 2026 also **`ref=constantinteck`** (`site.ref`
+in `data/cases.json`; the same in `krimiUrl()` in `krimi-dinner-data.js`):
 
 | utm_content | Button |
 | --- | --- |
@@ -329,7 +342,9 @@ button sits**:
 
 Navigation, announcement bar, footer, strips and the recipe grid card lead to
 the site's own pages first. They carry `data-via="nav"` (`banner`, `footer`,
-`recipes-strip`, `shop-strip`, `recipes-grid`, `home-hero`, …); `site.js`
+`recipes-strip`, `shop-strip`, `recipes-grid`, `home-hero`, and for the
+seasonal blocks `recipe-top`, `recipe-box-season`, `recipes-season`,
+`home-season`, …); `site.js`
 remembers the last one for this tab and appends it to the buy buttons on the
 overview and case pages: `utm_content=case-page-hero--from-footer`. So
 Murdernight's stats show both the button and the way in.
@@ -391,7 +406,10 @@ from the footer and the product pages – only once live keys are in place and t
 legal pages below are finished.
 
 The `paymentMethods` list must match what is actually switched on in the Stripe
-Dashboard. It previously advertised "Instant bank transfer" (Sofort), which
+Dashboard. Checked on 2 Nov 2026 (live payment method configuration):
+card, Apple Pay, Klarna, Link, Amazon Pay and others are on; **Google Pay is
+off**. The worker sets no `payment_method_types`, so Stripe shows whatever the
+Dashboard has switched on – add "Google Pay" to the list once it's on. It previously advertised "Instant bank transfer" (Sofort), which
 Stripe has since retired.
 
 ## Payment (Stripe)

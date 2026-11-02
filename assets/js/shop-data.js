@@ -221,6 +221,8 @@ var SHOP_TERMS = {
    * Käufer dort nicht anklicken kann. Unter "Weitere Zahlungsmethoden"
    * zeigt Stripe je nach Land noch eps und andere lokale Verfahren.
    */
+  /* 2.11.2026 im Live-Konto geprüft: Apple Pay an, Google Pay AUS. Erst
+     ergänzen, wenn Google Pay im Dashboard eingeschaltet ist. */
   paymentMethods: ["Card", "Apple Pay", "Klarna", "Link", "Amazon Pay"],
   /**
    * Seit dem 10.08.2026 false: Auf dem Worker liegt ein sk_live_-Schlüssel,

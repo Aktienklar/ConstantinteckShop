@@ -411,7 +411,17 @@
     });
 
     // Nur ein Messpunkt für die Statistik (site.js); an der Kasse selbst
-    // ändert er nichts.
+    // ändert er nichts. Vorher "add-to-cart" für Zeilen nachholen, die
+    // ohne Meldung im Warenkorb liegen (gefüllt, bevor es den Messpunkt gab,
+    // oder auf einem Gerät, auf dem der Zähler da noch nicht lief) – sonst
+    // zeigt die Statistik Kassenbesuche ohne vorheriges Einlegen.
+    if (window.ctTrack) {
+      var uncounted = lines.filter(function (line) { return !line.counted; });
+      uncounted.forEach(function (line) {
+        window.ctTrack("add-to-cart", { product: line.productSlug, variant: line.variantId || null, quantity: line.quantity, source: "restored" });
+      });
+      if (uncounted.length) window.Cart.markCounted();
+    }
     if (window.ctTrack) {
       window.ctTrack("checkout-start", {
         items: lines.reduce(function (sum, line) { return sum + line.quantity; }, 0),

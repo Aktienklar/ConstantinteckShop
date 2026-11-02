@@ -40,7 +40,8 @@ var KRIMI_SITE = {
     "utm_medium": "website",
     "utm_campaign": "krimi-dinner"
   },
-  "recipeCampaign": "krimi-dinner-rezept"
+  "recipeCampaign": "krimi-dinner-rezept",
+  "ref": "constantinteck"
 };
 
 var KRIMI_CASES = [
@@ -942,6 +943,8 @@ function krimiUrl(path, campaign, content) {
     params.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
   });
   if (content) params.push("utm_content=" + encodeURIComponent(content));
+  // Wie mn_url() in tools/cases.py: zusätzlich ref= (seit 2.11.2026).
+  if (KRIMI_SITE.ref) params.push("ref=" + encodeURIComponent(KRIMI_SITE.ref));
 
   return (
     KRIMI_SITE.base[KRIMI_SITE.lang] +

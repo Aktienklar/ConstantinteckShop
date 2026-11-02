@@ -66,13 +66,19 @@
         }
       }
 
+      /* counted: Für diese Zeile wurde "add-to-cart" gemeldet. Zeilen aus
+         Warenkörben von vor dem 1.11.2026 (damals gab es den Messpunkt noch
+         nicht) tragen es nicht – cart-page.js holt die Meldung beim Gang zur
+         Kasse nach, sonst gäbe es "checkout-start" ohne "add-to-cart". */
       if (existing) {
         existing.quantity += qty;
+        existing.counted = true;
       } else {
         lines.push({
           productSlug: slug,
           variantId: variantId || undefined,
-          quantity: qty
+          quantity: qty,
+          counted: true
         });
       }
 
@@ -104,6 +110,15 @@
           return !sameLine(line, slug, variantId);
         })
       );
+    },
+
+    /** Alle Zeilen als gemeldet markieren (cart-page.js, nach dem Nachholen). */
+    markCounted: function () {
+      var lines = read();
+      lines.forEach(function (line) {
+        line.counted = true;
+      });
+      write(lines);
     },
 
     clear: function () {

@@ -192,6 +192,9 @@ def mn_url(path, content, campaign=None):
     if campaign:
         params["utm_campaign"] = campaign
     params["utm_content"] = content
+    # Zusätzlich ref=: Murdernight wertet das unabhängig von UTM aus
+    # (Partnerkennung, Wunsch Constantin 2.11.2026). utm_source bleibt Pflicht.
+    params["ref"] = SITE_CFG.get("ref", "constantinteck")
     return SITE_CFG["base"][LANG] + path + ("&" if "?" in path else "?") + urllib.parse.urlencode(params)
 
 

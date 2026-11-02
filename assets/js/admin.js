@@ -190,6 +190,22 @@
     return date.toLocaleDateString("de-DE", long ? { weekday: "short", day: "numeric", month: "long" } : { day: "numeric", month: "numeric" });
   }
 
+  /* Tage für "Ø pro Tag": ab dem ersten Tag mit Messdaten bis heute. Der
+     gewählte Zeitraum (z. B. 30 Tage) reicht oft vor den Start der Zählung
+     zurück – durch alle Tage geteilt, kam am 2.11.2026 "25" statt ~250
+     heraus. Nullen nach dem ersten Datentag zählen mit (echte Flaute). */
+  function daysWithData(daily) {
+    for (var i = 0; i < daily.length; i++) {
+      if (daily[i].count > 0) return daily.length - i;
+    }
+    return 0;
+  }
+
+  function perDay(total, daily) {
+    var n = daysWithData(daily || []);
+    return n ? total / n : 0;
+  }
+
   function render() {
     var daily = data.daily || [];
     var top = (data.referrers || []).filter(function (ref) {
@@ -199,7 +215,7 @@
     body.innerHTML =
       '<div class="admin-tiles">' +
       tile("Besucher", num(data.visitors)) +
-      tile("Ø pro Tag", num(Math.round(data.visitors / Math.max(daily.length, 1)))) +
+      tile("Ø pro Tag", num(Math.round(perDay(data.visitors, daily))), daysWithData(daily) < daily.length ? "seit " + num(daysWithData(daily)) + " Tagen mit Daten" : "") +
       tile("Klicks", num(data.clicks), "auf markierte Knöpfe") +
       tile("Top-Quelle", top ? esc(top.name) : "–", top ? num(top.count) + " Besucher" : "") +
       "</div>" +
@@ -381,7 +397,7 @@
   function renderMurderNight(mn) {
     var topCase = mn.cases[0];
     var topPlace = mn.placements[0];
-    var perDay = mn.daily.length ? mn.total / mn.daily.length : 0;
+    var mnPerDay = perDay(mn.total, mn.daily);
 
     var pages;
     if (mn.pages) {
@@ -393,7 +409,7 @@
     return (
       '<div class="admin-tiles">' +
       tile("Weiterleitungen", num(mn.total), "Besucher, die rübergeklickt haben") +
-      tile("Ø pro Tag", perDay.toLocaleString("de-DE", { maximumFractionDigits: 1 })) +
+      tile("Ø pro Tag", mnPerDay.toLocaleString("de-DE", { maximumFractionDigits: 1 })) +
       tile("Top-Fall", topCase ? esc(caseTitle(topCase.name)) : "–", topCase ? num(topCase.count) + " Klicks" : "") +
       tile("Top-Stelle", topPlace ? esc(PLACEMENTS[topPlace.name] || topPlace.name) : "–", topPlace ? num(topPlace.count) + " Klicks" : "") +
       "</div>" +
