@@ -163,7 +163,7 @@
 
       <div class="site-header__right">
         <nav class="nav" aria-label="Main">
-        <a class="nav__link nav__link--feature" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
+        <a class="nav__link" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
         <a class="nav__link is-active" href="../recipes.html" aria-current="page">Recipes</a>
         <a class="nav__link" href="../shop.html">Shop</a>
         <a class="nav__link" href="../about.html">About</a>
@@ -178,7 +178,7 @@
 
     <!-- Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü -->
     <nav class="nav-mobile no-scrollbar" aria-label="Main">
-      <a class="chip chip--feature" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
+      <a class="chip" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
       <a class="chip is-active" href="../recipes.html" aria-current="page">Recipes</a>
       <a class="chip" href="../shop.html">Shop</a>
       <a class="chip" href="../about.html">About</a>
@@ -210,10 +210,6 @@
           </div>
         </dl>
       </header>
-
-      <!-- Saison-Hinweis (geschrieben von tools/cases.py aus data/cases.json) -->
-      <a class="season-hint" href="../murder-mystery/the-last-sleigh-ride.html" data-via="recipe-top" data-track="season-click/recipe-top/the-last-sleigh-ride" data-season-only="11,12"><span class="season-hint__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span><span class="season-hint__text"><b>Hosting Christmas?</b> <span class="only-narrow">Make it a murder mystery</span><span class="only-wide">Turn dinner into a murder mystery</span></span><span class="season-hint__arrow" aria-hidden="true">→</span></a>
-      <!-- /Saison-Hinweis -->
 
       <!-- Video. Bis zum Klick liegt hier nur das eigene Rezeptfoto – zu
            Instagram geht keine einzige Anfrage, solange niemand auf Abspielen
@@ -270,7 +266,25 @@
             </li>
             </ul>
           </section>
+        </div>
 
+        <section class="panel method recipe-body__main" aria-labelledby="method">
+          <h2 id="method" style="font-size:1.25rem">Method</h2>
+          <ol>
+            <li>
+              <span class="method__num method__num--sweet" aria-hidden="true">1</span>
+              <p>Blend the frozen blueberries, strawberries, oat milk and honey until thick and creamy.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--sweet" aria-hidden="true">2</span>
+              <p>Pour into a bowl and top with the granola and the fresh berries.</p>
+            </li>
+          </ol>
+        </section>
+      </div>
+
+      <!-- Unter der Zubereitung (Test-Redesign v1): erst das Rezept, dann Krimi-Box und Schürze. -->
+      <div class="recipe-extras">
           <!-- Krimi-Box (geschrieben von tools/cases.py aus data/cases.json) -->
       <div data-off-season-only="11,12" hidden>
       <aside class="panel panel--outline case-box" aria-labelledby="case-box-title">
@@ -312,36 +326,12 @@
         </section>
       </div>
           <!-- /Schürzen-Karte -->
-
-        </div>
-
-        <section class="panel method recipe-body__main" aria-labelledby="method">
-          <h2 id="method" style="font-size:1.25rem">Method</h2>
-          <ol>
-            <li>
-              <span class="method__num method__num--sweet" aria-hidden="true">1</span>
-              <p>Blend the frozen blueberries, strawberries, oat milk and honey until thick and creamy.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--sweet" aria-hidden="true">2</span>
-              <p>Pour into a bowl and top with the granola and the fresh berries.</p>
-            </li>
-          </ol>
-        </section>
       </div>
 
       <!-- Newsletter-Box. Leer und verborgen, bis sie in
            assets/js/site-config.js eingeschaltet wird. -->
       <div class="mt-6" data-newsletter hidden></div>
 
-      <div class="recipe-footer">
-      <div class="share">
-        <span class="share__label">Share:</span>
-        <button type="button" class="chip" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg> Share</button>
-        <a class="chip" href="https://wa.me/?text=Granola%20Berry%20Smoothie%20Bowl%20https%3A%2F%2Fconstantinteck.com%2Frecipes%2Fgranola-berry-smoothie-bowl.html" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
-        <button type="button" class="chip" data-copy>Copy link</button>
-      </div>
-      </div>
       <!-- Autor (geschrieben von tools/blocks.py) -->
       <aside class="panel author-box mt-12" aria-label="About the author">
         <picture><source type="image/avif" srcset="../assets/img/constantin-avatar.avif"><img class="author-box__photo" src="../assets/img/constantin-avatar.jpg" alt="Constantin" width="192" height="192" loading="lazy"></picture>

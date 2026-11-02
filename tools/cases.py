@@ -371,14 +371,16 @@ def nav(page, root):
     on = active(page)
     desk, mobile = [], []
     for href, label in NAV:
+        # Test-Redesign v1: "Murder Mystery" ist nur noch farbig, wenn es die
+        # aktive Seite ist – wie alle anderen Punkte (kein --feature mehr).
         feature = href == "krimi-dinner.html"
         is_on = href == on
         cur = ' aria-current="page"' if is_on else ""
         via = ' data-via="nav"' if feature else ""
-        desk.append('<a class="nav__link%s%s" href="%s%s"%s%s>%s</a>'
-                    % (" nav__link--feature" if feature else "", " is-active" if is_on else "", root, href, cur, via, label))
-        mobile.append('<a class="chip%s%s" href="%s%s"%s%s>%s</a>'
-                      % (" chip--feature" if feature else "", " is-active" if is_on else "", root, href, cur, via, label))
+        desk.append('<a class="nav__link%s" href="%s%s"%s%s>%s</a>'
+                    % (" is-active" if is_on else "", root, href, cur, via, label))
+        mobile.append('<a class="chip%s" href="%s%s"%s%s>%s</a>'
+                      % (" is-active" if is_on else "", root, href, cur, via, label))
     return ('<nav class="nav" aria-label="Main">\n        ' + "\n        ".join(desk) + "\n        </nav>",
             '<nav class="nav-mobile no-scrollbar" aria-label="Main">\n      ' + "\n      ".join(mobile) + "\n    </nav>")
 
@@ -966,23 +968,19 @@ def recipe_pages():
                      % (off_season_only(season), inner, season_only(season), season_box(season)))
         box = block("Krimi-Box", inner, "          ")
 
-        # Saison-Zeile direkt nach dem Rezeptkopf (vor dem Foto): alten Stand
-        # entfernen und neu einsetzen, damit sie immer an derselben Stelle steht.
-        hint = block("Saison-Hinweis", season_hint(season) if season else "")
+        # Test-Redesign v1: keine Saison-Zeile mehr über dem Foto – höchstens
+        # eine Werbeleiste pro Seite (die Ankündigungsleiste). Alten Stand
+        # entfernen; season_hint bleibt für den Fall, dass sie zurückkommt.
         src = re.sub(r"\n\n[ \t]*<!-- Saison-Hinweis \(geschrieben.*?<!-- /Saison-Hinweis -->", "", src, flags=re.S)
-        head = src.find('<header class="recipe-header">')
-        if head != -1:
-            end = src.index("</header>", head) + len("</header>")
-            src = src[:end] + "\n\n" + hint + src[end:]
         if "<!-- Krimi-Box (geschrieben" in src:
             src = replace_between(src, "<!-- Krimi-Box (geschrieben", "<!-- /Krimi-Box -->", box)
         else:
-            # Direkt nach der Zutatenliste.
-            m = re.search(r'<section class="panel ingredients".*?</section>\n', src, re.S)
-            src = src[:m.end()] + "\n" + box + "\n" + src[m.end():]
+            # Unter der Zubereitung (Test-Redesign v1).
+            m = re.search(r'<section class="panel method.*?</section>\n[ \t]*</div>\n', src, re.S)
+            src = src[:m.end()] + '\n      <div class="recipe-extras">\n' + box + "\n      </div>\n" + src[m.end():]
 
-        # Schürzen-Karte: kompakt direkt nach der Krimi-Box, also zwischen
-        # Zutaten und Zubereitung (vorher stand sie unter der Zubereitung).
+        # Schürzen-Karte: kompakt direkt nach der Krimi-Box, beide unter der
+        # Zubereitung (Test-Redesign v1).
         # Welche Schürze, entscheidet assets/js/recipe-product.js; hier steht
         # nur der Rückfall ohne JavaScript – bewusst ohne Preis, der Preis
         # steht schon an drei Stellen.

@@ -197,7 +197,7 @@
 
       <div class="site-header__right">
         <nav class="nav" aria-label="Main">
-        <a class="nav__link nav__link--feature" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
+        <a class="nav__link" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
         <a class="nav__link is-active" href="../recipes.html" aria-current="page">Recipes</a>
         <a class="nav__link" href="../shop.html">Shop</a>
         <a class="nav__link" href="../about.html">About</a>
@@ -212,7 +212,7 @@
 
     <!-- Mobil: Navigation in eigener Zeile mit großen Zielen statt Burger-Menü -->
     <nav class="nav-mobile no-scrollbar" aria-label="Main">
-      <a class="chip chip--feature" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
+      <a class="chip" href="../krimi-dinner.html" data-via="nav">Murder Mystery</a>
       <a class="chip is-active" href="../recipes.html" aria-current="page">Recipes</a>
       <a class="chip" href="../shop.html">Shop</a>
       <a class="chip" href="../about.html">About</a>
@@ -244,10 +244,6 @@
           </div>
         </dl>
       </header>
-
-      <!-- Saison-Hinweis (geschrieben von tools/cases.py aus data/cases.json) -->
-      <a class="season-hint" href="../murder-mystery/the-last-sleigh-ride.html" data-via="recipe-top" data-track="season-click/recipe-top/the-last-sleigh-ride" data-season-only="11,12"><span class="season-hint__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span><span class="season-hint__text"><b>Hosting Christmas?</b> <span class="only-narrow">Make it a murder mystery</span><span class="only-wide">Turn dinner into a murder mystery</span></span><span class="season-hint__arrow" aria-hidden="true">→</span></a>
-      <!-- /Saison-Hinweis -->
 
       <!-- Video. Bis zum Klick liegt hier nur das eigene Rezeptfoto – zu
            Instagram geht keine einzige Anfrage, solange niemand auf Abspielen
@@ -350,7 +346,45 @@
             </li>
             </ul>
           </section>
+        </div>
 
+        <section class="panel method recipe-body__main" aria-labelledby="method">
+          <h2 id="method" style="font-size:1.25rem">Method</h2>
+          <ol>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">1</span>
+              <p>Heat the oven to 200 °C (400 °F). Wash the sweet potatoes, prick them all over with a fork and bake them on a lined tray for 45–60 minutes, until a knife slides in without resistance.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">2</span>
+              <p>Take the steaks out of the fridge about 30 minutes before cooking and pat them dry with kitchen paper.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">3</span>
+              <p>For the salad, quarter the cherry tomatoes and finely dice the red onion. Mix with the olive oil and balsamic vinegar and season with salt and pepper.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">4</span>
+              <p>For the sauce, stir the Greek yogurt with the lemon juice, parsley and chives and season with salt and pepper.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">5</span>
+              <p>Heat a pan over high heat until it is very hot. Rub the steaks with olive oil, season with salt and sear for 2–3 minutes per side for medium-rare (for a steak about 2.5 cm thick). Let them rest on a board for 5 minutes, season with pepper and slice thinly against the grain.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">6</span>
+              <p>Cut the sweet potatoes open lengthwise, fluff up the inside with a fork and season with a pinch of salt.</p>
+            </li>
+            <li>
+              <span class="method__num method__num--savory" aria-hidden="true">7</span>
+              <p>Load them with the tomato and red onion salad, the lemon herb yogurt sauce and sliced avocado, top with the steak and finish with fresh spring onions. Enjoy!</p>
+            </li>
+          </ol>
+        </section>
+      </div>
+
+      <!-- Unter der Zubereitung (Test-Redesign v1): erst das Rezept, dann Krimi-Box und Schürze. -->
+      <div class="recipe-extras">
           <!-- Krimi-Box (geschrieben von tools/cases.py aus data/cases.json) -->
       <div data-off-season-only="11,12" hidden>
       <aside class="panel panel--outline case-box" aria-labelledby="case-box-title">
@@ -392,56 +426,12 @@
         </section>
       </div>
           <!-- /Schürzen-Karte -->
-
-        </div>
-
-        <section class="panel method recipe-body__main" aria-labelledby="method">
-          <h2 id="method" style="font-size:1.25rem">Method</h2>
-          <ol>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">1</span>
-              <p>Heat the oven to 200 °C (400 °F). Wash the sweet potatoes, prick them all over with a fork and bake them on a lined tray for 45–60 minutes, until a knife slides in without resistance.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">2</span>
-              <p>Take the steaks out of the fridge about 30 minutes before cooking and pat them dry with kitchen paper.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">3</span>
-              <p>For the salad, quarter the cherry tomatoes and finely dice the red onion. Mix with the olive oil and balsamic vinegar and season with salt and pepper.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">4</span>
-              <p>For the sauce, stir the Greek yogurt with the lemon juice, parsley and chives and season with salt and pepper.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">5</span>
-              <p>Heat a pan over high heat until it is very hot. Rub the steaks with olive oil, season with salt and sear for 2–3 minutes per side for medium-rare (for a steak about 2.5 cm thick). Let them rest on a board for 5 minutes, season with pepper and slice thinly against the grain.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">6</span>
-              <p>Cut the sweet potatoes open lengthwise, fluff up the inside with a fork and season with a pinch of salt.</p>
-            </li>
-            <li>
-              <span class="method__num method__num--savory" aria-hidden="true">7</span>
-              <p>Load them with the tomato and red onion salad, the lemon herb yogurt sauce and sliced avocado, top with the steak and finish with fresh spring onions. Enjoy!</p>
-            </li>
-          </ol>
-        </section>
       </div>
 
       <!-- Newsletter-Box. Leer und verborgen, bis sie in
            assets/js/site-config.js eingeschaltet wird. -->
       <div class="mt-6" data-newsletter hidden></div>
 
-      <div class="recipe-footer">
-      <div class="share">
-        <span class="share__label">Share:</span>
-        <button type="button" class="chip" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg> Share</button>
-        <a class="chip" href="https://wa.me/?text=Steak%20Loaded%20Sweet%20Potato%20https%3A%2F%2Fconstantinteck.com%2Frecipes%2Fsteak-loaded-sweet-potato.html" target="_blank" rel="noreferrer" data-whatsapp>WhatsApp</a>
-        <button type="button" class="chip" data-copy>Copy link</button>
-      </div>
-      </div>
       <!-- Autor (geschrieben von tools/blocks.py) -->
       <aside class="panel author-box mt-12" aria-label="About the author">
         <picture><source type="image/avif" srcset="../assets/img/constantin-avatar.avif"><img class="author-box__photo" src="../assets/img/constantin-avatar.jpg" alt="Constantin" width="192" height="192" loading="lazy"></picture>
