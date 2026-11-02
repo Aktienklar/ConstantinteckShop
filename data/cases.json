@@ -13,7 +13,8 @@
     "price": "Preis in Euro – Abschrift von murdernight.store, dort ändern = hier ändern",
     "image": "Cover 675×900 (3:4) ab Hauptordner; daneben <name>-240/-400/-675.webp (tools/krimi-images.py)",
     "moods / occasions": "Schlüssel aus KRIMI_LABELS in assets/js/krimi-dinner-data.js. occasions = 'Perfect for' auf murdernight.store (Stand 29.10.2026)",
-    "seasonal": "Monate 1–12: Fall wird vorgezogen und in der Ankündigungsleiste beworben",
+    "seasonal": "Monate 1–12: Fall wird vorgezogen, in der Ankündigungsleiste beworben und ersetzt auf ALLEN Rezeptseiten die Krimi-Box (dazu en.season)",
+    "en.season": "Nur bei Fällen mit seasonal: eyebrow/title/button der Saison-Box auf Rezeptseiten; eyebrow + title (am Handy short, muss in eine Zeile passen) = Hinweiszeile oben, gift = Zeile 'perfect last-minute gift' auf Fallseite und Karten",
     "menu": "starter/main/dessert = Dateiname in recipes/ ohne .html; leer = Gang fehlt (TODO)",
     "recipes": "Rezeptseiten, auf denen die Box 'This dish fits …' auf DIESEN Fall zeigt. Jedes Rezept genau einmal.",
     "en / de": "title, genre, setting, path (Produktseite bei Murdernight), teaser (1–2 Sätze), roles (Liste {name, role, text} – wie auf murdernight.store, ohne Spoiler)"
@@ -198,6 +199,13 @@
         "genre": "Fairytale",
         "setting": "The Christmas village at the North Pole",
         "path": "/en/mysteries/the-last-sleigh-ride",
+        "season": {
+          "eyebrow": "Hosting Christmas?",
+          "title": "Turn dinner into a murder mystery",
+          "short": "Make it a murder mystery",
+          "button": "See the Christmas case",
+          "gift": "Instant download – perfect last-minute gift"
+        },
         "teaser": "Christmas Eve at the North Pole: just before the midnight flight, Santa is found in his armchair in the map room, as if asleep – and he never wakes up. By the oldest law of the village, no sleigh flies while a wrong goes unanswered.",
         "roles": [
           {

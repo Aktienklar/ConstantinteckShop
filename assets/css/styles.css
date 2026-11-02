@@ -5713,6 +5713,86 @@ div.legal__en > * + * {
   font-size: 0.875rem;
 }
 
+/* Saison-Box (Nov–Dez: Weihnachtsfall statt des zugeordneten Falls) */
+.case-box--season {
+  background-color: var(--brand-soft);
+}
+
+.case-box__meta a {
+  font-weight: 600;
+  color: var(--cocoa);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Einzeilige Saison-Zeile direkt unter dem Rezeptfoto */
+.season-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--tap);
+  margin-top: 0.75rem;
+  border: 1px solid rgba(194, 65, 12, 0.35);
+  border-radius: 999px;
+  background-color: var(--brand-soft);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--cocoa);
+}
+
+.season-hint[hidden] {
+  display: none;
+}
+
+/* Am Handy ohne Symbol – der Platz geht an den Text, der in einer Zeile
+   bleiben soll (auch bei 375 px). */
+.season-hint__icon {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .season-hint {
+    padding-inline: 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  .season-hint__icon {
+    display: block;
+  }
+}
+
+.season-hint__icon svg {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--brand);
+}
+
+.season-hint__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.season-hint b {
+  color: var(--brand-ink);
+}
+
+.season-hint__arrow {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.season-hint:hover .season-hint__text {
+  text-decoration: underline;
+}
+
+@media (min-width: 1024px) {
+  .season-hint {
+    max-width: 48rem;
+  }
+}
+
 /* --- Fallseite murder-mystery/<id>.html ---------------------------------- */
 
 .case-hero {

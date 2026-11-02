@@ -183,6 +183,13 @@ var KRIMI_CASES = [
       "genre": "Fairytale",
       "setting": "The Christmas village at the North Pole",
       "path": "/en/mysteries/the-last-sleigh-ride",
+      "season": {
+        "eyebrow": "Hosting Christmas?",
+        "title": "Turn dinner into a murder mystery",
+        "short": "Make it a murder mystery",
+        "button": "See the Christmas case",
+        "gift": "Instant download – perfect last-minute gift"
+      },
       "teaser": "Christmas Eve at the North Pole: just before the midnight flight, Santa is found in his armchair in the map room, as if asleep – and he never wakes up. By the oldest law of the village, no sleigh flies while a wrong goes unanswered.",
       "roles": [
         {

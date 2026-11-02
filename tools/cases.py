@@ -29,6 +29,7 @@ welchen Weg ein Kauf kam.
 
 Läuft das Skript zweimal, ändert sich beim zweiten Mal nichts.
 """
+import datetime
 import html
 import json
 import os
@@ -146,6 +147,23 @@ def seasonal_cases():
 
 def months(case):
     return ",".join(str(m) for m in case.get("seasonal", []))
+
+
+def in_season_today(case):
+    """Saison zum Zeitpunkt des Skriptlaufs. Danach entscheidet site.js mit dem
+    Datum des Besuchers; das hier sorgt nur dafür, dass im Saisonmonat nichts
+    sichtbar nachrutscht (das HTML steht schon richtig da)."""
+    return datetime.date.today().month in case.get("seasonal", [])
+
+
+def season_only(case):
+    """Nur in den Monaten des Falls sichtbar (site.js schaltet beide Richtungen)."""
+    return ' data-season-only="%s"%s' % (months(case), "" if in_season_today(case) else " hidden")
+
+
+def off_season_only(case):
+    """Nur außerhalb der Monate des Falls sichtbar."""
+    return ' data-off-season-only="%s"%s' % (months(case), " hidden" if in_season_today(case) else "")
 
 
 def mn_url(path, content, campaign=None):
@@ -722,12 +740,12 @@ def home():
     for c in seasonal_cases():
         if c in picks:
             continue
-        items.append('<div class="krimi-cases__item" data-season-only="%s" hidden>%s</div>'
-                     % (months(c), case_card(c, "", "home-pick", 0, menu=False)))
+        items.append('<div class="krimi-cases__item"%s>%s</div>'
+                     % (season_only(c), case_card(c, "", "home-pick", 0, menu=False)))
     for i, c in enumerate(picks):
         extra = ""
         if i == len(picks) - 1 and seasonal_cases():
-            extra = ' data-off-season-only="%s"' % months(seasonal_cases()[0])
+            extra = off_season_only(seasonal_cases()[0])
         items.append('<div class="krimi-cases__item"%s>%s</div>' % (extra, case_card(c, "", "home-pick", i + 1, menu=False)))
     src = fill(src, "Auswahl", '        <div class="grid grid--cases home-picks">\n          %s\n        </div>'
                % "\n          ".join(items), "        ")
@@ -776,6 +794,43 @@ def recipe_box(case, slug):
     }
 
 
+def season_box(case):
+    """Saison-Box (z. B. Weihnachten): steht in den Monaten aus "seasonal" auf
+    ALLEN Rezeptseiten statt der Box des zugeordneten Falls. Der Knopf führt
+    auf die eigene Fallseite, nicht direkt zu Murdernight – deshalb
+    "season-click" statt "krimi-click" (das zählt admin.html als Weiterleitung)."""
+    page = case_page(case, "../")
+    s = t(case)["season"]
+    return """      <aside class="panel panel--outline case-box case-box--season" id="season-box" aria-labelledby="case-box-season-title">
+        <a class="case-box__cover" href="%(page)s" tabindex="-1" aria-hidden="true" data-via="recipe-box-season">%(cover)s</a>
+        <div class="case-box__text">
+          <p class="eyebrow">%(eyebrow)s</p>
+          <p class="case-box__lead" id="case-box-season-title">%(title)s</p>
+          <p class="case-box__meta"><a href="%(page)s" data-via="recipe-box-season">%(case)s</a>: case + 3-course menu idea · %(players)s players · instant PDF · %(price)s</p>
+          <div class="case-box__actions">
+            <a class="btn btn--primary btn--sm" href="%(page)s" data-via="recipe-box-season" data-track="season-click/recipe-box/%(id)s">%(button)s <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </aside>""" % {
+        "page": page, "cover": cover(case, "../", "88px", alt=""), "eyebrow": esc(s["eyebrow"]),
+        "title": esc(s["title"]), "case": esc(t(case)["title"]), "players": esc(case["players"]),
+        "price": price(case["price"]), "button": esc(s["button"]), "id": case["id"],
+    }
+
+
+def season_hint(case):
+    """Einzeilige Zeile direkt unter Titel und Fakten, über dem Rezeptfoto –
+    unter dem Foto wäre sie am Handy (Safari-Leisten, Cookie-Banner) erst nach
+    dem Scrollen zu sehen. Kurzer Text am Handy, damit sie in einer Zeile bleibt."""
+    s = t(case)["season"]
+    return ('      <a class="season-hint" href="%s" data-via="recipe-top" data-track="season-click/recipe-top/%s"%s>'
+            '<span class="season-hint__icon">%s</span><span class="season-hint__text"><b>%s</b> '
+            '<span class="only-narrow">%s</span><span class="only-wide">%s</span></span>'
+            '<span class="season-hint__arrow" aria-hidden="true">→</span></a>'
+            % (case_page(case, "../"), case["id"], season_only(case), ICON_CASE, esc(s["eyebrow"]),
+               esc(s.get("short") or s["title"]), esc(s["title"])))
+
+
 def outer_div(src, start):
     """Ende des <div>, das bei start beginnt (verschachtelte divs gezählt)."""
     depth, i = 0, start
@@ -796,7 +851,22 @@ def recipe_pages():
         src = read(page)
         case = owner.get(slug)
         inner = recipe_box(case, slug) if case else "      <!-- TODO: Rezept in data/cases.json einem Fall zuordnen -->"
+        # In der Saison ersetzt die Saison-Box die zugeordnete; site.js
+        # schaltet zwischen beiden nach dem Datum des Besuchers.
+        season = next((c for c in seasonal_cases() if t(c).get("season")), None)
+        if season:
+            inner = ('      <div%s>\n%s\n      </div>\n      <div%s>\n%s\n      </div>'
+                     % (off_season_only(season), inner, season_only(season), season_box(season)))
         box = block("Krimi-Box", inner, "          ")
+
+        # Saison-Zeile direkt nach dem Rezeptkopf (vor dem Foto): alten Stand
+        # entfernen und neu einsetzen, damit sie immer an derselben Stelle steht.
+        hint = block("Saison-Hinweis", season_hint(season) if season else "")
+        src = re.sub(r"\n\n[ \t]*<!-- Saison-Hinweis \(geschrieben.*?<!-- /Saison-Hinweis -->", "", src, flags=re.S)
+        head = src.find('<header class="recipe-header">')
+        if head != -1:
+            end = src.index("</header>", head) + len("</header>")
+            src = src[:end] + "\n\n" + hint + src[end:]
         if "<!-- Krimi-Box (geschrieben" in src:
             src = replace_between(src, "<!-- Krimi-Box (geschrieben", "<!-- /Krimi-Box -->", box)
         else:

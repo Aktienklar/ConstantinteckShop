@@ -278,6 +278,16 @@ Teasers (shortened) and characters come from the case pages on murdernight.store
 - **Seasonal:** `seasonal: [11, 12]` – in those months (visitor's date,
   `assets/js/site.js`) the announcement bar advertises that case, it moves to
   the front on `krimi-dinner.html` and joins *Pick your evening*.
+  On **every** recipe page the box after the ingredients then shows the
+  seasonal case instead of the assigned one (texts in `en.season`:
+  eyebrow, title, button), and a one-line hint sits right under the recipe
+  title (`short` is the phone version – it has to stay on one line).
+  Both lead to the case page and are counted as `season-click/recipe-top/<id>`
+  and `season-click/recipe-box/<id>` – not `krimi-click`, which `admin.html`
+  counts as a redirect to Murdernight.
+  `cases.py` writes `hidden` to match the month it runs in, so nothing
+  jumps on load; `site.js` then switches both ways by the visitor's date, so
+  the seasonal blocks disappear by themselves in January even without a deploy.
 - **Start page:** `home.picks`, `home.exampleMenu`, `home.heroCovers`.
 
 ### Links to Murdernight and utm_content

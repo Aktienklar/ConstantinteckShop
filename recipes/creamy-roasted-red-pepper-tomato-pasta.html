@@ -222,6 +222,10 @@
         </dl>
       </header>
 
+      <!-- Saison-Hinweis (geschrieben von tools/cases.py aus data/cases.json) -->
+      <a class="season-hint" href="../murder-mystery/the-last-sleigh-ride.html" data-via="recipe-top" data-track="season-click/recipe-top/the-last-sleigh-ride" data-season-only="11,12"><span class="season-hint__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 5.2 5.2"/><path d="M8.2 10.6a2.4 2.4 0 0 1 2.4-2.4"/></svg></span><span class="season-hint__text"><b>Hosting Christmas?</b> <span class="only-narrow">Make it a murder mystery</span><span class="only-wide">Turn dinner into a murder mystery</span></span><span class="season-hint__arrow" aria-hidden="true">→</span></a>
+      <!-- /Saison-Hinweis -->
+
       <!-- Video. Bis zum Klick liegt hier nur das eigene Rezeptfoto – zu
            Instagram geht keine einzige Anfrage, solange niemand auf Abspielen
            drückt. Welches Video zu diesem Rezept gehört, steht in
@@ -283,6 +287,7 @@
           </section>
 
           <!-- Krimi-Box (geschrieben von tools/cases.py aus data/cases.json) -->
+      <div data-off-season-only="11,12" hidden>
       <aside class="panel panel--outline case-box" aria-labelledby="case-box-title">
         <a class="case-box__cover" href="../murder-mystery/the-comet-vintage.html" tabindex="-1" aria-hidden="true" data-via="recipe-box"><picture><source type="image/webp" srcset="../assets/img/krimi/the-comet-vintage-240.webp 240w, ../assets/img/krimi/the-comet-vintage-400.webp 400w, ../assets/img/krimi/the-comet-vintage-675.webp 675w" sizes="88px"><img src="../assets/img/krimi/the-comet-vintage.jpg" width="675" height="900" alt="" loading="lazy" decoding="async"></picture></a>
         <div class="case-box__text">
@@ -295,6 +300,20 @@
           </div>
         </div>
       </aside>
+      </div>
+      <div data-season-only="11,12">
+      <aside class="panel panel--outline case-box case-box--season" id="season-box" aria-labelledby="case-box-season-title">
+        <a class="case-box__cover" href="../murder-mystery/the-last-sleigh-ride.html" tabindex="-1" aria-hidden="true" data-via="recipe-box-season"><picture><source type="image/webp" srcset="../assets/img/krimi/the-last-sleigh-ride-240.webp 240w, ../assets/img/krimi/the-last-sleigh-ride-400.webp 400w, ../assets/img/krimi/the-last-sleigh-ride-675.webp 675w" sizes="88px"><img src="../assets/img/krimi/the-last-sleigh-ride.jpg" width="675" height="900" alt="" loading="lazy" decoding="async"></picture></a>
+        <div class="case-box__text">
+          <p class="eyebrow">Hosting Christmas?</p>
+          <p class="case-box__lead" id="case-box-season-title">Turn dinner into a murder mystery</p>
+          <p class="case-box__meta"><a href="../murder-mystery/the-last-sleigh-ride.html" data-via="recipe-box-season">The Last Sleigh Ride</a>: case + 3-course menu idea · 6–10 players · instant PDF · €8.99</p>
+          <div class="case-box__actions">
+            <a class="btn btn--primary btn--sm" href="../murder-mystery/the-last-sleigh-ride.html" data-via="recipe-box-season" data-track="season-click/recipe-box/the-last-sleigh-ride">See the Christmas case <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </aside>
+      </div>
           <!-- /Krimi-Box -->
 
         </div>

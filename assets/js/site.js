@@ -133,16 +133,20 @@
       cell.parentNode.insertBefore(cell, cell.parentNode.firstElementChild);
     });
 
+    /* Beide Richtungen: tools/cases.py schreibt hidden passend zum Tag des
+       Skriptlaufs (damit im Saisonmonat nichts nachrutscht) – hier zählt
+       das Datum des Besuchers, auch Monate nach dem letzten Deploy. */
     document.querySelectorAll("[data-season-only]").forEach(function (el) {
-      if (!inSeason(el.getAttribute("data-season-only"))) return;
-      el.hidden = false;
+      var on = inSeason(el.getAttribute("data-season-only"));
+      el.hidden = !on;
+      if (!on) return;
       var badge = el.querySelector("[data-season-badge]");
       var card = el.querySelector(".krimi-card");
       if (badge) badge.hidden = false;
       if (card) card.classList.add("is-seasonal");
     });
     document.querySelectorAll("[data-off-season-only]").forEach(function (el) {
-      if (inSeason(el.getAttribute("data-off-season-only"))) el.hidden = true;
+      el.hidden = inSeason(el.getAttribute("data-off-season-only"));
     });
   }
 
