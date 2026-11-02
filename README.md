@@ -591,6 +591,11 @@ of that file as CSS variables – `--cream`, `--dough`, `--crust`, `--cocoa`,
 `--mocha` (warm base), `--sweet` (baking), `--savory` (savoury) and `--brand`
 (buttons, shop). Change a value there and it applies across the whole site.
 
+Every page loads the stylesheet as `styles.css?v=<number>`. After changing
+the CSS, raise that number on **all** pages at once (one search-and-replace),
+otherwise returning visitors keep the old file from their browser cache and
+new HTML meets old CSS.
+
 ## Publishing
 
 ```bash
