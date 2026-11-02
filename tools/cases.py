@@ -551,10 +551,10 @@ def course_cards(case, root, via):
         r = recipe(slug)
         cards.append(
             '<a class="card course-card lift" href="%srecipes/%s.html" data-track="krimi-menu/%s/%s">'
-            '<picture><source type="image/avif" srcset="%s%s-480.avif" sizes="96px"><img src="%s%s.jpg" width="900" height="1600" alt="" loading="lazy" decoding="async"></picture>'
+            '<picture><source type="image/avif" srcset="%s%s-480.avif" sizes="96px"><img src="%s%s.jpg" width="900" height="1600" alt="%s" loading="lazy" decoding="async"></picture>'
             '<span class="course-card__text"><span class="course-card__course">%s</span><span class="course-card__title">%s</span>'
             '<span class="course-card__more">Get the recipe →</span></span></a>'
-            % (root, slug, via, slug, root, r["image"], root, r["image"], label, esc(r["title"])))
+            % (root, slug, via, slug, root, r["image"], root, r["image"], esc(r["title"]), label, esc(r["title"])))
     return '<div class="course-cards">%s</div>' % "".join(cards)
 
 
@@ -935,7 +935,7 @@ def apron_card(slug, category, minutes):
     track = ' data-track="product-click/recipe/linen-apron"'
     return """      <div class="recipe-product" data-recipe-product data-slug="%(slug)s" data-category="%(category)s" data-minutes="%(minutes)s">
         <section class="panel panel--outline apron-card" aria-label="The apron from the videos">
-          <a class="apron-card__img" href="%(href)s" tabindex="-1" aria-hidden="true"%(track)s><picture><source type="image/avif" srcset="../assets/img/apron-grey-480.avif"><img src="../assets/img/apron-grey.jpg" width="1000" height="1250" alt="" loading="lazy" decoding="async"></picture></a>
+          <a class="apron-card__img" href="%(href)s" tabindex="-1" aria-hidden="true"%(track)s><picture><source type="image/avif" srcset="../assets/img/apron-grey-480.avif"><img src="../assets/img/apron-grey.jpg" width="1000" height="1250" alt="Waffle apron »Dough Love« in Grey" loading="lazy" decoding="async"></picture></a>
           <div class="apron-card__text">
             <p class="apron-card__title"><a href="%(href)s"%(track)s>Cook this in the ‘Dough Love’ apron</a></p>
             <p class="apron-card__meta">Designed by my mom · sewn by hand in Germany</p>

@@ -132,7 +132,7 @@
     var media =
       (entry.covers && miniCovers(entry.covers)) ||
       (product || entry.image
-        ? '<img src="' + (product ? product.image : entry.image) + '" alt="" loading="lazy">'
+        ? '<img src="' + (product ? product.image : entry.image) + '" alt="' + (product ? product.title.replace(/"/g, "&quot;") + " in Grey" : "") + '" loading="lazy">'
         : '<div class="krimi-placeholder" aria-hidden="true">' + ICON_CASE + "</div>");
 
     link.innerHTML =

@@ -771,7 +771,8 @@ strong {
 .notice--success {
   border-radius: 1rem;
   background-color: var(--savory-soft);
-  color: var(--savory);
+  /* Dunkler als --savory: 5.4:1 auf --savory-soft statt 4.2:1. */
+  color: #3f6a3b;
   padding: 0.75rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1048,10 +1049,13 @@ strong {
   margin-top: 0.75rem;
 }
 
+/* Gleicher Abstand zwischen allen Einträgen, auch wenn ein langer Falltitel
+   umbricht: Abstand über padding statt Mindesthöhe. */
 .site-footer ul a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  padding-block: 0.4375rem;
+  line-height: 1.35;
 }
 
 .site-footer ul a:hover {
@@ -1063,10 +1067,15 @@ strong {
 .site-footer__consent {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  margin: 0;
+  border: 0;
+  background: none;
+  padding: 0.4375rem 0;
   font: inherit;
+  line-height: 1.35;
   color: inherit;
   text-align: left;
+  cursor: pointer;
 }
 
 .site-footer__consent:hover {
@@ -1152,23 +1161,16 @@ strong {
   font-size: 0.9375rem;
 }
 
-/* Kanäle als kleine Symbole in einer Reihe statt als Textliste. */
-.site-footer .social {
-  display: flex;
-  gap: 0.25rem;
-  margin-left: -0.625rem;
-}
-
+/* Kanäle: Symbol und Name, auf jeder Seite gleich (Test-Redesign v1). */
 .site-footer .social a {
-  justify-content: center;
-  width: var(--tap);
-  min-height: var(--tap);
-  color: var(--mocha);
+  gap: 0.5rem;
 }
 
 .site-footer .social svg {
-  width: 1.375rem;
-  height: 1.375rem;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--mocha);
 }
 
 .site-footer__legal {
@@ -1994,6 +1996,15 @@ strong {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  white-space: nowrap;
+}
+
+/* Feste Größe fürs Uhr-Symbol: ohne sie wuchs es in schmalen Karten und
+   schob "5 min" in zwei Zeilen. */
+.recipe-card__meta svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
 }
 
 .recipe-card__tags {

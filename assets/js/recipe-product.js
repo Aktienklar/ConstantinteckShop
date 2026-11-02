@@ -67,12 +67,15 @@
     // Kleines Vorschaubild: die 480er AVIF neben dem JPEG (tools/images.py).
     var image = "../" + product.image;
     var avif = image.replace(/\.jpg$/, "-480.avif");
+    // Alt-Text aus Produktname und Farbe; die Vorschaubilder der Produkte
+    // sind alle in Grey (shop-data.js, image).
+    var alt = product.title + " in Grey";
 
     box.innerHTML =
       '<section class="panel panel--outline apron-card" aria-label="' + esc(product.title) + '">' +
       '<a class="apron-card__img" href="' + href + '" tabindex="-1" aria-hidden="true"' + track + ">" +
       '<picture><source type="image/avif" srcset="' + esc(avif) + '">' +
-      '<img src="' + esc(image) + '" alt="" loading="lazy" decoding="async"></picture></a>' +
+      '<img src="' + esc(image) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async"></picture></a>' +
       '<div class="apron-card__text">' +
       '<p class="apron-card__title"><a href="' + href + '"' + track + ">" + esc(TITLES[productSlug] || product.title) + "</a></p>" +
       '<p class="apron-card__meta">' + esc(meta) + "</p>" +

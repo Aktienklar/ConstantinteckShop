@@ -451,6 +451,34 @@
     });
   }
 
+  /* --- Rezeptbilder früher laden (Test-Redesign v1) -------------------------
+     Die Karten selbst werden nicht animiert; leer stehen sie beim schnellen
+     Scrollen, weil die Bilder mit loading="lazy" erst kurz vor dem Fenster
+     geladen werden (Safari besonders spät). Liegt eine Karte noch gut zwei
+     Bildschirmhöhen entfernt, wird ihr Bild auf "eager" gestellt – der
+     Browser lädt es dann sofort. Keine Bewegung, also auch nichts für
+     prefers-reduced-motion abzuschalten. */
+  function loadImagesEarly() {
+    if (!("IntersectionObserver" in window)) return;
+    var images = document.querySelectorAll(
+      '.recipe-card img[loading="lazy"], .product-card img[loading="lazy"]'
+    );
+    if (!images.length) return;
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.setAttribute("loading", "eager");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "200% 0px" }
+    );
+    images.forEach(function (img) {
+      observer.observe(img);
+    });
+  }
+
   /* --- Kundenfotos ------------------------------------------------------- */
 
   function renderCustomerPhotos() {
@@ -486,6 +514,7 @@
     setupVia();
     renderNewsletter();
     renderCustomerPhotos();
+    loadImagesEarly();
     handleExcludeHash();
     // Vor allem anderen: Auf ausgeschlossenen Geräten wird nichts geladen,
     // also auch kein erster Seitenaufruf gezählt.
