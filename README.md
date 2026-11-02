@@ -349,6 +349,50 @@ remembers the last one for this tab and appends it to the buy buttons on the
 overview and case pages: `utm_content=case-page-hero--from-footer`. So
 Murdernight's stats show both the button and the way in.
 
+### Links from Instagram (UTM scheme – proposal)
+
+Links *to* this site from Instagram should carry one consistent set of
+parameters, so GoatCounter, PostHog and `admin.html` can tell bio, story and
+reel apart:
+
+```
+?utm_source=instagram&utm_medium=<bio|story|reel>&utm_campaign=<month or action>&utm_content=<reel or product slug>
+```
+
+| Parameter | Value | Rule |
+| --- | --- | --- |
+| `utm_source` | `instagram` | always, lower case (TikTok: `tiktok`, YouTube: `youtube`) |
+| `utm_medium` | `bio`, `story`, `reel` | where the link sits (`reel` = link in the caption/comment of one reel) |
+| `utm_campaign` | `2026-11`, `christmas-2026`, … | month, or the action it belongs to |
+| `utm_content` | slug of the reel's recipe or of the product | what the post was about – lets you compare reels |
+
+Only lower case letters, digits and hyphens. Ready-made examples:
+
+- Bio → start page:
+  `https://constantinteck.com/?utm_source=instagram&utm_medium=bio&utm_campaign=2026-11`
+- Story → Christmas case:
+  `https://constantinteck.com/murder-mystery/the-last-sleigh-ride.html?utm_source=instagram&utm_medium=story&utm_campaign=christmas-2026&utm_content=the-last-sleigh-ride`
+- Story → apron set:
+  `https://constantinteck.com/shop/apron-set.html?utm_source=instagram&utm_medium=story&utm_campaign=christmas-2026&utm_content=apron-set`
+- Reel → recipe page:
+  `https://constantinteck.com/recipes/creamy-baked-salmon-spinach-pasta.html?utm_source=instagram&utm_medium=reel&utm_campaign=2026-11&utm_content=creamy-baked-salmon-spinach-pasta`
+
+Where to see it:
+
+- **GoatCounter** (all visitors): *Referrers* lists `instagram` as the
+  source (from `utm_source`); the *Campaigns* panel lists `utm_campaign`.
+  `utm_medium`/`utm_content` are not shown there.
+- **PostHog** (only visitors who accepted): every event carries
+  `utm_source`, `utm_medium`, `utm_campaign`, `utm_content` (and the first
+  ones as `$initial_utm_*`). *Web analytics → Channels/UTM* breaks visits
+  down; a funnel or trend filtered by `utm_medium = story` shows what stories
+  bring in, broken down by `utm_content` per reel.
+- **admin.html**: the *Top-Quelle* tile and the source list come from the
+  GoatCounter referrers, so `instagram` appears there as one source.
+
+Murdernight links from this site are separate: they always carry
+`utm_source=constantinteck` (see above) – don't put `instagram` into them.
+
 ### Share images
 
 `python3 tools/krimi-images.py` writes the WebP sizes for every cover, the
