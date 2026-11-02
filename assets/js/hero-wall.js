@@ -16,22 +16,37 @@
     var wall = document.querySelector("[data-hero-wall]");
     if (!wall) return;
 
+    /* Eine Bahn hat nur sechs Karten – schmaler als ein breites Fenster.
+       Deshalb kommt der Satz so oft hinter sich, bis die Hälfte der Bahn
+       breiter ist als die Wand; die Gesamtzahl bleibt gerade, damit die
+       Hälfte genau eine Runde ist. Die Dauer wächst mit, damit das Tempo
+       gleich bleibt (die Zeiten in styles.css gelten für eine Hälfte aus
+       BASE_CARDS Karten). */
+    var BASE_CARDS = 13;
+
     function fill(track) {
       if (track.dataset.filled) return;
       track.dataset.filled = "true";
-      Array.prototype.slice.call(track.children).forEach(function (card) {
-        var copy = card.cloneNode(true);
-        /* Die Kopie ist nur fürs Auge: Screenreader und Tab-Taste sollen
-           jedes Rezept einmal antreffen, nicht zweimal. */
-        copy.setAttribute("aria-hidden", "true");
-        copy.tabIndex = -1;
-        track.appendChild(copy);
-      });
+      var set = Array.prototype.slice.call(track.children);
+      var setWidth = track.scrollWidth || 1;
+      var half = Math.max(1, Math.ceil((wall.offsetWidth * 1.1) / setWidth));
+      for (var i = 1; i < half * 2; i++) {
+        set.forEach(function (card) {
+          var copy = card.cloneNode(true);
+          /* Die Kopie ist nur fürs Auge. */
+          copy.setAttribute("aria-hidden", "true");
+          copy.tabIndex = -1;
+          track.appendChild(copy);
+        });
+      }
+      var base = parseFloat(getComputedStyle(track).animationDuration) || 0;
+      if (base) track.style.animationDuration = (base * half * set.length) / BASE_CARDS + "s";
     }
 
-    wall.querySelectorAll(".hero__track").forEach(fill);
-
+    /* Erst is-live, damit fill() die Dauer aus styles.css lesen kann –
+       beides im selben Durchlauf, der Browser zeichnet dazwischen nicht. */
     wall.classList.add("is-live");
+    wall.querySelectorAll(".hero__track").forEach(fill);
 
     /* Zurück-Taste: Der Browser holt die Seite eingefroren aus dem Speicher,
        statt sie neu zu laden. Safari am iPhone zeichnet die Wand danach aus

@@ -1,7 +1,7 @@
 {
   "_hinweis": "Titel und Beschreibung fuer Suchmaschinen und geteilte Links. tools/seo.py schreibt sie in den Kopf der jeweiligen Seite (title, description, og:title, og:description). Seiten, die hier fehlen, behalten, was in ihrem HTML steht. Richtwerte: Titel 50-60 Zeichen, Beschreibung 140-160 Zeichen.",
   "index.html": {
-    "title": "Murder Mystery Dinners + the Menu to Match | Constantinteck",
+    "title": "Constantinteck – Recipes from my videos, aprons & murder mystery dinners",
     "description": "Cook the menu, solve the case: 9 printable murder mystery dinners for 5–12 players, €8.99 each – plus a matching menu idea from my free video recipes.",
     "imageAlt": "Covers of three murder mystery dinners: Witching Hour at Ravenmoor, The Last Sleigh Ride and Death at Studio 7"
   },

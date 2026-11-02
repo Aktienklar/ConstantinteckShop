@@ -48,6 +48,10 @@
     var requested = new URLSearchParams(window.location.search).get("category");
     if (requested === "backen" || requested === "herzhaft") category = requested;
 
+    // Die Suche im Hero der Startseite schickt ?q=Begriff.
+    var q = new URLSearchParams(window.location.search).get("q");
+    if (input && q) input.value = q;
+
     function matchesTime(minutes, filter) {
       if (filter === "30") return minutes <= 30;
       if (filter === "60") return minutes <= 60;

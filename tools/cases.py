@@ -807,8 +807,9 @@ def home():
         "buy": buy_link(ex, "home-menu", cls="btn btn--primary"),
     }
     src = fill(src, "Beispielmenue", example, "        ")
-    season = season_case()
-    src = fill(src, "Saison-Hero", season_home(season) if season else "", "          ")
+    # Seit Test-Redesign v1: kein Saison-Block mehr im Hero, der Fall mit
+    # Saison steht nur noch in der Ankündigungsleiste (season_home bleibt
+    # für den Fall, dass er zurückkommt).
     src = fill(src, "Neue Rezepte", '        <div class="grid grid--3 mt-6">\n%s\n        </div>' % latest_recipes(), "        ")
     return write("index.html", apply_global("index.html", src))
 
