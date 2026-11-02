@@ -7156,8 +7156,9 @@ button.admin-bars__row[aria-expanded="true"] {
 
 /* --- Startseite: Krimi-Dinner kompakt (Test-Redesign v1) ----------------- */
 
-/* Eine Reihe aus kleinen Fallkarten: Cover, Titel, Preis. Am Handy als
-   Wisch-Reihe, ab md alle nebeneinander. */
+/* Alle Fälle in einer Wisch-Reihe über die volle Breite. Am Handy gut zwei
+   Karten im Bild, ab md gut vier, ab lg gut sechs – die angeschnittene
+   Karte am Rand zeigt, dass es weitergeht. */
 .case-row {
   display: grid;
   grid-auto-flow: column;
@@ -7165,7 +7166,7 @@ button.admin-bars__row[aria-expanded="true"] {
   gap: 0.75rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
 }
 
 .case-mini {
@@ -7206,9 +7207,13 @@ button.admin-bars__row[aria-expanded="true"] {
 
 @media (min-width: 768px) {
   .case-row {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 11.5rem));
-    overflow: visible;
+    grid-auto-columns: calc((100% - 4 * 0.75rem) / 4.4);
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-row {
+    grid-auto-columns: calc((100% - 6 * 0.75rem) / 6.4);
   }
 }
 

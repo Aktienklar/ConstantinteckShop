@@ -781,19 +781,14 @@ def home():
                   % (players_range(), hours_range(), lowest_price()))
     src = fill(src, "Hero-Fakten", '        <ul class="home-hero__facts">%s</ul>' % hero_facts, "        ")
 
-    # Fälle mit Saison stehen vorn, aber nur in ihren Monaten (site.js); außerhalb
-    # davon zeigt die Reihe stattdessen den letzten der "picks".
+    # Alle Fälle in einer Reihe: der mit Saison in seinen Monaten vorn
+    # (site.js), außerhalb davon am Ende; dann home.picks, dann der Rest.
     picks = [BY_ID[i] for i in hd["picks"]]
-    items = []
-    for c in seasonal_cases():
-        if c in picks:
-            continue
-        items.append(pick_mini(c, season_only(c)))
-    for i, c in enumerate(picks):
-        extra = ""
-        if i == len(picks) - 1 and seasonal_cases():
-            extra = off_season_only(seasonal_cases()[0])
-        items.append(pick_mini(c, extra))
+    season = seasonal_cases()
+    order = picks + [c for c in CASES if c not in picks]
+    items = [pick_mini(c, season_only(c)) for c in season]
+    for c in order:
+        items.append(pick_mini(c, off_season_only(c) if c in season else ""))
     src = fill(src, "Auswahl", '        <div class="case-row mt-6">\n          %s\n        </div>'
                % "\n          ".join(items), "        ")
 
