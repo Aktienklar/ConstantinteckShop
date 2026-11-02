@@ -173,17 +173,20 @@ when what people consent to changes, and everyone is asked again. Section 9 b
 of `privacy.html` lists what has to be true in the PostHog project settings for
 its text to hold (DPA signed, "Discard client IP data" on).
 
-**Product card on a recipe page.** Without `featuredProduct`, sweet recipes of
-15 minutes or less show the kids' apron ("make it together"), everything
-else the adult apron. The rule lives in `assets/js/recipe-product.js`.
+**Product card on a recipe page.** A compact card right after the
+ingredients (below the murder mystery box): one line – "Cook this in the
+‘Dough Love’ apron" –, price, button to the product page, counted as
+`product-click/recipe/<slug>`. Without `featuredProduct`, sweet recipes of
+15 minutes or less show the kids' apron ("make it with your kids"),
+everything else the adult apron. The rule and the texts live in
+`assets/js/recipe-product.js`; `tools/cases.py` writes the block (without
+JavaScript it shows the adult apron, without a price) between
+`<!-- Schürzen-Karte … -->` markers.
 
 **Shop cards in the recipe list.** `assets/js/recipes-overview.js` inserts one
 after every sixth recipe (murder mystery and apron in turn) and hides them
 while a search or filter is active. The row *From the latest videos* on
 `recipes.html` is written by `tools/cases.py` (highest `order`).
-
-**Product card on a recipe page** now sits below the method; directly after
-the ingredients comes the murder mystery box (see below).
 
 **Customer photos.** Put the image into `assets/img/customers/` and add its file
 name to `customerPhotos` in `site-config.js`. Empty list = no section.

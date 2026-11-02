@@ -831,6 +831,22 @@ def season_hint(case):
                esc(s.get("short") or s["title"]), esc(s["title"])))
 
 
+def apron_card(slug, category, minutes):
+    """Rückfall der Schürzen-Karte (ohne JavaScript): die Erwachsenenschürze."""
+    href = "../shop/linen-apron.html"
+    track = ' data-track="product-click/recipe/linen-apron"'
+    return """      <div class="recipe-product" data-recipe-product data-slug="%(slug)s" data-category="%(category)s" data-minutes="%(minutes)s">
+        <section class="panel panel--outline apron-card" aria-label="The apron from the videos">
+          <a class="apron-card__img" href="%(href)s" tabindex="-1" aria-hidden="true"%(track)s><picture><source type="image/avif" srcset="../assets/img/apron-grey-480.avif"><img src="../assets/img/apron-grey.jpg" width="1000" height="1250" alt="" loading="lazy" decoding="async"></picture></a>
+          <div class="apron-card__text">
+            <p class="apron-card__title"><a href="%(href)s"%(track)s>Cook this in the ‘Dough Love’ apron</a></p>
+            <p class="apron-card__meta">Designed by my mom · sewn by hand in Germany</p>
+            <div class="apron-card__foot"><a class="btn btn--secondary btn--sm" href="%(href)s"%(track)s>See the apron</a></div>
+          </div>
+        </section>
+      </div>""" % {"slug": slug, "category": category, "minutes": minutes, "href": href, "track": track}
+
+
 def outer_div(src, start):
     """Ende des <div>, das bei start beginnt (verschachtelte divs gezählt)."""
     depth, i = 0, start
@@ -874,25 +890,22 @@ def recipe_pages():
             m = re.search(r'<section class="panel ingredients".*?</section>\n', src, re.S)
             src = src[:m.end()] + "\n" + box + "\n" + src[m.end():]
 
-        # Die Schürzen-Karte steht nachrangig UNTER der Zubereitung (einmalig
-        # verschoben; danach steht sie dort und wird nicht mehr angefasst).
-        side = src.find('<div class="recipe-body__side">')
-        prod = src.find('<div class="recipe-product"')
-        if side != -1 and prod != -1 and prod < outer_div(src, side):
-            comment = src.rfind("<!-- Der Shop-Block", 0, prod)
-            begin = src.rfind("\n", 0, comment if comment != -1 else prod) + 1
-            end = outer_div(src, prod)
-            chunk = src[begin:end]
-            src = src[:begin].rstrip(" ") + src[end:].lstrip("\n")
-            side = src.find('<div class="recipe-body__side">')
-            body = src.rfind('<div class="recipe-body">', 0, side)
-            body_end = outer_div(src, body)
-            chunk = re.sub(r"<!-- Der Shop-Block.*?-->",
-                           "<!-- Schürzen-Karte, nachrangig unter der Zubereitung. Was hier im HTML\n"
-                           "           steht, ist nur der Rückfall ohne JavaScript – assets/js/recipe-product.js\n"
-                           "           setzt das zum Rezept passende Produkt ein. -->", chunk, flags=re.S)
-            chunk = chunk.replace('class="recipe-product"', 'class="recipe-product mt-6"', 1)
-            src = src[:body_end] + "\n\n      " + chunk.strip() + "\n" + src[body_end:]
+        # Schürzen-Karte: kompakt direkt nach der Krimi-Box, also zwischen
+        # Zutaten und Zubereitung (vorher stand sie unter der Zubereitung).
+        # Welche Schürze, entscheidet assets/js/recipe-product.js; hier steht
+        # nur der Rückfall ohne JavaScript – bewusst ohne Preis, der Preis
+        # steht schon an drei Stellen.
+        attrs = re.search(r'data-recipe-product data-slug="([^"]*)" data-category="([^"]*)" data-minutes="([^"]*)"', src)
+        src = re.sub(r"\n[ \t]*<!-- Schürzen-Karte \(geschrieben.*?<!-- /Schürzen-Karte -->", "", src, flags=re.S)
+        old = src.find('<div class="recipe-product')
+        if old != -1:
+            comment = src.rfind("<!-- Schürzen-Karte", 0, old)
+            begin = src.rfind("\n", 0, comment if comment != -1 and src.count("-->", comment, old) == 1 else old) + 1
+            src = src[:begin].rstrip(" \n") + "\n\n" + src[outer_div(src, old):].lstrip("\n")
+        if attrs:
+            card = block("Schürzen-Karte", apron_card(*attrs.groups()), "          ")
+            mark = src.index("<!-- /Krimi-Box -->") + len("<!-- /Krimi-Box -->")
+            src = src[:mark] + "\n" + card + src[mark:]
         changed += write(page, apply_global(page, src))
     return changed
 

@@ -1,9 +1,11 @@
 /**
  * PRODUKTKARTE AUF DER REZEPTSEITE
  *
- * Zeigt zwischen Zutaten und Zubereitung das Produkt, das zum Rezept passt –
- * statt überall dieselbe Schürze. Im HTML steht als Rückfall (ohne JavaScript)
- * die Erwachsenenschürze; dieses Skript ersetzt sie.
+ * Kompakte Karte direkt nach den Zutaten (unter der Krimi-Box): eine Zeile
+ * "Cook this in the ‘Dough Love’ apron", Preis, Knopf zur Produktseite.
+ * Bis 2.11.2026 stand eine große Karte unter der Zubereitung – dort hat sie
+ * kaum jemand gesehen. Im HTML steht als Rückfall (ohne JavaScript) die
+ * Erwachsenenschürze ohne Preis (tools/cases.py); dieses Skript ersetzt sie.
  *
  * WELCHES PRODUKT?
  *   1. Steht in assets/js/recipe-data.js beim Rezept ein featuredProduct,
@@ -28,16 +30,11 @@
   /** Bis zu dieser Zubereitungszeit gilt ein süßes Rezept als "mit Kindern". */
   var KIDS_MAX_MINUTES = 15;
 
-  var HEADINGS = {
-    "linen-apron": "What I use for this",
-    "kids-apron": "Make it together",
-    "apron-set": "Make it together"
-  };
-
-  var BLURBS = {
-    "linen-apron": "The apron from the videos. Waffle piqué, big front pocket.",
-    "kids-apron": "The same apron, cut small – three sizes from 4 years.",
-    "apron-set": "One apron for you, one for your little helper."
+  /* Die eine Zeile der Karte, je Produkt. */
+  var TITLES = {
+    "linen-apron": "Cook this in the ‘Dough Love’ apron",
+    "kids-apron": "Make it with your kids – in the ‘Little Dough Love’ apron",
+    "apron-set": "Cook it together – the ‘Dough Love’ apron set"
   };
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -58,57 +55,33 @@
     // Tippfehler im Feld featuredProduct: lieber der Rückfall aus dem HTML.
     if (!product) return;
 
-    var forKids = productSlug !== "linen-apron";
     var href = "../shop/" + productSlug + ".html";
-    var note = recipe.productNote || defaultNote(forKids, category, minutes);
+    var track = ' data-track="product-click/recipe/' + productSlug + '"';
+    var meta = recipe.productNote || "Designed by my mom · sewn by hand in Germany";
 
     var price = formatPrice(product.price);
     if (product.compareAtPrice) {
       price += ' <s class="price-was">' + formatPrice(product.compareAtPrice) + "</s>";
     }
 
-    box.innerHTML =
-      '<section class="panel panel--outline used-products" aria-label="' + esc(HEADINGS[productSlug]) + '">' +
-      '<div class="section-head">' +
-      '<h2 style="font-size:1.25rem">' + esc(HEADINGS[productSlug]) + "</h2>" +
-      '<a class="link-brand" style="font-size:.875rem" href="../shop.html">All in the shop</a>' +
-      "</div>" +
-      '<p class="used-products__note">' + esc(note) + "</p>" +
-      "<ul>" +
-      '<li class="lift">' +
-      '<a href="' + href + '" tabindex="-1" aria-hidden="true" data-track="product-click/recipe/' + productSlug + '">' +
-      '<img src="../' + esc(product.image) + '" alt="" loading="lazy">' +
-      "</a>" +
-      '<div class="used-products__text">' +
-      '<a class="used-products__title" href="' + href + '" data-track="product-click/recipe/' + productSlug + '">' + esc(product.title) + "</a>" +
-      '<p class="product-card__text">' + esc(BLURBS[productSlug]) + "</p>" +
-      '<div class="used-products__price"><span>' + price + "</span></div>" +
-      '<div class="mt-3">' +
-      '<a class="btn btn--secondary btn--block" href="' + href + '" data-track="product-click/recipe/' + productSlug + '">' +
-      (product.options.length > 1 ? "Choose colour & size" : "Choose a colour") +
-      "</a>" +
-      "</div>" +
-      "</div>" +
-      "</li>" +
-      "</ul>" +
-      '<p class="trust-line">Designed by my mom · Sewn by hand in Germany · 14-day returns</p>' +
-      '<p class="used-products__story"><a class="link-brand" href="../about.html#aprons-story">Why my mom designed these →</a></p>' +
-      "</section>";
-  }
+    // Kleines Vorschaubild: die 480er AVIF neben dem JPEG (tools/images.py).
+    var image = "../" + product.image;
+    var avif = image.replace(/\.jpg$/, "-480.avif");
 
-  function defaultNote(forKids, category, minutes) {
-    if (forKids) {
-      var count = document.querySelectorAll(".ingredients li").length;
-      return (
-        "Perfect first recipe to make with your kids – " +
-        minutes + " minutes" +
-        (count ? ", " + count + " ingredients." : ".")
-      );
-    }
-    if (category === "herzhaft") {
-      return "This one splatters – that's why I always wear the apron.";
-    }
-    return "This one gets messy – that's why I always wear the apron.";
+    box.innerHTML =
+      '<section class="panel panel--outline apron-card" aria-label="' + esc(product.title) + '">' +
+      '<a class="apron-card__img" href="' + href + '" tabindex="-1" aria-hidden="true"' + track + ">" +
+      '<picture><source type="image/avif" srcset="' + esc(avif) + '">' +
+      '<img src="' + esc(image) + '" alt="" loading="lazy" decoding="async"></picture></a>' +
+      '<div class="apron-card__text">' +
+      '<p class="apron-card__title"><a href="' + href + '"' + track + ">" + esc(TITLES[productSlug] || product.title) + "</a></p>" +
+      '<p class="apron-card__meta">' + esc(meta) + "</p>" +
+      '<div class="apron-card__foot">' +
+      '<span class="apron-card__price">' + price + "</span>" +
+      '<a class="btn btn--secondary btn--sm" href="' + href + '"' + track + ">See the apron</a>" +
+      "</div>" +
+      "</div>" +
+      "</section>";
   }
 
   function esc(text) {
