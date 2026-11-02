@@ -756,57 +756,40 @@ def latest_recipes(count=6, raw=False):
     return "\n".join("        " + cards[s] for s in slugs)
 
 
+def pick_mini(case, attrs=""):
+    """Kompakte Fallkarte für die Startseite: Cover, Titel, Preis."""
+    return ('<a class="card case-mini lift" href="%s" data-via="home-pick"%s>%s'
+            '<span class="case-mini__title">%s</span><span class="case-mini__price">%s</span></a>'
+            % (case_page(case, ""), attrs, cover(case, "", "(min-width: 1024px) 180px, 40vw", alt=""),
+               esc(t(case)["title"]), price(case["price"])))
+
+
 def home():
+    """Startseite seit Test-Redesign v1: Fakten und eine kompakte Reihe der
+    Fälle. Cover-Collage und Beispielmenü stehen nur noch auf krimi-dinner.html."""
     src = read("index.html")
     hd = DATA["home"]
-    covers = [BY_ID[i] for i in hd["heroCovers"]]
-    hero = "".join('<span class="home-hero__cover home-hero__cover--%d">%s</span>'
-                   % (i + 1, cover(c, "", "(min-width: 1024px) 220px, 30vw", eager=True, alt="", priority=i == 1))
-                   for i, c in enumerate(covers))
-    src = fill(src, "Hero-Cover", '          <div class="home-hero__covers" role="img" aria-label="%s">%s</div>' % (
-        esc("Covers of three murder mystery dinners: " + ", ".join(t(c)["title"] for c in covers)), hero), "          ")
 
     hero_facts = ('<li>%s players</li><li>approx. %s hrs</li><li>Instant PDF</li><li>%s per case</li>'
                   % (players_range(), hours_range(), lowest_price()))
-    src = fill(src, "Hero-Fakten", '          <ul class="home-hero__facts">%s</ul>' % hero_facts, "          ")
+    src = fill(src, "Hero-Fakten", '        <ul class="home-hero__facts">%s</ul>' % hero_facts, "        ")
 
     # Fälle mit Saison stehen vorn, aber nur in ihren Monaten (site.js); außerhalb
-    # davon zeigt die Liste stattdessen den letzten der "picks".
+    # davon zeigt die Reihe stattdessen den letzten der "picks".
     picks = [BY_ID[i] for i in hd["picks"]]
     items = []
     for c in seasonal_cases():
         if c in picks:
             continue
-        items.append('<div class="krimi-cases__item"%s>%s</div>'
-                     % (season_only(c), case_card(c, "", "home-pick", 0, menu=False)))
+        items.append(pick_mini(c, season_only(c)))
     for i, c in enumerate(picks):
         extra = ""
         if i == len(picks) - 1 and seasonal_cases():
             extra = off_season_only(seasonal_cases()[0])
-        items.append('<div class="krimi-cases__item"%s>%s</div>' % (extra, case_card(c, "", "home-pick", i + 1, menu=False)))
-    src = fill(src, "Auswahl", '        <div class="grid grid--cases home-picks">\n          %s\n        </div>'
+        items.append(pick_mini(c, extra))
+    src = fill(src, "Auswahl", '        <div class="case-row mt-6">\n          %s\n        </div>'
                % "\n          ".join(items), "        ")
 
-    ex = BY_ID[hd["exampleMenu"]]
-    example = """        <div class="menu-example">
-          <a class="menu-example__cover lift" href="%(page)s" data-via="home-menu">%(cover)s</a>
-          <div class="menu-example__body">
-            <p class="eyebrow">Example: %(genre)s · %(players)s players</p>
-            <h3 class="menu-example__title"><a href="%(page)s" data-via="home-menu">%(title)s</a></h3>
-            <p class="muted">%(setting)s</p>
-            %(courses)s
-            <div class="menu-example__actions">
-              %(buy)s
-              <a class="link-brand" href="%(page)s#menu" data-via="home-menu">See the full case →</a>
-            </div>
-          </div>
-        </div>""" % {
-        "page": case_page(ex, ""), "cover": cover(ex, "", "(min-width: 768px) 240px, 40vw"),
-        "genre": esc(t(ex)["genre"]), "players": esc(ex["players"]), "title": esc(t(ex)["title"]),
-        "setting": esc(t(ex)["setting"]), "courses": course_cards(ex, "", "home-menu"),
-        "buy": buy_link(ex, "home-menu", cls="btn btn--primary"),
-    }
-    src = fill(src, "Beispielmenue", example, "        ")
     # Seit Test-Redesign v1: kein Saison-Block mehr im Hero, der Fall mit
     # Saison steht nur noch in der Ankündigungsleiste (season_home bleibt
     # für den Fall, dass er zurückkommt).
