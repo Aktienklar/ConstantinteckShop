@@ -317,8 +317,9 @@ Teasers (shortened) and characters come from the case pages on murdernight.store
   right under "Cook the menu. Solve the case." (cover, facts with the `gift`
   line, buy button straight to Murdernight, `utm_content=home-season`), next
   to it the gift product from `home.seasonGift` in the same card style
-  (price read from `assets/js/shop-data.js`). On phones the recipe wall is
-  lower during the season so the buy button stays in the first screen. On
+  (price read from `assets/js/shop-data.js`). On phones and tablets the
+  recipe wall then fills the whole first screen, with the line and both cards
+  on a frosted panel at the bottom (`styles.css`, `.hero:has(.season-feature…)`). On
   `recipes.html` the seasonal case is also the first card in the grid
   (`season-click/recipes-grid/<id>`), hidden while searching or filtering.
 

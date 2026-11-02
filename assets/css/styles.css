@@ -5358,12 +5358,6 @@ div.legal__en > * + * {
   display: none;
 }
 
-/* Am Handy wird die Wand in der Saison niedriger, damit Karte und Kaufknopf
-   noch im ersten Bildschirm stehen. */
-.hero:has(.season-feature:not([hidden])) .hero__media {
-  height: 30vh;
-  height: 30svh;
-}
 
 .season-card {
   display: flex;
@@ -5451,10 +5445,99 @@ div.legal__en > * + * {
   font-size: 0.8125rem;
 }
 
-@media (min-width: 640px) {
+/* Seit 2.11.2026: Unter lg füllt die Rezeptwand
+   in der Saison den ganzen ersten Bildschirm (Höhe minus Leiste und Kopf,
+   9.625rem), Zeile und Karten liegen unten darauf. Ein Verlauf von unten
+   macht Text und Karten lesbar, oben bleibt die Wand frei. */
+@media (max-width: 1023px) {
+  .hero:has(.season-feature:not([hidden])) .hero__stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: calc(100vh - 9.625rem);
+    min-height: calc(100svh - 9.625rem);
+  }
+
   .hero:has(.season-feature:not([hidden])) .hero__media {
-    height: 44vh;
-    height: 44svh;
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+
+  .hero:has(.season-feature:not([hidden])) .hero__scrim {
+    inset: 0;
+    height: auto;
+    background-image: linear-gradient(
+      to top,
+      rgba(246, 236, 221, 0.6) 0%,
+      rgba(246, 236, 221, 0) 30%
+    );
+  }
+
+  .hero:has(.season-feature:not([hidden])) .hero__body {
+    padding-block: 0 1rem;
+  }
+
+  /* Zeile, Link und Karten liegen auf einer Milchglas-Fläche über der
+     Wand: Die Fotos scheinen durch, der Text bleibt lesbar. */
+  .hero:has(.season-feature:not([hidden])) .hero__inner {
+    margin-inline: -0.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 1.25rem;
+    background-color: rgba(246, 236, 221, 0.78);
+    padding: 0.875rem 0.75rem 0.75rem;
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+    box-shadow: 0 18px 40px -24px rgba(59, 42, 32, 0.5);
+  }
+
+  .hero:has(.season-feature:not([hidden])) .hero__line {
+    padding-inline: 0.25rem;
+  }
+
+  .hero:has(.season-feature:not([hidden])) .hero__link {
+    padding-inline: 0.25rem;
+  }
+
+  .hero:has(.season-feature:not([hidden])) .hero__line {
+    font-size: 1.625rem;
+  }
+
+  .hero:has(.season-feature:not([hidden])) .hero__link {
+    margin-top: 0;
+  }
+
+  /* Kompakter: "Case & menu" entfällt (Cover und Titel führen zur
+     Fallseite), beim Geschenk fällt die Zusatzzeile weg. */
+  .season-feature {
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .season-card {
+    padding: 0.625rem;
+  }
+
+  .season-card__cover {
+    width: 4.75rem;
+  }
+
+  .season-card__more,
+  .season-gift .hero__product-price > span {
+    display: none;
+  }
+
+  .season-card__actions {
+    margin-top: 0.375rem;
+  }
+
+  .season-gift {
+    padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  }
+
+  .season-gift img {
+    width: 3.5rem;
+    height: 3.5rem;
   }
 }
 
