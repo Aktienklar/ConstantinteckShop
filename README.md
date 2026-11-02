@@ -313,10 +313,12 @@ Teasers (shortened) and characters come from the case pages on murdernight.store
   jumps on load; `site.js` then switches both ways by the visitor's date, so
   the seasonal blocks disappear by themselves in January even without a deploy.
 - **Start page:** `home.picks`, `home.exampleMenu`, `home.heroCovers`.
-  In the seasonal months the seasonal case sits large at the very top
-  (cover, facts with the `gift` line, buy button straight to Murdernight,
-  `utm_content=home-season`), right below it the gift product from
-  `home.seasonGift` (price read from `assets/js/shop-data.js`). On
+  In the seasonal months the seasonal case sits in the hero as a light card
+  right under "Cook the menu. Solve the case." (cover, facts with the `gift`
+  line, buy button straight to Murdernight, `utm_content=home-season`), next
+  to it the gift product from `home.seasonGift` in the same card style
+  (price read from `assets/js/shop-data.js`). On phones the recipe wall is
+  lower during the season so the buy button stays in the first screen. On
   `recipes.html` the seasonal case is also the first card in the grid
   (`season-click/recipes-grid/<id>`), hidden while searching or filtering.
 

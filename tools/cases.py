@@ -808,58 +808,57 @@ def home():
     }
     src = fill(src, "Beispielmenue", example, "        ")
     season = season_case()
-    src = fill(src, "Saison-Hero", season_home(season) if season else "", "    ")
+    src = fill(src, "Saison-Hero", season_home(season) if season else "", "          ")
     src = fill(src, "Neue Rezepte", '        <div class="grid grid--3 mt-6">\n%s\n        </div>' % latest_recipes(), "        ")
     return write("index.html", apply_global("index.html", src))
 
 
 def season_home(case):
-    """Ganz oben auf der Startseite, nur in der Saison: der Fall groß mit
-    Kaufknopf, darunter das Schürzen-Geschenk (home.seasonGift)."""
+    """Im Hero der Startseite, nur in der Saison: der Fall als helle Karte
+    unter "Cook the menu. Solve the case." (Kaufknopf direkt zu Murdernight),
+    daneben das Schürzen-Geschenk (home.seasonGift) als hero__product-Karte –
+    gleiche Bildsprache wie der übrige Hero statt eines eigenen Bandes."""
     s = t(case)["season"]
     gift = DATA["home"].get("seasonGift")
     now = in_season_today(case)
-    hero = """    <section class="season-hero"%(only)s aria-labelledby="season-hero-title">
-      <div class="container season-hero__grid">
-        <a class="season-hero__cover" href="%(page)s" tabindex="-1" aria-hidden="true" data-via="home-season">%(cover)s</a>
-        <div class="season-hero__text">
-          <p class="eyebrow">%(eyebrow)s</p>
-          <h2 class="season-hero__title" id="season-hero-title"><a href="%(page)s" data-via="home-season">%(title)s</a></h2>
-          <p class="season-hero__setting">%(setting)s</p>
-          <p class="season-hero__facts">%(players)s players · %(price)s · %(gift)s</p>
-        </div>
-        <div class="season-hero__actions">
-          %(buy)s
-          <a class="season-hero__more" href="%(page)s" data-via="home-season">See the case &amp; menu idea <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>""" % {
-        "only": season_only(case), "page": case_page(case, ""), "eyebrow": esc(s["eyebrow"]),
-        "cover": cover(case, "", "(min-width: 768px) 240px, 9rem", eager=now, priority=now),
-        "title": esc(t(case)["title"]), "setting": esc(t(case)["setting"]), "players": esc(case["players"]),
+    card = """          <article class="season-card" aria-labelledby="season-card-title">
+            <a class="season-card__cover" href="%(page)s" tabindex="-1" aria-hidden="true" data-via="home-season">%(cover)s</a>
+            <div class="season-card__body">
+              <p class="season-card__kicker">%(eyebrow)s</p>
+              <h2 class="season-card__title" id="season-card-title"><a href="%(page)s" data-via="home-season">%(title)s</a></h2>
+              <p class="season-card__facts">%(players)s players · %(price)s · %(gift)s</p>
+              <div class="season-card__actions">
+                %(buy)s
+                <a class="season-card__more" href="%(page)s" data-via="home-season">Case &amp; menu <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article>""" % {
+        "page": case_page(case, ""), "eyebrow": esc(s["eyebrow"]),
+        "cover": cover(case, "", "(min-width: 1024px) 128px, 96px", eager=now, priority=now),
+        "title": esc(t(case)["title"]), "players": esc(case["players"]),
         "price": price(case["price"]), "gift": esc(s["gift"][0].lower() + s["gift"][1:]),
-        "buy": buy_link(case, "home-season", label="Get the case – %s" % price(case["price"])),
+        "buy": buy_link(case, "home-season", cls="btn btn--primary btn--sm",
+                        label="Get the case – %s" % price(case["price"])),
     }
-    if not gift:
-        return hero
-    p = shop_product(gift["product"])
-    img = p["image"][:-4]
-    return hero + """
-    <section class="container season-gift"%(only)s aria-label="%(kicker)s">
-      <a class="season-gift__card" href="shop/%(slug)s.html" data-track="product-click/home-season/%(slug)s">
-        <picture><source type="image/avif" srcset="%(img)s-480.avif"><img src="%(img)s.jpg" width="1000" height="1250" alt="" loading="lazy" decoding="async"></picture>
-        <span class="season-gift__text">
-          <span class="season-gift__kicker">%(kicker)s</span>
-          <span class="season-gift__title">%(title)s</span>
-          <span class="season-gift__meta"><b>%(price)s</b>%(was)s · %(note)s</span>
-        </span>
-        <span class="season-gift__arrow" aria-hidden="true">→</span>
-      </a>
-    </section>""" % {
-        "only": season_only(case), "slug": p["slug"], "img": img, "kicker": esc(gift["kicker"]),
-        "title": esc(gift["title"]), "price": price(p["price"]), "note": esc(gift.get("note", "")),
-        "was": ' <s class="price-was">%s</s>' % price(p["was"]) if p["was"] else "",
-    }
+    extra = ""
+    if gift:
+        p = shop_product(gift["product"])
+        img = p["image"][:-4]
+        extra = """
+          <a class="hero__product season-gift" href="shop/%(slug)s.html" data-track="product-click/home-season/%(slug)s">
+            <picture><source type="image/avif" srcset="%(img)s-480.avif"><img src="%(img)s.jpg" width="1000" height="1250" alt="" loading="lazy" decoding="async"></picture>
+            <span class="hero__product-text">
+              <span class="hero__product-kicker">%(kicker)s</span>
+              <span class="hero__product-title">%(title)s</span>
+              <span class="hero__product-price"><b>%(price)s</b>%(was)s<span>%(note)s</span></span>
+            </span>
+            <span class="hero__product-arrow" aria-hidden="true">→</span>
+          </a>""" % {
+            "slug": p["slug"], "img": img, "kicker": esc(gift["kicker"]), "title": esc(gift["title"]),
+            "price": price(p["price"]), "note": esc(gift.get("note", "")),
+            "was": ' <s class="price-was">%s</s>' % price(p["was"]) if p["was"] else "",
+        }
+    return '          <div class="season-feature"%s>\n%s%s\n          </div>' % (season_only(case), card, extra)
 
 
 def season_grid_card(case):

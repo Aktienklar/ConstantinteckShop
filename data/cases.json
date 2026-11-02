@@ -61,8 +61,8 @@
     "seasonGift": {
       "product": "apron-set",
       "kicker": "Christmas gift",
-      "title": "The ‘Dough Love’ apron set – one for you, one for your little helper",
-      "note": "sewn by hand in Germany"
+      "title": "The ‘Dough Love’ apron set",
+      "note": "one for you, one for your little helper"
     },
     "_seasonGift": "Unter dem Saison-Hero der Startseite (nur in den Monaten des Falls mit seasonal). product = Slug aus assets/js/shop-data.js, Preis kommt von dort.",
     "_home": "picks: 4 Fälle für 'Pick your evening'. Fälle mit 'seasonal' kommen in ihren Monaten automatisch vorn dazu (dann entfällt der letzte). exampleMenu: Fall für 'A menu idea for every case'. heroCovers: 3 Cover im Hero (Mitte = zweiter)."
