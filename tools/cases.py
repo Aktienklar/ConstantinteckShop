@@ -322,7 +322,7 @@ def case_card(case, root, placement, index, menu=True):
         '<div class="krimi-card__head"><span class="tag krimi-card__genre">%s</span>'
         '<h3><a href="%s"%s>%s</a></h3><p class="krimi-card__setting">%s</p>'
         '<div class="recipe-card__meta">%s</div><div class="krimi-card__diff">%s</div></div>'
-        '<div class="krimi-card__body">%s%s%s'
+        '<div class="krimi-card__body">%s%s%s%s'
         '<div class="krimi-card__foot">%s<a class="krimi-card__more" href="%s"%s>Details &amp; menu <span aria-hidden="true">→</span></a></div>'
         "</div></article>"
         % (page, via, cover(case, root, "(min-width: 1024px) 330px, (min-width: 640px) 45vw, 40vw",
@@ -331,8 +331,18 @@ def case_card(case, root, placement, index, menu=True):
            meta_line(case), difficulty(case, placement), teaser(case), perfect_for(case),
            ('<div class="krimi-card__menu"><p class="krimi-card__menu-title">Menu idea for this case</p>%s</div>'
             % menu_list(case, root, placement)) if menu else "",
+           gift_line("krimi-card__gift"),
            buy_link(case, placement, funnel=placement == "krimi-card",
                     label=None if menu else "Get it – %s" % price(case["price"])), page, via))
+
+
+def gift_line(cls):
+    """"Instant download – perfect last-minute gift" (en.season.gift des Falls
+    mit Saison) – auf Fallseiten und Karten, nur in dessen Monaten."""
+    season = season_case()
+    if not season:
+        return ""
+    return '<p class="gift-line %s"%s>%s</p>' % (cls, season_only(season), esc(t(season)["season"]["gift"]))
 
 
 def season_attrs(case):
@@ -597,6 +607,7 @@ def build_case_page(case, top, bottom):
             %(teaser)s
             <dl class="recipe-facts case-facts">%(facts)s</dl>
             %(perfect)s
+            %(gift)s
             <div class="case-hero__actions">
               %(buy)s
               <a class="btn btn--secondary" href="#menu">See the menu</a>
@@ -657,6 +668,7 @@ def build_case_page(case, top, bottom):
         "cover": cover(case, root, "(min-width: 768px) 320px, 60vw", eager=True, priority=True),
         "genre": esc(x["genre"]), "title": esc(x["title"]), "setting": esc(x["setting"]),
         "teaser": teaser(case, "lede case-hero__teaser"), "facts": facts, "perfect": perfect_for(case),
+        "gift": gift_line("case-hero__gift"),
         "buy": buy_link(case, "case-page-hero", funnel=True),
         "buy_bottom": buy_link(case, "case-page-bottom", funnel=True),
         "roles": roles_section(case), "courses": course_cards(case, root, "case-page"),

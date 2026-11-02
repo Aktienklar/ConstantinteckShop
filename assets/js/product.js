@@ -12,9 +12,43 @@
   "use strict";
 
   document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-deadline]").forEach(showDeadline);
     document.querySelectorAll("[data-buybox]").forEach(setupBuyBox);
     document.querySelectorAll("[data-add-simple]").forEach(setupSimpleButton);
   });
+
+  /* Weihnachts-Deadline in der Kaufbox ------------------------------------
+     Daten aus SHOP_TERMS.christmasDeadlines. Entscheidend ist der Tag beim
+     Besucher (die Seite ist statisch); ein Datum gilt bis einschließlich
+     dieses Tages. Danach verschwindet die jeweilige Zeile von selbst. */
+
+  function showDeadline(box) {
+    var dates = (window.SHOP_TERMS || {}).christmasDeadlines;
+    if (!dates) return;
+
+    var now = new Date();
+    var today = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    if (today < dates.from || today > dates.germany) return;
+
+    if (today <= dates.international) {
+      box.innerHTML =
+        "<b>Christmas delivery:</b> order by " + dayMonth(dates.germany) + " (Germany) or by " +
+        dayMonth(dates.international) + " (all other countries).";
+    } else {
+      box.innerHTML =
+        "<b>Christmas delivery:</b> order by " + dayMonth(dates.germany) + " for delivery within Germany.";
+    }
+    box.hidden = false;
+  }
+
+  function pad(n) {
+    return (n < 10 ? "0" : "") + n;
+  }
+
+  /** "2026-12-15" -> "15 December" */
+  function dayMonth(iso) {
+    return new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+  }
 
   /* Große Kaufbox auf der Produktseite ----------------------------------- */
 

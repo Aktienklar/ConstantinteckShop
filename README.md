@@ -351,6 +351,17 @@ the HTML of the product pages, the trust row and the legal pages.
 These are promises to a paying customer. Make sure each one is something you can
 actually honour, and keep the JavaScript values and the HTML text in agreement.
 
+`christmasDeadlines` (`from`, `international`, `germany`, ISO dates) drives
+the line *Christmas delivery: order by …* in the buy box of the three apron
+pages (`assets/js/product.js`, placeholder `<p data-deadline>`). It shows
+from `from` on, drops the international date once that day has passed and
+disappears after the German one – by the visitor's date, no deploy needed.
+2026: Germany 15 Dec, other countries 5 Dec. Next year: change the dates.
+
+The line *Instant download – perfect last-minute gift* on every case page and
+case card comes from `en.season.gift` of the seasonal case in
+`data/cases.json` and only shows in its months.
+
 `isPrototype: true` is what produces the "this shop is not live yet" notices.
 Leave it `true` while the worker runs on `sk_test_` keys: a real Stripe checkout
 opens, but no money moves. Set it to `false` – and remove the matching sentences

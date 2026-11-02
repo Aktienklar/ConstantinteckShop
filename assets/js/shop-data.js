@@ -183,6 +183,14 @@ var SHOP_TERMS = {
    */
   deliveryPromise: "Fast shipping",
   shipsTo: "all over the world",
+  /**
+   * Weihnachten: bis wann bestellt werden muss, damit die Schürze vor dem
+   * 24.12. ankommt (Constantin, 2.11.2026). Zusage an den Käufer! product.js
+   * zeigt den Hinweis in der Kaufbox ab "from" und blendet ihn nach dem Datum
+   * des Besuchers aus: nach "international" steht nur noch Deutschland da,
+   * nach "germany" gar nichts mehr. Fürs nächste Jahr nur die Daten ändern.
+   */
+  christmasDeadlines: { from: "2026-11-01", international: "2026-12-05", germany: "2026-12-15" },
   /** Gesetzliches Minimum in der EU sind 14 Tage. Nicht unterschreiten. */
   returnDays: 14,
   /**
