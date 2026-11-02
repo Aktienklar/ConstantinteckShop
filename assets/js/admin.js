@@ -614,9 +614,9 @@
 
     var marks =
       '<defs><linearGradient id="' + gradient + '" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" class="admin-chart__stop-top"/><stop offset="1" class="admin-chart__stop-bottom"/></linearGradient></defs>' +
+      '<stop offset="0" class="admin-chart__stop-top" stop-color="#eb6834" stop-opacity="0.3"/><stop offset="1" class="admin-chart__stop-bottom" stop-color="#d4517a" stop-opacity="0"/></linearGradient></defs>' +
       (area ? '<path class="admin-chart__area" d="' + area + '" fill="url(#' + gradient + ')"/>' : "") +
-      '<path class="admin-chart__line" d="' + line + '"/>' +
+      '<path class="admin-chart__line" d="' + line + '" fill="none" stroke="#eb6834" stroke-width="2.5"/>' +
       daily
         .map(function (d, i) {
           var x = points[i][0];
@@ -624,8 +624,8 @@
           // erscheinen erst beim Zeigen.
           return (
             '<g class="admin-chart__day" data-index="' + i + '" tabindex="0">' +
-            '<line class="admin-chart__cross" x1="' + x + '" x2="' + x + '" y1="' + pad.top + '" y2="' + base + '"/>' +
-            '<circle class="admin-chart__dot" cx="' + x + '" cy="' + points[i][1] + '" r="5"/>' +
+            '<line class="admin-chart__cross" x1="' + x + '" x2="' + x + '" y1="' + pad.top + '" y2="' + base + '" opacity="0"/>' +
+            '<circle class="admin-chart__dot" cx="' + x + '" cy="' + points[i][1] + '" r="5" opacity="0"/>' +
             '<rect class="admin-chart__hit" x="' + (pad.left + slot * i) + '" y="' + pad.top + '" width="' + slot + '" height="' + innerH + '"/></g>'
           );
         })
@@ -640,7 +640,7 @@
 
     return (
       '<div class="admin-chart">' +
-      '<svg viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="' + unit + ' pro Tag, höchster Wert ' + num(max) + '">' +
+      '<svg viewBox="0 0 ' + width + " " + height + '" width="' + width + '" height="' + height + '" role="img" aria-label="' + unit + ' pro Tag, höchster Wert ' + num(max) + '">' +
       grid + marks + ticks +
       '<line class="admin-chart__base" x1="' + pad.left + '" x2="' + (width - pad.right) + '" y1="' + (pad.top + innerH) + '" y2="' + (pad.top + innerH) + '"/>' +
       "</svg>" +
@@ -691,6 +691,11 @@
      hebt beide hervor und schreibt den Wert in die Mitte. */
 
   var SLICES = 5;
+  // Dieselben Töne wie --series-1 … --series-5 und --series-other im
+  // Stylesheet. Stehen zusätzlich als Attribut im SVG, damit ein Diagramm
+  // auch dann richtig aussieht, wenn das Stylesheet (noch) nicht da ist –
+  // sonst malt der Browser jeden Kreis schwarz und gefüllt.
+  var SERIES_FALLBACK = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#aeaeb2"];
 
   function donut(rows, map, empty, opts) {
     opts = opts || {};
@@ -715,6 +720,7 @@
         var dash = Math.max(len - gap, 0.6);
         var seg =
           '<circle class="donut__seg donut__seg--' + (r.other ? "other" : i + 1) + '" data-donut-i="' + i + '" r="' + radius + '" cx="64" cy="64"' +
+          ' fill="none" stroke-width="18" stroke="' + (r.other ? SERIES_FALLBACK[5] : SERIES_FALLBACK[i]) + '"' +
           ' stroke-dasharray="' + dash.toFixed(2) + " " + (circ - dash).toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '"/>';
         offset += len;
         return seg;
@@ -735,8 +741,8 @@
 
     return (
       '<div class="donut" data-total="' + esc(totalText) + '" data-unit="' + esc(opts.unit || "gesamt") + '">' +
-      '<div class="donut__figure"><svg viewBox="0 0 128 128" role="img" aria-label="' + esc((opts.label || "Anteile") + ": " + shown.map(function (r) { return r.label + " " + (r.display || num(r.count)); }).join(", ")) + '">' +
-      '<circle class="donut__track" r="' + radius + '" cx="64" cy="64"/>' +
+      '<div class="donut__figure"><svg viewBox="0 0 128 128" width="152" height="152" role="img" aria-label="' + esc((opts.label || "Anteile") + ": " + shown.map(function (r) { return r.label + " " + (r.display || num(r.count)); }).join(", ")) + '">' +
+      '<circle class="donut__track" r="' + radius + '" cx="64" cy="64" fill="none" stroke-width="18" stroke="rgba(0,0,0,0.07)"/>' +
       '<g transform="rotate(-90 64 64)">' + segments + "</g></svg>" +
       '<div class="donut__center"><strong>' + esc(totalText) + "</strong><span>" + esc(opts.unit || "gesamt") + "</span></div></div>" +
       '<ul class="donut__legend">' + legend + "</ul></div>"
@@ -788,10 +794,10 @@
     var value = known ? Math.max(0, Math.min(1, fraction)) : 0;
     return (
       '<div class="ring">' +
-      '<div class="ring__figure"><svg viewBox="0 0 100 100" role="img" aria-label="' + esc(label + ": " + (known ? Math.round(value * 100) + " %" : "keine Daten")) + '">' +
-      '<circle class="ring__track" r="' + radius + '" cx="50" cy="50"/>' +
+      '<div class="ring__figure"><svg viewBox="0 0 100 100" width="128" height="128" role="img" aria-label="' + esc(label + ": " + (known ? Math.round(value * 100) + " %" : "keine Daten")) + '">' +
+      '<circle class="ring__track" r="' + radius + '" cx="50" cy="50" fill="none" stroke-width="10" stroke="rgba(0,0,0,0.07)"/>' +
       (known && value > 0
-        ? '<circle class="ring__value" r="' + radius + '" cx="50" cy="50" transform="rotate(-90 50 50)" stroke-dasharray="' + (value * circ).toFixed(2) + " " + circ.toFixed(2) + '"/>'
+        ? '<circle class="ring__value" r="' + radius + '" cx="50" cy="50" transform="rotate(-90 50 50)" fill="none" stroke-width="10" stroke="#eb6834" stroke-linecap="round" stroke-dasharray="' + (value * circ).toFixed(2) + " " + circ.toFixed(2) + '"/>'
         : "") +
       "</svg>" +
       '<strong class="ring__pct">' + (known ? Math.round(value * 100) + " %" : "–") + "</strong></div>" +
