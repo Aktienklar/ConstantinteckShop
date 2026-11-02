@@ -5466,9 +5466,20 @@ div.legal__en > * + * {
   }
 
   .season-feature {
-    grid-template-columns: minmax(0, 30rem) minmax(0, 24rem);
+    grid-template-columns: repeat(2, minmax(0, 29.5rem));
+    justify-content: center;
     align-items: stretch;
+    gap: 1rem;
     margin-top: 1.25rem;
+    text-align: left;
+  }
+
+  /* In der Saison steht der Hero-Text samt Karten mittig über der Wand
+     statt unten links – zwei Karten nebeneinander wirkten links bündig
+     schief (2.11.2026). */
+  .hero:has(.season-feature:not([hidden])) .hero__inner {
+    margin-inline: auto;
+    text-align: center;
   }
 
   .season-card__cover {
