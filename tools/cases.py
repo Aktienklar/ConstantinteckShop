@@ -166,6 +166,26 @@ def off_season_only(case):
     return ' data-off-season-only="%s"%s' % (months(case), " hidden" if in_season_today(case) else "")
 
 
+def season_case():
+    """Der Fall mit Saison, für den es Saisontexte (en.season) gibt – oder None."""
+    return next((c for c in seasonal_cases() if t(c).get("season")), None)
+
+
+def shop_product(slug):
+    """Titel und Preise eines Shop-Produkts aus assets/js/shop-data.js – dort
+    stehen sie schon (neben shop/<slug>.html und worker/src/catalog.js), hier
+    werden sie nur gelesen, nie ein viertes Mal getippt."""
+    src = read("assets/js/shop-data.js")
+    body = re.search(r'"%s":\s*\{(.*?)\n  \}' % re.escape(slug), src, re.S).group(1)
+    was = re.search(r"compareAtPrice:\s*([\d.]+)", body)
+    return {
+        "slug": slug,
+        "image": re.search(r'image:\s*"([^"]+)"', body).group(1),
+        "price": float(re.search(r"\bprice:\s*([\d.]+)", body).group(1)),
+        "was": float(was.group(1)) if was else None,
+    }
+
+
 def mn_url(path, content, campaign=None):
     """Der eine Weg zu einem Link nach Murdernight (siehe Kopf der Datei)."""
     params = dict(SITE_CFG["utm"])
@@ -703,6 +723,8 @@ def latest_row():
         card = re.sub(r'\s(?:data-recipe-card|data-category="[^"]*"|data-minutes="[^"]*"|data-difficulty="[^"]*"|data-search="[^"]*")', "", card)
         cards.append("        " + card.replace(' loading="lazy"', ""))
     src = fill(src, "Neueste", "\n".join(cards), "        ")
+    season = season_case()
+    src = fill(src, "Saison-Karte", season_grid_card(season) if season else "", "        ")
     return write("recipes.html", apply_global("recipes.html", src))
 
 
@@ -770,8 +792,79 @@ def home():
         "buy": buy_link(ex, "home-menu", cls="btn btn--primary"),
     }
     src = fill(src, "Beispielmenue", example, "        ")
+    season = season_case()
+    src = fill(src, "Saison-Hero", season_home(season) if season else "", "    ")
     src = fill(src, "Neue Rezepte", '        <div class="grid grid--3 mt-6">\n%s\n        </div>' % latest_recipes(), "        ")
     return write("index.html", apply_global("index.html", src))
+
+
+def season_home(case):
+    """Ganz oben auf der Startseite, nur in der Saison: der Fall groß mit
+    Kaufknopf, darunter das Schürzen-Geschenk (home.seasonGift)."""
+    s = t(case)["season"]
+    gift = DATA["home"].get("seasonGift")
+    now = in_season_today(case)
+    hero = """    <section class="season-hero"%(only)s aria-labelledby="season-hero-title">
+      <div class="container season-hero__grid">
+        <a class="season-hero__cover" href="%(page)s" tabindex="-1" aria-hidden="true" data-via="home-season">%(cover)s</a>
+        <div class="season-hero__text">
+          <p class="eyebrow">%(eyebrow)s</p>
+          <h2 class="season-hero__title" id="season-hero-title"><a href="%(page)s" data-via="home-season">%(title)s</a></h2>
+          <p class="season-hero__setting">%(setting)s</p>
+          <p class="season-hero__facts">%(players)s players · %(price)s · %(gift)s</p>
+        </div>
+        <div class="season-hero__actions">
+          %(buy)s
+          <a class="season-hero__more" href="%(page)s" data-via="home-season">See the case &amp; menu idea <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>""" % {
+        "only": season_only(case), "page": case_page(case, ""), "eyebrow": esc(s["eyebrow"]),
+        "cover": cover(case, "", "(min-width: 768px) 240px, 9rem", eager=now, priority=now),
+        "title": esc(t(case)["title"]), "setting": esc(t(case)["setting"]), "players": esc(case["players"]),
+        "price": price(case["price"]), "gift": esc(s["gift"][0].lower() + s["gift"][1:]),
+        "buy": buy_link(case, "home-season", label="Get the case – %s" % price(case["price"])),
+    }
+    if not gift:
+        return hero
+    p = shop_product(gift["product"])
+    img = p["image"][:-4]
+    return hero + """
+    <section class="container season-gift"%(only)s aria-label="%(kicker)s">
+      <a class="season-gift__card" href="shop/%(slug)s.html" data-track="product-click/home-season/%(slug)s">
+        <picture><source type="image/avif" srcset="%(img)s-480.avif"><img src="%(img)s.jpg" width="1000" height="1250" alt="" loading="lazy" decoding="async"></picture>
+        <span class="season-gift__text">
+          <span class="season-gift__kicker">%(kicker)s</span>
+          <span class="season-gift__title">%(title)s</span>
+          <span class="season-gift__meta"><b>%(price)s</b>%(was)s · %(note)s</span>
+        </span>
+        <span class="season-gift__arrow" aria-hidden="true">→</span>
+      </a>
+    </section>""" % {
+        "only": season_only(case), "slug": p["slug"], "img": img, "kicker": esc(gift["kicker"]),
+        "title": esc(gift["title"]), "price": price(p["price"]), "note": esc(gift.get("note", "")),
+        "was": ' <s class="price-was">%s</s>' % price(p["was"]) if p["was"] else "",
+    }
+
+
+def season_grid_card(case):
+    """Erste Karte im Rezept-Raster von recipes.html, nur in der Saison. Trägt
+    data-shop-card, damit recipe-filter.js sie bei Suche/Filter ausblendet."""
+    s = t(case)["season"]
+    return ("""        <a class="card recipe-card shop-card lift-3d" href="%(page)s" data-shop-card data-via="recipes-season" data-track="season-click/recipes-grid/%(id)s"%(only)s>
+          <div class="recipe-card__media"><div class="shop-card__covers shop-card__covers--one">%(cover)s</div><span class="shop-card__badge">%(eyebrow)s</span></div>
+          <div class="recipe-card__stripe shop-card__stripe" aria-hidden="true"></div>
+          <div class="recipe-card__body">
+            <h3>%(title)s</h3>
+            <p class="product-card__text">%(lead)s – %(players)s players. %(gift)s.</p>
+            <div class="product-card__foot"><span class="product-card__price">%(price)s</span><span class="shop-card__more">See the case →</span></div>
+          </div>
+        </a>""" % {
+        "page": case_page(case, ""), "id": case["id"], "only": season_only(case), "eyebrow": esc(s["eyebrow"]),
+        "cover": cover(case, "", "(min-width: 1024px) 130px, (min-width: 640px) 18vw, 40vw", alt=""),
+        "title": esc(t(case)["title"]), "lead": esc(s["title"]), "players": esc(case["players"]),
+        "gift": esc(s["gift"]), "price": price(case["price"]),
+    })
 
 
 def recipe_box(case, slug):
@@ -869,7 +962,7 @@ def recipe_pages():
         inner = recipe_box(case, slug) if case else "      <!-- TODO: Rezept in data/cases.json einem Fall zuordnen -->"
         # In der Saison ersetzt die Saison-Box die zugeordnete; site.js
         # schaltet zwischen beiden nach dem Datum des Besuchers.
-        season = next((c for c in seasonal_cases() if t(c).get("season")), None)
+        season = season_case()
         if season:
             inner = ('      <div%s>\n%s\n      </div>\n      <div%s>\n%s\n      </div>'
                      % (off_season_only(season), inner, season_only(season), season_box(season)))

@@ -348,6 +348,7 @@
     "krimi-card": "Krimi-Übersicht (Karte)",
     "case-page-hero": "Fallseite oben",
     "case-page-bottom": "Fallseite unten",
+    "home-season": "Startseite (Saisonfall oben)",
     "home-pick": "Startseite (Auswahl)",
     "home-menu": "Startseite (Menü)",
     "closing-cta": "Startseite (Schluss)"
