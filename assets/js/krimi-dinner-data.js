@@ -737,7 +737,8 @@ var KRIMI_CASES = [
       "avocado-ice-cream",
       "mango-raspberry-sorbet",
       "strawberry-pineapple-sorbet",
-      "yellow-watermelon-sorbet"
+      "yellow-watermelon-sorbet",
+      "creamy-broccoli-salmon-pasta"
     ],
     "en": {
       "title": "The Night of the Waxworks",
