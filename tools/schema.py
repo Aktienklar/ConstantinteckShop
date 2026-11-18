@@ -92,8 +92,13 @@ def duration(value):
 
 
 def added(root, page):
-    """Datum, an dem die Seite ins Repository kam = veröffentlicht."""
-    out = subprocess.run(["git", "log", "--diff-filter=A", "--follow", "--format=%cs", "--", page],
+    """Datum, an dem die Seite ins Repository kam = veröffentlicht.
+
+    Bewusst ohne --follow: neue Rezepte entstehen als Kopie eines alten, und
+    --follow hält die Kopie für eine Umbenennung und liefert das Datum des
+    allerersten Rezepts (2026-08-06) für jede Seite. Wird eine Seite wirklich
+    umbenannt, zählt eben der Tag der Umbenennung."""
+    out = subprocess.run(["git", "log", "--diff-filter=A", "--format=%cs", "--", page],
                          cwd=root, capture_output=True, text=True).stdout.split()
     return out[-1] if out else None
 
