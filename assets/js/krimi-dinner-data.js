@@ -578,7 +578,8 @@ var KRIMI_CASES = [
       "mango-passionfruit-smoothie",
       "lemon-sorbet",
       "kiwi-sorbet",
-      "granola-mango-berry-smoothie-bowl"
+      "granola-mango-berry-smoothie-bowl",
+      "crunchy-chicken-burger"
     ],
     "en": {
       "title": "Closing Bell on the 24th Floor",
