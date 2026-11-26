@@ -38,6 +38,7 @@
  * Wird ein Rezept umbenannt, gehört diese Zeile mit umbenannt.
  */
 var RECIPES = {
+  "mango-choc-sorbet"                     : { order: 42, video: "" },  // Mango Choc Sorbet
   "crunchy-chicken-burger"                : { order: 41, video: "" },  // Crunchy Chicken Burger
   "creamy-broccoli-salmon-pasta"          : { order: 40, video: "" },  // Creamy Broccoli Salmon Pasta
   "blueberry-chocolate-banana-ice-cream"  : { order: 39, video: "" },  // Blueberry Chocolate Banana Ice Cream

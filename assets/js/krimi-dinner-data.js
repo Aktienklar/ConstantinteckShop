@@ -425,7 +425,8 @@ var KRIMI_CASES = [
     "recipes": [
       "creamy-sucuk-carbonara",
       "healthy-raspberry-chocolate-nice-cream",
-      "creamy-hokkaido-pumpkin-pasta"
+      "creamy-hokkaido-pumpkin-pasta",
+      "mango-choc-sorbet"
     ],
     "en": {
       "title": "Witching Hour at Ravenmoor",
